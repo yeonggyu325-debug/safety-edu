@@ -183,6 +183,9 @@ body{min-height:100%;height:auto!important}
 .search-person{color:#172033;font-weight:800}
 .search-separator{color:#98a2b3}
 
+
+.progress-disabled{display:inline-flex;align-items:center;justify-content:center;min-height:32px;padding:0 11px;border-radius:9px;background:#f2f4f6;color:#8b95a1;font-size:12px;font-weight:750;border:1px solid #e5e8eb;cursor:not-allowed;pointer-events:none;user-select:none}
+
 </style>
 </head>
 <body>
@@ -215,7 +218,7 @@ body{min-height:100%;height:auto!important}
   <div id="educationView" class="view active">
     <div class="toolbar">
   <div class="search-shell">
-    <input id="publicName" autocomplete="off" placeholder="이름을 입력하세요.">
+    <input id="publicName" autocomplete="off" placeholder="성명 일부 입력 (예: 김, 김성, 이성훈)">
     <button id="publicSearchBtn" class="btn primary" type="button">검색</button>
     <div id="publicCandidateList" class="search-results" hidden></div>
   </div>
@@ -306,7 +309,7 @@ body{min-height:100%;height:auto!important}
         </div>
         <div class="field">
           <label>교육결과보고서 웹링크</label>
-          <input id="resultReportUrl" type="url" required placeholder="https://10.10.7.111/weblink/...">
+          <input id="resultReportUrl" type="url" placeholder="미등록 시 교육진행중으로 표시">
         </div>
         <div class="field"><label>공개여부</label>
             <select id="resourceActive">
@@ -527,11 +530,21 @@ function renderResources(){
     material.appendChild(materialLink);tr.appendChild(material);
 
     let report=document.createElement("td");
-    let reportLink=document.createElement("a");
-    reportLink.className="link";reportLink.textContent="결과보고서";
-    if(validHttpUrl(x.result_report_url)){reportLink.href=x.result_report_url;reportLink.target="_blank";reportLink.rel="noopener noreferrer"}
-    else{reportLink.href="#";reportLink.style.pointerEvents="none";reportLink.style.opacity=".45"}
-    report.appendChild(reportLink);tr.appendChild(report);
+    if(validHttpUrl(x.result_report_url)){
+      let reportLink=document.createElement("a");
+      reportLink.className="link";reportLink.textContent="결과보고서";
+      reportLink.href=x.result_report_url;
+      reportLink.target="_blank";
+      reportLink.rel="noopener noreferrer";
+      report.appendChild(reportLink);
+    }else{
+      let progress=document.createElement("span");
+      progress.className="progress-disabled";
+      progress.textContent="교육진행중";
+      progress.setAttribute("aria-disabled","true");
+      report.appendChild(progress);
+    }
+    tr.appendChild(report);
 
     let admin=document.createElement("td");admin.className="admin-col";
     if(S.admin){
@@ -574,8 +587,11 @@ function openResource(x=null){
 async function saveResource(e){
   e.preventDefault();
   let material=$("materialUrl").value.trim(),report=$("resultReportUrl").value.trim();
-  if(!validHttpUrl(material)||!validHttpUrl(report)){
-    $("resourceError").textContent="교육자료와 결과보고서 링크는 http 또는 https 주소여야 합니다.";return
+  if(!validHttpUrl(material)){
+    $("resourceError").textContent="교육자료 링크는 http 또는 https 주소여야 합니다.";return
+  }
+  if(report&&!validHttpUrl(report)){
+    $("resourceError").textContent="교육결과보고서 링크는 비워두거나 http 또는 https 주소여야 합니다.";return
   }
   if(!$("firstSessionDate").value&&!$("secondSessionDate").value&&!$("individualStartDate").value){
     $("resourceError").textContent="1차, 2차 또는 개별교육 기간 중 하나 이상 입력해 주세요.";return
@@ -597,7 +613,7 @@ async function saveResource(e){
     conducted_date:$("firstSessionDate").value||$("secondSessionDate").value||$("individualStartDate").value||null,
     description:null,
     web_url:material,
-    result_report_url:report,
+    result_report_url:report||null,
     applicable_year:Number((($("firstSessionDate").value||$("secondSessionDate").value||$("individualStartDate").value||new Date().toISOString().slice(0,10))).slice(0,4)),
     applicable_period:null,
     is_active:$("resourceActive").value==="true"
