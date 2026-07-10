@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="사내 안전교육 자료 및 사원명부">
+<title>사내 안전교육 자료실</title>
+<style>
+:root{--blue:#3182f6;--blue2:#1b64da;--soft:#e8f3ff;--text:#191f28;--sub:#6b7684;--line:#e5e8eb;--bg:#f6f8fb;--danger:#f04452;--sidebar:250px}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font-family:Pretendard,"Noto Sans KR",Arial,sans-serif}
+button,input,select,textarea{font:inherit}.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar);height:100vh;padding:24px 18px;overflow:auto;border-right:1px solid var(--line);background:#fff;z-index:30}
+.logo{width:156px;max-width:100%}.site{margin:14px 8px 22px;font-weight:800}.menu{display:grid;gap:6px}.section-label{margin:18px 12px 5px;color:#8b95a1;font-size:11px;font-weight:800}
+.menu button{width:100%;min-height:44px;padding:10px 13px;border:0;border-radius:11px;text-align:left;background:transparent;color:#4e5968;font-weight:700;cursor:pointer}
+.menu button:hover,.menu button.active{background:var(--soft);color:var(--blue2)}.submenu{padding-left:15px}.main{margin-left:var(--sidebar);min-height:100vh}
+.topbar{display:flex;min-height:86px;padding:18px 34px;align-items:center;justify-content:space-between;gap:15px;border-bottom:1px solid var(--line);background:#fff}
+.topbar h1{margin:0;font-size:27px}.topbar p{margin:6px 0 0;color:var(--sub);font-size:13px}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{min-height:40px;padding:0 14px;border:0;border-radius:11px;font-weight:750;cursor:pointer}
+.primary{color:#fff;background:linear-gradient(135deg,#4d9cff,#2563eb)}.secondary{color:#4e5968;background:#fff;box-shadow:inset 0 0 0 1px var(--line)}.danger{color:var(--danger);background:#fff;box-shadow:inset 0 0 0 1px rgba(240,68,82,.2)}
+.admin-actions{display:none;gap:8px}body.admin .admin-actions{display:flex}body.admin #loginBtn{display:none}.content{padding:24px 34px 42px}.view{display:none}.view.active{display:block}
+.toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.toolbar>div{display:flex;gap:8px;flex-wrap:wrap}
+.toolbar input,.toolbar select{height:40px;padding:0 11px;border:1px solid #d1d6db;border-radius:10px;background:#fff}
+.card{overflow:hidden;border:1px solid var(--line);border-radius:17px;background:#fff;box-shadow:0 8px 26px rgba(25,31,40,.05)}.table-wrap{overflow:auto}
+table{width:100%;min-width:980px;border-collapse:collapse}th{padding:14px 15px;background:#f8fafc;border-bottom:1px solid var(--line);color:var(--sub);font-size:12px;text-align:left;white-space:nowrap}
+td{padding:15px;border-bottom:1px solid #edf0f2;font-size:14px;vertical-align:middle}tbody tr:last-child td{border-bottom:0}.center{text-align:center}.title{font-weight:750}
+.link{display:inline-flex;min-height:35px;padding:0 12px;align-items:center;border-radius:9px;color:#fff;background:var(--blue);text-decoration:none;font-size:13px;font-weight:750}
+.mini{min-height:32px;padding:0 9px;border:0;border-radius:8px;background:#f2f4f6;color:#4e5968;font-size:12px;font-weight:700;cursor:pointer}.mini.red{color:var(--danger);background:#fff0f1}
+.status{padding:28px;text-align:center;color:var(--sub)}.status.error{color:var(--danger)}.modal-bg{position:fixed;inset:0;display:grid;place-items:center;padding:18px;background:rgba(15,23,42,.48);z-index:100}
+.modal-bg[hidden]{display:none}.modal{width:min(620px,100%);max-height:calc(100vh - 36px);overflow:auto;padding:24px;border-radius:20px;background:#fff}.modal.wide{width:min(1050px,100%)}.modal.small{width:min(410px,100%)}
+.modal-head{display:flex;justify-content:space-between;gap:15px;margin-bottom:19px}.modal-head h2{margin:0}.modal-head p{margin:6px 0 0;color:var(--sub);font-size:13px}.close{width:36px;height:36px;border:0;border-radius:9px;background:#f2f4f6;font-size:19px;cursor:pointer}
+.grid{display:grid;gap:13px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:11px}.field{display:grid;gap:6px}.field label{font-size:13px;font-weight:700;color:#4e5968}.field input,.field select,.field textarea{width:100%;border:1px solid #d1d6db;border-radius:11px}
+.field input,.field select{height:44px;padding:0 12px}.field textarea{min-height:85px;padding:11px;resize:vertical}.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}.error{min-height:19px;margin-top:8px;color:var(--danger);font-size:13px}
+.dynamic[hidden]{display:none}.toast{position:fixed;right:22px;bottom:22px;padding:13px 16px;border-radius:12px;background:#191f28;color:#fff;z-index:200}.toast[hidden]{display:none}
+#fileInput{display:none}.import-help{padding:12px 14px;border-radius:11px;background:#f8fafc;color:var(--sub);font-size:12px;line-height:1.6}
+@media(max-width:780px){.sidebar{transform:translateX(-105%)}.main{margin-left:0}.topbar{padding:16px 18px}.content{padding:18px}.row2{grid-template-columns:1fr}}
+
+body:not(.admin) .admin-col,
+body:not(.admin) td.admin-col{display:none!important}
+body:not(.admin) #adminMenu{display:none!important}
+.participant-summary{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.summary-chip{padding:10px 13px;border-radius:11px;background:#f2f7ff;color:#1b64da;font-size:13px;font-weight:750}
+.participant-layout{display:grid;grid-template-columns:minmax(300px,.8fr) minmax(520px,1.4fr);gap:15px}
+.participant-panel{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;min-width:0}
+.participant-panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:12px 13px;background:#f8fafc;border-bottom:1px solid var(--line)}
+.participant-panel-head input{height:38px;min-width:0;max-width:220px;padding:0 10px;border:1px solid #d1d6db;border-radius:9px}
+.employee-picker{max-height:480px;overflow:auto}
+.employee-pick-row{display:flex;align-items:center;gap:9px;padding:10px 12px;border-bottom:1px solid #edf0f2}
+.employee-pick-row:last-child{border-bottom:0}.employee-pick-row label{flex:1;cursor:pointer}
+.employee-pick-row small{display:block;margin-top:3px;color:var(--sub)}
+.participant-actions{display:flex;gap:6px;flex-wrap:wrap}
+.participant-check{width:18px;height:18px}.participant-panel table{min-width:560px}.participant-panel th,.participant-panel td{white-space:nowrap}
+@media(max-width:900px){.participant-layout{grid-template-columns:1fr}}
+
+
+html{scrollbar-gutter:stable}body{overflow-x:hidden}.modal-open{overflow:hidden}
+.table-wrap,.employee-picker,.modal{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.table-wrap{scrollbar-gutter:stable both-edges;max-width:100%}
+.view.active{contain:layout style}.card{contain:layout paint}.employee-pick-row,tbody tr{content-visibility:auto;contain-intrinsic-size:48px}
+button:disabled{opacity:.55;cursor:not-allowed}.mobile-menu-btn,.sidebar-overlay{display:none}
+@media(max-width:780px){
+  .mobile-menu-btn{display:inline-grid;width:42px;height:42px;place-items:center;border:0;border-radius:11px;background:#f2f4f6;color:#4e5968;font-size:22px;flex:0 0 auto}
+  .sidebar{transition:transform .2s ease;will-change:transform}.sidebar.open{transform:translateX(0)}
+  .sidebar-overlay{position:fixed;inset:0;z-index:25;background:rgba(15,23,42,.42)}.sidebar-overlay.open{display:block}
+  .topbar{align-items:flex-start}.topbar>div:first-of-type{min-width:0}.topbar h1{font-size:21px;overflow-wrap:anywhere}
+  table{min-width:760px}.modal{padding:18px}.modal.wide{width:100%}.participant-panel table{min-width:520px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+
+/* 업무용 밀도 및 스크롤 개선 */
+html,body{height:100%;overflow:hidden}
+.main{height:100vh;display:flex;flex-direction:column;overflow:hidden}
+.topbar{flex:0 0 auto}
+.content{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.table-wrap{overflow:auto;max-width:100%;overscroll-behavior:contain;scrollbar-gutter:stable both-edges}
+.card{min-width:0}
+th{padding:9px 11px;font-size:11px}
+td{padding:8px 11px;font-size:13px;line-height:1.35}
+tbody tr{content-visibility:auto;contain-intrinsic-size:38px}
+.toolbar{margin-bottom:10px}
+.btn{min-height:36px;padding:0 12px}
+.mini{min-height:28px;padding:0 8px}
+.summary-strip{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.summary-card{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--line);border-radius:11px;background:#fff;box-shadow:0 4px 14px rgba(25,31,40,.04)}
+.summary-label{color:var(--sub);font-size:12px;font-weight:700}
+.summary-value{font-size:18px;font-weight:850;letter-spacing:-.03em}
+.status-cell{white-space:nowrap}
+.status-badge{display:inline-flex;align-items:center;gap:7px;padding:4px 8px;border-radius:999px;background:#f8fafc;font-size:12px;font-weight:750}
+.status-dot{width:9px;height:9px;border-radius:50%;box-shadow:0 0 0 3px rgba(0,0,0,.04)}
+.status-employed .status-dot{background:#18a957}
+.status-warning .status-dot{background:#f5b700}
+.status-retired .status-dot{background:#e5484d}
+.status-other .status-dot{background:#8b95a1}
+.status-employed{color:#117a40;background:#eefaf3}
+.status-warning{color:#8a6500;background:#fff8db}
+.status-retired{color:#b4232a;background:#fff0f1}
+.status-other{color:#59636f;background:#f2f4f6}
+.employee-table{min-width:900px}
+.employee-table th:nth-child(1),.employee-table td:nth-child(1){width:58px;text-align:center}
+.employee-table th:nth-child(2),.employee-table td:nth-child(2){width:110px}
+.employee-table th:nth-child(3),.employee-table td:nth-child(3){width:150px}
+.employee-table th:nth-child(4),.employee-table td:nth-child(4){width:160px}
+.employee-table th:nth-child(5),.employee-table td:nth-child(5){width:110px}
+.employee-table th:nth-child(6),.employee-table td:nth-child(6){width:220px}
+.employee-table th:nth-child(7),.employee-table td:nth-child(7){width:110px}
+.employee-table th:nth-child(8),.employee-table td:nth-child(8){width:110px}
+@media(max-width:780px){
+  html,body{overflow:auto}
+  .main{height:auto;min-height:100vh;overflow:visible}
+  .content{overflow:visible}
+  th{padding:8px 9px}
+  td{padding:7px 9px}
+}
+
+body.modal-open{overflow:hidden}
+
+/* ===== Refined business UI ===== */
+:root{
+  --blue:#2563eb;--blue-hover:#1d4ed8;--blue-soft:#eff6ff;
+  --text:#172033;--sub:#667085;--line:#e4e7ec;--bg:#f5f7fb;
+  --danger:#dc2626;--success:#16a34a;--warning:#d97706;
+  --shadow:0 10px 30px rgba(16,24,40,.07);
+}
+html{scroll-behavior:auto}
+html,body{height:auto!important;min-height:100%;overflow-x:hidden!important;overflow-y:auto!important}
+body{background:linear-gradient(180deg,#f8faff 0,#f4f6fa 100%);-webkit-font-smoothing:antialiased}
+.main{height:auto!important;min-height:100vh!important;display:block!important;overflow:visible!important}
+.content{min-height:calc(100vh - 86px);overflow:visible!important;padding:20px 28px 40px}
+.topbar{position:sticky;top:0;z-index:20;min-height:76px;padding:14px 28px;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(16,24,40,.06)}
+.sidebar{box-shadow:8px 0 32px rgba(16,24,40,.035)}
+.card{border-color:#e7eaf0;border-radius:15px;box-shadow:var(--shadow);background:rgba(255,255,255,.98)}
+.table-wrap{overflow-x:auto!important;overflow-y:visible!important;max-height:none!important;overscroll-behavior-x:contain;scrollbar-gutter:auto!important}
+table{table-layout:auto}
+th{position:sticky;top:0;z-index:2;padding:8px 10px;background:#f8fafc;color:#667085;font-size:11px;letter-spacing:.01em}
+td{padding:7px 10px;font-size:13px;line-height:1.28}
+tbody tr{content-visibility:visible!important;contain:none!important;transition:background .12s ease}
+tbody tr:hover{background:#f8fbff}
+.toolbar{padding:10px 12px;border:1px solid #e7eaf0;border-radius:13px;background:#fff;box-shadow:0 3px 12px rgba(16,24,40,.035)}
+.toolbar input,.toolbar select{height:36px;border-color:#d9dee7;background:#fbfcfe}
+.btn{min-height:35px;border-radius:9px;transition:transform .12s ease,box-shadow .12s ease,background .12s ease}
+.btn:hover{transform:translateY(-1px)}
+.primary{background:linear-gradient(135deg,#3b82f6,#2563eb);box-shadow:0 6px 14px rgba(37,99,235,.18)}
+.primary:hover{background:linear-gradient(135deg,#2563eb,#1d4ed8)}
+.summary-card{min-width:140px;border-color:#e7eaf0;box-shadow:0 5px 16px rgba(16,24,40,.045)}
+.summary-value{color:#1d4ed8}
+.modal-bg{overflow-y:auto;overscroll-behavior:contain;padding:22px}
+.modal{max-height:none!important;margin:auto;border:1px solid rgba(255,255,255,.5);box-shadow:0 26px 80px rgba(15,23,42,.22)}
+body.modal-open{overflow:hidden!important}
+.employee-table{min-width:880px}
+.status-badge{padding:3px 7px}
+.status-dot{width:8px;height:8px}
+.search-shell{position:relative;display:flex;gap:8px;align-items:center;width:min(560px,100%)}
+.search-shell input{flex:1}
+.search-results{position:absolute;left:0;right:88px;top:44px;z-index:40;max-height:330px;overflow-y:auto;border:1px solid #dfe4ec;border-radius:13px;background:#fff;box-shadow:0 18px 50px rgba(16,24,40,.16)}
+.search-results[hidden]{display:none}
+.search-result-item{display:flex;align-items:center;justify-content:space-between;gap:14px;width:100%;padding:11px 13px;border:0;border-bottom:1px solid #eef1f5;background:#fff;text-align:left;cursor:pointer}
+.search-result-item:last-child{border-bottom:0}
+.search-result-item:hover,.search-result-item.active{background:#f2f7ff}
+.search-result-name{font-weight:800;color:#172033}
+.search-result-meta{margin-top:3px;color:#667085;font-size:12px}
+.search-result-status{flex:0 0 auto;color:#475467;font-size:11px}
+.skeleton-line{height:12px;border-radius:999px;background:linear-gradient(90deg,#edf0f4 25%,#f8fafc 37%,#edf0f4 63%);background-size:400% 100%;animation:skeleton 1.15s ease infinite}
+.skeleton-row td{padding:11px 10px}
+@keyframes skeleton{0%{background-position:100% 0}100%{background-position:0 0}}
+.history-empty{padding:34px;text-align:center;color:#667085}
+@media(max-width:780px){
+  .content{padding:14px 14px 30px}
+  .topbar{position:sticky;padding:12px 14px}
+  .search-shell{width:100%}
+  .search-results{right:0}
+  .toolbar{align-items:stretch}
+  .toolbar>div{width:100%}
+}
+
+
+/* Natural page scrolling and stable employee search */
+html,body{overflow-y:auto!important;overscroll-behavior:auto!important;scroll-behavior:auto!important}
+body{min-height:100%;height:auto!important}
+.main,.content{height:auto!important;max-height:none!important;overflow:visible!important;overscroll-behavior:auto!important}
+.table-wrap{overflow-x:auto!important;overflow-y:visible!important;max-height:none!important;overscroll-behavior:auto!important;touch-action:pan-x pan-y}
+.sidebar{overscroll-behavior:contain}
+.search-result-main{min-width:0;flex:1}
+.search-result-name{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.search-department{color:#1d4ed8;font-weight:800}
+.search-person{color:#172033;font-weight:800}
+.search-separator{color:#98a2b3}
+
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <img class="logo" src="https://hniruja.com/wp-content/uploads/2024/02/h-%EC%9D%B4%EB%A3%A8%EC%9E%90.png" alt="H&iruja">
+  <div class="site">안전교육 자료실</div>
+  <nav id="educationMenu" class="menu"></nav>
+  <nav id="adminMenu" class="menu" hidden>
+    <div class="section-label">관리자</div>
+    <button id="employeeNav">사원명부</button>
+    <button id="departmentNav">부서관리</button>
+  </nav>
+</aside>
+<div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+<main class="main">
+<header class="topbar">
+  <button id="mobileMenuBtn" class="mobile-menu-btn" type="button" aria-label="메뉴 열기">☰</button>
+  <div><h1 id="pageTitle">정기안전보건교육</h1><p id="pageSub">교육자료 다운로드 및 개인 교육이력 조회</p></div>
+  <div class="actions">
+    <button id="loginBtn" class="btn secondary">관리자 로그인</button>
+    <div class="admin-actions">
+      <button id="addResourceBtn" class="btn primary">자료 추가</button>
+      <button id="logoutBtn" class="btn danger">로그아웃</button>
+    </div>
+  </div>
+</header>
+
+<section class="content">
+  <div id="educationView" class="view active">
+    <div class="toolbar">
+  <div class="search-shell">
+    <input id="publicName" autocomplete="off" placeholder="성명 일부 입력 (예: 김, 김성, 이성훈)">
+    <button id="publicSearchBtn" class="btn primary" type="button">검색</button>
+    <div id="publicCandidateList" class="search-results" hidden></div>
+  </div>
+</div>
+    <div class="card"><div class="table-wrap"><table><thead><tr><th>No.</th><th>실시일</th><th>교육명</th><th>교육 주제</th><th>교육자료</th><th>교육결과보고서</th><th class="admin-col">관리</th></tr></thead><tbody id="resourceBody"></tbody></table></div><div id="resourceStatus"></div></div>
+  </div>
+
+  <div id="employeeView" class="view"><div class="summary-strip"><div class="summary-card"><span class="summary-label">전체 사원</span><strong id="employeeTotalCount" class="summary-value">0</strong></div><div class="summary-card"><span class="summary-label">현재 재직</span><strong id="employeeActiveCount" class="summary-value">0</strong></div></div>
+    <div class="toolbar">
+      <div><input id="employeeSearch" placeholder="성명 검색"><select id="statusFilter"><option value="">전체 상태</option><option value="employed">재직</option><option value="leave">휴직</option><option value="retired">퇴사</option><option value="non_regular">비상근</option><option value="long_trip">장기출장</option><option value="other">기타</option></select></div>
+      <div><button id="templateBtn" class="btn secondary">엑셀 양식</button><button id="importBtn" class="btn secondary">엑셀 넣기</button><input id="fileInput" type="file" accept=".xlsx,.xls"><button id="addEmployeeBtn" class="btn primary">사원 추가</button></div>
+    </div>
+    <div class="card"><div class="table-wrap"><table class="employee-table"><thead><tr><th>No.</th><th>상태</th><th>성명</th><th>부서</th><th>입사일</th><th>휴직기간 / 퇴사일 / 복귀일</th><th>전배일</th><th>관리</th></tr></thead><tbody id="employeeBody"></tbody></table></div><div id="employeeStatus"></div></div>
+  </div>
+
+  <div id="departmentView" class="view"><div class="summary-strip"><div class="summary-card"><span class="summary-label">전체 부서</span><strong id="departmentTotalCount" class="summary-value">0</strong></div><div class="summary-card"><span class="summary-label">현재 재직 인원</span><strong id="departmentEmployeeTotal" class="summary-value">0</strong></div></div>
+    <div class="toolbar"><div><input id="departmentSearch" placeholder="부서명 검색"></div><div><button id="addDepartmentBtn" class="btn primary">부서 추가</button></div></div>
+    <div class="card"><div class="table-wrap"><table><thead><tr><th>No.</th><th>부서명</th><th>현재 재직 인원</th><th>사용여부</th><th>관리</th></tr></thead><tbody id="departmentBody"></tbody></table></div><div id="departmentStatus"></div></div>
+  </div>
+</section>
+</main>
+
+<div id="loginModal" class="modal-bg" hidden><div class="modal small"><div class="modal-head"><div><h2>관리자 로그인</h2></div><button class="close" data-close="loginModal">×</button></div><form id="loginForm"><div class="grid"><div class="field"><label>이메일</label><input id="loginEmail" type="email" required></div><div class="field"><label>비밀번호</label><input id="loginPassword" type="password" required></div></div><div id="loginError" class="error"></div><div class="modal-actions"><button type="button" class="btn secondary" data-close="loginModal">취소</button><button class="btn primary">로그인</button></div></form></div></div>
+
+<div id="historyModal" class="modal-bg" hidden><div class="modal wide"><div class="modal-head"><div><h2 id="historyTitle">교육이력</h2></div><button class="close" data-close="historyModal">×</button></div><div class="card"><div class="table-wrap"><table><thead><tr><th>성명</th><th>부서</th><th>교육명</th><th>구분</th><th>결과보고서</th></tr></thead><tbody id="historyBody"></tbody></table></div><div id="historyStatus"></div></div></div></div>
+
+<div id="employeeModal" class="modal-bg" hidden><div class="modal"><div class="modal-head"><div><h2 id="employeeModalTitle">사원 추가</h2><p>부서는 필수이며 변경 시 적용일 이후 교육부터 새 부서가 반영됩니다.</p></div><button class="close" data-close="employeeModal">×</button></div>
+<form id="employeeForm"><input id="employeeId" type="hidden"><div class="grid">
+<div class="row2"><div class="field"><label>성명</label><input id="employeeName" required></div><div class="field"><label>부서</label><select id="employeeDepartment" required></select></div></div>
+<div class="row2"><div class="field"><label>입사일</label><input id="hireDate" type="date"></div><div class="field"><label>전배일</label><input id="departmentEffectiveDate" type="date" required></div></div>
+<div class="field"><label>상태</label><select id="employeeState"><option value="employed">재직</option><option value="leave">휴직</option><option value="retired">퇴사</option><option value="non_regular">비상근</option><option value="long_trip">장기출장</option><option value="other">기타</option></select></div>
+<div id="leaveFields" class="row2 dynamic" hidden><div class="field"><label>휴직일</label><input id="leaveStart" type="date"></div><div class="field"><label>휴직 종료예정일</label><input id="leaveEnd" type="date"></div></div>
+<div id="returnFields" class="field dynamic" hidden><label>복귀일</label><input id="returnDate" type="date"></div>
+<div id="retiredFields" class="field dynamic" hidden><label>퇴사일</label><input id="retirementDate" type="date"></div>
+<div class="field"><label>비고</label><textarea id="employeeNote"></textarea></div>
+</div><div id="employeeError" class="error"></div><div class="modal-actions"><button type="button" class="btn secondary" data-close="employeeModal">취소</button><button class="btn primary">저장</button></div></form></div></div>
+
+<div id="departmentModal" class="modal-bg" hidden><div class="modal small"><div class="modal-head"><div><h2 id="departmentModalTitle">부서 추가</h2></div><button class="close" data-close="departmentModal">×</button></div><form id="departmentForm"><input id="departmentId" type="hidden"><div class="grid"><div class="field"><label>부서명</label><input id="departmentName" required></div><div class="field"><label>사용여부</label><select id="departmentActive"><option value="true">사용</option><option value="false">미사용</option></select></div></div><div id="departmentError" class="error"></div><div class="modal-actions"><button type="button" class="btn secondary" data-close="departmentModal">취소</button><button class="btn primary">저장</button></div></form></div></div>
+
+
+<div id="resourceModal" class="modal-bg" hidden>
+  <div class="modal">
+    <div class="modal-head">
+      <div>
+        <h2 id="resourceModalTitle">교육 회차 추가</h2>
+        <p>교육명, 교육 주제, 차수별 실시일과 자료 링크를 등록하세요.</p>
+      </div>
+      <button class="close" data-close="resourceModal">×</button>
+    </div>
+    <form id="resourceForm">
+      <input id="resourceId" type="hidden">
+      <div class="grid">
+        <div class="field">
+          <label>교육 구분</label>
+          <select id="resourceCategory" required></select>
+        </div>
+        <div class="field">
+          <label>교육명</label>
+          <input id="educationName" required placeholder="예: 26년 1월 정기안전보건교육">
+        </div>
+        <div class="field">
+          <label>교육 주제</label>
+          <input id="educationTopic" required placeholder="예: 산업안전보건법 및 사고사례">
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label id="firstSessionLabel">1차 실시일</label>
+            <input id="firstSessionDate" type="date">
+          </div>
+          <div class="field">
+            <label id="secondSessionLabel">2차 실시일</label>
+            <input id="secondSessionDate" type="date">
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label>개별교육 시작일</label>
+            <input id="individualStartDate" type="date">
+          </div>
+          <div class="field">
+            <label>개별교육 종료일</label>
+            <input id="individualEndDate" type="date">
+          </div>
+        </div>
+        <div class="field">
+          <label>교육자료 웹링크</label>
+          <input id="materialUrl" type="url" required placeholder="https://10.10.7.111/weblink/...">
+        </div>
+        <div class="field">
+          <label>교육결과보고서 웹링크</label>
+          <input id="resultReportUrl" type="url" required placeholder="https://10.10.7.111/weblink/...">
+        </div>
+        <div class="field"><label>공개여부</label>
+            <select id="resourceActive">
+              <option value="true">공개</option>
+              <option value="false">비공개</option>
+            </select>
+          </div>
+      </div>
+      <div id="resourceError" class="error"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn secondary" data-close="resourceModal">취소</button>
+        <button class="btn primary">저장</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<div id="statusHistoryModal" class="modal-bg" hidden>
+  <div class="modal wide">
+    <div class="modal-head">
+      <div>
+        <h2 id="statusHistoryTitle">근무상태 이력</h2>
+        <p>휴직, 복귀, 퇴사 등 모든 상태 변경 이력을 확인합니다.</p>
+      </div>
+      <button class="close" data-close="statusHistoryModal">×</button>
+    </div>
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>상태</th><th>시작일</th><th>종료일</th><th>사유</th><th>비고</th></tr>
+          </thead>
+          <tbody id="statusHistoryBody"></tbody>
+        </table>
+      </div>
+      <div id="statusHistoryStatus"></div>
+    </div>
+  </div>
+</div>
+
+<div id="participantModal" class="modal-bg" hidden>
+  <div class="modal wide">
+    <div class="modal-head">
+      <div>
+        <h2 id="participantModalTitle">교육 대상자 관리</h2>
+        <p>재직 중인 직원을 일괄 등록하거나 개별 추가·삭제할 수 있습니다.</p>
+      </div>
+      <button class="close" data-close="participantModal">×</button>
+    </div>
+
+    <div class="participant-summary">
+      <div class="summary-chip">현재 재직자 <span id="currentEmployeeCount">0</span>명</div>
+      <div class="summary-chip">이 교육 대상자 <span id="participantCount">0</span>명</div>
+    </div>
+
+    <div class="toolbar">
+      <div></div>
+      <div>
+        <button id="assignAllCurrentBtn" type="button" class="btn primary">일괄 등록</button><button id="deleteAllParticipantsBtn" type="button" class="btn danger">전체 삭제</button>
+      </div>
+    </div>
+
+    <div class="participant-layout">
+      <section class="participant-panel">
+        <div class="participant-panel-head">
+          <strong>개별 직원 선택</strong>
+          <input id="employeePickerSearch" type="search" placeholder="성명·부서 검색">
+        </div>
+        <div id="employeePicker" class="employee-picker"></div>
+      </section>
+
+      <section class="participant-panel">
+        <div class="participant-panel-head">
+          <strong>현재 교육 대상자</strong>
+          <input id="participantSearch" type="search" placeholder="성명·부서 검색">
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>선택</th><th>부서</th><th>성명</th><th>관리</th></tr>
+            </thead>
+            <tbody id="participantBody"></tbody>
+          </table>
+        </div>
+        <div id="participantStatus"></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+const SUPABASE_URL="https://erqmgnaergzsekneeoun.supabase.co";
+const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW1nbmFlcmd6c2VrbmVlb3VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQ4MDgsImV4cCI6MjA5OTIwMDgwOH0.laaWC08BPOop8CsE5IncO5NLP8Ft2yJgZbhIMKPGMwA";
+const db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const S={cats:[],links:[],emps:[],deps:[],catId:null,catName:"",admin:false,currentEducation:null,currentEmployees:[],participants:[],departmentCounts:[]};
+const $=id=>document.getElementById(id);
+const statusName={employed:"재직",leave:"휴직",retired:"퇴사",non_regular:"비상근",long_trip:"장기출장",other:"기타"};
+function toast(m){$("toast").textContent=m;$("toast").hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>$("toast").hidden=true,2200)}
+function modal(id,on=true){
+  $(id).hidden=!on;
+  const anyOpen=[...document.querySelectorAll(".modal-bg")].some(x=>!x.hidden);
+  document.body.classList.toggle("modal-open",anyOpen);
+}
+function status(node,msg,err=false){node.replaceChildren();if(!msg)return;let d=document.createElement("div");d.className="status"+(err?" error":"");d.textContent=msg;node.appendChild(d)}
+function fmt(v){if(!v)return"-";let d=new Date(v);return isNaN(d)?"-":new Intl.DateTimeFormat("ko-KR",{year:"numeric",month:"2-digit",day:"2-digit"}).format(d)}
+function debounce(fn,wait=180){let timer;return(...args)=>{clearTimeout(timer);timer=setTimeout(()=>fn(...args),wait)}}
+function view(name){["education","employee","department"].forEach(x=>$(x+"View").classList.toggle("active",x===name))}
+async function checkAdmin(session){if(!session?.user){S.admin=false;document.body.classList.remove("admin");$("adminMenu").hidden=true;return}
+let{data}=await db.from("admin_users").select("user_id").eq("user_id",session.user.id).eq("is_active",true).maybeSingle();S.admin=!!data;document.body.classList.toggle("admin",S.admin);$("adminMenu").hidden=!S.admin;if(!S.admin){await db.auth.signOut();throw Error("관리자 권한이 없습니다.")}}
+async function loadPublic(){renderSkeletonRows("resourceBody",7,7);let[c,l]=await Promise.all([db.from("education_categories").select("*").order("display_order").order("id"),db.from("education_links").select("*").order("first_session_date",{ascending:false,nullsFirst:false}).order("second_session_date",{ascending:false,nullsFirst:false}).order("individual_start_date",{ascending:false,nullsFirst:false}).order("updated_at",{ascending:false})]);if(c.error||l.error)throw(c.error||l.error);S.cats=c.data||[];S.links=l.data||[];renderMenu();fillResourceCategories();if(!S.catId){let f=S.cats.find(x=>x.category_code==="regular")||S.cats[0];if(f)selectCat(f)}else renderResources()}
+function renderMenu(){$("educationMenu").replaceChildren();let roots=S.cats.filter(x=>x.parent_id===null);roots.forEach(r=>{let b=document.createElement("button");b.textContent=r.category_name;let ch=S.cats.filter(x=>x.parent_id===r.id);if(ch.length){b.onclick=()=>{sub.hidden=!sub.hidden};let sub=document.createElement("div");sub.className="submenu";ch.forEach(c=>{let cb=document.createElement("button");cb.textContent=c.category_name;cb.onclick=()=>selectCat(c);sub.appendChild(cb)});$("educationMenu").append(b,sub)}else{b.onclick=()=>selectCat(r);$("educationMenu").appendChild(b)}})}
+function selectCat(c){closeMobileMenu();S.catId=c.id;S.catName=c.category_name;$("pageTitle").textContent=c.category_name;$("pageSub").textContent="교육자료 다운로드 및 개인 교육이력 조회";view("education");renderResources()}
+
+function renderSkeletonRows(tbodyId,columnCount,rowCount=6){
+  const body=$(tbodyId);if(!body)return;
+  body.replaceChildren();
+  const frag=document.createDocumentFragment();
+  for(let r=0;r<rowCount;r++){
+    const tr=document.createElement("tr");tr.className="skeleton-row";
+    for(let c=0;c<columnCount;c++){
+      const td=document.createElement("td");
+      const line=document.createElement("div");line.className="skeleton-line";
+      line.style.width=`${55+((r+c)*13)%40}%`;
+      td.appendChild(line);tr.appendChild(td);
+    }
+    frag.appendChild(tr);
+  }
+  body.appendChild(frag);
+}
+function clearPublicSearch(){
+  publicSearchRequestId++;
+  $("publicName").value="";
+  $("publicCandidateList").replaceChildren();
+  $("publicCandidateList").hidden=true;
+}
+
+function validHttpUrl(v){try{let u=new URL(v);return u.protocol==="http:"||u.protocol==="https:"}catch{return false}}
+function formatFullDate(v){
+  if(!v)return"";
+  let d=new Date(v+"T00:00:00");
+  if(Number.isNaN(d.getTime()))return"";
+  return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`;
+}
+function formatShortDate(v){
+  if(!v)return"";
+  let d=new Date(v+"T00:00:00");
+  if(Number.isNaN(d.getTime()))return"";
+  return `${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`;
+}
+function isSpecialSafetyEducation(x){
+  const category=S.cats.find(c=>Number(c.id)===Number(x.category_id));
+  const categoryName=(category?.category_name||"").replace(/\s+/g,"");
+  return categoryName.includes("특별안전교육");
+}
+function formatSchedule(x){
+  let lines=[];
+  const special=isSpecialSafetyEducation(x);
+
+  if(special){
+    if(x.first_session_date)lines.push(`(공통) ${formatFullDate(x.first_session_date)}`);
+    if(x.individual_start_date&&x.individual_end_date){
+      lines.push(`(개별) ${formatFullDate(x.individual_start_date)}~${formatShortDate(x.individual_end_date)}`);
+    }else if(x.individual_start_date){
+      lines.push(`(개별) ${formatFullDate(x.individual_start_date)}~`);
+    }else if(x.second_session_date){
+      lines.push(`(개별) ${formatFullDate(x.second_session_date)}`);
+    }
+  }else{
+    if(x.first_session_date)lines.push(`(1차) ${formatFullDate(x.first_session_date)}`);
+    if(x.second_session_date)lines.push(`(2차) ${formatFullDate(x.second_session_date)}`);
+    if(x.individual_start_date&&x.individual_end_date){
+      lines.push(`(개별) ${formatFullDate(x.individual_start_date)}~${formatShortDate(x.individual_end_date)}`);
+    }else if(x.individual_start_date){
+      lines.push(`(개별) ${formatFullDate(x.individual_start_date)}~`);
+    }
+  }
+  return lines.length?lines.join("\n"):"-";
+}
+function fillResourceCategories(){
+  let s=$("resourceCategory");if(!s)return;s.replaceChildren();
+  S.cats.filter(x=>!S.cats.some(c=>c.parent_id===x.id)).forEach(x=>{
+    let o=document.createElement("option");o.value=x.id;
+    let p=S.cats.find(c=>c.id===x.parent_id);
+    o.textContent=p?`${p.category_name} - ${x.category_name}`:x.category_name;
+    s.appendChild(o)
+  })
+}
+function renderResources(){
+  $("resourceBody").replaceChildren();
+  let rows=S.links.filter(x=>x.category_id===S.catId&&(S.admin||x.is_active)).sort((a,b)=>{
+    const ad=a.first_session_date||a.second_session_date||a.individual_start_date||"";
+    const bd=b.first_session_date||b.second_session_date||b.individual_start_date||"";
+    return bd.localeCompare(ad);
+  });
+  if(!rows.length)return status($("resourceStatus"),"등록된 교육 회차가 없습니다.");
+  status($("resourceStatus"),"");
+  const fragment=document.createDocumentFragment();
+  rows.forEach((x,i)=>{
+    let tr=document.createElement("tr");
+    [i+1,formatSchedule(x),x.title,x.education_topic||"-"].forEach((v,j)=>{
+      let td=document.createElement("td");
+      td.textContent=v;
+      if(j===1)td.style.whiteSpace="pre-line";
+      if(j===2)td.className="title";
+      tr.appendChild(td)
+    });
+
+    let material=document.createElement("td");
+    let materialLink=document.createElement("a");
+    materialLink.className="link";materialLink.textContent="교육자료";
+    if(validHttpUrl(x.web_url)){materialLink.href=x.web_url;materialLink.target="_blank";materialLink.rel="noopener noreferrer"}
+    else{materialLink.href="#";materialLink.style.pointerEvents="none";materialLink.style.opacity=".45"}
+    material.appendChild(materialLink);tr.appendChild(material);
+
+    let report=document.createElement("td");
+    let reportLink=document.createElement("a");
+    reportLink.className="link";reportLink.textContent="결과보고서";
+    if(validHttpUrl(x.result_report_url)){reportLink.href=x.result_report_url;reportLink.target="_blank";reportLink.rel="noopener noreferrer"}
+    else{reportLink.href="#";reportLink.style.pointerEvents="none";reportLink.style.opacity=".45"}
+    report.appendChild(reportLink);tr.appendChild(report);
+
+    let admin=document.createElement("td");admin.className="admin-col";
+    if(S.admin){
+      let target=document.createElement("button");target.className="mini";target.textContent="대상자";target.onclick=()=>openParticipants(x);
+      let edit=document.createElement("button");edit.className="mini";edit.textContent="수정";edit.onclick=()=>openResource(x);
+      let del=document.createElement("button");del.className="mini red";del.textContent="삭제";del.onclick=()=>deleteResource(x);
+      admin.append(target,edit,del)
+    }
+    tr.appendChild(admin);fragment.appendChild(tr)
+  });
+  $("resourceBody").appendChild(fragment)
+}
+function updateEducationScheduleLabels(){
+  const categoryId=Number($("resourceCategory").value);
+  const category=S.cats.find(c=>Number(c.id)===categoryId);
+  const special=(category?.category_name||"").replace(/\s+/g,"").includes("특별안전교육");
+  $("firstSessionLabel").textContent=special?"공통 실시일":"1차 실시일";
+  $("secondSessionLabel").textContent=special?"개별 실시일":"2차 실시일";
+}
+
+function openResource(x=null){
+  $("resourceForm").reset();
+  $("resourceId").value=x?.id||"";
+  $("resourceModalTitle").textContent=x?"교육 회차 수정":"교육 회차 추가";
+  fillResourceCategories();
+  $("resourceCategory").value=x?.category_id||S.catId||"";
+  updateEducationScheduleLabels();
+  $("educationName").value=x?.title||"";
+  $("educationTopic").value=x?.education_topic||"";
+  $("firstSessionDate").value=x?.first_session_date||"";
+  $("secondSessionDate").value=x?.second_session_date||"";
+  $("individualStartDate").value=x?.individual_start_date||"";
+  $("individualEndDate").value=x?.individual_end_date||"";
+  $("materialUrl").value=x?.web_url||"";
+  $("resultReportUrl").value=x?.result_report_url||"";
+  $("resourceActive").value=String(x?.is_active??true);
+  $("resourceError").textContent="";
+  modal("resourceModal")
+}
+async function saveResource(e){
+  e.preventDefault();
+  let material=$("materialUrl").value.trim(),report=$("resultReportUrl").value.trim();
+  if(!validHttpUrl(material)||!validHttpUrl(report)){
+    $("resourceError").textContent="교육자료와 결과보고서 링크는 http 또는 https 주소여야 합니다.";return
+  }
+  if(!$("firstSessionDate").value&&!$("secondSessionDate").value&&!$("individualStartDate").value){
+    $("resourceError").textContent="1차, 2차 또는 개별교육 기간 중 하나 이상 입력해 주세요.";return
+  }
+  if($("individualStartDate").value&&!$("individualEndDate").value){
+    $("resourceError").textContent="개별교육 종료일을 입력해 주세요.";return
+  }
+  if($("individualStartDate").value&&$("individualEndDate").value&&$("individualEndDate").value<$("individualStartDate").value){
+    $("resourceError").textContent="개별교육 종료일은 시작일보다 빠를 수 없습니다.";return
+  }
+  let payload={
+    category_id:Number($("resourceCategory").value),
+    title:$("educationName").value.trim(),
+    education_topic:$("educationTopic").value.trim(),
+    first_session_date:$("firstSessionDate").value||null,
+    second_session_date:$("secondSessionDate").value||null,
+    individual_start_date:$("individualStartDate").value||null,
+    individual_end_date:$("individualEndDate").value||null,
+    conducted_date:$("firstSessionDate").value||$("secondSessionDate").value||$("individualStartDate").value||null,
+    description:null,
+    web_url:material,
+    result_report_url:report,
+    applicable_year:Number((($("firstSessionDate").value||$("secondSessionDate").value||$("individualStartDate").value||new Date().toISOString().slice(0,10))).slice(0,4)),
+    applicable_period:null,
+    is_active:$("resourceActive").value==="true"
+  };
+  let id=$("resourceId").value;
+  let r=id
+    ?await db.from("education_links").update(payload).eq("id",Number(id)).select("*").single()
+    :await db.from("education_links").insert(payload).select("*").single();
+  if(r.error){console.error(r.error);$("resourceError").textContent="저장 실패: "+r.error.message;return}
+  modal("resourceModal",false);
+  const savedEducation=r.data;
+  await loadPublic();
+  toast(id?"교육 회차가 수정되었습니다.":"교육 회차가 추가되었습니다.");
+  if(savedEducation&&S.admin)await openParticipants(savedEducation)
+}
+async function deleteResource(x){
+  if(!confirm(`"${x.title}" 회차를 삭제하시겠습니까?`))return;
+  let{error}=await db.from("education_links").delete().eq("id",x.id);
+  if(error)return toast("삭제 실패: "+error.message);
+  await loadPublic();toast("삭제되었습니다.")
+}
+
+async function openParticipants(education){
+  if(!S.admin)return;
+  S.currentEducation=education;
+  $("participantModalTitle").textContent=`${education.title} 대상자 관리`;
+  modal("participantModal");
+  await reloadParticipants();
+}
+async function reloadParticipants(){
+  status($("participantStatus"),"대상자 정보를 불러오는 중입니다.");
+  const [currentResult,participantResult]=await Promise.all([
+    db.rpc("get_current_employees"),
+    db.rpc("get_education_participants",{p_education_link_id:S.currentEducation.id})
+  ]);
+  if(currentResult.error||participantResult.error){
+    console.error(currentResult.error||participantResult.error);
+    status($("participantStatus"),"대상자 정보를 불러오지 못했습니다.",true);
+    return;
+  }
+  S.currentEmployees=(currentResult.data||[]).sort((a,b)=>{
+    const dep=(a.department_name||"").localeCompare(b.department_name||"","ko");
+    return dep||a.employee_name.localeCompare(b.employee_name,"ko");
+  });
+  S.participants=participantResult.data||[];
+  $("currentEmployeeCount").textContent=S.currentEmployees.length;
+  $("participantCount").textContent=S.participants.length;
+  renderEmployeePicker();
+  renderParticipantTable();
+}
+function renderEmployeePicker(){
+  const q=$("employeePickerSearch").value.trim().toLowerCase();
+  const selected=new Set(S.participants.map(x=>Number(x.employee_id)));
+  $("employeePicker").replaceChildren();
+  const rows=S.currentEmployees.filter(x=>!q||`${x.employee_name} ${x.department_name||""}`.toLowerCase().includes(q));
+  if(!rows.length){
+    const d=document.createElement("div");d.className="status";d.textContent="검색 결과가 없습니다.";$("employeePicker").appendChild(d);return;
+  }
+  const fragment=document.createDocumentFragment();
+  rows.forEach(x=>{
+    const row=document.createElement("div");row.className="employee-pick-row";
+    const checkbox=document.createElement("input");checkbox.type="checkbox";checkbox.checked=selected.has(Number(x.employee_id));checkbox.disabled=checkbox.checked;
+    const label=document.createElement("label");
+    const strong=document.createElement("strong");strong.textContent=x.employee_name;
+    const small=document.createElement("small");small.textContent=x.department_name||"-";
+    label.append(strong,small);
+    const add=document.createElement("button");add.type="button";add.className="mini";add.textContent=checkbox.checked?"추가됨":"추가";add.disabled=checkbox.checked;
+    add.onclick=()=>addSingleParticipant(x.employee_id);
+    row.append(checkbox,label,add);fragment.appendChild(row);
+  });
+  $("employeePicker").appendChild(fragment);
+}
+function renderParticipantTable(){
+  const q=$("participantSearch").value.trim().toLowerCase();
+  $("participantBody").replaceChildren();
+  const rows=S.participants.filter(x=>!q||`${x.employee_name} ${x.department_name||""}`.toLowerCase().includes(q));
+  if(!rows.length){status($("participantStatus"),"등록된 대상자가 없습니다.");return}
+  status($("participantStatus"),"");
+  const fragment=document.createDocumentFragment();
+  rows.forEach(x=>{
+    const tr=document.createElement("tr");
+
+    const selectTd=document.createElement("td");
+    const checkbox=document.createElement("input");
+    checkbox.type="checkbox";
+    checkbox.className="participant-check";
+    checkbox.dataset.participantId=x.participant_id;
+    checkbox.dataset.employeeName=x.employee_name;
+    selectTd.appendChild(checkbox);
+    tr.appendChild(selectTd);
+
+    [x.department_name||"-",x.employee_name].forEach(v=>{
+      const td=document.createElement("td");
+      td.textContent=v;
+      tr.appendChild(td);
+    });
+
+    const manage=document.createElement("td");
+    const remove=document.createElement("button");
+    remove.type="button";
+    remove.className="mini red";
+    remove.textContent="삭제";
+    remove.onclick=()=>removeParticipant(x.participant_id,x.employee_name);
+    manage.appendChild(remove);
+    tr.appendChild(manage);
+
+    fragment.appendChild(tr);
+  });
+  $("participantBody").appendChild(fragment);
+}
+async function addSingleParticipant(employeeId){
+  const {error}=await db.rpc("assign_employee_to_education",{
+    p_education_link_id:S.currentEducation.id,
+    p_employee_id:Number(employeeId),
+    p_target_status:"target",
+    p_exclusion_reason:null
+  });
+  if(error){console.error(error);toast("직원 추가 실패: "+error.message);return}
+  await reloadParticipants();toast("대상자 1명이 추가되었습니다.");
+}
+async function assignAllCurrentEmployees(){
+  const button=$("assignAllCurrentBtn");button.disabled=true;
+  const {data,error}=await db.rpc("assign_all_current_employees",{p_education_link_id:S.currentEducation.id});
+  button.disabled=false;
+  if(error){console.error(error);toast("전체 직원 추가 실패: "+error.message);return}
+  const result=data?.[0]||{};
+  await reloadParticipants();
+  toast(`일괄 등록 ${result.inserted_count||0}명 · 이미 등록 ${result.skipped_count||0}명 · 현재 재직자 ${result.total_current_employees||0}명`);
+}
+async function removeParticipant(participantId,employeeName){
+  if(!confirm(`${employeeName}님을 이 교육 대상자에서 제외하시겠습니까?`))return;
+  const {error}=await db.from("education_participants").delete().eq("id",participantId);
+  if(error){console.error(error);toast("대상자 제외 실패: "+error.message);return}
+  toast("대상자에서 제외했습니다.");await reloadParticipants();
+}
+async function deleteAllParticipants(){
+  if(!S.currentEducation)return;
+  if(!S.participants.length){toast("삭제할 대상자가 없습니다.");return}
+  if(!confirm(`현재 교육 대상자 ${S.participants.length}명을 모두 삭제하시겠습니까?`))return;
+  const {error}=await db.from("education_participants").delete().eq("education_link_id",S.currentEducation.id);
+  if(error){console.error(error);toast("전체 삭제 실패: "+error.message);return}
+  toast(`${S.participants.length}명을 모두 삭제했습니다.`);
+  await reloadParticipants();
+}
+
+
+async function loadAdmin(){renderSkeletonRows("employeeBody",8,8);renderSkeletonRows("departmentBody",5,6);
+  let[e,d,c]=await Promise.all([
+    db.from("employees").select("*").order("employee_name"),
+    db.from("employee_departments").select("*").order("department_name",{ascending:true}),
+    db.rpc("get_department_employee_counts")
+  ]);
+  if(e.error||d.error||c.error)throw(e.error||d.error||c.error);
+  S.emps=e.data||[];
+  S.deps=d.data||[];
+  S.departmentCounts=c.data||[];
+  renderEmployees();
+  renderDepartments();
+  fillDepartments();
+}
+
+function employeeStatusClass(status){
+  if(status==="employed")return"status-employed";
+  if(["leave","non_regular","long_trip"].includes(status))return"status-warning";
+  if(status==="retired")return"status-retired";
+  return"status-other";
+}
+function makeStatusBadge(status){
+  const wrap=document.createElement("span");
+  wrap.className=`status-badge ${employeeStatusClass(status)}`;
+  const dot=document.createElement("span");dot.className="status-dot";
+  const label=document.createElement("span");label.textContent=statusName[status]||status;
+  wrap.append(dot,label);
+  return wrap;
+}
+
+function renderEmployees(){
+  const q=$("employeeSearch").value.trim().toLowerCase();
+  const f=$("statusFilter").value;
+  $("employeeBody").replaceChildren();
+
+  const depMap=new Map(S.deps.map(d=>[Number(d.id),d.department_name]));
+  const rows=S.emps.filter(x=>(!f||x.employment_status===f)&&(!q||x.employee_name.toLowerCase().includes(q)));
+
+  $("employeeTotalCount").textContent=S.emps.length;
+  $("employeeActiveCount").textContent=S.emps.filter(x=>x.is_active&&x.employment_status==="employed").length;
+
+  if(!rows.length)return status($("employeeStatus"),"등록된 사원이 없습니다.");
+  status($("employeeStatus"),"");
+
+  const frag=document.createDocumentFragment();
+  rows.forEach((x,i)=>{
+    const dep=depMap.get(Number(x.department_id))||"-";
+    let event="-";
+    if(x.employment_status==="leave")event=`${fmt(x.leave_start_date)} ~ ${fmt(x.leave_end_date)}`;
+    else if(x.employment_status==="retired")event=`퇴사 ${fmt(x.retirement_date)}`;
+    else if(x.return_date)event=`복귀 ${fmt(x.return_date)}`;
+
+    const tr=document.createElement("tr");
+
+    const no=document.createElement("td");no.textContent=i+1;tr.appendChild(no);
+
+    const statusTd=document.createElement("td");statusTd.className="status-cell";statusTd.appendChild(makeStatusBadge(x.employment_status));tr.appendChild(statusTd);
+
+    [x.employee_name,dep,fmt(x.hire_date),event,fmt(x.department_effective_date)].forEach(v=>{
+      const td=document.createElement("td");td.textContent=v;tr.appendChild(td)
+    });
+
+    const manage=document.createElement("td");
+    const edit=document.createElement("button");edit.className="mini";edit.textContent="수정";edit.onclick=()=>openEmployee(x);
+    const hist=document.createElement("button");hist.className="mini";hist.textContent="이력";hist.onclick=()=>openStatusHistory(x);
+    manage.append(edit,hist);tr.appendChild(manage);
+
+    frag.appendChild(tr);
+  });
+  $("employeeBody").appendChild(frag);
+}
+
+async function openStatusHistory(employee){
+  modal("statusHistoryModal");
+  $("statusHistoryTitle").textContent=`${employee.employee_name} 근무상태 이력`;
+  renderSkeletonRows("statusHistoryBody",5,5);
+  status($("statusHistoryStatus"),"");
+  const {data,error}=await db.rpc("get_employee_status_history",{p_employee_id:Number(employee.id)});
+  if(error){
+    console.error(error);
+    $("statusHistoryBody").replaceChildren();
+    status($("statusHistoryStatus"),"이력을 불러오지 못했습니다: "+error.message,true);
+    return;
+  }
+  $("statusHistoryBody").replaceChildren();
+  if(!data?.length){
+    status($("statusHistoryStatus"),"등록된 상태 이력이 없습니다.");
+    return;
+  }
+  const frag=document.createDocumentFragment();
+  data.forEach(x=>{
+    const tr=document.createElement("tr");
+    [statusName[x.status]||x.status,fmt(x.start_date),x.end_date?fmt(x.end_date):"현재",x.reason||"-",x.note||"-"].forEach(v=>{
+      const td=document.createElement("td");td.textContent=v;tr.appendChild(td)
+    });
+    frag.appendChild(tr);
+  });
+  $("statusHistoryBody").appendChild(frag);
+}
+
+function renderDepartments(){
+  const q=$("departmentSearch").value.trim().toLowerCase();
+  $("departmentBody").replaceChildren();
+  const countMap=new Map(S.departmentCounts.map(x=>[Number(x.department_id),Number(x.employee_count||0)]));
+  $("departmentTotalCount").textContent=S.deps.length;
+  $("departmentEmployeeTotal").textContent=S.departmentCounts.reduce((sum,x)=>sum+Number(x.employee_count||0),0);
+  const rows=S.deps
+    .filter(x=>!q||x.department_name.toLowerCase().includes(q))
+    .sort((a,b)=>{
+      const countDiff=(countMap.get(Number(b.id))||0)-(countMap.get(Number(a.id))||0);
+      return countDiff||a.department_name.localeCompare(b.department_name,"ko");
+    });
+  if(!rows.length)return status($("departmentStatus"),"등록된 부서가 없습니다.");
+  status($("departmentStatus"),"");
+  const fragment=document.createDocumentFragment();
+  rows.forEach((x,i)=>{
+    const tr=document.createElement("tr");
+    [
+      i+1,
+      x.department_name,
+      `${countMap.get(Number(x.id))||0}명`,
+      x.is_active?"사용":"미사용"
+    ].forEach(v=>{let td=document.createElement("td");td.textContent=v;tr.appendChild(td)});
+    let td=document.createElement("td"),b=document.createElement("button");
+    b.className="mini";b.textContent="수정";b.onclick=()=>openDepartment(x);
+    td.appendChild(b);tr.appendChild(td);fragment.appendChild(tr);
+  });
+  $("departmentBody").appendChild(fragment);
+}
+function fillDepartments(){let s=$("employeeDepartment");s.replaceChildren();let blank=document.createElement("option");blank.value="";blank.textContent="부서를 선택하세요";s.appendChild(blank);S.deps.filter(x=>x.is_active).sort((a,b)=>a.department_name.localeCompare(b.department_name,"ko")).forEach(x=>{let o=document.createElement("option");o.value=x.id;o.textContent=x.department_name;s.appendChild(o)})}
+function openEmployee(x=null){$("employeeForm").reset();$("employeeId").value=x?.id||"";$("employeeModalTitle").textContent=x?"사원 수정":"사원 추가";$("employeeName").value=x?.employee_name||"";$("employeeDepartment").value=x?.department_id||"";$("hireDate").value=x?.hire_date||"";$("departmentEffectiveDate").value=x?.department_effective_date||x?.hire_date||new Date().toISOString().slice(0,10);$("employeeState").value=x?.employment_status||"employed";$("leaveStart").value=x?.leave_start_date||"";$("leaveEnd").value=x?.leave_end_date||"";$("returnDate").value=x?.return_date||"";$("retirementDate").value=x?.retirement_date||"";$("employeeNote").value=x?.note||"";toggleStateFields();modal("employeeModal")}
+function toggleStateFields(){let s=$("employeeState").value;$("leaveFields").hidden=s!=="leave";$("retiredFields").hidden=s!=="retired";$("returnFields").hidden=s!=="employed";if(s==="leave"&&!$("leaveEnd").value&&$("leaveStart").value){let d=new Date($("leaveStart").value);d.setFullYear(d.getFullYear()+1);$("leaveEnd").value=d.toISOString().slice(0,10)}}
+async function saveEmployee(e){e.preventDefault();if(!$("employeeDepartment").value)return $("employeeError").textContent="부서는 필수입니다.";let args={p_employee_id:$("employeeId").value?Number($("employeeId").value):null,p_employee_name:$("employeeName").value.trim(),p_department_id:Number($("employeeDepartment").value),p_department_effective_date:$("departmentEffectiveDate").value||null,p_employment_status:$("employeeState").value,p_hire_date:$("hireDate").value||null,p_leave_start_date:$("leaveStart").value||null,p_leave_end_date:$("leaveEnd").value||null,p_return_date:$("returnDate").value||null,p_retirement_date:$("retirementDate").value||null,p_note:$("employeeNote").value.trim()||null};let{error}=await db.rpc("save_employee_profile",args);if(error)return $("employeeError").textContent=error.message;modal("employeeModal",false);await loadAdmin();toast("저장되었습니다.")}
+function openDepartment(x=null){$("departmentForm").reset();$("departmentId").value=x?.id||"";$("departmentModalTitle").textContent=x?"부서 수정":"부서 추가";$("departmentName").value=x?.department_name||"";$("departmentActive").value=String(x?.is_active??true);modal("departmentModal")}
+async function saveDepartment(e){e.preventDefault();let id=$("departmentId").value,p={department_name:$("departmentName").value.trim(),is_active:$("departmentActive").value==="true"};let r=id?await db.from("employee_departments").update(p).eq("id",Number(id)):await db.from("employee_departments").insert(p);if(r.error)return $("departmentError").textContent=r.error.message;modal("departmentModal",false);await loadAdmin();toast("부서가 저장되었습니다.")}
+function downloadTemplate(){let ws=XLSX.utils.aoa_to_sheet([["성명","부서","상태","입사일","전배일","휴직일","휴직종료일","복귀일","퇴사일","비고"],["홍길동","고객기술지원","재직","2026-01-02","2026-01-02","","","","",""]]);let wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"사원그룹");XLSX.writeFile(wb,"사원그룹_업로드양식.xlsx")}
+async function importExcel(file){let data=await file.arrayBuffer(),wb=XLSX.read(data,{type:"array",cellDates:true}),sheet=wb.Sheets[wb.SheetNames[0]],rows=XLSX.utils.sheet_to_json(sheet,{defval:"",raw:false});let mapStatus={"재직":"employed","휴직":"leave","퇴사":"retired","비상근":"non_regular","장기출장":"long_trip","기타":"other"};
+let payload=rows.filter(r=>r["성명"]).map(r=>({employee_name:String(r["성명"]).trim(),department_name:String(r["부서"]).trim(),employment_status:mapStatus[String(r["상태"]).trim()]||"employed",hire_date:dateText(r["입사일"]),department_effective_date:dateText(r["전배일"])||dateText(r["입사일"]),leave_start_date:dateText(r["휴직일"]),leave_end_date:dateText(r["휴직종료일"]),return_date:dateText(r["복귀일"]),retirement_date:dateText(r["퇴사일"]),note:String(r["비고"]||"").trim()}));let{data:res,error}=await db.rpc("bulk_import_employees",{p_rows:payload});if(error)return toast("엑셀 등록 실패: "+error.message);let r=res?.[0];toast(`성공 ${r?.success_count||0}명 / 실패 ${r?.failed_count||0}명`);await loadAdmin()}
+function dateText(v){if(!v)return"";let d=new Date(v);return isNaN(d)?String(v).slice(0,10):d.toISOString().slice(0,10)}
+let publicCandidateTimer=null;
+let publicSearchRequestId=0;
+async function findPublicCandidates(){
+  const input=$("publicName");
+  const query=input.value.trim();
+  const list=$("publicCandidateList");
+  const requestId=++publicSearchRequestId;
+
+  list.replaceChildren();
+  list.hidden=true;
+  if(!query)return;
+
+  const loading=document.createElement("div");
+  loading.className="history-empty";
+  loading.textContent="직원을 검색하는 중입니다.";
+  list.appendChild(loading);
+  list.hidden=false;
+
+  const {data,error}=await db.rpc("search_public_employee_candidates",{p_query:query});
+  if(requestId!==publicSearchRequestId)return;
+
+  list.replaceChildren();
+  if(error){
+    console.error(error);
+    list.hidden=true;
+    toast("직원 검색에 실패했습니다.");
+    return;
+  }
+  if(!data?.length){
+    const empty=document.createElement("div");
+    empty.className="history-empty";
+    empty.textContent="일치하는 재직 직원이 없습니다.";
+    list.appendChild(empty);
+    list.hidden=false;
+    return;
+  }
+
+  const unique=new Map();
+  data.forEach(person=>unique.set(Number(person.employee_id),person));
+  const frag=document.createDocumentFragment();
+  [...unique.values()].forEach(person=>{
+    const button=document.createElement("button");
+    button.type="button";
+    button.className="search-result-item";
+
+    const info=document.createElement("div");
+    info.className="search-result-main";
+    const nameLine=document.createElement("div");
+    nameLine.className="search-result-name";
+    const department=document.createElement("span");
+    department.className="search-department";
+    department.textContent=person.department_name||"부서 없음";
+    const separator=document.createElement("span");
+    separator.className="search-separator";
+    separator.textContent="/";
+    const personName=document.createElement("span");
+    personName.className="search-person";
+    personName.textContent=person.employee_name;
+    nameLine.append(department,separator,personName);
+
+    const meta=document.createElement("div");
+    meta.className="search-result-meta";
+    meta.textContent="교육이력 보기";
+    info.append(nameLine,meta);
+
+    const badge=document.createElement("span");
+    badge.className="search-result-status";
+    badge.textContent=statusName[person.employment_status]||person.employment_status;
+    button.append(info,badge);
+    button.onclick=()=>loadPublicHistory(person);
+    frag.appendChild(button);
+  });
+  list.appendChild(frag);
+  list.hidden=false;
+}
+async function loadPublicHistory(person){
+  clearPublicSearch();
+  modal("historyModal");
+  $("historyTitle").textContent=`${person.department_name||"-"}/${person.employee_name} 교육이력`;
+  renderSkeletonRows("historyBody",5,5);
+  status($("historyStatus"),"");
+  const {data,error}=await db.rpc("search_public_training_history_by_employee",{p_employee_id:Number(person.employee_id)});
+  $("historyBody").replaceChildren();
+  if(error){console.error(error);status($("historyStatus"),"교육이력 검색에 실패했습니다.",true);return}
+  if(!data?.length){status($("historyStatus"),"등록된 교육이력이 없습니다.");return}
+  const frag=document.createDocumentFragment();
+  data.forEach(x=>{
+    const tr=document.createElement("tr");
+    [x.employee_name,x.department_name||"-",x.education_title,x.education_category].forEach(v=>{
+      const td=document.createElement("td");td.textContent=v;tr.appendChild(td)
+    });
+    const reportTd=document.createElement("td");
+    if(validHttpUrl(x.result_report_url)){
+      const a=document.createElement("a");a.className="link";a.textContent="결과보고서";
+      a.href=x.result_report_url;a.target="_blank";a.rel="noopener noreferrer";reportTd.appendChild(a);
+    }else reportTd.textContent="-";
+    tr.appendChild(reportTd);frag.appendChild(tr);
+  });
+  $("historyBody").appendChild(frag);
+}
+async function publicSearch(){await findPublicCandidates()}
+function closeMobileMenu(){document.querySelector(".sidebar")?.classList.remove("open");$("sidebarOverlay")?.classList.remove("open")}
+$("mobileMenuBtn").onclick=()=>{document.querySelector(".sidebar")?.classList.toggle("open");$("sidebarOverlay")?.classList.toggle("open")};
+$("sidebarOverlay").onclick=closeMobileMenu;
+$("addResourceBtn").onclick=()=>openResource();
+$("assignAllCurrentBtn").onclick=assignAllCurrentEmployees;
+$("deleteAllParticipantsBtn").onclick=deleteAllParticipants;
+$("employeePickerSearch").oninput=debounce(renderEmployeePicker);
+$("participantSearch").oninput=debounce(renderParticipantTable);
+
+$("resourceCategory").onchange=updateEducationScheduleLabels;
+$("resourceForm").onsubmit=saveResource;
+$("loginBtn").onclick=()=>modal("loginModal");$("loginForm").onsubmit=async e=>{e.preventDefault();let{data,error}=await db.auth.signInWithPassword({email:$("loginEmail").value.trim(),password:$("loginPassword").value});if(error)return $("loginError").textContent="로그인 실패";try{await checkAdmin(data.session);modal("loginModal",false);await loadAdmin();toast("관리자 로그인 완료")}catch(err){$("loginError").textContent=err.message}}
+$("logoutBtn").onclick=async()=>{await db.auth.signOut();S.admin=false;document.body.classList.remove("admin");$("adminMenu").hidden=true;view("education");await loadPublic()}
+$("employeeNav").onclick=async()=>{view("employee");$("pageTitle").textContent="사원명부";$("pageSub").textContent="전체 사원 현황과 휴직·퇴사·복귀 이력 관리";if(!S.emps.length)await loadAdmin();renderEmployees();closeMobileMenu()}
+$("departmentNav").onclick=async()=>{view("department");$("pageTitle").textContent="부서관리";$("pageSub").textContent="부서별 현재 인원과 소속 변경을 관리합니다.";if(!S.deps.length)await loadAdmin();renderDepartments();closeMobileMenu()}
+$("employeeSearch").oninput=debounce(renderEmployees);$("statusFilter").onchange=renderEmployees;$("departmentSearch").oninput=debounce(renderDepartments);
+$("addEmployeeBtn").onclick=()=>openEmployee();$("addDepartmentBtn").onclick=()=>openDepartment();$("employeeForm").onsubmit=saveEmployee;$("departmentForm").onsubmit=saveDepartment;
+$("employeeState").onchange=toggleStateFields;$("leaveStart").onchange=()=>{if(!$("leaveEnd").value){let d=new Date($("leaveStart").value);d.setFullYear(d.getFullYear()+1);$("leaveEnd").value=d.toISOString().slice(0,10)}};$("templateBtn").onclick=downloadTemplate;$("importBtn").onclick=()=>$("fileInput").click();$("fileInput").onchange=e=>{if(e.target.files[0])importExcel(e.target.files[0])}
+$("publicSearchBtn").onclick=publicSearch;
+$("publicName").oninput=()=>{
+  clearTimeout(publicCandidateTimer);
+  publicSearchRequestId++;
+  $("publicCandidateList").replaceChildren();
+  $("publicCandidateList").hidden=true;
+  publicCandidateTimer=setTimeout(findPublicCandidates,220);
+};
+$("publicName").onkeydown=e=>{
+  if(e.key==="Enter"){e.preventDefault();findPublicCandidates()}
+  if(e.key==="Escape")clearPublicSearch();
+};document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>modal(b.dataset.close,false));
+document.addEventListener("click",e=>{
+  const shell=e.target.closest(".search-shell");
+  if(!shell)$("publicCandidateList").hidden=true;
+});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){const open=[...document.querySelectorAll(".modal-bg")].reverse().find(x=>!x.hidden);if(open)modal(open.id,false);else closeMobileMenu()}});
+
+// Horizontal table containers must not trap normal vertical mouse-wheel scrolling.
+document.querySelectorAll(".table-wrap").forEach(wrap=>{
+  wrap.addEventListener("wheel",event=>{
+    if(Math.abs(event.deltaY)<=Math.abs(event.deltaX)||event.shiftKey)return;
+    const canPageScroll=document.documentElement.scrollHeight>window.innerHeight;
+    if(!canPageScroll)return;
+    event.preventDefault();
+    window.scrollBy(0,event.deltaY);
+  },{passive:false});
+});
+
+db.auth.getSession().then(async({data})=>{try{await checkAdmin(data.session);await loadPublic();if(S.admin)await loadAdmin()}catch(e){console.error(e)}})
+</script>
+</body>
+</html>
