@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="사내 안전교육 자료 및 교육이력 관리">
   <meta name="theme-color" content="#2f6fed">
-  <title>이루자 안전자료실</title>
+  <title>사내 안전교육 자료실</title>
   <style>
     :root{
       --primary:#2f6fed;--primary-hover:#2458bd;--primary-soft:#eef4ff;
@@ -204,7 +204,23 @@
     .autocomplete-item>div>span::before{content:"/";margin-right:9px;color:#c0c7d1}
     .autocomplete-status{display:none!important}
 
-  </style>
+  
+    /* Compact employee roster tables */
+    #employeeView .card{box-shadow:0 2px 8px rgba(16,24,40,.045)}
+    #employeeView .table-wrap{overflow-x:auto}
+    #employeeView table{table-layout:fixed;border-collapse:collapse}
+    #employeeView th{height:34px!important;padding:0 7px!important;font-size:10.5px!important}
+    #employeeView td{height:34px!important;padding:4px 7px!important;font-size:11.5px!important}
+    #employeeView .status-badge{min-width:58px;min-height:21px;padding:0 6px;font-size:9.5px}
+    #employeeView .mini{min-height:25px!important;padding:0 7px!important;border-radius:6px;font-size:10.5px!important;margin:0 1px}
+    #employeeView .toolbar{min-height:50px!important;padding:7px 9px!important}
+    #employeeView input,#employeeView select{height:34px!important}
+    #employeeView .tabs{margin-bottom:8px}
+    #employeeView .summary-strip{margin-bottom:8px}
+    #employeeView .summary-card{min-height:56px;padding:9px 12px}
+    #employeeView .summary-value{font-size:17px}
+
+</style>
 </head>
 <body>
   <aside class="sidebar" id="sidebar">
@@ -252,17 +268,8 @@
         <div class="card">
           <div class="table-wrap">
             <table>
-              <colgroup>
-                <col style="width:56px"><col style="width:190px"><col style="width:220px"><col>
-                <col style="width:110px"><col style="width:130px"><col class="admin-column" style="width:170px">
-              </colgroup>
-              <thead>
-                <tr>
-                  <th class="center">No.</th><th>실시일</th><th>교육명</th><th>교육 주제</th>
-                  <th class="center">교육자료</th><th class="center">결과보고서</th>
-                  <th id="educationAdminHeader" class="center" hidden>관리</th>
-                </tr>
-              </thead>
+              <colgroup id="educationColgroup"></colgroup>
+              <thead><tr id="educationTableHeader"></tr></thead>
               <tbody id="educationTableBody"></tbody>
             </table>
           </div>
@@ -481,7 +488,7 @@
         <div class="card">
           <div class="table-wrap">
             <table>
-              <thead><tr><th>교육명</th><th>교육일자</th><th>교육구분</th><th>이수여부</th><th>교육시간</th><th>비고</th><th>결과보고서</th></tr></thead>
+              <thead><tr><th>교육명</th><th>교육일자</th><th>교육구분</th><th>이수여부</th><th>비고</th><th>결과보고서</th></tr></thead>
               <tbody id="retiredHistoryTableBody"></tbody>
             </table>
           </div>
@@ -499,18 +506,17 @@
           <input id="educationId" type="hidden">
           <div class="form-grid">
             <div class="field"><label for="educationCategory">교육 구분</label><select id="educationCategory" required></select></div>
-            <div class="field"><label for="educationTitle">교육명</label><input id="educationTitle" required></div>
-            <div class="field"><label for="educationTopic">교육 주제</label><input id="educationTopic" required></div>
-            <div class="form-row">
+            <div id="educationTitleField" class="field"><label for="educationTitle">교육명</label><input id="educationTitle"></div>
+            <div id="educationTopicField" class="field"><label for="educationTopic">교육 주제</label><input id="educationTopic"></div>
+            <div id="sessionDateRow" class="form-row">
               <div class="field"><label id="firstDateLabel" for="firstDate">1차 실시일</label><input id="firstDate" type="date"></div>
-              <div class="field"><label id="secondDateLabel" for="secondDate">2차 실시일</label><input id="secondDate" type="date"></div>
+              <div id="secondDateField" class="field"><label id="secondDateLabel" for="secondDate">2차 실시일</label><input id="secondDate" type="date"></div>
             </div>
-            <div class="form-row">
+            <div id="individualDateRow" class="form-row">
               <div class="field"><label for="individualStart">개별교육 시작일</label><input id="individualStart" type="date"></div>
               <div class="field"><label for="individualEnd">개별교육 종료일</label><input id="individualEnd" type="date"></div>
             </div>
-            <div class="field"><label for="educationHours">교육시간</label><input id="educationHours" type="number" min="0" step="0.5" placeholder="예: 2"></div>
-            <div class="field"><label for="materialUrl">교육자료 웹링크</label><input id="materialUrl" type="url" required></div>
+            <div id="materialUrlField" class="field"><label for="materialUrl">교육자료 웹링크</label><input id="materialUrl" type="url"></div>
             <div class="field"><label for="reportUrl">교육결과보고서 웹링크</label><input id="reportUrl" type="url" placeholder="미등록 시 교육진행중으로 표시"></div>
             <div class="field"><label for="educationActive">공개여부</label><select id="educationActive"><option value="true">공개</option><option value="false">비공개</option></select></div>
           </div>
@@ -644,11 +650,40 @@
     function renderSkeleton(tbodyId,columns,rows=6){const body=$(tbodyId);body.replaceChildren();const f=document.createDocumentFragment();for(let r=0;r<rows;r++){const tr=document.createElement("tr");for(let c=0;c<columns;c++){const td=document.createElement("td");const line=document.createElement("div");line.className="skeleton";line.style.width=`${52+((r+c)*17)%42}%`;td.appendChild(line);tr.appendChild(td)}f.appendChild(tr)}body.appendChild(f)}
     function addTextCell(tr,value,className="",title=""){const td=document.createElement("td");td.textContent=value??"-";if(className)td.className=className;if(title||value)td.title=title||String(value);tr.appendChild(td);return td}
     function statusBadge(status){const span=document.createElement("span");let cls="status-other";if(status==="employed")cls="status-active";else if(["leave","non_regular","long_trip"].includes(status))cls="status-warning";else if(status==="retired")cls="status-retired";span.className=`status-badge ${cls}`;const dot=document.createElement("span");dot.className="status-dot";const label=document.createElement("span");label.textContent=statusLabels[status]||status;span.append(dot,label);return span}
-    function isSpecialCategory(categoryId){const c=state.categories.find(x=>Number(x.id)===Number(categoryId));const parent=state.categories.find(x=>Number(x.id)===Number(c?.parent_id));return `${parent?.category_name||""}${c?.category_name||""}`.replace(/\s+/g,"").includes("특별안전교육")}
-    function scheduleText(item){const lines=[];if(isSpecialCategory(item.category_id)){if(item.first_session_date)lines.push(`(공통) ${formatDateDot(item.first_session_date)}`);if(item.individual_start_date)lines.push(`(개별) ${formatDateDot(item.individual_start_date)}${item.individual_end_date?"~"+formatDateDot(item.individual_end_date,true):""}`);else if(item.second_session_date)lines.push(`(개별) ${formatDateDot(item.second_session_date)}`)}else{if(item.first_session_date)lines.push(`(1차) ${formatDateDot(item.first_session_date)}`);if(item.second_session_date)lines.push(`(2차) ${formatDateDot(item.second_session_date)}`);if(item.individual_start_date)lines.push(`(개별) ${formatDateDot(item.individual_start_date)}${item.individual_end_date?"~"+formatDateDot(item.individual_end_date,true):""}`)}return lines.join("\n")||"-"}
+    function categoryMeta(categoryId){
+      const category=state.categories.find(x=>Number(x.id)===Number(categoryId));
+      const parent=state.categories.find(x=>Number(x.id)===Number(category?.parent_id));
+      const full=`${parent?.category_name||""} ${category?.category_name||""}`.replace(/\s+/g,"");
+      return {
+        category,
+        parent,
+        label:category?.category_name||parent?.category_name||"교육",
+        type:full.includes("특별안전교육")?"special":full.includes("채용시교육")?"hiring":"regular"
+      };
+    }
+    function isSpecialCategory(categoryId){return categoryMeta(categoryId).type==="special"}
+    function scheduleText(item){
+      const type=categoryMeta(item.category_id).type;
+      const lines=[];
+      if(type==="hiring"){
+        const date=item.first_session_date||item.conducted_date||item.individual_start_date;
+        return date?formatDateDot(date):"-";
+      }
+      if(type==="special"){
+        if(item.first_session_date)lines.push(`(공통) ${formatDateDot(item.first_session_date)}`);
+        const individualDate=item.individual_start_date||item.second_session_date;
+        if(individualDate)lines.push(`(개별) ${formatDateDot(individualDate)}`);
+      }else{
+        if(item.first_session_date)lines.push(`(1차) ${formatDateDot(item.first_session_date)}`);
+        if(item.second_session_date)lines.push(`(2차) ${formatDateDot(item.second_session_date)}`);
+        if(item.individual_start_date)lines.push(`(개별) ${formatDateDot(item.individual_start_date)}${item.individual_end_date?"~"+formatDateDot(item.individual_end_date,true):""}`);
+      }
+      return lines.join("\n")||"-";
+    }
+
 
     function showView(name){
-      if((name==="employees"||name==="departments"||name==="report")&&!state.isAdmin)name="education";
+      if((name==="employees"||name==="departments")&&!state.isAdmin)name="education";
       state.currentView=name;
       $("educationView").hidden=name!=="education";
       $("employeeView").hidden=name!=="employees";
@@ -656,82 +691,181 @@
       $("addEducationButton").hidden=!(state.isAdmin&&name==="education");
       $("employeeMenuButton").classList.toggle("active",name==="employees");
       $("departmentMenuButton").classList.toggle("active",name==="departments");
-      if(name==="education"){const selected=state.categories.find(x=>Number(x.id)===Number(state.selectedCategoryId));$("pageTitle").textContent=selected?.category_name||"안전교육 자료실";$("pageSubtitle").textContent="교육자료 다운로드 및 본인 교육이력 조회"}
-      if(name==="employees"){$("pageTitle").textContent="사원명부";$("pageSubtitle").textContent="재직자 관리와 퇴사자 교육이력 조회";loadEmployeeTab(state.employeeTab)}
-      if(name==="departments"){$("pageTitle").textContent="부서관리";$("pageSubtitle").textContent="부서별 현재 인원과 소속 변동 이력";loadDepartments()}
+      if(name==="education"){
+        const selected=state.categories.find(x=>Number(x.id)===Number(state.selectedCategoryId));
+        $("pageTitle").textContent=selected?.category_name||"안전교육 자료실";
+      }
+      if(name==="employees"){
+        $("pageTitle").textContent="사원명부";
+        loadEmployeeTab(state.employeeTab);
+      }
+      if(name==="departments"){
+        $("pageTitle").textContent="부서관리";
+        loadDepartments();
+      }
     }
 
     async function checkAdmin(session){
-      if(!session?.user){state.isAdmin=false;syncAdminUI();return}
-      const {data,error}=await db.from("admin_users").select("user_id").eq("user_id",session.user.id).eq("is_active",true).maybeSingle();
+      if(!session?.user){
+        state.isAdmin=false;
+        syncAdminUI();
+        return;
+      }
+      const {data,error}=await db
+        .from("admin_users")
+        .select("user_id")
+        .eq("user_id",session.user.id)
+        .eq("is_active",true)
+        .maybeSingle();
       state.isAdmin=!error&&Boolean(data);
       document.body.classList.toggle("admin-mode",state.isAdmin);
       if(!state.isAdmin)await db.auth.signOut();
       syncAdminUI();
     }
+
     function syncAdminUI(){
       $("adminMenu").hidden=!state.isAdmin;
       $("loginButton").hidden=state.isAdmin;
       $("adminTopActions").hidden=!state.isAdmin;
-      $("educationAdminHeader").hidden=!state.isAdmin;
       if(!state.isAdmin&&state.currentView!=="education")showView("education");
       if(state.isAdmin&&state.currentView==="employees")loadEmployeeTab(state.employeeTab);
-      renderEducationTable();
+      if(state.categories.length)renderEducationTable();
     }
 
     async function loadPublicData(){
       renderSkeleton("educationTableBody",state.isAdmin?7:6,6);
-      const [c,l]=await Promise.all([
-        db.from("education_categories").select("id,category_code,category_name,parent_id,display_order,is_active").eq("is_active",true).order("display_order").order("id"),
-        db.from("education_links").select("*").order("first_session_date",{ascending:false,nullsFirst:false}).order("second_session_date",{ascending:false,nullsFirst:false}).order("individual_start_date",{ascending:false,nullsFirst:false}).order("updated_at",{ascending:false})
+      const [categoriesResult,linksResult]=await Promise.all([
+        db.from("education_categories")
+          .select("id,category_code,category_name,parent_id,display_order,is_active")
+          .eq("is_active",true)
+          .order("display_order")
+          .order("id"),
+        db.from("education_links")
+          .select("*")
+          .order("first_session_date",{ascending:false,nullsFirst:false})
+          .order("second_session_date",{ascending:false,nullsFirst:false})
+          .order("individual_start_date",{ascending:false,nullsFirst:false})
+          .order("updated_at",{ascending:false})
       ]);
-      if(c.error||l.error){setStatus("educationStatus","교육자료를 불러오지 못했습니다.",true);return}
-      state.categories=c.data||[];state.educationLinks=l.data||[];
-      renderCategoryMenu();fillEducationCategories();
-      if(!state.selectedCategoryId){const first=state.categories.find(x=>x.category_code==="regular")||state.categories.find(x=>x.parent_id===null)||state.categories[0];if(first)selectCategory(first)}
-      else renderEducationTable();
+      if(categoriesResult.error||linksResult.error){
+        console.error(categoriesResult.error||linksResult.error);
+        setStatus("educationStatus","교육자료를 불러오지 못했습니다.",true);
+        return;
+      }
+      state.categories=categoriesResult.data||[];
+      state.educationLinks=linksResult.data||[];
+      renderCategoryMenu();
+      fillEducationCategories();
+      if(!state.selectedCategoryId){
+        const first=state.categories.find(x=>x.category_code==="regular")
+          ||state.categories.find(x=>x.parent_id===null)
+          ||state.categories[0];
+        if(first)selectCategory(first);
+      }else{
+        renderEducationTable();
+      }
     }
+
     function renderCategoryMenu(){
-      const nav=$("categoryMenu");nav.replaceChildren();
+      const nav=$("categoryMenu");
+      nav.replaceChildren();
       const roots=state.categories.filter(x=>x.parent_id===null);
       roots.forEach(root=>{
         const children=state.categories.filter(x=>Number(x.parent_id)===Number(root.id));
         const wrapper=document.createElement("div");
-        const button=document.createElement("button");button.type="button";button.className="menu-button";button.dataset.categoryId=root.id;
-        const label=document.createElement("span");label.textContent=root.category_name;button.appendChild(label);
+        const button=document.createElement("button");
+        button.type="button";
+        button.className="menu-button";
+        button.dataset.categoryId=root.id;
+        const label=document.createElement("span");
+        label.textContent=root.category_name;
+        button.appendChild(label);
         if(children.length){
-          const caret=document.createElement("span");caret.className="caret";button.appendChild(caret);button.setAttribute("aria-expanded","true");
-          const sub=document.createElement("div");sub.className="submenu";
-          children.forEach(child=>{const b=document.createElement("button");b.type="button";b.className="submenu-button";b.dataset.categoryId=child.id;b.textContent=child.category_name;b.onclick=()=>selectCategory(child);sub.appendChild(b)});
-          button.onclick=()=>{const expanded=button.getAttribute("aria-expanded")==="true";button.setAttribute("aria-expanded",String(!expanded));sub.hidden=expanded};
+          const caret=document.createElement("span");
+          caret.className="caret";
+          button.appendChild(caret);
+          button.setAttribute("aria-expanded","true");
+          const sub=document.createElement("div");
+          sub.className="submenu";
+          children.forEach(child=>{
+            const childButton=document.createElement("button");
+            childButton.type="button";
+            childButton.className="submenu-button";
+            childButton.dataset.categoryId=child.id;
+            childButton.textContent=child.category_name;
+            childButton.onclick=()=>selectCategory(child);
+            sub.appendChild(childButton);
+          });
+          button.onclick=()=>{
+            const expanded=button.getAttribute("aria-expanded")==="true";
+            button.setAttribute("aria-expanded",String(!expanded));
+            sub.hidden=expanded;
+          };
           wrapper.append(button,sub);
-        }else{button.onclick=()=>selectCategory(root);wrapper.appendChild(button)}
+        }else{
+          button.onclick=()=>selectCategory(root);
+          wrapper.appendChild(button);
+        }
         nav.appendChild(wrapper);
       });
       updateCategoryActive();
     }
-    function selectCategory(category){state.selectedCategoryId=category.id;state.selectedCategoryName=category.category_name;showView("education");updateCategoryActive();renderEducationTable()}
-    function updateCategoryActive(){document.querySelectorAll("[data-category-id]").forEach(b=>b.classList.toggle("active",Number(b.dataset.categoryId)===Number(state.selectedCategoryId)))}
+
+    function selectCategory(category){
+      state.selectedCategoryId=category.id;
+      state.selectedCategoryName=category.category_name;
+      showView("education");
+      updateCategoryActive();
+      renderEducationTable();
+    }
+
+    function updateCategoryActive(){
+      document.querySelectorAll("[data-category-id]").forEach(button=>{
+        button.classList.toggle("active",Number(button.dataset.categoryId)===Number(state.selectedCategoryId));
+      });
+    }
+
+    function renderEducationHeader(type){
+      const colgroup=$("educationColgroup");
+      const header=$("educationTableHeader");
+      colgroup.replaceChildren();header.replaceChildren();
+      const widths=type==="regular"?["56px","190px","220px","auto","110px","130px"]:["56px","220px","auto","150px"];
+      if(state.isAdmin)widths.push("170px");
+      widths.forEach(width=>{const col=document.createElement("col");if(width!=="auto")col.style.width=width;colgroup.appendChild(col)});
+      const labels=type==="regular"?["No.","실시일","교육명","교육 주제","교육자료","결과보고서"]:["No.","실시일","교육구분","결과보고서"];
+      if(state.isAdmin)labels.push("관리");
+      labels.forEach((label,index)=>{const th=document.createElement("th");th.textContent=label;if(index===0||label==="교육자료"||label==="결과보고서"||label==="관리")th.className="center";header.appendChild(th)});
+    }
+
     function renderEducationTable(){
       const body=$("educationTableBody");body.replaceChildren();
+      const selectedMeta=categoryMeta(state.selectedCategoryId);
+      renderEducationHeader(selectedMeta.type);
       const rows=state.educationLinks.filter(x=>Number(x.category_id)===Number(state.selectedCategoryId)&&(state.isAdmin||x.is_active));
       if(!rows.length){setStatus("educationStatus","등록된 교육자료가 없습니다.");return}
       setStatus("educationStatus","");
       const f=document.createDocumentFragment();
       rows.forEach((item,index)=>{
+        const meta=categoryMeta(item.category_id);
         const tr=document.createElement("tr");
         addTextCell(tr,index+1,"center");
         const schedule=addTextCell(tr,scheduleText(item));schedule.style.whiteSpace="pre-line";
-        addTextCell(tr,item.title,"ellipsis",item.title);
-        addTextCell(tr,item.education_topic||"-","ellipsis",item.education_topic||"-");
-        const material=document.createElement("td");material.className="center";const a=document.createElement("a");a.className="download-link";a.textContent="교육자료";a.href=item.web_url;a.target="_blank";a.rel="noopener noreferrer";material.appendChild(a);tr.appendChild(material);
-        const report=document.createElement("td");report.className="center";if(validUrl(item.result_report_url)){const r=document.createElement("a");r.className="download-link";r.textContent="결과보고서";r.href=item.result_report_url;r.target="_blank";r.rel="noopener noreferrer";report.appendChild(r)}else{const p=document.createElement("span");p.className="progress";p.textContent="교육진행중";report.appendChild(p)}tr.appendChild(report);
+        if(meta.type==="regular"){
+          addTextCell(tr,item.title||"-","ellipsis",item.title||"-");
+          addTextCell(tr,item.education_topic||"-","ellipsis",item.education_topic||"-");
+          const material=document.createElement("td");material.className="center";
+          if(validUrl(item.web_url)){const a=document.createElement("a");a.className="download-link";a.textContent="교육자료";a.href=item.web_url;a.target="_blank";a.rel="noopener noreferrer";material.appendChild(a)}else{material.textContent="-"}
+          tr.appendChild(material);
+        }else{
+          addTextCell(tr,meta.label,"ellipsis",meta.label);
+        }
+        const report=document.createElement("td");report.className="center";
+        if(validUrl(item.result_report_url)){const r=document.createElement("a");r.className="download-link";r.textContent="결과보고서";r.href=item.result_report_url;r.target="_blank";r.rel="noopener noreferrer";report.appendChild(r)}else{const p=document.createElement("span");p.className="progress";p.textContent="교육진행중";report.appendChild(p)}tr.appendChild(report);
         if(state.isAdmin){const manage=document.createElement("td");manage.className="center row-actions";const target=document.createElement("button");target.className="mini";target.textContent="대상자";target.onclick=()=>openParticipants(item);const edit=document.createElement("button");edit.className="mini";edit.textContent="수정";edit.onclick=()=>openEducationForm(item);const del=document.createElement("button");del.className="mini mini-danger";del.textContent="삭제";del.onclick=()=>deleteEducation(item);manage.append(target,edit,del);tr.appendChild(manage)}
         f.appendChild(tr);
       });
       body.appendChild(f);
     }
-
 
     let selfSearchRequest=0;
     let selfCandidateCache=[];
@@ -846,8 +980,7 @@
           addTextCell(tr,scheduleText({...item,category_id:state.categories.find(c=>c.category_name===item.education_category)?.id}));
           addTextCell(tr,item.education_category);
           addTextCell(tr,item.completion_label||"이수");
-          addTextCell(tr,item.education_hours==null?"-":`${Number(item.education_hours).toLocaleString()}시간`);
-          addTextCell(tr,item.note||"-","ellipsis",item.note||"-");
+            addTextCell(tr,item.note||"-","ellipsis",item.note||"-");
         }else{
           addTextCell(tr,item.education_category||"-");
           addTextCell(tr,item.education_title||"-","ellipsis",item.education_title||"-");
@@ -1029,7 +1162,7 @@
       closeModal("retireModal");showToast(`${ids.length}명을 퇴사 처리했습니다.`);state.employeeRostersLoaded=false;await loadAllEmployeeRosters();
     }
     async function openRetiredHistory(employee){
-      openModal("retiredHistoryModal");$("retiredHistoryTitle").textContent=`${employee.department_name}/${employee.employee_name} 교육이력`;renderSkeleton("retiredHistoryTableBody",7,5);setStatus("retiredHistoryStatus","");
+      openModal("retiredHistoryModal");$("retiredHistoryTitle").textContent=`${employee.department_name}/${employee.employee_name} 교육이력`;renderSkeleton("retiredHistoryTableBody",6,5);setStatus("retiredHistoryStatus","");
       const {data,error}=await db.rpc("get_admin_retired_training_history",{p_employee_id:Number(employee.employee_id)});$("retiredHistoryTableBody").replaceChildren();
       if(error){setStatus("retiredHistoryStatus",error.message,true);return}if(!data?.length){setStatus("retiredHistoryStatus","등록된 교육이력이 없습니다.");return}renderHistoryRows("retiredHistoryTableBody",data,true);
     }
@@ -1052,12 +1185,64 @@
     async function openDepartmentHistory(department){openModal("departmentHistoryModal");$("departmentHistoryTitle").textContent=`${department.department_name} 소속변동 이력`;renderSkeleton("departmentHistoryTableBody",7,5);setStatus("departmentHistoryStatus","");const {data,error}=await db.rpc("get_department_change_history",{p_department_id:Number(department.id)});$("departmentHistoryTableBody").replaceChildren();if(error){setStatus("departmentHistoryStatus",error.message,true);return}if(!data?.length){setStatus("departmentHistoryStatus","등록된 부서 이력이 없습니다.");return}const f=document.createDocumentFragment();data.forEach(x=>{const tr=document.createElement("tr");[x.employee_name,x.change_type,x.previous_department_name||"-",x.new_department_name||"-",formatDate(x.effective_from),x.effective_to?formatDate(x.effective_to):"현재",x.note||"-"].forEach(v=>addTextCell(tr,v,"ellipsis",v));f.appendChild(tr)});$("departmentHistoryTableBody").appendChild(f)}
 
     function fillEducationCategories(){const select=$("educationCategory");select.replaceChildren();state.categories.filter(x=>!state.categories.some(c=>Number(c.parent_id)===Number(x.id))).forEach(x=>{const parent=state.categories.find(c=>Number(c.id)===Number(x.parent_id));select.appendChild(new Option(parent?`${parent.category_name} - ${x.category_name}`:x.category_name,String(x.id)))})}
-    function updateEducationDateLabels(){const special=isSpecialCategory(Number($("educationCategory").value));$("firstDateLabel").textContent=special?"공통 실시일":"1차 실시일";$("secondDateLabel").textContent=special?"개별 실시일":"2차 실시일"}
-    function openEducationForm(item=null){$("educationForm").reset();$("educationId").value=item?.id||"";$("educationModalTitle").textContent=item?"교육 수정":"교육 추가";$("educationCategory").value=item?.category_id||state.selectedCategoryId||"";$("educationTitle").value=item?.title||"";$("educationTopic").value=item?.education_topic||"";$("firstDate").value=item?.first_session_date||"";$("secondDate").value=item?.second_session_date||"";$("individualStart").value=item?.individual_start_date||"";$("individualEnd").value=item?.individual_end_date||"";$("educationHours").value=item?.education_hours??"";$("materialUrl").value=item?.web_url||"";$("reportUrl").value=item?.result_report_url||"";$("educationActive").value=String(item?.is_active??true);$("educationFormError").textContent="";updateEducationDateLabels();openModal("educationModal")}
+    function updateEducationFormLayout(){
+      const meta=categoryMeta(Number($("educationCategory").value));
+      const regular=meta.type==="regular",special=meta.type==="special",hiring=meta.type==="hiring";
+      $("educationTitleField").hidden=!regular;
+      $("educationTopicField").hidden=!regular;
+      $("materialUrlField").hidden=!regular;
+      $("secondDateField").hidden=!regular;
+      $("individualDateRow").hidden=hiring;
+      $("firstDateLabel").textContent=hiring?"실시일":special?"공통 실시일":"1차 실시일";
+      $("secondDateLabel").textContent="2차 실시일";
+      document.querySelector('label[for="individualStart"]').textContent=special?"개별 실시일":"개별교육 시작일";
+      const individualEndField=$("individualEnd").closest(".field");
+      individualEndField.hidden=special;
+      document.querySelector('label[for="individualEnd"]').textContent="개별교육 종료일";
+      $("educationTitle").required=regular;
+      $("educationTopic").required=regular;
+      $("materialUrl").required=regular;
+      if(!regular){$("educationTitle").value="";$("educationTopic").value="";$("materialUrl").value=""}
+      if(hiring){$("secondDate").value="";$("individualStart").value="";$("individualEnd").value=""}
+      if(special){$("secondDate").value="";$("individualEnd").value=""}
+    }
+    function openEducationForm(item=null){
+      $("educationForm").reset();$("educationId").value=item?.id||"";$("educationModalTitle").textContent=item?"교육 수정":"교육 추가";
+      $("educationCategory").value=item?.category_id||state.selectedCategoryId||"";
+      $("educationTitle").value=item?.title||"";$("educationTopic").value=item?.education_topic||"";
+      $("firstDate").value=item?.first_session_date||item?.conducted_date||"";$("secondDate").value=item?.second_session_date||"";
+      $("individualStart").value=item?.individual_start_date||"";$("individualEnd").value=item?.individual_end_date||"";
+      $("materialUrl").value=item?.web_url||"";$("reportUrl").value=item?.result_report_url||"";$("educationActive").value=String(item?.is_active??true);
+      $("educationFormError").textContent="";updateEducationFormLayout();openModal("educationModal");
+    }
     async function saveEducation(event){
-      event.preventDefault();const report=$("reportUrl").value.trim(),material=$("materialUrl").value.trim();if(!validUrl(material)){$("educationFormError").textContent="교육자료 링크를 확인하세요.";return}if(report&&!validUrl(report)){$("educationFormError").textContent="결과보고서 링크를 확인하세요.";return}
-      const payload={category_id:Number($("educationCategory").value),title:$("educationTitle").value.trim(),education_topic:$("educationTopic").value.trim(),first_session_date:$("firstDate").value||null,second_session_date:$("secondDate").value||null,individual_start_date:$("individualStart").value||null,individual_end_date:$("individualEnd").value||null,conducted_date:$("firstDate").value||$("secondDate").value||$("individualStart").value||null,education_hours:$("educationHours").value===""?null:Number($("educationHours").value),description:null,web_url:material,result_report_url:report||null,applicable_year:Number((($("firstDate").value||$("secondDate").value||$("individualStart").value||new Date().toISOString().slice(0,10))).slice(0,4)),applicable_period:null,is_active:$("educationActive").value==="true"};
-      const id=$("educationId").value;const result=id?await db.from("education_links").update(payload).eq("id",Number(id)).select("*").single():await db.from("education_links").insert(payload).select("*").single();if(result.error){$("educationFormError").textContent=result.error.message;return}closeModal("educationModal");showToast("교육이 저장되었습니다.");await loadPublicData();if(!id)await openParticipants(result.data);
+      event.preventDefault();
+      const categoryId=Number($("educationCategory").value),meta=categoryMeta(categoryId);
+      const report=$("reportUrl").value.trim(),material=$("materialUrl").value.trim();
+      if(meta.type==="regular"&&!validUrl(material)){$("educationFormError").textContent="교육자료 링크를 확인하세요.";return}
+      if(report&&!validUrl(report)){$("educationFormError").textContent="결과보고서 링크를 확인하세요.";return}
+      if(!$("firstDate").value){$("educationFormError").textContent="실시일을 입력하세요.";return}
+      const storedTitle=meta.type==="regular"?$("educationTitle").value.trim():meta.label;
+      const payload={
+        category_id:categoryId,
+        title:storedTitle,
+        education_topic:meta.type==="regular"?$("educationTopic").value.trim():null,
+        first_session_date:$("firstDate").value||null,
+        second_session_date:meta.type==="regular"?($("secondDate").value||null):null,
+        individual_start_date:meta.type==="hiring"?null:($("individualStart").value||null),
+        individual_end_date:meta.type==="regular"?($("individualEnd").value||null):null,
+        conducted_date:$("firstDate").value||null,
+        description:null,
+        web_url:meta.type==="regular"?material:null,
+        result_report_url:report||null,
+        applicable_year:Number($("firstDate").value.slice(0,4)),
+        applicable_period:null,
+        is_active:$("educationActive").value==="true"
+      };
+      const id=$("educationId").value;
+      const result=id?await db.from("education_links").update(payload).eq("id",Number(id)).select("*").single():await db.from("education_links").insert(payload).select("*").single();
+      if(result.error){$("educationFormError").textContent=result.error.message;return}
+      closeModal("educationModal");showToast("교육이 저장되었습니다.");await loadPublicData();if(!id)await openParticipants(result.data);
     }
     async function deleteEducation(item){if(!confirm(`"${item.title}" 교육을 삭제하시겠습니까?`))return;const {error}=await db.from("education_links").delete().eq("id",item.id);if(error){showToast(error.message);return}showToast("교육이 삭제되었습니다.");await loadPublicData()}
 
@@ -1128,7 +1313,7 @@
     $("departmentForm").onsubmit=saveDepartment;
 
     $("educationForm").onsubmit=saveEducation;
-    $("educationCategory").onchange=updateEducationDateLabels;
+    $("educationCategory").onchange=updateEducationFormLayout;
     $("assignAllButton").onclick=assignAllParticipants;
     $("deleteAllParticipantsButton").onclick=deleteAllParticipants;
     $("employeePickerSearch").oninput=debounce(renderEmployeePicker);
