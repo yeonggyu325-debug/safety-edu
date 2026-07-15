@@ -1,12 +1,13 @@
 <!DOCTYPE html>
+
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="사내 안전교육 자료 및 교육이력 관리">
-  <meta name="theme-color" content="#2f6fed">
-  <title>사내 안전교육 자료실</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="사내 안전교육 자료 및 교육이력 관리" name="description"/>
+<meta content="#2f6fed" name="theme-color"/>
+<title>사내 안전교육 자료실</title>
+<style>
     :root{
       --primary:#2f6fed;--primary-hover:#2458bd;--primary-soft:#eef4ff;
       --green:#16865c;--green-soft:#eaf8f2;--red:#c93737;--red-soft:#fff0f0;
@@ -220,412 +221,881 @@
     #employeeView .summary-card{min-height:56px;padding:9px 12px}
     #employeeView .summary-value{font-size:17px}
 
+
+    /* 건강검진 관리 */
+    #healthView{width:100%;margin:0 auto}
+    #healthView .toolbar{min-height:50px;padding:7px 9px}
+    #healthView input,#healthView select{height:34px}
+    #healthView th{height:34px;padding:0 7px;font-size:10.5px;vertical-align:middle}
+    #healthView td{height:34px;padding:4px 7px;font-size:11.5px;vertical-align:middle}
+    #healthView .mini{min-height:25px;padding:0 7px;border-radius:6px;font-size:10.5px;margin:0 1px}
+    .health-type-badge{display:inline-flex;min-width:64px;min-height:22px;align-items:center;justify-content:center;padding:0 8px;border-radius:999px;background:#eef4ff;color:#2458bd;font-size:10px;font-weight:850}
+    .health-result-badge{display:inline-flex;min-width:58px;min-height:22px;align-items:center;justify-content:center;padding:0 8px;border-radius:999px;background:#f2f4f7;color:#475467;font-size:10px;font-weight:800}
+
+
+
+    /* ===== 교육 출결체크 ===== */
+    #attendanceView{width:100%;margin:0 auto}
+    .attendance-top{display:grid;grid-template-columns:minmax(230px,330px) 1fr auto;gap:10px;align-items:center;margin-bottom:10px}
+    .attendance-session-select{width:100%}
+    .attendance-session-info{display:flex;align-items:center;gap:12px;min-width:0;padding:0 4px;color:#475467;font-size:11px;white-space:nowrap;overflow:hidden}
+    .attendance-session-info strong{color:#202936;font-size:13px;overflow:hidden;text-overflow:ellipsis}
+    .attendance-operator{display:flex;align-items:center;gap:7px;white-space:nowrap;color:#475467;font-size:11px}
+    .attendance-connection{display:inline-flex;min-height:26px;align-items:center;gap:6px;padding:0 9px;border-radius:999px;font-size:10px;font-weight:850}
+    .attendance-connection::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+    .attendance-connection.connected{color:#087443;background:#eaf8f2}
+    .attendance-connection.reconnecting{color:#8a6200;background:#fff7dc}
+    .attendance-connection.disconnected{color:#a62e2e;background:#fff0f0}
+    .attendance-summary{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:8px;margin-bottom:10px}
+    .attendance-summary .summary-card{min-width:0}
+    .attendance-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;padding:9px;border:1px solid var(--line);border-radius:var(--radius);background:#fff;box-shadow:0 3px 12px rgba(16,24,40,.035)}
+    .attendance-toolbar-left,.attendance-toolbar-right{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+    .attendance-count{color:#667085;font-size:11px;font-weight:750}
+    .attendance-table{min-width:1420px}
+    .attendance-table th,.attendance-table td{height:36px;padding:4px 7px;vertical-align:middle}
+    .attendance-table td{font-size:11px}
+    .attendance-row-suspected{background:#fff8ed!important}
+    .attendance-row-loading{opacity:.48;pointer-events:none}
+    .attendance-duration{font-variant-numeric:tabular-nums;white-space:nowrap}
+    .attendance-suspected-badge{display:inline-flex;min-height:22px;align-items:center;justify-content:center;padding:0 7px;border-radius:999px;background:#fff0e1;color:#b54708;font-size:10px;font-weight:850}
+    .attendance-normal-badge{color:#98a2b3;font-size:10px}
+    .attendance-memo{max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .attendance-confirm-list{max-height:230px;overflow:auto;margin:9px 0;padding:8px;border:1px solid var(--line);border-radius:8px;background:#f8fafc}
+    .attendance-confirm-item{padding:5px 3px;border-bottom:1px solid var(--line-soft);font-size:11px}
+    .attendance-confirm-item:last-child{border-bottom:0}
+    .attendance-empty-session{padding:50px 18px;text-align:center;color:#667085;font-size:12px}
+    @media(max-width:1150px){
+      .attendance-top{grid-template-columns:1fr}.attendance-session-info{flex-wrap:wrap;white-space:normal}.attendance-summary{grid-template-columns:repeat(2,1fr)}
+      .attendance-toolbar{align-items:stretch;flex-direction:column}.attendance-toolbar-left,.attendance-toolbar-right{width:100%;justify-content:flex-start}
+    }
+
+
+    /* ===== 2026 비즈니스 UI 통합 스타일 ===== */
+    :root{
+      --primary:#2457c5;--primary-hover:#1d469f;--primary-soft:#edf3ff;
+      --text:#172033;--gray:#657084;--line:#d7dde7;--line-soft:#e9edf3;
+      --bg:#f3f5f8;--surface:#fff;--radius:8px;--control:36px;
+      --shadow:0 1px 2px rgba(16,24,40,.04),0 5px 16px rgba(16,24,40,.045);
+      --sidebar:236px;
+    }
+    body{background:#f3f5f8;color:#172033}
+    .sidebar{padding:18px 14px;border-right:1px solid #d8dee8;box-shadow:2px 0 12px rgba(16,24,40,.025)}
+    .logo-box{padding:4px 8px 18px}
+    .site-name{font-size:15px;font-weight:800;color:#1d2939}
+    .menu{gap:3px}.menu-label{margin-top:20px;color:#8a94a6}
+    .menu-button,.submenu-button{border-radius:7px;font-weight:700}
+    .menu-button{min-height:40px}.submenu-button{min-height:35px}
+    .menu-button.active,.submenu-button.active{background:#eaf1ff;color:#19499f;box-shadow:inset 0 0 0 1px #d7e4ff}
+    .topbar{min-height:66px;padding:11px 24px;background:rgba(255,255,255,.98);border-bottom:1px solid #d8dee8;backdrop-filter:none}
+    .page-title h1{font-size:20px;font-weight:850}.page-title p{font-size:11px}
+    .content{max-width:1580px;padding:20px 24px 40px}
+    .card,.toolbar,.self-lookup,.summary-card{border-color:#d8dee8;border-radius:8px;box-shadow:var(--shadow)}
+    .btn{min-height:36px;border-radius:7px;padding:0 14px;font-size:11.5px;font-weight:780}
+    .btn-primary{background:#2457c5;border-color:#2457c5}.btn-primary:hover{background:#1d469f;border-color:#1d469f}
+    .btn-secondary{border-color:#c9d1dd;color:#344054}.btn-secondary:hover{background:#f4f6f9}
+    input,select,textarea{border-color:#cbd3df;border-radius:7px}
+    input:focus,select:focus,textarea:focus{border-color:#2457c5;box-shadow:0 0 0 3px rgba(36,87,197,.11)}
+    th{height:36px;background:#f5f7fa;color:#4c596c;border-bottom:1px solid #cfd7e3;font-weight:800}
+    td{border-bottom:1px solid #e5e9f0}
+    table th+th,table td+td{border-left:1px solid #edf0f4}
+    tbody tr:hover{background:#f7faff}
+    .modal{border:1px solid #d9e0ea;border-radius:12px;box-shadow:0 24px 70px rgba(15,23,42,.22)}
+    .modal-head{padding:18px 20px 14px;background:#fff}.modal-body{padding:18px 20px 20px}
+    .modal-head h2{font-size:17px}.modal-actions{padding-top:4px}
+
+    #attendanceView{max-width:100%}
+    .attendance-page-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px}
+    .attendance-page-header h2{margin:0;font-size:18px;font-weight:850;letter-spacing:-.035em;color:#172033}
+    .attendance-header-actions{display:flex;gap:7px}
+    .attendance-control-card{margin-bottom:12px;padding:14px 15px;border:1px solid #d8dee8;border-radius:8px;background:#fff;box-shadow:var(--shadow)}
+    .attendance-top{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin:0}
+    .attendance-session-control{display:grid;gap:6px;min-width:360px;max-width:620px;flex:1}
+    .attendance-session-control label{font-size:11px;font-weight:800;color:#475467}
+    .attendance-session-buttons{display:flex;gap:7px;align-items:center}
+    .attendance-session-select{width:100%;font-weight:700;color:#243047;cursor:pointer;background-color:#fff}
+    .attendance-session-info{display:flex;align-items:center;gap:0;margin-top:12px;padding:10px 12px;border:1px solid #e1e6ee;border-radius:7px;background:#f7f9fc;color:#526071;font-size:11px;overflow:hidden}
+    .attendance-session-info strong{font-size:12px;color:#1d2939;padding-right:14px}
+    .attendance-session-info span+span,.attendance-session-info strong+span{padding:0 14px;border-left:1px solid #d9e0ea}
+    .attendance-summary{grid-template-columns:repeat(4,minmax(150px,1fr));gap:9px;margin-bottom:12px}
+    .attendance-summary .summary-card{min-height:64px;padding:12px 14px;background:#fff}
+    .attendance-summary .summary-value{font-size:20px;color:#2457c5}
+    .attendance-toolbar{min-height:54px;padding:9px 10px;margin-bottom:10px;border-color:#d8dee8;box-shadow:var(--shadow)}
+    .attendance-toolbar-left,.attendance-toolbar-right{gap:7px}
+    .attendance-toolbar .search-input{width:210px}.attendance-toolbar .filter-select{min-width:126px}
+    .attendance-count{display:inline-flex;min-height:30px;align-items:center;padding:0 9px;border-radius:6px;background:#f2f4f7;color:#526071;font-weight:750}
+    .attendance-table-card{box-shadow:var(--shadow)}
+    .attendance-table{min-width:1110px;table-layout:fixed;border-collapse:collapse}
+    .attendance-table th{height:36px;padding:0 7px;text-align:left;font-size:10.5px}
+    .attendance-table td{height:38px;padding:4px 7px;font-size:11px;line-height:1.35}
+    .attendance-table th,.attendance-table td{border-right:1px solid #edf0f4}
+    .attendance-table th:last-child,.attendance-table td:last-child{border-right:0}
+    .attendance-times{display:grid;gap:2px;font-variant-numeric:tabular-nums;white-space:nowrap}
+    .attendance-times span{display:block}
+    .attendance-memo-input{width:100%;height:29px;padding:0 7px;border-color:transparent;background:transparent;font-size:10.8px}
+    .attendance-memo-input:hover{border-color:#d4dbe6;background:#fff}
+    .attendance-memo-input:focus{border-color:#2457c5;background:#fff}
+    .attendance-row-missed{background:#fff8ec!important}
+    .attendance-missed-badge{display:inline-flex;min-height:21px;align-items:center;justify-content:center;padding:0 7px;border-radius:999px;background:#fff0dc;color:#a65b00;font-size:9.5px;font-weight:850;white-space:nowrap}
+    .attendance-normal-badge{color:#a0a8b5}
+    .attendance-session-modal{width:min(560px,100%)}
+    .attendance-session-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px}
+    .attendance-session-form-grid .attendance-name-field{grid-column:1/-1}
+    .attendance-session-form-grid input,.attendance-session-form-grid select{width:100%;height:40px;font-size:13px}
+    #attendanceSessionName[readonly]{background:#f3f5f8;color:#344054;font-weight:780}
+    #attendanceSessionStart,#attendanceSessionEnd{font-variant-numeric:tabular-nums;font-weight:750}
+    #attendanceSessionError:empty{display:none}
+    #attendanceSessionError:not(:empty){display:block;margin-top:12px;padding:9px 10px;border:1px solid #f4c7c3;border-radius:7px;background:#fff3f2;color:#b42318}
+
+    #employeeView table,#departmentView table,#healthView table{border-collapse:collapse}
+    #employeeView .card,#departmentView .card,#healthView .card{box-shadow:var(--shadow)}
+
+    @media(max-width:900px){
+      .attendance-top{align-items:stretch;flex-direction:column}.attendance-session-control{min-width:0;max-width:none}
+      .attendance-session-buttons{justify-content:flex-start}.attendance-summary{grid-template-columns:repeat(2,1fr)}
+      .attendance-page-header{align-items:flex-start;flex-direction:column}.attendance-session-info{align-items:flex-start;flex-direction:column;gap:5px}
+      .attendance-session-info span+span,.attendance-session-info strong+span{padding:0;border-left:0}
+    }
+    @media(max-width:640px){
+      .attendance-session-form-grid{grid-template-columns:1fr}.attendance-session-form-grid .attendance-name-field{grid-column:auto}
+      .attendance-summary{grid-template-columns:1fr 1fr}.content{padding:14px 12px 30px}
+    }
+
+
+    /* 업무용 컴팩트 표·폼 규격 */
+    .table-wrap table{border-collapse:collapse;width:100%;font-size:12.5px}
+    .table-wrap th{height:34px;padding:6px 8px;border:1px solid #dfe3e8;background:#f7f8fa;font-weight:750;white-space:nowrap}
+    .table-wrap td{height:36px;padding:5px 8px;border:1px solid #e5e8eb;vertical-align:middle}
+    .table-wrap tbody tr:hover{background:#f8fbff}
+    .mini{min-height:26px;padding:0 8px;border-radius:6px;font-size:12px}
+    .toolbar,.filter-row{gap:7px}
+    .toolbar input,.toolbar select,.filter-row input,.filter-row select{min-height:34px;height:34px;padding:0 9px}
+    .summary-card{padding:12px 14px;min-height:70px}
+    .summary-card strong{font-size:20px}
+    .content-card{padding:16px}
+    .modal-card{padding:18px}
+
+    /* ===== 교육 출결관리 최종 컴팩트 UI ===== */
+    #attendanceView{max-width:100%;color:#1f2937}
+    #attendanceView .attendance-page-header{margin-bottom:10px;padding:0 1px}
+    #attendanceView .attendance-page-header h2{font-size:17px;font-weight:850;color:#182230}
+    #attendanceView .attendance-header-actions{gap:6px}
+    #attendanceView .attendance-control-card{padding:11px 12px;margin-bottom:9px;border:1px solid #d9dee7;border-radius:7px;box-shadow:0 1px 3px rgba(16,24,40,.04)}
+    #attendanceView .attendance-top{gap:10px;align-items:flex-end}
+    #attendanceView .attendance-session-control{grid-template-columns:78px minmax(280px,520px);align-items:center;gap:8px;max-width:none;min-width:0}
+    #attendanceView .attendance-session-control label{font-size:11px;color:#344054}
+    #attendanceView .attendance-session-select{height:34px;font-size:11.5px;border-radius:5px}
+    #attendanceView .attendance-session-buttons{gap:5px}
+    #attendanceView .attendance-session-info{min-height:32px;margin-top:8px;padding:7px 9px;border-radius:5px;background:#f8fafc;font-size:10.5px}
+    #attendanceView .attendance-session-info strong{font-size:11.5px}
+    #attendanceView .attendance-summary{grid-template-columns:repeat(4,minmax(120px,1fr));gap:7px;margin-bottom:9px}
+    #attendanceView .attendance-summary .summary-card{min-height:54px;padding:9px 11px;border:1px solid #dfe4ec;border-radius:6px;box-shadow:none}
+    #attendanceView .attendance-summary .summary-label{font-size:10px;color:#667085}
+    #attendanceView .attendance-summary .summary-value{font-size:18px;color:#1f4eaa}
+    #attendanceView .attendance-toolbar{min-height:44px;padding:6px 7px;margin-bottom:7px;border-radius:6px;box-shadow:none}
+    #attendanceView .attendance-toolbar-left,#attendanceView .attendance-toolbar-right{gap:5px}
+    #attendanceView .attendance-toolbar .search-input{width:180px;height:32px;font-size:11px}
+    #attendanceView .attendance-toolbar .filter-select{min-width:110px;height:32px;font-size:11px}
+    #attendanceView .attendance-count{min-height:27px;padding:0 7px;border-radius:4px;font-size:10.5px}
+    #attendanceView .attendance-table-card{border-radius:6px;box-shadow:none}
+    #attendanceView .table-wrap{max-height:calc(100vh - 360px);min-height:250px;overflow:auto}
+    #attendanceView .attendance-table{min-width:1000px;width:100%;table-layout:fixed;border-collapse:collapse}
+    #attendanceView .attendance-table thead{position:sticky;top:0;z-index:3}
+    #attendanceView .attendance-table th{height:32px;padding:0 6px;background:#eef2f7;color:#344054;border-bottom:1px solid #cfd6e0;border-right:1px solid #dbe1e9;font-size:10px;font-weight:800;white-space:nowrap}
+    #attendanceView .attendance-table td{height:36px;padding:3px 6px;border-bottom:1px solid #e5e9ef;border-right:1px solid #edf0f4;font-size:10.7px;line-height:1.2;background:#fff;vertical-align:middle}
+    #attendanceView .attendance-table tbody tr:hover td{background:#f8fafc}
+    #attendanceView .attendance-table th:last-child,#attendanceView .attendance-table td:last-child{border-right:0}
+    #attendanceView .attendance-row-missed td{background:#fff8ed}
+    #attendanceView .attendance-row-missed:hover td{background:#fff4df}
+    #attendanceView .attendance-person-button{display:inline-flex;align-items:center;max-width:100%;padding:0;border:0;background:transparent;color:#1f4eaa;font:inherit;font-weight:800;cursor:pointer;text-decoration:none}
+    #attendanceView .attendance-person-button:hover{text-decoration:underline}
+    #attendanceView .attendance-time-cell{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:center}
+    #attendanceView .attendance-time-main{display:block;color:#263244;font-weight:750}
+    #attendanceView .attendance-cell-action{display:inline-flex;align-items:center;justify-content:center;height:21px;margin-top:2px;padding:0 6px;border:1px solid #b8c5d8;border-radius:4px;background:#fff;color:#2759a8;font-size:9.5px;font-weight:800;cursor:pointer;white-space:nowrap}
+    #attendanceView .attendance-cell-action:hover{background:#eef4ff;border-color:#7e9fd2}
+    #attendanceView .attendance-visit-button{display:inline-flex;align-items:center;justify-content:center;min-width:39px;height:23px;padding:0 6px;border:1px solid #cbd5e1;border-radius:999px;background:#fff;color:#344054;font-size:9.5px;font-weight:800;cursor:pointer}
+    #attendanceView .attendance-visit-button:hover{border-color:#7897c7;background:#f2f6fc;color:#1f4eaa}
+    #attendanceView .attendance-missed-toggle{display:inline-flex;align-items:center;justify-content:center;min-width:66px;height:24px;padding:0 7px;border:1px solid #cbd5e1;border-radius:4px;background:#fff;color:#667085;font-size:9.5px;font-weight:800;cursor:pointer;white-space:nowrap}
+    #attendanceView .attendance-missed-toggle.active{border-color:#f0a33a;background:#fff0dc;color:#9a5700}
+    #attendanceView .attendance-missed-toggle:hover{filter:brightness(.98)}
+    #attendanceView .attendance-memo-input{height:27px;padding:0 6px;border:1px solid transparent;border-radius:4px;background:transparent;font-size:10.3px}
+    #attendanceView .attendance-memo-input:hover{border-color:#ccd5e1;background:#fff}
+    #attendanceView .attendance-memo-input:focus{border-color:#5682c4;box-shadow:0 0 0 2px rgba(47,111,237,.1)}
+    .attendance-log-modal{width:min(700px,calc(100vw - 28px))}
+    .attendance-log-meta{display:flex;flex-wrap:wrap;gap:6px 14px;margin-bottom:10px;padding:9px 10px;border:1px solid #dfe5ed;border-radius:6px;background:#f8fafc;font-size:11px;color:#475467}
+    .attendance-log-meta strong{color:#1f2937}
+    .attendance-log-table{width:100%;border-collapse:collapse;table-layout:fixed}
+    .attendance-log-table th{height:31px;padding:0 7px;background:#eef2f7;border:1px solid #d9e0e8;color:#344054;font-size:10.5px}
+    .attendance-log-table td{height:34px;padding:5px 7px;border:1px solid #e2e7ee;text-align:center;font-size:11px;font-variant-numeric:tabular-nums}
+    .attendance-log-total{display:flex;justify-content:flex-end;gap:8px;margin-top:10px;padding-top:9px;border-top:1px solid #e0e5ec;font-size:12px;color:#475467}
+    .attendance-log-total strong{color:#1f4eaa;font-size:14px}
+    @media(max-width:900px){
+      #attendanceView .attendance-session-control{grid-template-columns:1fr}
+      #attendanceView .attendance-summary{grid-template-columns:repeat(2,1fr)}
+      #attendanceView .table-wrap{max-height:none}
+    }
+
+  
+
+    /* ===== Health management / attendance detail refinements ===== */
+    .health-page-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+    .health-page-header h2{margin:0;font-size:18px;font-weight:850;color:#172033;letter-spacing:-.03em}
+    .health-header-actions{display:flex;align-items:center;gap:6px}
+    .health-subtabs{display:flex;align-items:center;gap:4px;margin-bottom:10px;padding:4px;border:1px solid #d9e0e8;border-radius:8px;background:#f5f7fa;width:max-content}
+    .health-subtab{height:30px;padding:0 15px;border:0;border-radius:6px;background:transparent;color:#667085;font-size:11px;font-weight:800;cursor:pointer}
+    .health-subtab.active{background:#fff;color:#1f5ec9;box-shadow:0 1px 4px rgba(16,24,40,.12)}
+    .health-dashboard{display:grid;grid-template-columns:repeat(3,minmax(190px,1fr));gap:10px;margin-bottom:10px}
+    .health-dashboard-card{display:flex;align-items:center;gap:13px;min-height:96px;padding:12px 15px;border:1px solid #d9e0e8;border-radius:9px;background:#fff;box-shadow:0 3px 12px rgba(16,24,40,.04)}
+    .health-ring{--progress:0;--ring-color:#2f6fed;position:relative;display:grid;place-items:center;flex:0 0 68px;width:68px;height:68px;border-radius:50%;background:conic-gradient(var(--ring-color) calc(var(--progress) * 1%),#edf1f5 0)}
+    .health-ring::after{content:"";position:absolute;width:52px;height:52px;border-radius:50%;background:#fff}
+    .health-ring strong{position:relative;z-index:1;font-size:16px;font-weight:900;color:#1f2937}
+    .health-ring.target{--ring-color:#526173}.health-ring.completed{--ring-color:#16855b}.health-ring.incomplete{--ring-color:#d77b22}
+    .health-dashboard-copy{display:grid;gap:3px}.health-dashboard-copy span{font-size:11px;font-weight:750;color:#667085}.health-dashboard-copy strong{font-size:20px;font-weight:900;color:#172033}.health-dashboard-copy small{font-size:10px;color:#98a2b3}
+    .health-roster-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;padding:8px 9px;border:1px solid #d9e0e8;border-radius:8px;background:#fff}
+    .health-roster-filters{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.health-result-count{font-size:11px;font-weight:800;color:#667085;white-space:nowrap}
+    .health-panel[hidden]{display:none!important}.health-roster-card{overflow:hidden}
+    .health-roster-table{min-width:1260px;table-layout:fixed}.health-target-table{min-width:1000px;table-layout:fixed}
+    .health-roster-table th,.health-target-table th{height:32px;padding:0 6px;font-size:10px;background:#f5f7fa;border-right:1px solid #e1e6ed}
+    .health-roster-table td,.health-target-table td{height:36px;padding:3px 5px;font-size:11px;border-right:1px solid #edf0f4}
+    .health-roster-table input,.health-target-table input,.health-target-table select{width:100%;height:28px;padding:0 6px;border:1px solid #d5dbe4;border-radius:5px;background:#fff;font-size:10.5px}
+    .health-roster-table input:disabled,.health-target-table input:disabled,.health-target-table select:disabled{background:#f4f6f8;color:#98a2b3}
+    .health-status-badge{display:inline-flex;min-width:54px;height:22px;align-items:center;justify-content:center;border-radius:999px;padding:0 8px;font-size:10px;font-weight:850}
+    .health-status-badge.completed{background:#eaf8f2;color:#087443}.health-status-badge.incomplete{background:#fff4e8;color:#b54708}.health-status-badge.excluded{background:#f2f4f7;color:#667085}
+    .health-required-badge{display:inline-flex;align-items:center;justify-content:center;min-height:22px;padding:0 7px;border-radius:5px;background:#eef4ff;color:#2458bd;font-size:10px;font-weight:800;text-align:center}
+    .health-save-row,.health-target-save{height:26px;padding:0 8px;border:1px solid #b7c7e8;border-radius:5px;background:#fff;color:#2458bd;font-size:10px;font-weight:800;cursor:pointer}
+    .health-row-saving{opacity:.55;pointer-events:none}
+    .health-exclusion-note{font-size:10px;color:#667085;line-height:1.35}
+    .health-comprehensive-date[hidden]{display:none!important}
+
+    .attendance-toolbar-right{flex-wrap:wrap}
+    #attendanceClearSelectionButton{height:30px;padding:0 10px}
+    .attendance-log-table{min-width:720px;table-layout:fixed}
+    .attendance-log-table th,.attendance-log-table td{height:36px;padding:4px 6px;font-size:11px;vertical-align:middle}
+    .attendance-log-table input[type="datetime-local"]{width:100%;height:29px;padding:0 5px;border:1px solid #cdd5df;border-radius:5px;font-size:10px}
+    .attendance-log-actions{display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap}
+    .attendance-log-actions button{height:25px;padding:0 7px;border:1px solid #cfd7e2;border-radius:5px;background:#fff;color:#344054;font-size:10px;font-weight:800;cursor:pointer}
+    .attendance-log-actions .danger{border-color:#efc0c0;color:#b42318}.attendance-log-actions .primary{border-color:#a8bde9;color:#2458bd}
+    .attendance-log-edit-row{background:#f8fbff}
+    .attendance-log-empty{padding:24px!important;text-align:center;color:#98a2b3}
+
+    @media(max-width:900px){.health-dashboard{grid-template-columns:1fr}.health-roster-toolbar{align-items:stretch;flex-direction:column}.health-roster-filters{width:100%}}
+
+
+    /* ===== Attendance pagination ===== */
+    .attendance-pagination{display:flex;align-items:center;justify-content:center;gap:4px;min-height:42px;padding:8px 10px;border-top:1px solid #e2e7ee;background:#fff}
+    .attendance-pagination[hidden]{display:none!important}
+    .attendance-page-button{min-width:30px;height:28px;padding:0 8px;border:1px solid #d3dae4;border-radius:5px;background:#fff;color:#475467;font-size:10.5px;font-weight:800;cursor:pointer}
+    .attendance-page-button:hover:not(:disabled){border-color:#93acd9;color:#2458bd;background:#f7faff}
+    .attendance-page-button.active{border-color:#2f6fed;background:#2f6fed;color:#fff}
+    .attendance-page-button:disabled{cursor:default;opacity:.42}
+    .attendance-page-ellipsis{display:inline-flex;min-width:24px;height:28px;align-items:center;justify-content:center;color:#98a2b3;font-size:11px}
+
+  
+/* ===== 통합 50건 페이지네이션 및 출결 로그 초기화 ===== */
+.platform-pagination,
+.attendance-pagination{
+  display:flex;align-items:center;justify-content:center;gap:4px;
+  min-height:40px;padding:7px 10px;border-top:1px solid #e3e8ef;background:#fff;
+}
+.platform-pagination[hidden],.attendance-pagination[hidden]{display:none!important}
+.platform-page-button,.attendance-page-button{
+  min-width:30px;height:30px;padding:0 9px;border:1px solid #d6dce5;border-radius:5px;
+  background:#fff;color:#344054;font-size:11px;font-weight:700;cursor:pointer;
+}
+.platform-page-button:hover:not(:disabled),.attendance-page-button:hover:not(:disabled){border-color:#2f6fed;color:#2f6fed;background:#f7f9ff}
+.platform-page-button.active,.attendance-page-button.active{border-color:#2f6fed;background:#2f6fed;color:#fff}
+.platform-page-button:disabled,.attendance-page-button:disabled{opacity:.42;cursor:not-allowed}
+.platform-page-ellipsis,.attendance-page-ellipsis{min-width:18px;text-align:center;color:#98a2b3;font-size:11px}
+.platform-page-summary{margin-right:6px;color:#667085;font-size:10px;white-space:nowrap}
+#attendanceClearSelectionButton{height:30px;padding:0 10px}
+@media(max-width:900px){
+  .platform-pagination,.attendance-pagination{justify-content:flex-start;overflow-x:auto}
+}
 </style>
 </head>
 <body>
-  <aside class="sidebar" id="sidebar">
-    <div class="logo-box">
-      <img class="logo" src="https://hniruja.com/wp-content/uploads/2024/02/h-%EC%9D%B4%EB%A3%A8%EC%9E%90.png" alt="H&iruja">
-      <div class="site-name">안전교육 자료실</div>
-    </div>
-    <nav id="categoryMenu" class="menu" aria-label="교육 분류"></nav>
-    <nav id="adminMenu" class="menu" hidden>
-      <div class="menu-label">ADMIN</div>
-      <button id="employeeMenuButton" class="menu-button" type="button">사원명부</button>
-      <button id="departmentMenuButton" class="menu-button" type="button">부서관리</button>
-    </nav>
-  </aside>
-
-  <main class="main">
-    <header class="topbar">
-      <div class="page-title">
-        <h1 id="pageTitle">정기안전보건교육</h1>
-        <p id="pageSubtitle" hidden></p>
-      </div>
-      <div class="top-actions">
-        <button id="loginButton" class="btn btn-secondary" type="button">관리자 로그인</button>
-        <div id="adminTopActions" class="top-actions" hidden>
-          <button id="addEducationButton" class="btn btn-primary" type="button">교육 추가</button>
-          <button id="logoutButton" class="btn btn-danger" type="button">로그아웃</button>
-        </div>
-      </div>
-    </header>
-
-    <section class="content">
-      <section id="educationView" class="view">
-        <div class="history-search-section">
-          <form id="selfLookupForm" class="history-search-form" role="search">
-            <div class="history-search-box">
-              <input id="selfEmployeeQuery" type="search" placeholder="부서 또는 사원명 검색" autocomplete="off" aria-label="교육이력 검색">
-              <button class="history-search-button" type="submit" aria-label="검색">⌕</button>
-            </div>
-            <input id="selfDepartment" type="hidden">
-            <input id="selfEmployeeName" type="hidden">
-            <div id="selfCandidateList" class="autocomplete-list" hidden></div>
-          </form>
-        </div>
-
-        <div class="card">
-          <div class="table-wrap">
-            <table>
-              <colgroup id="educationColgroup"></colgroup>
-              <thead><tr id="educationTableHeader"></tr></thead>
-              <tbody id="educationTableBody"></tbody>
-            </table>
-          </div>
-          <div id="educationStatus"></div>
-        </div>
-      </section>
-
-      <section id="employeeView" class="view" hidden>
-        <div class="summary-strip">
-          <div class="summary-card"><span class="summary-label">총원</span><strong id="employeeTotal" class="summary-value">0</strong></div>
-          <div class="summary-card"><span class="summary-label">대상인원</span><strong id="employeeActiveTotal" class="summary-value">0</strong></div>
-        </div>
-
-        <div class="tabs" role="tablist">
-          <button id="activeEmployeeTab" class="tab active" type="button">재직자</button>
-          <button id="retiredEmployeeTab" class="tab" type="button">퇴사자</button>
-        </div>
-
-        <div id="activeEmployeePanel">
-          <div class="toolbar">
-            <div class="toolbar-left">
-              <input id="activeEmployeeSearch" class="search-input" type="search" placeholder="사번·사원명·부서 검색">
-              <select id="activeStatusFilter" class="filter-select">
-                <option value="">전체 상태</option>
-                <option value="employed">재직</option>
-                <option value="leave">휴직</option>
-                <option value="non_regular">비상근</option>
-                <option value="long_trip">해외출장</option>
-                <option value="other">기타</option>
-              </select>
-            </div>
-            <div class="toolbar-right">
-              <span id="activeSelectionText" style="color:#667085;font-size:11px">선택 0명</span>
-              <button id="bulkDeleteButton" class="btn btn-danger" type="button" disabled>선택 삭제</button>
-              <button id="excelTemplateButton" class="btn btn-secondary" type="button">엑셀 양식</button>
-              <button id="excelUploadButton" class="btn btn-secondary" type="button">엑셀 업로드</button>
-              <input id="excelFileInput" type="file" accept=".xlsx,.xls" hidden>
-              <button id="addEmployeeButton" class="btn btn-primary" type="button">사원 추가</button>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="table-wrap">
-              <table>
-                <colgroup>
-                  <col style="width:44px"><col style="width:52px"><col style="width:82px"><col style="width:100px">
-                  <col style="width:120px"><col style="width:150px"><col style="width:100px"><col style="width:110px">
-                  <col style="width:110px"><col style="width:250px">
-                </colgroup>
-                <thead>
-                  <tr>
-                    <th class="center"><input id="selectAllActiveEmployees" type="checkbox" aria-label="전체 선택"></th>
-                    <th class="center">No.</th><th>상태</th><th>사번</th><th>사원명</th><th>부서</th>
-                    <th>직급</th><th>입사일</th><th>전배일</th><th class="center">관리</th>
-                  </tr>
-                </thead>
-                <tbody id="activeEmployeeTableBody"></tbody>
-              </table>
-            </div>
-            <div id="activeEmployeeStatus"></div>
-          </div>
-        </div>
-
-        <div id="retiredEmployeePanel" hidden>
-          <div class="toolbar">
-            <div class="toolbar-left">
-              <input id="retiredEmployeeSearch" class="search-input" type="search" placeholder="사번·사원명·부서 검색">
-              <select id="retiredDepartmentFilter" class="filter-select"><option value="">전체 부서</option></select>
-              <select id="retiredSort" class="filter-select">
-                <option value="retired_desc">퇴사일 최신순</option>
-                <option value="retired_asc">퇴사일 오래된순</option>
-                <option value="name_asc">사원명 가나다순</option>
-              </select>
-            </div>
-            <div class="toolbar-right"></div>
-          </div>
-
-          <div class="card">
-            <div class="table-wrap">
-              <table>
-                <colgroup>
-                  <col style="width:52px"><col style="width:100px"><col style="width:120px"><col style="width:150px">
-                  <col style="width:100px"><col style="width:110px"><col style="width:110px"><col style="width:82px"><col style="width:190px">
-                </colgroup>
-                <thead>
-                  <tr>
-                    <th class="center">No.</th><th>사번</th><th>사원명</th><th>부서</th><th>직급</th>
-                    <th>입사일</th><th>퇴사일</th><th>상태</th><th class="center">관리</th>
-                  </tr>
-                </thead>
-                <tbody id="retiredEmployeeTableBody"></tbody>
-              </table>
-            </div>
-            <div id="retiredEmployeeStatus"></div>
-          </div>
-        </div>
-      </section>
-
-      <section id="departmentView" class="view" hidden>
-        <div class="summary-strip">
-          <div class="summary-card"><span class="summary-label">전체 부서</span><strong id="departmentTotal" class="summary-value">0</strong></div>
-          <div class="summary-card"><span class="summary-label">현재 소속 인원</span><strong id="departmentEmployeeTotal" class="summary-value">0</strong></div>
-        </div>
-        <div class="toolbar">
-          <div class="toolbar-left"><input id="departmentSearch" class="search-input" type="search" placeholder="부서명 검색"></div>
-          <div class="toolbar-right"><button id="addDepartmentButton" class="btn btn-primary" type="button">부서 추가</button></div>
-        </div>
-        <div class="card">
-          <div class="table-wrap">
-            <table>
-              <colgroup><col style="width:60px"><col><col style="width:130px"><col style="width:100px"><col style="width:170px"></colgroup>
-              <thead><tr><th class="center">No.</th><th>부서명</th><th class="center">현재 인원</th><th>사용여부</th><th class="center">관리</th></tr></thead>
-              <tbody id="departmentTableBody"></tbody>
-            </table>
-          </div>
-          <div id="departmentStatus"></div>
-        </div>
-      </section>
-    </section>
-  </main>
-
-  <div id="loginModal" class="modal-backdrop" hidden>
-    <div class="modal modal-small">
-      <div class="modal-head"><div><h2>관리자 로그인</h2></div><button class="close" data-close="loginModal" type="button">×</button></div>
-      <div class="modal-body">
-        <form id="loginForm">
-          <div class="form-grid">
-            <div class="field"><label for="loginEmail">이메일</label><input id="loginEmail" type="email" required></div>
-            <div class="field"><label for="loginPassword">비밀번호</label><input id="loginPassword" type="password" required></div>
-          </div>
-          <div id="loginError" class="form-error"></div>
-          <div class="modal-actions"><button class="btn btn-secondary" data-close="loginModal" type="button">취소</button><button class="btn btn-primary" type="submit">로그인</button></div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <div id="selfHistoryModal" class="modal-backdrop" hidden>
-    <div class="modal modal-wide">
-      <div class="modal-head"><div><h2 id="selfHistoryTitle">본인 교육이력</h2></div><button class="close" data-close="selfHistoryModal" type="button">×</button></div>
-      <div class="modal-body">
-        <div class="card">
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>교육구분</th><th>교육명</th><th>결과보고서</th></tr></thead>
-              <tbody id="selfHistoryTableBody"></tbody>
-            </table>
-          </div>
-          <div id="selfHistoryStatus"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="employeeModal" class="modal-backdrop" hidden>
-    <div class="modal">
-      <div class="modal-head"><div><h2 id="employeeModalTitle">사원 추가</h2></div><button class="close" data-close="employeeModal" type="button">×</button></div>
-      <div class="modal-body">
-        <form id="employeeForm">
-          <input id="employeeId" type="hidden">
-          <div class="form-grid">
-            <div class="form-row">
-              <div class="field"><label for="employeeCode">사번</label><input id="employeeCode" required></div>
-              <div class="field"><label for="employeeName">사원명</label><input id="employeeName" required></div>
-            </div>
-            <div class="form-row">
-              <div class="field"><label for="employeeDepartment">부서</label><select id="employeeDepartment" required></select></div>
-              <div class="field"><label for="employeeJobTitle">직급</label><input id="employeeJobTitle" required></div>
-            </div>
-            <div class="form-row">
-              <div class="field"><label for="employeeHireDate">입사일</label><input id="employeeHireDate" type="date"></div>
-              <div class="field"><label for="employeeTransferDate">전배일</label><input id="employeeTransferDate" type="date" required></div>
-            </div>
-            <div class="field">
-              <label for="employeeStatusSelect">현재 상태</label>
-              <select id="employeeStatusSelect">
-                <option value="employed">재직</option><option value="leave">휴직</option>
-                <option value="non_regular">비상근</option><option value="long_trip">해외출장</option><option value="other">기타</option>
-              </select>
-            </div>
-            <div id="leaveDateFields" class="form-row" hidden>
-              <div class="field"><label for="leaveStartDate">휴직일</label><input id="leaveStartDate" type="date"></div>
-              <div class="field"><label for="leaveEndDate">휴직 종료예정일</label><input id="leaveEndDate" type="date"></div>
-            </div>
-            <div id="returnDateField" class="field" hidden><label for="returnDate">복귀일</label><input id="returnDate" type="date"></div>
-            <div class="field"><label for="employeeNote">비고</label><textarea id="employeeNote"></textarea></div>
-          </div>
-          <div id="employeeFormError" class="form-error"></div>
-          <div class="modal-actions"><button class="btn btn-secondary" data-close="employeeModal" type="button">취소</button><button class="btn btn-primary" type="submit">저장</button></div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <div id="retireModal" class="modal-backdrop" hidden>
-    <div class="modal modal-small">
-      <div class="modal-head"><div><h2 id="retireModalTitle">퇴사 처리</h2></div><button class="close" data-close="retireModal" type="button">×</button></div>
-      <div class="modal-body">
-        <form id="retireForm">
-          <input id="retireEmployeeIds" type="hidden">
-          <div class="form-grid">
-            <div class="field"><label for="retirementDateInput">퇴사일</label><input id="retirementDateInput" type="date" required></div>
-            <div class="field"><label for="retirementNote">비고</label><textarea id="retirementNote"></textarea></div>
-          </div>
-          <div id="retireError" class="form-error"></div>
-          <div class="modal-actions"><button class="btn btn-secondary" data-close="retireModal" type="button">취소</button><button class="btn btn-danger" type="submit">퇴사 처리</button></div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <div id="retiredHistoryModal" class="modal-backdrop" hidden>
-    <div class="modal modal-wide">
-      <div class="modal-head"><div><h2 id="retiredHistoryTitle">퇴사자 교육이력</h2></div><button class="close" data-close="retiredHistoryModal" type="button">×</button></div>
-      <div class="modal-body">
-        <div class="card">
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>교육명</th><th>교육일자</th><th>교육구분</th><th>이수여부</th><th>비고</th><th>결과보고서</th></tr></thead>
-              <tbody id="retiredHistoryTableBody"></tbody>
-            </table>
-          </div>
-          <div id="retiredHistoryStatus"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="educationModal" class="modal-backdrop" hidden>
-    <div class="modal">
-      <div class="modal-head"><div><h2 id="educationModalTitle">교육 추가</h2></div><button class="close" data-close="educationModal" type="button">×</button></div>
-      <div class="modal-body">
-        <form id="educationForm">
-          <input id="educationId" type="hidden">
-          <div class="form-grid">
-            <div class="field"><label for="educationCategory">교육 구분</label><select id="educationCategory" required></select></div>
-            <div id="educationTitleField" class="field"><label for="educationTitle">교육명</label><input id="educationTitle"></div>
-            <div id="educationTopicField" class="field"><label for="educationTopic">교육 주제</label><input id="educationTopic"></div>
-            <div id="sessionDateRow" class="form-row">
-              <div class="field"><label id="firstDateLabel" for="firstDate">1차 실시일</label><input id="firstDate" type="date"></div>
-              <div id="secondDateField" class="field"><label id="secondDateLabel" for="secondDate">2차 실시일</label><input id="secondDate" type="date"></div>
-            </div>
-            <div id="individualDateRow" class="form-row">
-              <div class="field"><label for="individualStart">개별교육 시작일</label><input id="individualStart" type="date"></div>
-              <div class="field"><label for="individualEnd">개별교육 종료일</label><input id="individualEnd" type="date"></div>
-            </div>
-            <div id="materialUrlField" class="field"><label for="materialUrl">교육자료 웹링크</label><input id="materialUrl" type="url"></div>
-            <div class="field"><label for="reportUrl">교육결과보고서 웹링크</label><input id="reportUrl" type="url" placeholder="미등록 시 교육진행중으로 표시"></div>
-            <div class="field"><label for="educationActive">공개여부</label><select id="educationActive"><option value="true">공개</option><option value="false">비공개</option></select></div>
-          </div>
-          <div id="educationFormError" class="form-error"></div>
-          <div class="modal-actions"><button class="btn btn-secondary" data-close="educationModal" type="button">취소</button><button class="btn btn-primary" type="submit">저장</button></div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <div id="participantModal" class="modal-backdrop" hidden>
-    <div class="modal modal-wide">
-      <div class="modal-head"><div><h2 id="participantTitle">교육 대상자 관리</h2></div><button class="close" data-close="participantModal" type="button">×</button></div>
-      <div class="modal-body">
-        <div class="summary-strip">
-          <div class="summary-card"><span class="summary-label">현재 재직자</span><strong id="currentEmployeeCount" class="summary-value">0</strong></div>
-          <div class="summary-card"><span class="summary-label">교육 대상자</span><strong id="participantCount" class="summary-value">0</strong></div>
-        </div>
-        <div class="toolbar">
-          <div class="toolbar-left"></div>
-          <div class="toolbar-right">
-            <button id="assignAllButton" class="btn btn-primary" type="button">일괄 등록</button>
-            <button id="deleteAllParticipantsButton" class="btn btn-danger" type="button">전체 삭제</button>
-          </div>
-        </div>
-        <div class="participant-layout">
-          <div class="panel">
-            <div class="panel-head"><strong>개별 직원 추가</strong><input id="employeePickerSearch" type="search" placeholder="사원명·부서 검색"></div>
-            <div id="employeePickerList" class="picker-list"></div>
-          </div>
-          <div class="panel">
-            <div class="panel-head"><strong>현재 대상자</strong><input id="participantSearch" type="search" placeholder="사원명·부서 검색"></div>
-            <div class="table-wrap">
-              <table><thead><tr><th class="center">선택</th><th>부서</th><th>사원명</th><th class="center">관리</th></tr></thead><tbody id="participantTableBody"></tbody></table>
-            </div>
-            <div id="participantStatus"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div id="departmentModal" class="modal-backdrop" hidden>
-    <div class="modal modal-small">
-      <div class="modal-head"><div><h2 id="departmentModalTitle">부서 추가</h2></div><button class="close" data-close="departmentModal" type="button">×</button></div>
-      <div class="modal-body">
-        <form id="departmentForm">
-          <input id="departmentId" type="hidden">
-          <div class="form-grid">
-            <div class="field"><label for="departmentName">부서명</label><input id="departmentName" required></div>
-            <div class="field"><label for="departmentActive">사용여부</label><select id="departmentActive"><option value="true">사용</option><option value="false">미사용</option></select></div>
-          </div>
-          <div id="departmentFormError" class="form-error"></div>
-          <div class="modal-actions"><button class="btn btn-secondary" data-close="departmentModal" type="button">취소</button><button class="btn btn-primary" type="submit">저장</button></div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <div id="departmentHistoryModal" class="modal-backdrop" hidden>
-    <div class="modal modal-wide">
-      <div class="modal-head"><div><h2 id="departmentHistoryTitle">부서 이력</h2></div><button class="close" data-close="departmentHistoryModal" type="button">×</button></div>
-      <div class="modal-body">
-        <div class="card"><div class="table-wrap"><table><thead><tr><th>사원명</th><th>구분</th><th>변경 전</th><th>변경 후</th><th>적용일</th><th>종료일</th><th>비고</th></tr></thead><tbody id="departmentHistoryTableBody"></tbody></table></div><div id="departmentHistoryStatus"></div></div>
-      </div>
-    </div>
-  </div>
-
-
-  <div id="hardDeleteModal" class="modal-backdrop" hidden>
-    <div class="modal modal-small">
-      <div class="modal-head">
-        <div>
-          <h2>사원 완전 삭제</h2></div>
-        <button class="close" data-close="hardDeleteModal" type="button">×</button>
-      </div>
-      <div class="modal-body">
-        <form id="hardDeleteForm">
-          <input id="hardDeleteEmployeeId" type="hidden">
-          <input id="hardDeleteEmployeeNameValue" type="hidden">
-          <div class="form-grid">
-            <div class="field">
-              <label>삭제 대상</label>
-              <input id="hardDeleteEmployeeDisplay" type="text" disabled>
-            </div>
-            <label class="checkbox-line">
-              <input id="hardDeleteForce" type="checkbox">
+<aside class="sidebar" id="sidebar">
+<div class="logo-box">
+<img alt="H&amp;iruja" class="logo" src="https://hniruja.com/wp-content/uploads/2024/02/h-%EC%9D%B4%EB%A3%A8%EC%9E%90.png"/>
+<div class="site-name">안전교육 자료실</div>
+</div>
+<nav aria-label="교육 분류" class="menu" id="categoryMenu"></nav>
+<nav class="menu" hidden="" id="adminMenu">
+<div class="menu-label">ADMIN</div>
+<button class="menu-button" id="employeeMenuButton" type="button">사원명부</button>
+<button class="menu-button" id="departmentMenuButton" type="button">부서관리</button>
+<button class="menu-button" id="healthMenuButton" type="button">건강검진 관리</button>
+<button class="menu-button" id="attendanceMenuButton" type="button">교육 출결체크</button>
+</nav>
+</aside>
+<main class="main">
+<header class="topbar">
+<div class="page-title">
+<h1 id="pageTitle">정기안전보건교육</h1>
+<p hidden="" id="pageSubtitle"></p>
+</div>
+<div class="top-actions">
+<button class="btn btn-secondary" id="loginButton" type="button">관리자 로그인</button>
+<div class="top-actions" hidden="" id="adminTopActions">
+<button class="btn btn-primary" id="addEducationButton" type="button">교육 추가</button>
+<button class="btn btn-danger" id="logoutButton" type="button">로그아웃</button>
+</div>
+</div>
+</header>
+<section class="content">
+<section class="view" id="educationView">
+<div class="history-search-section">
+<form class="history-search-form" id="selfLookupForm" role="search">
+<div class="history-search-box">
+<input aria-label="교육이력 검색" autocomplete="off" id="selfEmployeeQuery" placeholder="부서 또는 사원명 검색" type="search"/>
+<button aria-label="검색" class="history-search-button" type="submit">⌕</button>
+</div>
+<input id="selfDepartment" type="hidden"/>
+<input id="selfEmployeeName" type="hidden"/>
+<div class="autocomplete-list" hidden="" id="selfCandidateList"></div>
+</form>
+</div>
+<div class="card">
+<div class="table-wrap">
+<table>
+<colgroup id="educationColgroup"></colgroup>
+<thead><tr id="educationTableHeader"></tr></thead>
+<tbody id="educationTableBody"></tbody>
+</table>
+</div>
+<div id="educationStatus"></div>
+</div>
+</section>
+<section class="view" hidden="" id="employeeView">
+<div class="summary-strip">
+<div class="summary-card"><span class="summary-label">총원</span><strong class="summary-value" id="employeeTotal">0</strong></div>
+<div class="summary-card"><span class="summary-label">대상인원</span><strong class="summary-value" id="employeeActiveTotal">0</strong></div>
+</div>
+<div class="tabs" role="tablist">
+<button class="tab active" id="activeEmployeeTab" type="button">재직자</button>
+<button class="tab" id="retiredEmployeeTab" type="button">퇴사자</button>
+</div>
+<div id="activeEmployeePanel">
+<div class="toolbar">
+<div class="toolbar-left">
+<input class="search-input" id="activeEmployeeSearch" placeholder="사원명·부서·직급 검색" type="search"/>
+<select class="filter-select" id="activeStatusFilter">
+<option value="">전체 상태</option>
+<option value="employed">재직</option>
+<option value="leave">휴직</option>
+<option value="non_regular">비상근</option>
+<option value="long_trip">해외출장</option>
+<option value="other">기타</option>
+</select>
+</div>
+<div class="toolbar-right">
+<span id="activeSelectionText" style="color:#667085;font-size:11px">선택 0명</span>
+<button class="btn btn-danger" disabled="" id="bulkDeleteButton" type="button">선택 삭제</button>
+<button class="btn btn-danger" id="deleteAllFilteredEmployeesButton" type="button">전체 삭제</button>
+<button class="btn btn-secondary" id="excelTemplateButton" type="button">엑셀 양식</button>
+<button class="btn btn-secondary" id="excelUploadButton" type="button">엑셀 업로드</button>
+<input accept=".xlsx,.xls" hidden="" id="excelFileInput" type="file"/>
+<button class="btn btn-primary" id="addEmployeeButton" type="button">사원 추가</button>
+</div>
+</div>
+<div class="card">
+<div class="table-wrap">
+<table>
+<colgroup>
+<col style="width:42px"/><col style="width:48px"/><col style="width:76px"/><col style="width:140px"/>
+<col style="width:96px"/><col style="width:118px"/><col style="width:96px"/><col style="width:96px"/>
+<col style="width:210px"/>
+</colgroup>
+<thead>
+<tr>
+<th class="center"><input aria-label="전체 선택" id="selectAllActiveEmployees" type="checkbox"/></th>
+<th class="center">No.</th><th>상태</th><th>부서</th><th>직급</th><th>사원명</th>
+<th>입사일</th><th>전배일</th><th class="center">관리</th>
+</tr>
+</thead>
+<tbody id="activeEmployeeTableBody"></tbody>
+</table>
+</div>
+<div id="activeEmployeeStatus"></div>
+</div>
+</div>
+<div hidden="" id="retiredEmployeePanel">
+<div class="toolbar">
+<div class="toolbar-left">
+<input class="search-input" id="retiredEmployeeSearch" placeholder="사원명·부서·직급 검색" type="search"/>
+<select class="filter-select" id="retiredDepartmentFilter"><option value="">전체 부서</option></select>
+<select class="filter-select" id="retiredSort">
+<option value="retired_desc">퇴사일 최신순</option>
+<option value="retired_asc">퇴사일 오래된순</option>
+<option value="name_asc">사원명 가나다순</option>
+</select>
+</div>
+<div class="toolbar-right"></div>
+</div>
+<div class="card">
+<div class="table-wrap">
+<table>
+<colgroup>
+<col style="width:48px"/><col style="width:140px"/><col style="width:96px"/><col style="width:118px"/>
+<col style="width:96px"/><col style="width:96px"/><col style="width:76px"/><col style="width:190px"/>
+</colgroup>
+<thead>
+<tr>
+<th class="center">No.</th><th>부서</th><th>직급</th><th>사원명</th>
+<th>입사일</th><th>퇴사일</th><th>상태</th><th class="center">관리</th>
+</tr>
+</thead>
+<tbody id="retiredEmployeeTableBody"></tbody>
+</table>
+</div>
+<div id="retiredEmployeeStatus"></div>
+</div>
+</div>
+</section>
+<section class="view" hidden="" id="departmentView">
+<div class="summary-strip">
+<div class="summary-card"><span class="summary-label">전체 부서</span><strong class="summary-value" id="departmentTotal">0</strong></div>
+<div class="summary-card"><span class="summary-label">현재 소속 인원</span><strong class="summary-value" id="departmentEmployeeTotal">0</strong></div>
+</div>
+<div class="toolbar">
+<div class="toolbar-left"><input class="search-input" id="departmentSearch" placeholder="부서명 검색" type="search"/></div>
+<div class="toolbar-right"><button class="btn btn-primary" id="addDepartmentButton" type="button">부서 추가</button></div>
+</div>
+<div class="card">
+<div class="table-wrap">
+<table>
+<colgroup><col style="width:60px"/><col/><col style="width:130px"/><col style="width:100px"/><col style="width:170px"/></colgroup>
+<thead><tr><th class="center">No.</th><th>부서명</th><th class="center">현재 인원</th><th>사용여부</th><th class="center">관리</th></tr></thead>
+<tbody id="departmentTableBody"></tbody>
+</table>
+</div>
+<div id="departmentStatus"></div>
+</div>
+</section>
+<section class="view" hidden="" id="healthView">
+<div class="health-page-header">
+<h2>건강검진 관리</h2>
+<div class="health-header-actions">
+<select aria-label="검진연도" class="filter-select" id="healthYearFilter"></select>
+<button class="btn btn-secondary" id="healthExcelTemplateButton" type="button">엑셀 양식</button>
+<button class="btn btn-secondary" id="healthExcelUploadButton" type="button">엑셀 업로드</button>
+<input accept=".xlsx,.xls" hidden="" id="healthExcelFileInput" type="file"/>
+</div>
+</div>
+<div aria-label="건강검진 관리 구분" class="health-subtabs" role="tablist">
+<button class="health-subtab active" id="healthStatusTab" role="tab" type="button">검진 현황</button>
+<button class="health-subtab" id="healthTargetTab" role="tab" type="button">검진 종류</button>
+</div>
+<div class="health-panel" id="healthStatusPanel">
+<div class="health-dashboard">
+<div class="health-dashboard-card">
+<div class="health-ring target" id="healthTargetRing" style="--progress:100"><strong id="healthTargetRate">100%</strong></div>
+<div class="health-dashboard-copy"><span>대상 인원</span><strong id="healthTargetTotal">0명</strong><small>제외사유 대상자는 제외</small></div>
+</div>
+<div class="health-dashboard-card">
+<div class="health-ring completed" id="healthCompletedRing"><strong id="healthCompletedRate">0%</strong></div>
+<div class="health-dashboard-copy"><span>검진 완료</span><strong id="healthCompletedTotal">0명</strong><small>필수 검진을 모두 완료한 인원</small></div>
+</div>
+<div class="health-dashboard-card">
+<div class="health-ring incomplete" id="healthIncompleteRing"><strong id="healthIncompleteRate">0%</strong></div>
+<div class="health-dashboard-copy"><span>검진 미완료</span><strong id="healthIncompleteTotal">0명</strong><small>필수 검진 중 미입력 항목이 있는 인원</small></div>
+</div>
+</div>
+<div class="health-roster-toolbar">
+<div class="health-roster-filters">
+<input class="search-input" id="healthSearch" placeholder="성명·부서·직급 검색" type="search"/>
+<select class="filter-select" id="healthStatusFilter">
+<option value="">전체 상태</option>
+<option value="completed">완료</option>
+<option value="incomplete">미완료</option>
+<option value="excluded">대상 제외</option>
+</select>
+</div>
+<span class="health-result-count" id="healthResultCount">0명</span>
+</div>
+<div class="card health-roster-card">
+<div class="table-wrap">
+<table class="health-roster-table">
+<colgroup>
+<col style="width:42px"/><col style="width:125px"/><col style="width:68px"/><col style="width:82px"/>
+<col style="width:108px"/><col style="width:68px"/><col style="width:112px"/><col style="width:132px"/>
+<col style="width:112px"/><col style="width:132px"/><col style="width:62px"/>
+</colgroup>
+<thead><tr>
+<th class="center">No.</th><th>부서</th><th>직급</th><th>성명</th><th class="center">필수 검진</th><th class="center">상태</th>
+<th>일반검진 실시일</th><th>일반검진 기관</th><th>추가검진 실시일</th><th>추가검진 기관</th><th class="center">저장</th>
+</tr></thead>
+<tbody id="healthExamTableBody"></tbody>
+</table>
+</div>
+<div id="healthExamStatus"></div>
+</div>
+</div>
+<div class="health-panel" hidden="" id="healthTargetPanel">
+<div class="health-roster-toolbar">
+<div class="health-roster-filters">
+<input class="search-input" id="healthTargetSearch" placeholder="성명·부서·직급 검색" type="search"/>
+</div>
+<span class="health-result-count" id="healthTargetResultCount">0명</span>
+</div>
+<div class="card health-roster-card">
+<div class="table-wrap">
+<table class="health-target-table">
+<colgroup><col style="width:42px"/><col style="width:130px"/><col style="width:70px"/><col style="width:90px"/><col style="width:100px"/><col style="width:135px"/><col style="width:135px"/><col style="width:125px"/><col style="width:62px"/></colgroup>
+<thead><tr><th class="center">No.</th><th>부서</th><th>직급</th><th>성명</th><th class="center">기본검진</th><th>추가 검진종류</th><th>제외사유</th><th>종합검진 실시일</th><th class="center">저장</th></tr></thead>
+<tbody id="healthTargetTableBody"></tbody>
+</table>
+</div>
+<div id="healthTargetStatus"></div>
+</div>
+</div>
+</section>
+<section class="view" hidden="" id="attendanceView">
+<div class="attendance-page-header">
+<h2>교육 출결관리</h2>
+<div class="attendance-header-actions">
+<button class="btn btn-secondary" id="attendanceRefreshButton" type="button">새로고침</button>
+<button class="btn btn-secondary" disabled="" id="attendanceCsvButton" type="button">CSV 다운로드</button>
+<button class="btn btn-secondary" disabled="" id="attendanceMissingCsvButton" type="button">1·2차 미실시자 CSV</button>
+</div>
+</div>
+<div class="attendance-control-card">
+<div class="attendance-top">
+<div class="attendance-session-control">
+<label for="attendanceSessionSelect">교육 회차</label>
+<select class="attendance-session-select" id="attendanceSessionSelect"><option value="">교육 회차 선택</option></select>
+</div>
+<div class="attendance-session-buttons">
+<button class="btn btn-primary" id="attendanceNewSessionButton" type="button">교육 회차 생성</button>
+<button class="btn btn-secondary" disabled="" id="attendanceEditSessionButton" type="button">선택 회차 수정</button>
+</div>
+</div>
+<div class="attendance-session-info" id="attendanceSessionInfo"><span>교육 회차를 선택하세요.</span></div>
+</div>
+<div class="attendance-summary">
+<div class="summary-card"><span class="summary-label">교육 대상</span><strong class="summary-value" id="attendanceActiveCount">0</strong></div>
+<div class="summary-card"><span class="summary-label">입실 기록</span><strong class="summary-value" id="attendanceCheckInCount">0</strong></div>
+<div class="summary-card"><span class="summary-label">퇴실 완료</span><strong class="summary-value" id="attendanceCheckOutCount">0</strong></div>
+<div class="summary-card"><span class="summary-label">미수강 서명</span><strong class="summary-value" id="attendanceSuspectedCount">0</strong></div>
+</div>
+<div class="attendance-toolbar">
+<div class="attendance-toolbar-left">
+<input class="search-input" id="attendanceSearch" placeholder="성명 검색" type="search"/>
+<select class="filter-select" id="attendanceDepartmentFilter"><option value="">전체 부서</option></select>
+<select class="filter-select" id="attendanceStatusFilter"><option value="">전체</option><option value="not_started">미입실</option><option value="entered">입실 기록</option><option value="completed">퇴실 기록</option><option value="missed">미수강</option></select>
+<span class="attendance-count" id="attendanceResultCount">0명</span>
+</div>
+<div class="attendance-toolbar-right">
+<span class="attendance-count" id="attendanceSelectedCount">선택 0명</span>
+<button class="btn btn-danger" disabled="" id="attendanceClearSelectionButton" type="button">선택 로그 초기화</button>
+<button class="btn btn-primary" disabled="" id="attendanceStartPeopleButton" type="button">시작인원</button>
+<button class="btn btn-secondary" disabled="" id="attendanceEndPeopleButton" type="button">종료인원</button>
+</div>
+</div>
+<div class="card attendance-table-card">
+<div class="table-wrap">
+<table class="attendance-table">
+<colgroup>
+<col style="width:36px"/><col style="width:142px"/><col style="width:70px"/><col style="width:92px"/>
+<col style="width:96px"/><col style="width:96px"/><col style="width:94px"/><col style="width:58px"/>
+<col style="width:92px"/><col style="width:170px"/>
+</colgroup>
+<thead><tr><th class="center"><input aria-label="전체 선택" id="attendanceSelectAll" type="checkbox"/></th><th>부서</th><th>직급</th><th>성명</th><th class="center">최초 입실</th><th class="center">최종 퇴실</th><th class="center">교육인정시간</th><th class="center">출입</th><th class="center">미수강 서명</th><th>비고</th></tr></thead>
+<tbody id="attendanceTableBody"></tbody>
+</table>
+</div>
+<div class="attendance-pagination" hidden="" id="attendancePagination"></div>
+<div id="attendanceStatus"></div>
+</div>
+</section>
+</section>
+</main>
+<div class="modal-backdrop" hidden="" id="attendanceSessionModal">
+<div class="modal attendance-session-modal">
+<div class="modal-head">
+<div><h2 id="attendanceSessionModalTitle">교육 회차 생성</h2></div>
+<button aria-label="닫기" class="close" data-close="attendanceSessionModal" type="button">×</button>
+</div>
+<div class="modal-body">
+<form id="attendanceSessionForm" novalidate="">
+<input id="attendanceSessionId" type="hidden"/>
+<div class="attendance-session-form-grid">
+<div class="field attendance-name-field">
+<label for="attendanceSessionName">교육명</label>
+<input aria-readonly="true" id="attendanceSessionName" maxlength="120" readonly=""/>
+</div>
+<div class="field">
+<label for="attendanceSessionDate">교육일자</label>
+<input id="attendanceSessionDate" required="" type="date"/>
+</div>
+<div class="field">
+<label for="attendanceRoundNo">차수</label>
+<select id="attendanceRoundNo" required=""><option value="1">1차</option><option value="2">2차</option></select>
+</div>
+<div class="field">
+<label for="attendanceSessionStart">시작시각</label>
+<input autocomplete="off" class="attendance-time-text" id="attendanceSessionStart" inputmode="numeric" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" placeholder="09:30" required="" type="text"/>
+</div>
+<div class="field">
+<label for="attendanceSessionEnd">종료시각</label>
+<input autocomplete="off" class="attendance-time-text" id="attendanceSessionEnd" inputmode="numeric" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" placeholder="11:30" required="" type="text"/>
+</div>
+</div>
+<div class="form-error" id="attendanceSessionError" role="alert"></div>
+<div class="modal-actions">
+<button class="btn btn-secondary" data-close="attendanceSessionModal" type="button">취소</button>
+<button class="btn btn-primary" id="attendanceSessionSubmit" type="submit">저장</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+<div class="modal-backdrop" hidden="" id="attendanceConfirmModal">
+<div class="modal modal-small"><div class="modal-head"><div><h2 id="attendanceConfirmTitle">출결 확인</h2></div><button class="close" data-close="attendanceConfirmModal" type="button">×</button></div>
+<div class="modal-body"><div id="attendanceConfirmSummary"></div><div class="attendance-confirm-list" id="attendanceConfirmList"></div><div class="field" hidden="" id="attendanceBulkTimeField"><label for="attendanceBulkTime">기록시각</label><input id="attendanceBulkTime" type="datetime-local"/></div><div class="form-error" id="attendanceConfirmError"></div><div class="modal-actions"><button class="btn btn-secondary" data-close="attendanceConfirmModal" type="button">취소</button><button class="btn btn-primary" id="attendanceConfirmSubmit" type="button">확인</button></div></div>
+</div>
+</div>
+<div class="modal-backdrop" hidden="" id="attendanceLogModal">
+<div class="modal attendance-log-modal">
+<div class="modal-head">
+<div><h2 id="attendanceLogTitle">개인 출입 상세 로그</h2></div>
+<button aria-label="닫기" class="close" data-close="attendanceLogModal" type="button">×</button>
+</div>
+<div class="modal-body">
+<div class="attendance-log-meta" id="attendanceLogMeta"></div>
+<div class="table-wrap">
+<table class="attendance-log-table">
+<colgroup><col style="width:52px"/><col style="width:190px"/><col style="width:190px"/><col style="width:100px"/><col style="width:116px"/></colgroup>
+<thead><tr><th>회차</th><th>입실시각</th><th>퇴실시각</th><th>인정시간</th><th class="center">관리</th></tr></thead>
+<tbody id="attendanceLogTableBody"></tbody>
+</table>
+</div>
+<div class="attendance-log-total"><span>총 교육인정시간</span><strong id="attendanceLogTotal">0분</strong></div>
+</div>
+</div>
+</div>
+<div class="modal-backdrop" hidden="" id="loginModal">
+<div class="modal modal-small">
+<div class="modal-head"><div><h2>관리자 로그인</h2></div><button class="close" data-close="loginModal" type="button">×</button></div>
+<div class="modal-body">
+<form id="loginForm">
+<div class="form-grid">
+<div class="field"><label for="loginEmail">이메일</label><input id="loginEmail" required="" type="email"/></div>
+<div class="field"><label for="loginPassword">비밀번호</label><input id="loginPassword" required="" type="password"/></div>
+</div>
+<div class="form-error" id="loginError"></div>
+<div class="modal-actions"><button class="btn btn-secondary" data-close="loginModal" type="button">취소</button><button class="btn btn-primary" type="submit">로그인</button></div>
+</form>
+</div>
+</div>
+</div>
+<div class="modal-backdrop" hidden="" id="selfHistoryModal">
+<div class="modal modal-wide">
+<div class="modal-head"><div><h2 id="selfHistoryTitle">본인 교육이력</h2></div><button class="close" data-close="selfHistoryModal" type="button">×</button></div>
+<div class="modal-body">
+<div class="card">
+<div class="table-wrap">
+<table>
+<thead><tr><th>교육구분</th><th>교육명</th><th>결과보고서</th></tr></thead>
+<tbody id="selfHistoryTableBody"></tbody>
+</table>
+</div>
+<div id="selfHistoryStatus"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="modal-backdrop" hidden="" id="employeeModal">
+<div class="modal">
+<div class="modal-head"><div><h2 id="employeeModalTitle">사원 추가</h2></div><button class="close" data-close="employeeModal" type="button">×</button></div>
+<div class="modal-body">
+<form id="employeeForm">
+<input id="employeeId" type="hidden"/>
+<div class="form-grid">
+<div class="form-row">
+<input id="employeeCode" type="hidden"/>
+<div class="field"><label for="employeeName">사원명</label><input id="employeeName" required=""/></div>
+</div>
+<div class="form-row">
+<div class="field"><label for="employeeDepartment">부서</label><select id="employeeDepartment" required=""></select></div>
+<div class="field"><label for="employeeJobTitle">직급</label><input id="employeeJobTitle" required=""/></div>
+</div>
+<div class="form-row">
+<div class="field"><label for="employeeHireDate">입사일</label><input id="employeeHireDate" type="date"/></div>
+<div class="field"><label for="employeeTransferDate">전배일</label><input id="employeeTransferDate" required="" type="date"/></div>
+</div>
+<div class="field">
+<label for="employeeStatusSelect">현재 상태</label>
+<select id="employeeStatusSelect">
+<option value="employed">재직</option><option value="leave">휴직</option>
+<option value="non_regular">비상근</option><option value="long_trip">해외출장</option><option value="other">기타</option>
+</select>
+</div>
+<div class="form-row" hidden="" id="leaveDateFields">
+<div class="field"><label for="leaveStartDate">휴직일</label><input id="leaveStartDate" type="date"/></div>
+<div class="field"><label for="leaveEndDate">휴직 종료예정일</label><input id="leaveEndDate" type="date"/></div>
+</div>
+<div class="field" hidden="" id="returnDateField"><label for="returnDate">복귀일</label><input id="returnDate" type="date"/></div>
+<div class="field"><label for="employeeNote">비고</label><textarea id="employeeNote"></textarea></div>
+</div>
+<div class="form-error" id="employeeFormError"></div>
+<div class="modal-actions"><button class="btn btn-secondary" data-close="employeeModal" type="button">취소</button><button class="btn btn-primary" type="submit">저장</button></div>
+</form>
+</div>
+</div>
+</div>
+<div class="modal-backdrop" hidden="" id="retireModal">
+<div class="modal modal-small">
+<div class="modal-head"><div><h2 id="retireModalTitle">퇴사 처리</h2></div><button class="close" data-close="retireModal" type="button">×</button></div>
+<div class="modal-body">
+<form id="retireForm">
+<input id="retireEmployeeIds" type="hidden"/>
+<div class="form-grid">
+<div class="field"><label for="retirementDateInput">퇴사일</label><input id="retirementDateInput" required="" type="date"/></div>
+<div class="field"><label for="retirementNote">비고</label><textarea id="retirementNote"></textarea></div>
+</div>
+<div class="form-error" id="retireError"></div>
+<div class="modal-actions"><button class="btn btn-secondary" data-close="retireModal" type="button">취소</button><button class="btn btn-danger" type="submit">퇴사 처리</button></div>
+</form>
+</div>
+</div>
+</div>
+<div class="modal-backdrop" hidden="" id="retiredHistoryModal">
+<div class="modal modal-wide">
+<div class="modal-head"><div><h2 id="retiredHistoryTitle">퇴사자 교육이력</h2></div><button class="close" data-close="retiredHistoryModal" type="button">×</button></div>
+<div class="modal-body">
+<div class="card">
+<div class="table-wrap">
+<table>
+<thead><tr><th>교육명</th><th>교육일자</th><th>교육구분</th><th>이수여부</th><th>비고</th><th>결과보고서</th></tr></thead>
+<tbody id="retiredHistoryTableBody"></tbody>
+</table>
+</div>
+<div id="retiredHistoryStatus"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="modal-backdrop" hidden="" id="educationModal">
+<div class="modal">
+<div class="modal-head"><div><h2 id="educationModalTitle">교육 추가</h2></div><button class="close" data-close="educationModal" type="button">×</button></div>
+<div class="modal-body">
+<form id="educationForm">
+<input id="educationId" type="hidden"/>
+<div class="form-grid">
+<div class="field"><label for="educationCategory">교육 구분</label><select id="educationCategory" required=""></select></div>
+<div class="field" id="educationTitleField"><label for="educationTitle">교육명</label><input id="educationTitle"/></div>
+<div class="field" id="educationTopicField"><label for="educationTopic">교육 주제</label><input id="educationTopic"/></div>
+<div class="form-row" id="sessionDateRow">
+<div class="field"><label for="firstDate" id="firstDateLabel">1차 실시일</label><input id="firstDate" type="date"/></div>
+<div class="field" id="secondDateField"><label for="secondDate" id="secondDateLabel">2차 실시일</label><input id="secondDate" type="date"/></div>
+</div>
+<div class="form-row" id="individualDateRow">
+<div class="field"><label for="individualStart">개별교육 시작일</label><input id="individualStart" type="date"/></div>
+<div class="field"><label for="individualEnd">개별교육 종료일</label><input id="individualEnd" type="date"/></div>
+</div>
+<div class="field" id="materialUrlField"><label for="materialUrl">교육자료 웹링크</label><input id="materialUrl" type="url"/></div>
+<div class="field"><label for="reportUrl">교육결과보고서 웹링크</label><input id="reportUrl" placeholder="미등록 시 교육진행중으로 표시" type="url"/></div>
+<div class="field"><label for="educationActive">공개여부</label><select id="educationActive"><option value="true">공개</option><option value="false">비공개</option></select></div>
+</div>
+<div class="form-error" id="educationFormError"></div>
+<div class="modal-actions"><button class="btn btn-secondary" data-close="educationModal" type="button">취소</button><button class="btn btn-primary" type="submit">저장</button></div>
+</form>
+</div>
+</div>
+</div>
+<div class="modal-backdrop" hidden="" id="participantModal">
+<div class="modal modal-wide">
+<div class="modal-head"><div><h2 id="participantTitle">교육 대상자 관리</h2></div><button class="close" data-close="participantModal" type="button">×</button></div>
+<div class="modal-body">
+<div class="summary-strip">
+<div class="summary-card"><span class="summary-label">현재 재직자</span><strong class="summary-value" id="currentEmployeeCount">0</strong></div>
+<div class="summary-card"><span class="summary-label">교육 대상자</span><strong class="summary-value" id="participantCount">0</strong></div>
+</div>
+<div class="toolbar">
+<div class="toolbar-left"></div>
+<div class="toolbar-right">
+<button class="btn btn-primary" id="assignAllButton" type="button">일괄 등록</button>
+<button class="btn btn-danger" id="deleteAllParticipantsButton" type="button">전체 삭제</button>
+</div>
+</div>
+<div class="participant-layout">
+<div class="panel">
+<div class="panel-head"><strong>개별 직원 추가</strong><input id="employeePickerSearch" placeholder="사원명·부서 검색" type="search"/></div>
+<div class="picker-list" id="employeePickerList"></div>
+</div>
+<div class="panel">
+<div class="panel-head"><strong>현재 대상자</strong><input id="participantSearch" placeholder="사원명·부서 검색" type="search"/></div>
+<div class="table-wrap">
+<table><thead><tr><th class="center">선택</th><th>부서</th><th>사원명</th><th class="center">관리</th></tr></thead><tbody id="participantTableBody"></tbody></table>
+</div>
+<div id="participantStatus"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="modal-backdrop" hidden="" id="departmentModal">
+<div class="modal modal-small">
+<div class="modal-head"><div><h2 id="departmentModalTitle">부서 추가</h2></div><button class="close" data-close="departmentModal" type="button">×</button></div>
+<div class="modal-body">
+<form id="departmentForm">
+<input id="departmentId" type="hidden"/>
+<div class="form-grid">
+<div class="field"><label for="departmentName">부서명</label><input id="departmentName" required=""/></div>
+<div class="field"><label for="departmentActive">사용여부</label><select id="departmentActive"><option value="true">사용</option><option value="false">미사용</option></select></div>
+</div>
+<div class="form-error" id="departmentFormError"></div>
+<div class="modal-actions"><button class="btn btn-secondary" data-close="departmentModal" type="button">취소</button><button class="btn btn-primary" type="submit">저장</button></div>
+</form>
+</div>
+</div>
+</div>
+<div class="modal-backdrop" hidden="" id="departmentHistoryModal">
+<div class="modal modal-wide">
+<div class="modal-head"><div><h2 id="departmentHistoryTitle">부서 이력</h2></div><button class="close" data-close="departmentHistoryModal" type="button">×</button></div>
+<div class="modal-body">
+<div class="card"><div class="table-wrap"><table><thead><tr><th>사원명</th><th>구분</th><th>변경 전</th><th>변경 후</th><th>적용일</th><th>종료일</th><th>비고</th></tr></thead><tbody id="departmentHistoryTableBody"></tbody></table></div><div id="departmentHistoryStatus"></div></div>
+</div>
+</div>
+</div>
+<div class="modal-backdrop" hidden="" id="hardDeleteModal">
+<div class="modal modal-small">
+<div class="modal-head">
+<div>
+<h2>사원 완전 삭제</h2></div>
+<button class="close" data-close="hardDeleteModal" type="button">×</button>
+</div>
+<div class="modal-body">
+<form id="hardDeleteForm">
+<input id="hardDeleteEmployeeId" type="hidden"/>
+<input id="hardDeleteEmployeeNameValue" type="hidden"/>
+<div class="form-grid">
+<div class="field">
+<label>삭제 대상</label>
+<input disabled="" id="hardDeleteEmployeeDisplay" type="text"/>
+</div>
+<label class="checkbox-line">
+<input id="hardDeleteForce" type="checkbox"/>
               교육이력·근무이력·부서이력까지 함께 완전 삭제
             </label>
-            <div class="field">
-              <label for="hardDeleteConfirmName">확인을 위해 사원명을 입력하세요</label>
-              <input id="hardDeleteConfirmName" type="text" autocomplete="off" required>
-            </div>
-          </div>
-          <div id="hardDeleteError" class="form-error"></div>
-          <div class="modal-actions">
-            <button class="btn btn-secondary" data-close="hardDeleteModal" type="button">취소</button>
-            <button class="btn btn-danger" type="submit">완전 삭제</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <div id="toast" class="toast" hidden></div>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <script>
+<div class="field">
+<label for="hardDeleteConfirmName">확인을 위해 사원명을 입력하세요</label>
+<input autocomplete="off" id="hardDeleteConfirmName" required="" type="text"/>
+</div>
+</div>
+<div class="form-error" id="hardDeleteError"></div>
+<div class="modal-actions">
+<button class="btn btn-secondary" data-close="hardDeleteModal" type="button">취소</button>
+<button class="btn btn-danger" type="submit">완전 삭제</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+<div class="toast" hidden="" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
     const SUPABASE_URL="https://erqmgnaergzsekneeoun.supabase.co";
     const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVycW1nbmFlcmd6c2VrbmVlb3VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MjQ4MDgsImV4cCI6MjA5OTIwMDgwOH0.laaWC08BPOop8CsE5IncO5NLP8Ft2yJgZbhIMKPGMwA";
     const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
@@ -634,9 +1104,15 @@
       isAdmin:false,currentView:"education",employeeTab:"active",
       categories:[],educationLinks:[],departments:[],departmentCounts:[],
       activeEmployees:[],retiredEmployees:[],currentEducation:null,
-      currentEmployees:[],participants:[],employeeRostersLoaded:false
+      currentEmployees:[],participants:[],employeeRostersLoaded:false,healthExams:[],healthMode:"status",
+      attendanceSessions:[],attendanceBoard:[],attendanceSessionId:localStorage.getItem("attendance_last_session_id")||"",
+      attendanceSelected:new Set(),attendanceChannel:null,attendancePollTimer:null,attendanceLoadingRows:new Set(),attendanceLogEmployeeId:null,
+      attendanceConfirmAction:null,attendanceConfirmEmployeeIds:[],attendanceLocalMutationUntil:0,attendancePage:1,attendancePageSize:50
     };
     const $=id=>document.getElementById(id);
+    function escapeHtml(value){
+      return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
+    }
     const statusLabels={employed:"재직",leave:"휴직",retired:"퇴사",non_regular:"비상근",long_trip:"해외출장",other:"기타"};
 
     function debounce(fn,delay=180){let timer;return(...args)=>{clearTimeout(timer);timer=setTimeout(()=>fn(...args),delay)}}
@@ -683,41 +1159,39 @@
 
 
     function showView(name){
-      if((name==="employees"||name==="departments")&&!state.isAdmin)name="education";
+      if((name==="employees"||name==="departments"||name==="health"||name==="attendance")&&!state.isAdmin)name="education";
+      if(state.currentView==="attendance"&&name!=="attendance")attendanceUnsubscribeRealtime();
       state.currentView=name;
       $("educationView").hidden=name!=="education";
       $("employeeView").hidden=name!=="employees";
       $("departmentView").hidden=name!=="departments";
+      $("healthView").hidden=name!=="health";
+      $("attendanceView").hidden=name!=="attendance";
       $("addEducationButton").hidden=!(state.isAdmin&&name==="education");
       $("employeeMenuButton").classList.toggle("active",name==="employees");
       $("departmentMenuButton").classList.toggle("active",name==="departments");
+      $("healthMenuButton").classList.toggle("active",name==="health");
+      $("attendanceMenuButton").classList.toggle("active",name==="attendance");
       if(name==="education"){
         const selected=state.categories.find(x=>Number(x.id)===Number(state.selectedCategoryId));
         $("pageTitle").textContent=selected?.category_name||"안전교육 자료실";
       }
-      if(name==="employees"){
-        $("pageTitle").textContent="사원명부";
-        loadEmployeeTab(state.employeeTab);
-      }
-      if(name==="departments"){
-        $("pageTitle").textContent="부서관리";
-        loadDepartments();
-      }
+      if(name==="employees"){$("pageTitle").textContent="사원명부";loadEmployeeTab(state.employeeTab)}
+      if(name==="departments"){$("pageTitle").textContent="부서관리";loadDepartments()}
+      if(name==="health"){$("pageTitle").textContent="건강검진 관리";loadHealthExams()}
+      if(name==="attendance"){$("pageTitle").textContent="교육 출결체크";attendanceInitialize()}
     }
 
     async function checkAdmin(session){
       if(!session?.user){
         state.isAdmin=false;
+        document.body.classList.remove("admin-mode");
         syncAdminUI();
         return;
       }
-      const {data,error}=await db
-        .from("admin_users")
-        .select("user_id")
-        .eq("user_id",session.user.id)
-        .eq("is_active",true)
-        .maybeSingle();
-      state.isAdmin=!error&&Boolean(data);
+      const {data,error}=await db.rpc("is_admin");
+      if(error)console.error("[관리자 권한 확인]",error);
+      state.isAdmin=!error&&data===true;
       document.body.classList.toggle("admin-mode",state.isAdmin);
       if(!state.isAdmin)await db.auth.signOut();
       syncAdminUI();
@@ -1015,9 +1489,9 @@
         db.rpc("get_admin_employee_roster",{p_roster:"retired"})
       ]);
       if(activeResult.error||retiredResult.error){
-        const message=(activeResult.error||retiredResult.error).message;
-        setStatus("activeEmployeeStatus",message,true);
-        setStatus("retiredEmployeeStatus",message,true);
+        console.error("[사원명부 조회]",activeResult.error||retiredResult.error);
+        setStatus("activeEmployeeStatus","사원명부를 불러오지 못했습니다.",true);
+        setStatus("retiredEmployeeStatus","사원명부를 불러오지 못했습니다.",true);
         return;
       }
       state.activeEmployees=activeResult.data||[];
@@ -1045,7 +1519,7 @@
     }
     function renderActiveEmployees(){
       const q=$("activeEmployeeSearch").value.trim().toLowerCase(),filter=$("activeStatusFilter").value;
-      const rows=state.activeEmployees.filter(x=>(!filter||x.employment_status===filter)&&(!q||`${x.employee_code||""} ${x.employee_name} ${x.department_name} ${x.job_title||""}`.toLowerCase().includes(q)));
+      const rows=state.activeEmployees.filter(x=>(!filter||x.employment_status===filter)&&(!q||`${x.employee_name} ${x.department_name} ${x.job_title||""}`.toLowerCase().includes(q)));
       const body=$("activeEmployeeTableBody");body.replaceChildren();resetActiveSelection();
       if(!rows.length){setStatus("activeEmployeeStatus","조건에 맞는 재직자가 없습니다.");return}setStatus("activeEmployeeStatus","");
       const f=document.createDocumentFragment();
@@ -1054,10 +1528,9 @@
         const checkTd=document.createElement("td");checkTd.className="center";const check=document.createElement("input");check.type="checkbox";check.className="active-row-check";check.value=x.employee_id;check.onchange=updateActiveSelection;checkTd.appendChild(check);tr.appendChild(checkTd);
         addTextCell(tr,index+1,"center");
         const statusTd=document.createElement("td");statusTd.appendChild(statusBadge(x.employment_status));tr.appendChild(statusTd);
-        addTextCell(tr,x.employee_code||"-","ellipsis",x.employee_code||"-");
-        addTextCell(tr,x.employee_name,"ellipsis",x.employee_name);
         addTextCell(tr,x.department_name,"ellipsis",x.department_name);
         addTextCell(tr,x.job_title||"-","ellipsis",x.job_title||"-");
+        addTextCell(tr,x.employee_name,"ellipsis",x.employee_name);
         addTextCell(tr,formatDate(x.hire_date));
         addTextCell(tr,formatDate(x.department_effective_date));
         const manage=document.createElement("td");manage.className="center row-actions";const edit=document.createElement("button");edit.className="mini";edit.textContent="수정";edit.onclick=()=>openEmployeeForm(x);const retire=document.createElement("button");retire.className="mini mini-danger";retire.textContent="퇴사처리";retire.onclick=()=>openRetireForm([x.employee_id],x.employee_name);const hardDelete=document.createElement("button");hardDelete.className="mini mini-danger";hardDelete.textContent="삭제";hardDelete.onclick=()=>openHardDeleteForm(x);manage.append(edit,retire,hardDelete);tr.appendChild(manage);
@@ -1066,13 +1539,13 @@
     }
     function renderRetiredEmployees(){
       const q=$("retiredEmployeeSearch").value.trim().toLowerCase(),dep=$("retiredDepartmentFilter").value,sort=$("retiredSort").value;
-      let rows=state.retiredEmployees.filter(x=>(!dep||String(x.department_id)===dep)&&(!q||`${x.employee_code||""} ${x.employee_name} ${x.department_name} ${x.job_title||""}`.toLowerCase().includes(q)));
+      let rows=state.retiredEmployees.filter(x=>(!dep||String(x.department_id)===dep)&&(!q||`${x.employee_name} ${x.department_name} ${x.job_title||""}`.toLowerCase().includes(q)));
       rows=[...rows].sort((a,b)=>sort==="name_asc"?a.employee_name.localeCompare(b.employee_name,"ko"):sort==="retired_asc"?(a.retirement_date||"").localeCompare(b.retirement_date||""):(b.retirement_date||"").localeCompare(a.retirement_date||""));
       const body=$("retiredEmployeeTableBody");body.replaceChildren();
       if(!rows.length){setStatus("retiredEmployeeStatus","조건에 맞는 퇴사자가 없습니다.");return}setStatus("retiredEmployeeStatus","");
       const f=document.createDocumentFragment();
       rows.forEach((x,index)=>{
-        const tr=document.createElement("tr");addTextCell(tr,index+1,"center");addTextCell(tr,x.employee_code||"-","ellipsis",x.employee_code||"-");addTextCell(tr,x.employee_name,"ellipsis",x.employee_name);addTextCell(tr,x.department_name,"ellipsis",x.department_name);addTextCell(tr,x.job_title||"-","ellipsis",x.job_title||"-");addTextCell(tr,formatDate(x.hire_date));addTextCell(tr,formatDate(x.retirement_date));const statusTd=document.createElement("td");statusTd.appendChild(statusBadge("retired"));tr.appendChild(statusTd);const manage=document.createElement("td");manage.className="center";const history=document.createElement("button");history.className="mini";history.textContent="교육이력 확인";history.onclick=()=>openRetiredHistory(x);const hardDelete=document.createElement("button");hardDelete.className="mini mini-danger";hardDelete.textContent="삭제";hardDelete.onclick=()=>openHardDeleteForm(x);manage.append(history,hardDelete);tr.appendChild(manage);f.appendChild(tr);
+        const tr=document.createElement("tr");addTextCell(tr,index+1,"center");addTextCell(tr,x.department_name,"ellipsis",x.department_name);addTextCell(tr,x.job_title||"-","ellipsis",x.job_title||"-");addTextCell(tr,x.employee_name,"ellipsis",x.employee_name);addTextCell(tr,formatDate(x.hire_date));addTextCell(tr,formatDate(x.retirement_date));const statusTd=document.createElement("td");statusTd.appendChild(statusBadge("retired"));tr.appendChild(statusTd);const manage=document.createElement("td");manage.className="center";const history=document.createElement("button");history.className="mini";history.textContent="교육이력 확인";history.onclick=()=>openRetiredHistory(x);const hardDelete=document.createElement("button");hardDelete.className="mini mini-danger";hardDelete.textContent="삭제";hardDelete.onclick=()=>openHardDeleteForm(x);manage.append(history,hardDelete);tr.appendChild(manage);f.appendChild(tr);
       });body.appendChild(f);
     }
     function resetActiveSelection(){$("selectAllActiveEmployees").checked=false;$("selectAllActiveEmployees").indeterminate=false;$("activeSelectionText").textContent="선택 0명";$("bulkDeleteButton").disabled=true}
@@ -1147,7 +1620,7 @@
     function fillEmployeeDepartmentOptions(){const select=$("employeeDepartment");select.replaceChildren(new Option("부서를 선택하세요",""));state.departments.filter(x=>x.is_active).sort((a,b)=>a.department_name.localeCompare(b.department_name,"ko")).forEach(d=>select.appendChild(new Option(d.department_name,String(d.id))))}
     function openEmployeeForm(employee=null){
       $("employeeForm").reset();$("employeeFormError").textContent="";$("employeeId").value=employee?.employee_id||"";$("employeeModalTitle").textContent=employee?"사원 정보 수정":"사원 추가";
-      $("employeeCode").value=employee?.employee_code||"";$("employeeName").value=employee?.employee_name||"";$("employeeDepartment").value=employee?.department_id||"";$("employeeJobTitle").value=employee?.job_title||"";$("employeeHireDate").value=employee?.hire_date||"";$("employeeTransferDate").value=employee?.department_effective_date||employee?.hire_date||new Date().toISOString().slice(0,10);$("employeeStatusSelect").value=employee?.employment_status||"employed";$("leaveStartDate").value=employee?.leave_start_date||"";$("leaveEndDate").value=employee?.leave_end_date||"";$("returnDate").value=employee?.return_date||"";$("employeeNote").value=employee?.note||"";toggleEmployeeStatusFields();openModal("employeeModal");
+      $("employeeCode").value=employee?.employee_code||`AUTO-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;$("employeeName").value=employee?.employee_name||"";$("employeeDepartment").value=employee?.department_id||"";$("employeeJobTitle").value=employee?.job_title||"";$("employeeHireDate").value=employee?.hire_date||"";$("employeeTransferDate").value=employee?.department_effective_date||employee?.hire_date||new Date().toISOString().slice(0,10);$("employeeStatusSelect").value=employee?.employment_status||"employed";$("leaveStartDate").value=employee?.leave_start_date||"";$("leaveEndDate").value=employee?.leave_end_date||"";$("returnDate").value=employee?.return_date||"";$("employeeNote").value=employee?.note||"";toggleEmployeeStatusFields();openModal("employeeModal");
     }
     function toggleEmployeeStatusFields(){const status=$("employeeStatusSelect").value;$("leaveDateFields").hidden=status!=="leave";$("returnDateField").hidden=status!=="employed";if(status==="leave"&&$("leaveStartDate").value&&!$("leaveEndDate").value){const d=new Date($("leaveStartDate").value+"T00:00:00");d.setFullYear(d.getFullYear()+1);$("leaveEndDate").value=d.toISOString().slice(0,10)}}
     async function saveEmployee(event){
@@ -1183,6 +1656,189 @@
     function openDepartmentForm(department=null){$("departmentForm").reset();$("departmentId").value=department?.id||"";$("departmentModalTitle").textContent=department?"부서 수정":"부서 추가";$("departmentName").value=department?.department_name||"";$("departmentActive").value=String(department?.is_active??true);$("departmentFormError").textContent="";openModal("departmentModal")}
     async function saveDepartment(event){event.preventDefault();const id=$("departmentId").value,payload={department_name:$("departmentName").value.trim(),is_active:$("departmentActive").value==="true"};const result=id?await db.from("employee_departments").update(payload).eq("id",Number(id)):await db.from("employee_departments").insert(payload);if(result.error){$("departmentFormError").textContent=result.error.message;return}closeModal("departmentModal");showToast("부서가 저장되었습니다.");await loadDepartments()}
     async function openDepartmentHistory(department){openModal("departmentHistoryModal");$("departmentHistoryTitle").textContent=`${department.department_name} 소속변동 이력`;renderSkeleton("departmentHistoryTableBody",7,5);setStatus("departmentHistoryStatus","");const {data,error}=await db.rpc("get_department_change_history",{p_department_id:Number(department.id)});$("departmentHistoryTableBody").replaceChildren();if(error){setStatus("departmentHistoryStatus",error.message,true);return}if(!data?.length){setStatus("departmentHistoryStatus","등록된 부서 이력이 없습니다.");return}const f=document.createDocumentFragment();data.forEach(x=>{const tr=document.createElement("tr");[x.employee_name,x.change_type,x.previous_department_name||"-",x.new_department_name||"-",formatDate(x.effective_from),x.effective_to?formatDate(x.effective_to):"현재",x.note||"-"].forEach(v=>addTextCell(tr,v,"ellipsis",v));f.appendChild(tr)});$("departmentHistoryTableBody").appendChild(f)}
+
+
+    const healthTypeLabels={"pre-placement":"배치전","post-placement":"배치후",special:"특수검진",general:"일반검진"};
+    const healthExclusionLabels={pregnancy:"임신",leave:"휴직",overseas:"해외출장",comprehensive:"종합검진"};
+
+    function healthInitializeYearFilter(){
+      const select=$("healthYearFilter");
+      if(select.options.length)return;
+      const year=Number(new Intl.DateTimeFormat("en",{timeZone:"Asia/Seoul",year:"numeric"}).format(new Date()));
+      for(let value=year+1;value>=year-4;value--)select.appendChild(new Option(`${value}년`,String(value)));
+      select.value=String(year);
+    }
+
+    function healthSetMode(mode){
+      state.healthMode=mode==="target"?"target":"status";
+      $("healthStatusTab").classList.toggle("active",state.healthMode==="status");
+      $("healthTargetTab").classList.toggle("active",state.healthMode==="target");
+      $("healthStatusPanel").hidden=state.healthMode!=="status";
+      $("healthTargetPanel").hidden=state.healthMode!=="target";
+      if(state.healthMode==="status")renderHealthExams();else renderHealthTargets();
+    }
+
+    async function loadHealthExams(){
+      if(!state.isAdmin)return;
+      healthInitializeYearFilter();
+      const year=Number($("healthYearFilter").value)||new Date().getFullYear();
+      renderSkeleton("healthExamTableBody",11,7);
+      renderSkeleton("healthTargetTableBody",9,7);
+      setStatus("healthExamStatus","");setStatus("healthTargetStatus","");
+      const {data,error}=await db.rpc("get_admin_health_management_roster",{p_exam_year:year});
+      if(error){
+        console.error("[건강검진 명단 조회]",error);
+        $("healthExamTableBody").replaceChildren();$("healthTargetTableBody").replaceChildren();
+        setStatus("healthExamStatus","처리 중 오류가 발생했습니다.",true);
+        setStatus("healthTargetStatus","처리 중 오류가 발생했습니다.",true);
+        return;
+      }
+      state.healthExams=Array.isArray(data)?data:[];
+      healthUpdateDashboard();
+      if(state.healthMode==="status")renderHealthExams();else renderHealthTargets();
+    }
+
+    function healthRequiredText(row){
+      if(row.exclusion_reason){
+        const reason=healthExclusionLabels[row.exclusion_reason]||row.exclusion_reason;
+        return row.exclusion_reason==="comprehensive"&&row.comprehensive_exam_date?`${reason} ${row.comprehensive_exam_date}`:reason;
+      }
+      const additional=healthTypeLabels[row.additional_exam_type];
+      return additional?`일반 + ${additional}`:"일반검진";
+    }
+
+    function healthUpdateDashboard(){
+      const targetRows=state.healthExams.filter(row=>!row.excluded);
+      const completed=targetRows.filter(row=>Boolean(row.completed)).length;
+      const incomplete=Math.max(0,targetRows.length-completed);
+      const completedRate=targetRows.length?Math.round(completed/targetRows.length*100):0;
+      const incompleteRate=targetRows.length?Math.round(incomplete/targetRows.length*100):0;
+      $("healthTargetTotal").textContent=`${targetRows.length}명`;
+      $("healthCompletedTotal").textContent=`${completed}명`;
+      $("healthIncompleteTotal").textContent=`${incomplete}명`;
+      $("healthTargetRate").textContent=targetRows.length?"100%":"0%";
+      $("healthCompletedRate").textContent=`${completedRate}%`;
+      $("healthIncompleteRate").textContent=`${incompleteRate}%`;
+      $("healthTargetRing").style.setProperty("--progress",targetRows.length?100:0);
+      $("healthCompletedRing").style.setProperty("--progress",completedRate);
+      $("healthIncompleteRing").style.setProperty("--progress",incompleteRate);
+    }
+
+    function healthMatchesSearch(row,query){return !query||`${row.employee_name||""} ${row.department_name||""} ${row.job_title||""}`.toLowerCase().includes(query)}
+    function healthFilteredRows(){
+      const q=$("healthSearch").value.trim().toLowerCase(),status=$("healthStatusFilter").value;
+      return state.healthExams.filter(row=>{
+        if(!healthMatchesSearch(row,q))return false;
+        if(status==="completed"&&(!row.completed||row.excluded))return false;
+        if(status==="incomplete"&&(row.completed||row.excluded))return false;
+        if(status==="excluded"&&!row.excluded)return false;
+        return true;
+      });
+    }
+
+    function renderHealthExams(){
+      if(state.healthMode!=="status")return;
+      healthUpdateDashboard();
+      const rows=healthFilteredRows(),body=$("healthExamTableBody");body.replaceChildren();
+      $("healthResultCount").textContent=`${rows.length}명`;
+      if(!rows.length){setStatus("healthExamStatus","조건에 해당하는 재직자가 없습니다.");return}
+      setStatus("healthExamStatus","");
+      const fragment=document.createDocumentFragment();
+      rows.forEach((row,index)=>{
+        const tr=document.createElement("tr");tr.dataset.employeeId=String(row.employee_id);
+        addTextCell(tr,index+1,"center");
+        addTextCell(tr,row.department_name||"-","ellipsis",row.department_name||"-");
+        addTextCell(tr,row.job_title||"-","center");
+        const nameTd=document.createElement("td");const strong=document.createElement("strong");strong.textContent=row.employee_name||"-";nameTd.appendChild(strong);tr.appendChild(nameTd);
+        const required=document.createElement("td");required.className="center";const requiredBadge=document.createElement("span");requiredBadge.className="health-required-badge";requiredBadge.textContent=healthRequiredText(row);required.appendChild(requiredBadge);tr.appendChild(required);
+        const statusTd=document.createElement("td");statusTd.className="center";const badge=document.createElement("span");badge.className=`health-status-badge ${row.excluded?"excluded":row.completed?"completed":"incomplete"}`;badge.textContent=row.excluded?"제외":row.completed?"완료":"미완료";statusTd.appendChild(badge);tr.appendChild(statusTd);
+        const makeInput=(type,field,value,placeholder,disabled=false)=>{const td=document.createElement("td"),input=document.createElement("input");input.type=type;input.dataset.field=field;input.value=value||"";input.placeholder=placeholder||"";input.disabled=disabled;td.appendChild(input);tr.appendChild(td)};
+        makeInput("date","generalDate",row.general_exam_date,"",Boolean(row.excluded));
+        makeInput("text","generalInstitution",row.general_institution,"검진기관",Boolean(row.excluded));
+        const noAdditional=!row.additional_exam_type||row.excluded;
+        makeInput("date","additionalDate",row.additional_exam_date,"",noAdditional);
+        makeInput("text","additionalInstitution",row.additional_institution,noAdditional?"추가검진 없음":`${healthTypeLabels[row.additional_exam_type]} 기관`,noAdditional);
+        const manage=document.createElement("td");manage.className="center";const save=document.createElement("button");save.type="button";save.className="health-save-row";save.textContent="저장";save.disabled=Boolean(row.excluded);save.onclick=()=>saveHealthRosterRow(tr,row);manage.appendChild(save);tr.appendChild(manage);
+        fragment.appendChild(tr);
+      });
+      body.appendChild(fragment);
+    }
+
+    async function saveHealthRosterRow(tr,row){
+      if(row.excluded){showToast("대상 제외 직원은 검진 종류 탭에서 관리하세요.");return}
+      const year=Number($("healthYearFilter").value),button=tr.querySelector(".health-save-row");
+      const generalDate=tr.querySelector('[data-field="generalDate"]').value||null;
+      const generalInstitution=tr.querySelector('[data-field="generalInstitution"]').value.trim()||null;
+      const additionalDate=tr.querySelector('[data-field="additionalDate"]').value||null;
+      const additionalInstitution=tr.querySelector('[data-field="additionalInstitution"]').value.trim()||null;
+      tr.classList.add("health-row-saving");button.disabled=true;
+      try{
+        const general=await db.rpc("save_employee_health_exam_v2",{p_employee_id:Number(row.employee_id),p_exam_year:year,p_exam_type:"general",p_exam_date:generalDate,p_institution:generalInstitution});
+        if(general.error)throw general.error;
+        if(row.additional_exam_type){
+          const additional=await db.rpc("save_employee_health_exam_v2",{p_employee_id:Number(row.employee_id),p_exam_year:year,p_exam_type:row.additional_exam_type,p_exam_date:additionalDate,p_institution:additionalInstitution});
+          if(additional.error)throw additional.error;
+        }
+        showToast(`${row.employee_name}님의 검진정보를 저장했습니다.`);await loadHealthExams();
+      }catch(error){console.error("[건강검진 저장]",error);showToast("처리 중 오류가 발생했습니다.")}
+      finally{tr.classList.remove("health-row-saving");button.disabled=false}
+    }
+
+    function healthTargetRows(){const q=$("healthTargetSearch").value.trim().toLowerCase();return state.healthExams.filter(row=>healthMatchesSearch(row,q))}
+    function renderHealthTargets(){
+      if(state.healthMode!=="target")return;
+      const rows=healthTargetRows(),body=$("healthTargetTableBody");body.replaceChildren();$("healthTargetResultCount").textContent=`${rows.length}명`;
+      if(!rows.length){setStatus("healthTargetStatus","조건에 해당하는 재직자가 없습니다.");return}
+      setStatus("healthTargetStatus","");
+      const fragment=document.createDocumentFragment();
+      rows.forEach((row,index)=>{
+        const tr=document.createElement("tr");tr.dataset.employeeId=String(row.employee_id);
+        addTextCell(tr,index+1,"center");addTextCell(tr,row.department_name||"-","ellipsis",row.department_name||"-");addTextCell(tr,row.job_title||"-","center");addTextCell(tr,row.employee_name||"-");
+        const base=document.createElement("td");base.className="center";base.innerHTML='<span class="health-required-badge">일반검진</span>';tr.appendChild(base);
+        const additionalTd=document.createElement("td"),additional=document.createElement("select");additional.dataset.field="additionalType";[["","해당 없음"],["special","특수검진"],["pre-placement","배치전"],["post-placement","배치후"]].forEach(([value,label])=>additional.appendChild(new Option(label,value)));additional.value=row.additional_exam_type||"";additionalTd.appendChild(additional);tr.appendChild(additionalTd);
+        const exclusionTd=document.createElement("td"),exclusion=document.createElement("select");exclusion.dataset.field="exclusionReason";[["","제외 없음"],["pregnancy","임신"],["leave","휴직"],["overseas","해외출장"],["comprehensive","종합검진"]].forEach(([value,label])=>exclusion.appendChild(new Option(label,value)));exclusion.value=row.exclusion_reason||"";exclusionTd.appendChild(exclusion);tr.appendChild(exclusionTd);
+        const comprehensiveTd=document.createElement("td"),comprehensive=document.createElement("input");comprehensive.type="date";comprehensive.dataset.field="comprehensiveDate";comprehensive.value=row.comprehensive_exam_date||"";comprehensive.hidden=exclusion.value!=="comprehensive";comprehensive.className="health-comprehensive-date";comprehensiveTd.appendChild(comprehensive);tr.appendChild(comprehensiveTd);
+        const manage=document.createElement("td");manage.className="center";const save=document.createElement("button");save.type="button";save.className="health-target-save";save.textContent="저장";save.onclick=()=>saveHealthTargetRow(tr,row);manage.appendChild(save);tr.appendChild(manage);
+        const sync=()=>{const excluded=Boolean(exclusion.value);additional.disabled=excluded;if(excluded)additional.value="";comprehensive.hidden=exclusion.value!=="comprehensive";if(exclusion.value!=="comprehensive")comprehensive.value=""};exclusion.onchange=sync;sync();
+        fragment.appendChild(tr);
+      });
+      body.appendChild(fragment);
+    }
+
+    async function saveHealthTargetRow(tr,row){
+      const year=Number($("healthYearFilter").value),additional=tr.querySelector('[data-field="additionalType"]').value||null,exclusion=tr.querySelector('[data-field="exclusionReason"]').value||null,comprehensive=tr.querySelector('[data-field="comprehensiveDate"]').value||null,button=tr.querySelector(".health-target-save");
+      if(exclusion==="comprehensive"&&!comprehensive){showToast("종합검진 실시일을 입력하세요.");return}
+      tr.classList.add("health-row-saving");button.disabled=true;
+      try{
+        const {error}=await db.rpc("save_employee_health_exam_target",{p_employee_id:Number(row.employee_id),p_exam_year:year,p_additional_exam_type:additional,p_exclusion_reason:exclusion,p_comprehensive_exam_date:comprehensive});
+        if(error)throw error;showToast(`${row.employee_name}님의 검진종류를 저장했습니다.`);await loadHealthExams();
+      }catch(error){console.error("[검진종류 저장]",error);showToast("처리 중 오류가 발생했습니다.")}
+      finally{tr.classList.remove("health-row-saving");button.disabled=false}
+    }
+
+    function downloadHealthExcelTemplate(){
+      const ws=XLSX.utils.aoa_to_sheet([["부서","성명","추가검진","제외사유","종합검진실시일","일반검진실시일","일반검진기관","추가검진실시일","추가검진기관"],["고객기술지원","홍길동","특수검진","","","2026-07-14","OO병원","2026-07-21","OO병원"]]);
+      const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"건강검진");XLSX.writeFile(wb,"건강검진_관리_양식.xlsx");
+    }
+
+    async function importHealthExcel(file){
+      try{
+        const buffer=await file.arrayBuffer(),wb=XLSX.read(buffer,{type:"array",cellDates:true}),sheet=wb.Sheets[wb.SheetNames[0]],rows=XLSX.utils.sheet_to_json(sheet,{defval:"",raw:false}),year=Number($("healthYearFilter").value);
+        const typeMap={특수검진:"special",배치전:"pre-placement",배치후:"post-placement"},reasonMap={임신:"pregnancy",휴직:"leave",해외출장:"overseas",종합검진:"comprehensive"};
+        let success=0,failed=0;
+        for(const item of rows){
+          const employee=state.healthExams.find(row=>String(row.employee_name||"").trim()===String(item["성명"]||"").trim()&&String(row.department_name||"").trim()===String(item["부서"]||"").trim());
+          if(!employee){failed++;continue}
+          try{
+            const additional=typeMap[String(item["추가검진"]||"").trim()]||null,exclusion=reasonMap[String(item["제외사유"]||"").trim()]||null,comprehensive=excelDate(item["종합검진실시일"])||null;
+            let result=await db.rpc("save_employee_health_exam_target",{p_employee_id:Number(employee.employee_id),p_exam_year:year,p_additional_exam_type:additional,p_exclusion_reason:exclusion,p_comprehensive_exam_date:comprehensive});if(result.error)throw result.error;
+            if(!exclusion){result=await db.rpc("save_employee_health_exam_v2",{p_employee_id:Number(employee.employee_id),p_exam_year:year,p_exam_type:"general",p_exam_date:excelDate(item["일반검진실시일"])||null,p_institution:String(item["일반검진기관"]||"").trim()||null});if(result.error)throw result.error;if(additional){result=await db.rpc("save_employee_health_exam_v2",{p_employee_id:Number(employee.employee_id),p_exam_year:year,p_exam_type:additional,p_exam_date:excelDate(item["추가검진실시일"])||null,p_institution:String(item["추가검진기관"]||"").trim()||null});if(result.error)throw result.error}}
+            success++;
+          }catch(error){console.error("[건강검진 엑셀 행 저장]",error);failed++}
+        }
+        showToast(`성공 ${success}건 · 실패 ${failed}건`);await loadHealthExams();
+      }catch(error){console.error("[건강검진 엑셀 업로드]",error);showToast("처리 중 오류가 발생했습니다.")}
+    }
 
     function fillEducationCategories(){const select=$("educationCategory");select.replaceChildren();state.categories.filter(x=>!state.categories.some(c=>Number(c.parent_id)===Number(x.id))).forEach(x=>{const parent=state.categories.find(c=>Number(c.id)===Number(x.parent_id));select.appendChild(new Option(parent?`${parent.category_name} - ${x.category_name}`:x.category_name,String(x.id)))})}
     function updateEducationFormLayout(){
@@ -1267,8 +1923,8 @@
 
     async function downloadExcelTemplate(){
       const ws=XLSX.utils.aoa_to_sheet([
-        ["사번","사원명","부서","직급","상태","입사일","전배일","휴직일","휴직종료일","복귀일","비고"],
-        ["E0001","홍길동","고객기술지원","사원","재직","2026-01-02","2026-01-02","","","",""]
+        ["사원명","부서","직급","상태","입사일","전배일","휴직일","휴직종료일","복귀일","비고"],
+        ["홍길동","고객기술지원","사원","재직","2026-01-02","2026-01-02","","","",""]
       ]);
       const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"재직자");XLSX.writeFile(wb,"재직자_일괄등록_양식.xlsx");
     }
@@ -1276,15 +1932,558 @@
     async function importExcel(file){
       const buffer=await file.arrayBuffer(),wb=XLSX.read(buffer,{type:"array",cellDates:true}),sheet=wb.Sheets[wb.SheetNames[0]],rows=XLSX.utils.sheet_to_json(sheet,{defval:"",raw:false});
       const map={재직:"employed",휴직:"leave",비상근:"non_regular",해외출장:"long_trip",장기출장:"long_trip",기타:"other"};
-      const payload=rows.filter(r=>r["사원명"]).map(r=>({employee_code:String(r["사번"]||"").trim(),employee_name:String(r["사원명"]||"").trim(),department_name:String(r["부서"]||"").trim(),job_title:String(r["직급"]||"").trim(),employment_status:map[String(r["상태"]||"재직").trim()]||"employed",hire_date:excelDate(r["입사일"]),department_effective_date:excelDate(r["전배일"])||excelDate(r["입사일"]),leave_start_date:excelDate(r["휴직일"]),leave_end_date:excelDate(r["휴직종료일"]),return_date:excelDate(r["복귀일"]),note:String(r["비고"]||"").trim()}));
+      const payload=rows.filter(r=>r["사원명"]).map(r=>({employee_code:`AUTO-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,employee_name:String(r["사원명"]||"").trim(),department_name:String(r["부서"]||"").trim(),job_title:String(r["직급"]||"").trim(),employment_status:map[String(r["상태"]||"재직").trim()]||"employed",hire_date:excelDate(r["입사일"]),department_effective_date:excelDate(r["전배일"])||excelDate(r["입사일"]),leave_start_date:excelDate(r["휴직일"]),leave_end_date:excelDate(r["휴직종료일"]),return_date:excelDate(r["복귀일"]),note:String(r["비고"]||"").trim()}));
       const {data,error}=await db.rpc("bulk_import_active_employees_v2",{p_rows:payload});if(error){showToast(error.message);return}const result=data?.[0]||{};showToast(`성공 ${result.success_count||0}명 · 실패 ${result.failed_count||0}명`);state.employeeRostersLoaded=false;await loadAllEmployeeRosters();
     }
+
+
+    const ATTENDANCE_CONFIG={
+      lastSessionKey:"attendance_last_session_id",searchKey:"attendance_search",departmentKey:"attendance_department_filter",statusKey:"attendance_status_filter",fallbackRefreshMs:15000
+    };
+    const ATTENDANCE_POSITION_ORDER=["대표이사","부사장","전무","상무","이사","부장","차장","과장","대리","사원"];
+    function attendancePositionRank(v){const i=ATTENDANCE_POSITION_ORDER.indexOf((v||"").trim());return i<0?999:i}
+    function attendanceFormatSeoul(value){if(!value)return"-";const d=new Date(value);if(Number.isNaN(d.getTime()))return"-";return new Intl.DateTimeFormat("ko-KR",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}).format(d)}
+    function attendanceFormatTime(value){if(!value)return"-";const d=new Date(value);if(Number.isNaN(d.getTime()))return"-";return new Intl.DateTimeFormat("ko-KR",{timeZone:"Asia/Seoul",hour:"2-digit",minute:"2-digit",hour12:false}).format(d)}
+    function attendanceDurationText(minutes){const n=Math.max(0,Number(minutes)||0),h=Math.floor(n/60),m=n%60;return h?`${h}시간 ${m}분`:`${m}분`}
+    function attendanceNowLocalInput(){const d=new Date(Date.now()-new Date().getTimezoneOffset()*60000);return d.toISOString().slice(0,16)}
+    async function attendanceInitialize(){
+      if(!state.isAdmin)return;
+      $("attendanceSearch").value=localStorage.getItem(ATTENDANCE_CONFIG.searchKey)||"";
+      const selectedId=await attendanceLoadSessions({preferredId:state.attendanceSessionId,autoSelect:true});
+      if(selectedId)await attendanceLoadBoard();else attendanceRenderEmpty();
+      attendanceSubscribeRealtime();
+    }
+    function attendanceNormalizeSessions(rows){
+      const source=Array.isArray(rows)?rows:[];
+      const seen=new Set();
+      return source.filter(row=>{
+        if(!row||!row.id)return false;
+        const id=String(row.id);
+        if(seen.has(id))return false;
+        seen.add(id);
+        return true;
+      }).map(row=>({
+        id:String(row.id),
+        session_name:row.session_name||"",
+        session_date:row.session_date||"",
+        round_no:Number(row.round_no||1),
+        start_at:row.start_at||null,
+        end_at:row.end_at||null,
+        created_at:row.created_at||null,
+        updated_at:row.updated_at||null
+      })).sort((a,b)=>String(b.session_date).localeCompare(String(a.session_date))||Number(a.round_no)-Number(b.round_no)||String(b.created_at||"").localeCompare(String(a.created_at||"")));
+    }
+    function attendanceRenderSessionOptions(preferredId="",autoSelect=true){
+      const select=$("attendanceSessionSelect");
+      const rows=attendanceNormalizeSessions(state.attendanceSessions);
+      state.attendanceSessions=rows;
+      select.replaceChildren(new Option("교육 회차 선택",""));
+      rows.forEach(row=>{
+        const label=`${row.session_date} · ${row.session_name} · ${row.round_no}차`;
+        select.appendChild(new Option(label,String(row.id)));
+      });
+      const stored=localStorage.getItem(ATTENDANCE_CONFIG.lastSessionKey)||"";
+      const candidates=[preferredId,state.attendanceSessionId,stored].map(v=>String(v||"")).filter(Boolean);
+      let selected=candidates.find(id=>rows.some(row=>String(row.id)===id))||"";
+      if(!selected&&autoSelect&&rows.length)selected=String(rows[0].id);
+      state.attendanceSessionId=selected;
+      select.disabled=rows.length===0;
+      select.value=selected;
+      if(selected)localStorage.setItem(ATTENDANCE_CONFIG.lastSessionKey,selected);
+      else localStorage.removeItem(ATTENDANCE_CONFIG.lastSessionKey);
+      attendanceRenderSessionInfo();
+      return selected;
+    }
+    function attendanceUpsertSessionLocal(session){
+      if(!session||!session.id)return "";
+      const id=String(session.id);
+      state.attendanceSessions=attendanceNormalizeSessions([session,...state.attendanceSessions.filter(row=>String(row.id)!==id)]);
+      return attendanceRenderSessionOptions(id,true);
+    }
+    function attendanceParseSessionRows(data){
+      if(Array.isArray(data))return data;
+      if(typeof data==="string"){
+        try{const parsed=JSON.parse(data);return Array.isArray(parsed)?parsed:Array.isArray(parsed?.sessions)?parsed.sessions:[]}catch{return []}
+      }
+      if(Array.isArray(data?.sessions))return data.sessions;
+      return [];
+    }
+    async function attendanceFetchSessions(){
+      const errors=[];
+      const rpc=await db.rpc("attendance_get_sessions_admin");
+      if(!rpc.error){
+        const rows=attendanceParseSessionRows(rpc.data);
+        if(rows.length)return {rows,source:"admin-rpc",errors};
+      }else errors.push(`회차 RPC: ${rpc.error.message}`);
+
+      const columns="id,session_name,session_date,round_no,start_at,end_at,created_at,updated_at";
+      const direct=await db.from("attendance_sessions").select(columns).order("session_date",{ascending:false}).order("round_no",{ascending:true}).order("created_at",{ascending:false});
+      if(!direct.error&&Array.isArray(direct.data))return {rows:direct.data,source:"table",errors};
+      if(direct.error)errors.push(`테이블 조회: ${direct.error.message}`);
+
+      const legacy=await db.rpc("attendance_list_sessions");
+      if(!legacy.error&&Array.isArray(legacy.data))return {rows:legacy.data,source:"legacy-rpc",errors};
+      if(legacy.error)errors.push(`기존 RPC: ${legacy.error.message}`);
+      return {rows:[],source:"none",errors};
+    }
+    async function attendanceLoadSessions({preferredId="",autoSelect=true}={}){
+      const select=$("attendanceSessionSelect");
+      select.disabled=true;
+      select.replaceChildren(new Option("교육 회차 불러오는 중",""));
+      const result=await attendanceFetchSessions();
+      const rows=attendanceNormalizeSessions(result.rows);
+      if(rows.length){
+        state.attendanceSessions=rows;
+        const selected=attendanceRenderSessionOptions(preferredId,autoSelect);
+        setStatus("attendanceStatus","");
+        return selected;
+      }
+      if(state.attendanceSessions.length){
+        const selected=attendanceRenderSessionOptions(preferredId,autoSelect);
+        setStatus("attendanceStatus","회차 목록 재조회에 실패하여 현재 목록을 유지합니다.",true);
+        console.error("attendance session reload failed",result.errors);
+        return selected;
+      }
+      state.attendanceSessionId="";
+      select.replaceChildren(new Option("등록된 교육 회차가 없습니다",""));
+      select.disabled=true;
+      attendanceRenderSessionInfo();
+      setStatus("attendanceStatus",result.errors.length?"교육 회차를 불러오지 못했습니다.":"등록된 교육 회차가 없습니다.",true);
+      console.error("attendance sessions unavailable",result.errors);
+      return "";
+    }
+    function attendanceCurrentSession(){return state.attendanceSessions.find(row=>String(row.id)===String(state.attendanceSessionId))}
+    function attendanceRenderSessionInfo(){
+      const session=attendanceCurrentSession();
+      $("attendanceEditSessionButton").disabled=!session;
+      $("attendanceCsvButton").disabled=!session;$("attendanceMissingCsvButton").disabled=!session;
+      const box=$("attendanceSessionInfo");
+      box.replaceChildren();
+      if(!session){const span=document.createElement("span");span.textContent="교육 회차를 선택하세요.";box.appendChild(span);return}
+      const strong=document.createElement("strong");strong.textContent=`${session.session_name} · ${session.round_no||1}차`;
+      const date=document.createElement("span");date.textContent=session.session_date;
+      const time=document.createElement("span");time.textContent=`${attendanceFormatTime(session.start_at)}~${attendanceFormatTime(session.end_at)}`;
+      box.append(strong,date,time);
+    }
+    async function attendanceLoadBoard({silent=false}={}){
+      if(!state.attendanceSessionId){attendanceRenderEmpty();return}
+      if(!silent)setStatus("attendanceStatus","사원명부를 불러오는 중입니다.");
+      const {data,error}=await db.rpc("attendance_get_board",{p_session_id:state.attendanceSessionId});
+      if(error){
+        console.error("attendance_get_board",error);
+        state.attendanceBoard=[];
+        attendanceRenderEmpty();
+        setStatus("attendanceStatus","사원명부를 불러오지 못했습니다.",true);
+        return;
+      }
+      state.attendanceBoard=(Array.isArray(data)?data:[]).sort((a,b)=>(a.department_name||"").localeCompare(b.department_name||"","ko")||attendancePositionRank(a.job_title)-attendancePositionRank(b.job_title)||(a.employee_name||"").localeCompare(b.employee_name||"","ko"));
+      attendancePopulateDepartmentFilter();
+      attendanceRenderBoard();
+      setStatus("attendanceStatus","");
+    }
+    function attendancePopulateDepartmentFilter(){const current=localStorage.getItem(ATTENDANCE_CONFIG.departmentKey)||"",values=[...new Set(state.attendanceBoard.map(x=>x.department_name).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ko"));$("attendanceDepartmentFilter").innerHTML='<option value="">전체 부서</option>'+values.map(x=>`<option value="${escapeHtml(x)}">${escapeHtml(x)}</option>`).join("");$("attendanceDepartmentFilter").value=values.includes(current)?current:"";$("attendanceStatusFilter").value=localStorage.getItem(ATTENDANCE_CONFIG.statusKey)||""}
+    function attendanceFilteredRows(){
+      const q=$("attendanceSearch").value.trim().toLowerCase(),dept=$("attendanceDepartmentFilter").value,status=$("attendanceStatusFilter").value;
+      return state.attendanceBoard.filter(row=>{
+        if(q&&!`${row.employee_name||""} ${row.department_name||""} ${row.job_title||""}`.toLowerCase().includes(q))return false;
+        if(dept&&row.department_name!==dept)return false;
+        const hasIn=Number(row.visit_count||0)>0,hasOut=Number(row.closed_visit_count||0)>0;
+        if(status==="not_started"&&hasIn)return false;
+        if(status==="entered"&&!hasIn)return false;
+        if(status==="completed"&&(!hasOut||row.open_visit_id))return false;
+        if(status==="missed"&&!row.missed_signature)return false;
+        return true;
+      });
+    }
+    function attendanceIntervals(row){return Array.isArray(row?.intervals)?row.intervals.filter(Boolean):[]}
+    function attendanceFirstCheckIn(row){return attendanceIntervals(row).find(item=>item.check_in_at)?.check_in_at||null}
+    function attendanceLastCheckOut(row){const closed=attendanceIntervals(row).filter(item=>item.check_out_at);return closed.length?closed[closed.length-1].check_out_at:null}
+    function attendanceFullLogText(row){return attendanceIntervals(row).map((item,index)=>`${index+1}회 ${attendanceFormatSeoul(item.check_in_at)}~${attendanceFormatSeoul(item.check_out_at)}`).join(" | ")}
+    function attendancePageCount(totalRows){
+      return Math.max(1,Math.ceil(totalRows/state.attendancePageSize));
+    }
+    function attendanceCurrentPageRows(){
+      const rows=attendanceFilteredRows(),pages=attendancePageCount(rows.length);
+      state.attendancePage=Math.min(Math.max(1,state.attendancePage),pages);
+      const start=(state.attendancePage-1)*state.attendancePageSize;
+      return rows.slice(start,start+state.attendancePageSize);
+    }
+    function attendanceSetPage(page){
+      const pages=attendancePageCount(attendanceFilteredRows().length);
+      const next=Math.min(Math.max(1,Number(page)||1),pages);
+      if(next===state.attendancePage)return;
+      state.attendancePage=next;
+      attendanceRenderBoard();
+      const card=document.querySelector('#attendanceView .attendance-table-card');
+      if(card)card.scrollIntoView({block:'start',behavior:'smooth'});
+    }
+    function attendanceRenderPagination(totalRows){
+      const box=$('attendancePagination'),pages=attendancePageCount(totalRows);
+      box.replaceChildren();
+      if(totalRows<=state.attendancePageSize){box.hidden=true;return}
+      box.hidden=false;
+      const addButton=(label,page,options={})=>{
+        const button=document.createElement('button');
+        button.type='button';button.className='attendance-page-button'+(options.active?' active':'');
+        button.textContent=label;button.disabled=Boolean(options.disabled);
+        button.setAttribute('aria-label',options.ariaLabel||label);
+        if(!button.disabled&&!options.active)button.onclick=()=>attendanceSetPage(page);
+        box.appendChild(button);
+      };
+      addButton('이전',state.attendancePage-1,{disabled:state.attendancePage===1});
+      for(let page=1;page<=pages;page++){
+        addButton(String(page),page,{active:page===state.attendancePage,ariaLabel:`${page}페이지`});
+      }
+      addButton('다음',state.attendancePage+1,{disabled:state.attendancePage===pages});
+    }
+    function attendanceRenderBoard(){
+      const filteredRows=attendanceFilteredRows(),pages=attendancePageCount(filteredRows.length);
+      state.attendancePage=Math.min(Math.max(1,state.attendancePage),pages);
+      const start=(state.attendancePage-1)*state.attendancePageSize,rows=filteredRows.slice(start,start+state.attendancePageSize),body=$("attendanceTableBody");
+      body.replaceChildren();
+      for(const row of rows){
+        const tr=document.createElement("tr");
+        const employeeId=String(row.employee_id);
+        if(row.missed_signature)tr.classList.add("attendance-row-missed");
+        if(state.attendanceLoadingRows.has(employeeId))tr.classList.add("attendance-row-loading");
+        const intervals=attendanceIntervals(row),firstIn=attendanceFirstCheckIn(row),lastOut=attendanceLastCheckOut(row),hasOpen=Boolean(row.open_visit_id);
+        const checkInAction=!hasOpen?`<button class="attendance-cell-action attendance-check-in" data-id="${employeeId}" type="button">${intervals.length?"추가 입실":"입실 기록"}</button>`:"";
+        const checkOutAction=hasOpen?`<button class="attendance-cell-action attendance-check-out" data-id="${employeeId}" type="button">퇴실 기록</button>`:"";
+        tr.innerHTML=`
+          <td class="center"><input class="attendance-row-check" type="checkbox" value="${employeeId}" ${state.attendanceSelected.has(employeeId)?"checked":""}></td>
+          <td>${escapeHtml(row.department_name||"-")}</td>
+          <td class="center">${escapeHtml(row.job_title||"-")}</td>
+          <td class="center"><button class="attendance-person-button attendance-open-log" data-id="${employeeId}" type="button">${escapeHtml(row.employee_name||"-")}</button></td>
+          <td class="attendance-time-cell"><span class="attendance-time-main">${attendanceFormatTime(firstIn)}</span>${checkInAction}</td>
+          <td class="attendance-time-cell"><span class="attendance-time-main">${attendanceFormatTime(lastOut)}</span>${checkOutAction}</td>
+          <td class="attendance-duration center">${attendanceDurationText(row.education_minutes)}</td>
+          <td class="center"><button class="attendance-visit-button attendance-open-log" data-id="${employeeId}" type="button" ${intervals.length?"":"disabled"}>${intervals.length?`${intervals.length}회`:"-"}</button></td>
+          <td class="center"><button class="attendance-missed-toggle ${row.missed_signature?"active":""}" data-id="${employeeId}" type="button">${row.missed_signature?"미수강":"정상"}</button></td>
+          <td><input class="attendance-memo-input" data-employee-id="${employeeId}" value="${escapeHtml(row.memo||"")}" placeholder="클릭하여 입력"></td>`;
+        body.appendChild(tr);
+      }
+      body.querySelectorAll(".attendance-row-check").forEach(el=>el.onchange=()=>{el.checked?state.attendanceSelected.add(el.value):state.attendanceSelected.delete(el.value);attendanceUpdateSelection()});
+      body.querySelectorAll(".attendance-check-in").forEach(el=>el.onclick=()=>attendanceOpenConfirm("check_in",[attendanceRow(el.dataset.id)]));
+      body.querySelectorAll(".attendance-check-out").forEach(el=>el.onclick=()=>attendanceOpenConfirm("check_out",[attendanceRow(el.dataset.id)]));
+      body.querySelectorAll(".attendance-open-log").forEach(el=>el.onclick=()=>attendanceOpenLog(attendanceRow(el.dataset.id)));
+      body.querySelectorAll(".attendance-missed-toggle").forEach(el=>el.onclick=()=>attendanceToggleMissed(el.dataset.id));
+      body.querySelectorAll(".attendance-memo-input").forEach(el=>{el.onkeydown=event=>{if(event.key==="Enter"){event.preventDefault();el.blur()}};el.onblur=()=>attendanceSaveMemoInline(el)});
+      $("attendanceResultCount").textContent=filteredRows.length?`${filteredRows.length}명 · ${state.attendancePage}/${pages}페이지`:`0명`;
+      attendanceRenderPagination(filteredRows.length);
+      const all=state.attendanceBoard;
+      $("attendanceActiveCount").textContent=all.length;
+      $("attendanceCheckInCount").textContent=all.filter(item=>Number(item.visit_count||0)>0).length;
+      $("attendanceCheckOutCount").textContent=all.filter(item=>Number(item.closed_visit_count||0)>0&&!item.open_visit_id).length;
+      $("attendanceSuspectedCount").textContent=all.filter(item=>Boolean(item.missed_signature)).length;
+      attendanceUpdateSelection();
+    }
+    function attendanceRow(id){return state.attendanceBoard.find(row=>String(row.employee_id)===String(id))}
+    function attendanceRenderEmpty(){
+      state.attendanceBoard=[];state.attendancePage=1;
+      $("attendanceTableBody").innerHTML='<tr><td colspan="10" class="attendance-empty-session">교육 회차를 선택하세요.</td></tr>';
+      ["attendanceActiveCount","attendanceCheckInCount","attendanceCheckOutCount","attendanceSuspectedCount"].forEach(id=>$(id).textContent="0");
+      $("attendanceResultCount").textContent="0명";
+      $("attendancePagination").replaceChildren();$("attendancePagination").hidden=true;
+      attendanceUpdateSelection();
+    }
+    function attendanceUpdateSelection(){
+      const count=state.attendanceSelected.size;
+      $("attendanceSelectedCount").textContent=`선택 ${count}명`;
+      $("attendanceClearSelectionButton").disabled=!count;
+      $("attendanceStartPeopleButton").disabled=!count;
+      $("attendanceEndPeopleButton").disabled=!count;
+      const visible=attendanceCurrentPageRows();
+      $("attendanceSelectAll").checked=visible.length>0&&visible.every(row=>state.attendanceSelected.has(String(row.employee_id)));
+      $("attendanceSelectAll").indeterminate=visible.some(row=>state.attendanceSelected.has(String(row.employee_id)))&&!$("attendanceSelectAll").checked;
+    }
+    function attendanceToLocalInput(value){
+      if(!value)return"";
+      const date=new Date(value);if(Number.isNaN(date.getTime()))return"";
+      const parts=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(date).reduce((acc,p)=>(acc[p.type]=p.value,acc),{});
+      return `${parts.year}-${parts.month}-${parts.day}T${parts.hour==="24"?"00":parts.hour}:${parts.minute}`;
+    }
+    function attendanceLogCurrentRow(){return attendanceRow(state.attendanceLogEmployeeId)}
+    function attendanceRenderLogRows(row){
+      const body=$("attendanceLogTableBody"),intervals=attendanceIntervals(row);body.replaceChildren();
+      if(!intervals.length){body.innerHTML='<tr><td colspan="5" class="attendance-log-empty">기록된 출입 로그가 없습니다.</td></tr>';return}
+      intervals.forEach((item,index)=>{
+        const tr=document.createElement("tr");tr.dataset.intervalId=String(item.id||"");
+        tr.innerHTML=`<td class="center">${index+1}</td><td><span data-log-text="in">${escapeHtml(attendanceFormatSeoul(item.check_in_at))}</span></td><td><span data-log-text="out">${escapeHtml(attendanceFormatSeoul(item.check_out_at))}</span></td><td class="center">${escapeHtml(item.check_out_at?attendanceDurationText(item.duration_minutes):"진행 중")}</td><td><div class="attendance-log-actions"><button class="attendance-log-edit" type="button">수정</button><button class="attendance-log-delete danger" type="button">삭제</button></div></td>`;
+        tr.querySelector(".attendance-log-edit").onclick=()=>attendanceBeginLogEdit(tr,item);
+        tr.querySelector(".attendance-log-delete").onclick=()=>attendanceDeleteLog(item);
+        body.appendChild(tr);
+      });
+    }
+    function attendanceOpenLog(row){
+      if(!row)return;
+      state.attendanceLogEmployeeId=String(row.employee_id);
+      const session=attendanceCurrentSession(),intervals=attendanceIntervals(row);
+      $("attendanceLogTitle").textContent=`${row.employee_name||"사원"} 출입 상세 로그`;
+      $("attendanceLogMeta").innerHTML=`<span><strong>교육</strong> ${escapeHtml(session?`${session.session_name} ${session.round_no||1}차`:"-")}</span><span><strong>부서</strong> ${escapeHtml(row.department_name||"-")}</span><span><strong>직급</strong> ${escapeHtml(row.job_title||"-")}</span><span><strong>출입</strong> ${intervals.length}회</span>`;
+      attendanceRenderLogRows(row);$("attendanceLogTotal").textContent=attendanceDurationText(row.education_minutes);openModal("attendanceLogModal");
+    }
+    function attendanceBeginLogEdit(tr,item){
+      if(tr.classList.contains("attendance-log-edit-row"))return;
+      tr.classList.add("attendance-log-edit-row");
+      const cells=tr.children;
+      cells[1].innerHTML=`<input data-edit-field="in" type="datetime-local" value="${attendanceToLocalInput(item.check_in_at)}">`;
+      cells[2].innerHTML=`<input data-edit-field="out" type="datetime-local" value="${attendanceToLocalInput(item.check_out_at)}">`;
+      cells[4].innerHTML='<div class="attendance-log-actions"><button class="attendance-log-save primary" type="button">저장</button><button class="attendance-log-cancel" type="button">취소</button></div>';
+      cells[4].querySelector(".attendance-log-save").onclick=()=>attendanceSaveLogEdit(tr,item);
+      cells[4].querySelector(".attendance-log-cancel").onclick=()=>attendanceOpenLog(attendanceLogCurrentRow());
+    }
+    async function attendanceSaveLogEdit(tr,item){
+      const inputIn=tr.querySelector('[data-edit-field="in"]'),inputOut=tr.querySelector('[data-edit-field="out"]');
+      if(!inputIn.value){showToast("입실시각을 입력하세요.");return}
+      const checkIn=new Date(`${inputIn.value}:00+09:00`).toISOString(),checkOut=inputOut.value?new Date(`${inputOut.value}:00+09:00`).toISOString():null;
+      if(checkOut&&new Date(checkOut)<new Date(checkIn)){showToast("퇴실시각은 입실시각보다 빠를 수 없습니다.");return}
+      tr.classList.add("attendance-row-loading");
+      try{
+        const {error}=await db.rpc("attendance_update_interval",{p_interval_id:item.id,p_check_in_at:checkIn,p_check_out_at:checkOut});if(error)throw error;
+        await attendanceLoadBoard({silent:true});const row=attendanceLogCurrentRow();if(row)attendanceOpenLog(row);showToast("출입 로그를 수정했습니다.");
+      }catch(error){console.error("[출입 로그 수정]",error);showToast("처리 중 오류가 발생했습니다.");tr.classList.remove("attendance-row-loading")}
+    }
+    async function attendanceDeleteLog(item){
+      if(!confirm("선택한 출입 로그를 삭제하시겠습니까?"))return;
+      try{
+        const {error}=await db.rpc("attendance_delete_interval",{p_interval_id:item.id});if(error)throw error;
+        await attendanceLoadBoard({silent:true});const row=attendanceLogCurrentRow();if(row)attendanceOpenLog(row);showToast("출입 로그를 삭제했습니다.");
+      }catch(error){console.error("[출입 로그 삭제]",error);showToast("처리 중 오류가 발생했습니다.")}
+    }
+    async function attendanceToggleMissed(employeeId){
+      const row=attendanceRow(employeeId);
+      if(!row||!state.attendanceSessionId)return;
+      const target=!Boolean(row.missed_signature),id=Number(employeeId);
+      state.attendanceLoadingRows.add(String(employeeId));
+      attendanceRenderBoard();
+      try{
+        let saved=false,lastError=null;
+        for(const rpcName of ["attendance_set_missed_signature","set_attendance_missed_signature","update_attendance_missed_signature"]){
+          const result=await db.rpc(rpcName,{p_session_id:state.attendanceSessionId,p_employee_id:id,p_missed_signature:target});
+          if(!result.error){saved=true;break}
+          lastError=result.error;
+          const missing=result.error.code==="PGRST202"||String(result.error.message||"").includes("Could not find the function");
+          if(!missing)break;
+        }
+        if(!saved){
+          const existing=await db.from("attendance_records").select("id").eq("session_id",state.attendanceSessionId).eq("employee_id",id).maybeSingle();
+          if(existing.error)throw existing.error;
+          if(existing.data?.id){
+            const updated=await db.from("attendance_records").update({missed_signature:target,updated_at:new Date().toISOString()}).eq("id",existing.data.id);
+            if(updated.error)throw updated.error;
+          }else{
+            const employee=await db.from("employees").select("employee_code,employee_name,job_title").eq("id",id).single();
+            if(employee.error)throw employee.error;
+            const inserted=await db.from("attendance_records").insert({
+              session_id:state.attendanceSessionId,
+              employee_id:id,
+              employee_no_snapshot:employee.data.employee_code||`EMP-${id}`,
+              employee_name_snapshot:employee.data.employee_name||row.employee_name||"",
+              department_snapshot:row.department_name||null,
+              position_snapshot:employee.data.job_title||row.job_title||null,
+              missed_signature:target
+            });
+            if(inserted.error){
+              const retry=await db.from("attendance_records").update({missed_signature:target,updated_at:new Date().toISOString()}).eq("session_id",state.attendanceSessionId).eq("employee_id",id);
+              if(retry.error)throw inserted.error;
+            }
+          }
+          if(lastError)console.info("미수강 서명 전용 RPC 미설치로 관리자 RLS 직접 저장 사용",lastError);
+        }
+        row.missed_signature=target;
+        showToast(target?"미수강 서명으로 표시했습니다.":"미수강 서명을 해제했습니다.");
+      }catch(error){
+        console.error("[미수강 서명 저장]",error);
+        showToast("처리 중 오류가 발생했습니다.");
+      }finally{
+        state.attendanceLoadingRows.delete(String(employeeId));
+        attendanceRenderBoard();
+      }
+    }
+    function attendanceAutoSessionName(dateValue){const month=Number(String(dateValue||"").slice(5,7));return month?`${month}월 정기안전보건교육`:""}
+    function attendanceNowTime(){return new Intl.DateTimeFormat("ko-KR",{timeZone:"Asia/Seoul",hour:"2-digit",minute:"2-digit",hour12:false}).format(new Date()).replace("24:","00:")}
+    function attendanceTimeToMinutes(value){const [h,m]=String(value||"").split(":").map(Number);return Number.isFinite(h)&&Number.isFinite(m)?h*60+m:NaN}
+    function attendanceMinutesToTime(value){const minutes=((Number(value)||0)%1440+1440)%1440;return `${String(Math.floor(minutes/60)).padStart(2,"0")}:${String(minutes%60).padStart(2,"0")}`}
+    function attendanceDefaultEndTime(startValue){const start=attendanceTimeToMinutes(startValue);return Number.isFinite(start)?attendanceMinutesToTime(Math.min(start+120,1439)):"11:30"}
+    function attendanceSyncSessionTimes(){const start=$("attendanceSessionStart").value,end=$("attendanceSessionEnd").value;if(!start)return;const startMin=attendanceTimeToMinutes(start),endMin=attendanceTimeToMinutes(end);if(!Number.isFinite(endMin)||endMin<=startMin)$("attendanceSessionEnd").value=attendanceDefaultEndTime(start)}
+    function attendanceOpenSessionForm(session=null){
+      const date=session?.session_date||new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
+      const startValue=session?attendanceFormatTime(session.start_at):attendanceNowTime();
+      $("attendanceSessionModalTitle").textContent=session?"교육 회차 수정":"교육 회차 생성";
+      $("attendanceSessionId").value=session?.id||"";
+      $("attendanceSessionDate").value=date;
+      $("attendanceSessionName").value=attendanceAutoSessionName(date);
+      $("attendanceRoundNo").value=String(session?.round_no||1);
+      $("attendanceSessionStart").value=startValue;
+      $("attendanceSessionEnd").value=session?attendanceFormatTime(session.end_at):attendanceDefaultEndTime(startValue);
+      $("attendanceSessionError").textContent="";
+      $("attendanceSessionSubmit").disabled=false;
+      $("attendanceSessionSubmit").textContent="저장";
+      openModal("attendanceSessionModal");
+      requestAnimationFrame(()=>$("attendanceSessionDate").focus());
+    }
+    async function attendanceSaveSession(e){
+      e.preventDefault();
+      const id=$("attendanceSessionId").value||null;
+      const date=$("attendanceSessionDate").value;
+      const roundNo=Number($("attendanceRoundNo").value);
+      const startTime=$("attendanceSessionStart").value;
+      const endTime=$("attendanceSessionEnd").value;
+      const errorBox=$("attendanceSessionError");
+      const submit=$("attendanceSessionSubmit");
+      errorBox.textContent="";
+      if(!date){errorBox.textContent="교육일자를 입력하세요.";return}
+      if(!startTime){errorBox.textContent="시작시각을 입력하세요.";return}
+      if(!endTime){errorBox.textContent="종료시각을 입력하세요.";return}
+      if(attendanceTimeToMinutes(endTime)<=attendanceTimeToMinutes(startTime)){errorBox.textContent="종료시각은 시작시각보다 늦어야 합니다.";return}
+      submit.disabled=true;submit.textContent="저장 중";
+      try{
+        const {data,error}=await db.rpc("save_attendance_session",{
+          p_session_id:id,
+          p_session_date:date,
+          p_round_no:roundNo,
+          p_start_time:startTime,
+          p_end_time:endTime
+        });
+        if(error){
+          console.error("save_attendance_session",error);
+          console.error("[교육 회차 저장]",error);errorBox.textContent="처리 중 오류가 발생했습니다.";
+          return;
+        }
+        const saved=Array.isArray(data)?data[0]:data;
+        if(!saved||!saved.id){errorBox.textContent="저장 결과를 확인할 수 없습니다. Supabase 함수 설치 상태를 확인하세요.";return}
+        const savedId=String(saved.id);
+        state.attendanceSessionId=savedId;
+        localStorage.setItem(ATTENDANCE_CONFIG.lastSessionKey,savedId);
+        attendanceUpsertSessionLocal(saved);
+        closeModal("attendanceSessionModal");
+        const selectedId=await attendanceLoadSessions({preferredId:savedId,autoSelect:true});
+        if(!selectedId){
+          attendanceUpsertSessionLocal(saved);
+          setStatus("attendanceStatus","회차는 생성됐으며 현재 화면에 임시 반영했습니다. 새로고침 후에도 보이지 않으면 회차 조회 SQL을 실행하세요.",true);
+        }
+        await attendanceLoadBoard();
+        attendanceSubscribeRealtime();
+        showToast(id?"교육 회차를 수정했습니다.":"교육 회차를 생성했습니다.");
+      }finally{
+        submit.disabled=false;submit.textContent="저장";
+      }
+    }
+    function attendanceOpenConfirm(action,rows){if(!rows.length)return;state.attendanceConfirmAction=action;state.attendanceConfirmEmployeeIds=rows.map(x=>Number(x.employee_id));const bulk=action==="bulk_start"||action==="bulk_end";$("attendanceConfirmTitle").textContent=action==="check_in"?"입실 기록":action==="check_out"?"퇴실 기록":action==="bulk_start"?"시작인원 기록":"종료인원 기록";$("attendanceConfirmSummary").textContent=`${attendanceCurrentSession()?.session_name||"교육"} · ${rows.length}명`;$("attendanceConfirmList").innerHTML=rows.map(x=>`<div class="attendance-confirm-item">${escapeHtml(x.department_name||"-")} / ${escapeHtml(x.job_title||"-")} / ${escapeHtml(x.employee_name)}</div>`).join("");$("attendanceBulkTimeField").hidden=!bulk;$("attendanceBulkTime").value=attendanceNowLocalInput();$("attendanceConfirmError").textContent="";openModal("attendanceConfirmModal")}
+    async function attendanceSubmitConfirm(){const action=state.attendanceConfirmAction,ids=state.attendanceConfirmEmployeeIds;if(!action||!ids.length)return;$("attendanceConfirmSubmit").disabled=true;ids.forEach(id=>state.attendanceLoadingRows.add(String(id)));try{let result;if(action==="check_in"||action==="check_out")result=await db.rpc(action==="check_in"?"check_in_attendance_v2":"check_out_attendance_v2",{p_session_id:state.attendanceSessionId,p_employee_id:ids[0]});else{const raw=$("attendanceBulkTime").value;if(!raw){$("attendanceConfirmError").textContent="기록시각을 입력하세요.";return}const iso=new Date(`${raw}:00+09:00`).toISOString();result=await db.rpc(action==="bulk_start"?"bulk_start_attendance":"bulk_end_attendance",{p_session_id:state.attendanceSessionId,p_employee_ids:ids,p_recorded_at:iso})}if(result.error){console.error("[출결 처리]",result.error);$("attendanceConfirmError").textContent="처리 중 오류가 발생했습니다.";return}closeModal("attendanceConfirmModal");state.attendanceSelected.clear();if(action.startsWith("bulk")){const d=result.data||{};showToast(`성공 ${(d.success||[]).length}명 · 건너뜀 ${(d.skipped||[]).length}명 · 실패 ${(d.failed||[]).length}명`)}else showToast(action==="check_in"?"입실시각을 기록했습니다.":"퇴실시각을 기록했습니다.");await attendanceLoadBoard({silent:true})}finally{ids.forEach(id=>state.attendanceLoadingRows.delete(String(id)));$("attendanceConfirmSubmit").disabled=false;attendanceRenderBoard()}}
+    async function attendanceSaveMemoInline(input){
+      const row=attendanceRow(input.dataset.employeeId),value=input.value.trim();
+      if(!row||String(row.memo||"")===value)return;
+      input.disabled=true;
+      try{
+        const {error}=await db.rpc("update_attendance_memo_v2",{p_session_id:state.attendanceSessionId,p_employee_id:Number(input.dataset.employeeId),p_memo:value||null});
+        if(error)throw error;
+        row.memo=value;
+      }catch(error){
+        console.error("[출결 비고 저장]",error);
+        input.value=row.memo||"";
+        showToast("처리 중 오류가 발생했습니다.");
+      }finally{input.disabled=false}
+    }
+    function attendanceClearSelection(showMessage=true){
+      state.attendanceSelected.clear();
+      const selectAll=$("attendanceSelectAll");
+      selectAll.checked=false;selectAll.indeterminate=false;
+      document.querySelectorAll(".attendance-row-check").forEach(input=>{input.checked=false});
+      attendanceUpdateSelection();
+      if(showMessage)showToast("선택을 초기화했습니다.");
+    }
+    function attendanceBulkRows(){return state.attendanceBoard.filter(x=>state.attendanceSelected.has(String(x.employee_id)))}
+    function attendanceDownloadCsv(){
+      const session=attendanceCurrentSession();
+      if(!session)return;
+      const csvRows=[["부서","직급","성명","최초입실","최종퇴실","교육인정시간(분)","출입횟수","전체출입기록","미수강 서명","비고"]];
+      for(const row of attendanceFilteredRows()){
+        const intervals=attendanceIntervals(row);
+        csvRows.push([
+          row.department_name||"",row.job_title||"",row.employee_name||"",
+          attendanceFormatSeoul(attendanceFirstCheckIn(row)),attendanceFormatSeoul(attendanceLastCheckOut(row)),
+          row.education_minutes||0,intervals.length,attendanceFullLogText(row),row.missed_signature?"미수강":"정상",row.memo||""
+        ]);
+      }
+      const csv='\ufeff'+csvRows.map(values=>values.map(value=>`"${String(value??"").replace(/"/g,'""')}"`).join(",")).join("\r\n");
+      const blob=new Blob([csv],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),anchor=document.createElement("a");
+      anchor.href=url;anchor.download=`${session.session_date}_${session.session_name}_${session.round_no||1}차_출결.csv`;anchor.click();URL.revokeObjectURL(url);
+    }
+    async function attendanceFetchBoardForSession(sessionId){
+      const {data,error}=await db.rpc('attendance_get_board',{p_session_id:sessionId});
+      if(error)throw error;
+      return (Array.isArray(data)?data:[]).sort((a,b)=>(a.department_name||'').localeCompare(b.department_name||'','ko')||attendancePositionRank(a.job_title)-attendancePositionRank(b.job_title)||(a.employee_name||'').localeCompare(b.employee_name||'','ko'));
+    }
+    function attendanceMonthKey(session){return String(session?.session_date||'').slice(0,7)}
+    async function attendanceDownloadMissingCsv(){
+      const current=attendanceCurrentSession();
+      if(!current){showToast('교육 회차를 선택하세요.');return}
+      const monthKey=attendanceMonthKey(current),sameGroup=state.attendanceSessions.filter(session=>attendanceMonthKey(session)===monthKey&&String(session.session_name||'')===String(current.session_name||''));
+      const first=sameGroup.find(session=>Number(session.round_no)===1),second=sameGroup.find(session=>Number(session.round_no)===2);
+      if(!first||!second){showToast('같은 월의 1차·2차 교육 회차가 모두 필요합니다.');return}
+      const button=$("attendanceMissingCsvButton"),original=button.textContent;
+      button.disabled=true;button.textContent='생성 중';
+      try{
+        const [firstBoard,secondBoard]=await Promise.all([attendanceFetchBoardForSession(first.id),attendanceFetchBoardForSession(second.id)]);
+        const secondMap=new Map(secondBoard.map(row=>[String(row.employee_id),row]));
+        const missing=firstBoard.filter(row=>{
+          const firstAttended=Number(row.visit_count||0)>0;
+          const secondRow=secondMap.get(String(row.employee_id));
+          const secondAttended=Number(secondRow?.visit_count||0)>0;
+          return !firstAttended&&!secondAttended;
+        }).sort((a,b)=>(a.department_name||'').localeCompare(b.department_name||'','ko')||attendancePositionRank(a.job_title)-attendancePositionRank(b.job_title)||(a.employee_name||'').localeCompare(b.employee_name||'','ko'));
+        const rows=[["부서","성명"]];
+        missing.forEach(row=>rows.push([row.department_name||'',row.employee_name||'']));
+        const csv='\ufeff'+rows.map(values=>values.map(value=>`"${String(value??'').replace(/"/g,'""')}"`).join(',')).join('\r\n');
+        const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),anchor=document.createElement('a');
+        anchor.href=url;anchor.download=`${monthKey}_${current.session_name}_1차2차_미실시자_${missing.length}명.csv`;anchor.click();URL.revokeObjectURL(url);
+        showToast(`1·2차 미실시자 ${missing.length}명의 CSV를 만들었습니다.`);
+      }catch(error){
+        console.error('[1·2차 미실시자 CSV]',error);
+        showToast('처리 중 오류가 발생했습니다.');
+      }finally{button.disabled=!attendanceCurrentSession();button.textContent=original}
+    }
+    function attendanceSubscribeRealtime(){attendanceUnsubscribeRealtime();if(!state.attendanceSessionId)return;state.attendanceChannel=db.channel(`attendance-v2-${state.attendanceSessionId}`).on("postgres_changes",{event:"*",schema:"public",table:"attendance_intervals"},async()=>{if(state.currentView==="attendance")await attendanceLoadBoard({silent:true})}).on("postgres_changes",{event:"*",schema:"public",table:"attendance_records",filter:`session_id=eq.${state.attendanceSessionId}`},async()=>{if(state.currentView==="attendance")await attendanceLoadBoard({silent:true})}).on("postgres_changes",{event:"*",schema:"public",table:"attendance_sessions"},async()=>{await attendanceLoadSessions({preferredId:state.attendanceSessionId,autoSelect:true});attendanceRenderSessionInfo()}).subscribe(status=>{if(status==="SUBSCRIBED")attendanceStopPolling();else attendanceStartPolling()})}
+    function attendanceUnsubscribeRealtime(){if(state.attendanceChannel){db.removeChannel(state.attendanceChannel);state.attendanceChannel=null}attendanceStopPolling()}
+    function attendanceStartPolling(){if(state.attendancePollTimer)return;state.attendancePollTimer=setInterval(()=>{if(state.currentView==="attendance"&&state.attendanceSessionId)attendanceLoadBoard({silent:true})},ATTENDANCE_CONFIG.fallbackRefreshMs)}
+    function attendanceStopPolling(){if(state.attendancePollTimer){clearInterval(state.attendancePollTimer);state.attendancePollTimer=null}}
 
     $("loginButton").onclick=()=>openModal("loginModal");
     $("loginForm").onsubmit=async event=>{event.preventDefault();$("loginError").textContent="";const {data,error}=await db.auth.signInWithPassword({email:$("loginEmail").value.trim(),password:$("loginPassword").value});if(error){$("loginError").textContent="이메일 또는 비밀번호를 확인하세요.";return}await checkAdmin(data.session);if(!state.isAdmin){$("loginError").textContent="관리자 권한이 없습니다.";return}closeModal("loginModal");await loadDepartments();state.employeeTab="active";showView("employees");showToast("관리자 로그인되었습니다.")};
     $("logoutButton").onclick=async()=>{await db.auth.signOut();state.isAdmin=false;syncAdminUI();showView("education");showToast("로그아웃되었습니다.")};
     $("employeeMenuButton").onclick=()=>showView("employees");
     $("departmentMenuButton").onclick=()=>showView("departments");
+    $("healthMenuButton").onclick=()=>showView("health");
+    $("attendanceMenuButton").onclick=()=>showView("attendance");
+    $("attendanceSessionSelect").onchange=async event=>{state.attendanceSessionId=event.target.value;state.attendanceSelected.clear();state.attendancePage=1;if(state.attendanceSessionId)localStorage.setItem(ATTENDANCE_CONFIG.lastSessionKey,state.attendanceSessionId);else localStorage.removeItem(ATTENDANCE_CONFIG.lastSessionKey);attendanceRenderSessionInfo();await attendanceLoadBoard();attendanceSubscribeRealtime()};
+    $("attendanceNewSessionButton").onclick=()=>attendanceOpenSessionForm();
+    $("attendanceEditSessionButton").onclick=()=>attendanceOpenSessionForm(state.attendanceSessions.find(x=>String(x.id)===String(state.attendanceSessionId)));
+    $("attendanceSessionDate").onchange=event=>{$("attendanceSessionName").value=attendanceAutoSessionName(event.target.value)};
+    const attendanceNormalizeTimeInput=input=>{
+      let value=String(input.value||'').trim().replace(/[^0-9:]/g,'');
+      if(/^\d{3,4}$/.test(value))value=value.padStart(4,'0').replace(/^(\d{2})(\d{2})$/,'$1:$2');
+      if(!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(value))return false;
+      input.value=value;return true;
+    };
+    $("attendanceSessionStart").onfocus=event=>event.target.select();
+    $("attendanceSessionEnd").onfocus=event=>event.target.select();
+    $("attendanceSessionStart").onblur=()=>{if(attendanceNormalizeTimeInput($("attendanceSessionStart")))attendanceSyncSessionTimes()};
+    $("attendanceSessionEnd").onblur=()=>attendanceNormalizeTimeInput($("attendanceSessionEnd"));
+    $("attendanceSessionStart").onchange=()=>{if(attendanceNormalizeTimeInput($("attendanceSessionStart")))attendanceSyncSessionTimes()};
+    $("attendanceSessionEnd").onchange=()=>attendanceNormalizeTimeInput($("attendanceSessionEnd"));
+    $("attendanceSessionForm").onsubmit=attendanceSaveSession;
+    $("attendanceRefreshButton").onclick=async()=>{const selectedId=await attendanceLoadSessions({preferredId:state.attendanceSessionId,autoSelect:true});if(selectedId)await attendanceLoadBoard({silent:true});showToast("최신 데이터로 새로고침했습니다.")};
+    $("attendanceCsvButton").onclick=attendanceDownloadCsv;
+    $("attendanceMissingCsvButton").onclick=attendanceDownloadMissingCsv;
+    $("attendanceSearch").oninput=debounce(()=>{state.attendancePage=1;localStorage.setItem(ATTENDANCE_CONFIG.searchKey,$("attendanceSearch").value);attendanceRenderBoard()});
+    $("attendanceDepartmentFilter").onchange=()=>{state.attendancePage=1;localStorage.setItem(ATTENDANCE_CONFIG.departmentKey,$("attendanceDepartmentFilter").value);attendanceRenderBoard()};
+    $("attendanceStatusFilter").onchange=()=>{state.attendancePage=1;localStorage.setItem(ATTENDANCE_CONFIG.statusKey,$("attendanceStatusFilter").value);attendanceRenderBoard()};
+    $("attendanceSelectAll").onchange=event=>{document.querySelectorAll(".attendance-row-check").forEach(x=>{x.checked=event.target.checked;x.checked?state.attendanceSelected.add(String(x.value)):state.attendanceSelected.delete(String(x.value))});attendanceUpdateSelection()};
+    $("attendanceClearSelectionButton").onclick=()=>showToast("초기화 기능을 준비하는 중입니다.");
+    $("attendanceStartPeopleButton").onclick=()=>attendanceOpenConfirm("bulk_start",attendanceBulkRows());
+    $("attendanceEndPeopleButton").onclick=()=>attendanceOpenConfirm("bulk_end",attendanceBulkRows());
+    $("attendanceConfirmSubmit").onclick=attendanceSubmitConfirm;
     $("addEducationButton").onclick=()=>openEducationForm();
     $("selfLookupForm").onsubmit=lookupSelfHistory;
     $("selfEmployeeQuery").oninput=debounce(searchSelfCandidates,140);
@@ -1311,6 +2510,15 @@
     $("departmentSearch").oninput=debounce(renderDepartments);
     $("addDepartmentButton").onclick=()=>openDepartmentForm();
     $("departmentForm").onsubmit=saveDepartment;
+    $("healthStatusTab").onclick=()=>healthSetMode("status");
+    $("healthTargetTab").onclick=()=>healthSetMode("target");
+    $("healthSearch").oninput=debounce(renderHealthExams);
+    $("healthTargetSearch").oninput=debounce(renderHealthTargets);
+    $("healthYearFilter").onchange=loadHealthExams;
+    $("healthStatusFilter").onchange=renderHealthExams;
+    $("healthExcelTemplateButton").onclick=downloadHealthExcelTemplate;
+    $("healthExcelUploadButton").onclick=()=>$("healthExcelFileInput").click();
+    $("healthExcelFileInput").onchange=event=>{if(event.target.files[0])importHealthExcel(event.target.files[0]);event.target.value=""};
 
     $("educationForm").onsubmit=saveEducation;
     $("educationCategory").onchange=updateEducationFormLayout;
@@ -1331,5 +2539,325 @@
 
     db.auth.getSession().then(async({data})=>{await checkAdmin(data.session);await loadPublicData();showView("education")});
   </script>
+<script>
+(function(){
+  const PAGE_SIZE=50;
+  const paging={
+    education:1,active:1,retired:1,healthStatus:1,healthTarget:1,
+    employeePicker:1,participants:1
+  };
+  window.platformPaging=paging;
+  state.activeEmployeeSelected=state.activeEmployeeSelected||new Set();
+  state.attendancePageSize=PAGE_SIZE;
+
+  function ensurePager(id,anchorId){
+    let box=document.getElementById(id);
+    if(box)return box;
+    const anchor=document.getElementById(anchorId);
+    if(!anchor)return null;
+    box=document.createElement('div');
+    box.id=id;box.className='platform-pagination';box.hidden=true;
+    anchor.insertAdjacentElement('afterend',box);
+    return box;
+  }
+
+  ensurePager('educationPagination','educationStatus');
+  ensurePager('activeEmployeePagination','activeEmployeeStatus');
+  ensurePager('retiredEmployeePagination','retiredEmployeeStatus');
+  ensurePager('healthExamPagination','healthExamStatus');
+  ensurePager('healthTargetPagination','healthTargetStatus');
+  ensurePager('employeePickerPagination','employeePickerList');
+  ensurePager('participantPagination','participantStatus');
+
+  function pageInfo(rows,key){
+    const pages=Math.max(1,Math.ceil(rows.length/PAGE_SIZE));
+    paging[key]=Math.min(Math.max(1,paging[key]||1),pages);
+    const start=(paging[key]-1)*PAGE_SIZE;
+    return {page:paging[key],pages,start,items:rows.slice(start,start+PAGE_SIZE)};
+  }
+
+  function renderPager(id,total,key,renderFn){
+    const box=document.getElementById(id);if(!box)return;
+    const pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+    paging[key]=Math.min(Math.max(1,paging[key]||1),pages);
+    box.replaceChildren();
+    if(total<=PAGE_SIZE){box.hidden=true;return}
+    box.hidden=false;
+    const summary=document.createElement('span');summary.className='platform-page-summary';summary.textContent=`총 ${total}건 · ${paging[key]}/${pages}페이지`;box.appendChild(summary);
+    const add=(label,page,{active=false,disabled=false}={})=>{
+      const button=document.createElement('button');button.type='button';button.className='platform-page-button'+(active?' active':'');button.textContent=label;button.disabled=disabled;
+      if(!disabled&&!active)button.onclick=()=>{paging[key]=page;renderFn();const target=box.closest('.card,.panel')||box;target.scrollIntoView({block:'nearest'});};
+      box.appendChild(button);
+    };
+    add('이전',paging[key]-1,{disabled:paging[key]===1});
+    for(let page=1;page<=pages;page++)add(String(page),page,{active:page===paging[key]});
+    add('다음',paging[key]+1,{disabled:paging[key]===pages});
+  }
+
+  const originalSelectCategory=selectCategory;
+  window.selectCategory=function(category){paging.education=1;return originalSelectCategory(category)};
+
+  window.renderEducationTable=function(){
+    const body=$('educationTableBody');body.replaceChildren();
+    const selectedMeta=categoryMeta(state.selectedCategoryId);renderEducationHeader(selectedMeta.type);
+    const rows=state.educationLinks.filter(x=>Number(x.category_id)===Number(state.selectedCategoryId)&&(state.isAdmin||x.is_active));
+    const info=pageInfo(rows,'education');
+    if(!rows.length){setStatus('educationStatus','등록된 교육자료가 없습니다.');renderPager('educationPagination',0,'education',renderEducationTable);return}
+    setStatus('educationStatus','');const f=document.createDocumentFragment();
+    info.items.forEach((item,index)=>{
+      const meta=categoryMeta(item.category_id),tr=document.createElement('tr');addTextCell(tr,info.start+index+1,'center');
+      const schedule=addTextCell(tr,scheduleText(item));schedule.style.whiteSpace='pre-line';
+      if(meta.type==='regular'){
+        addTextCell(tr,item.title||'-','ellipsis',item.title||'-');addTextCell(tr,item.education_topic||'-','ellipsis',item.education_topic||'-');
+        const material=document.createElement('td');material.className='center';
+        if(validUrl(item.web_url)){const a=document.createElement('a');a.className='download-link';a.textContent='교육자료';a.href=item.web_url;a.target='_blank';a.rel='noopener noreferrer';material.appendChild(a)}else material.textContent='-';tr.appendChild(material);
+      }else addTextCell(tr,meta.label,'ellipsis',meta.label);
+      const report=document.createElement('td');report.className='center';
+      if(validUrl(item.result_report_url)){const a=document.createElement('a');a.className='download-link';a.textContent='결과보고서';a.href=item.result_report_url;a.target='_blank';a.rel='noopener noreferrer';report.appendChild(a)}else{const p=document.createElement('span');p.className='progress';p.textContent='교육진행중';report.appendChild(p)}tr.appendChild(report);
+      if(state.isAdmin){const manage=document.createElement('td');manage.className='center row-actions';const target=document.createElement('button');target.className='mini';target.textContent='대상자';target.onclick=()=>openParticipants(item);const edit=document.createElement('button');edit.className='mini';edit.textContent='수정';edit.onclick=()=>openEducationForm(item);const del=document.createElement('button');del.className='mini mini-danger';del.textContent='삭제';del.onclick=()=>deleteEducation(item);manage.append(target,edit,del);tr.appendChild(manage)}
+      f.appendChild(tr);
+    });body.appendChild(f);renderPager('educationPagination',rows.length,'education',renderEducationTable);
+  };
+
+  window.resetActiveSelection=function(){state.activeEmployeeSelected.clear();$('selectAllActiveEmployees').checked=false;$('selectAllActiveEmployees').indeterminate=false;$('activeSelectionText').textContent='선택 0명';$('bulkDeleteButton').disabled=true};
+  window.updateActiveSelection=function(){
+    document.querySelectorAll('.active-row-check').forEach(input=>{input.checked?state.activeEmployeeSelected.add(String(input.value)):state.activeEmployeeSelected.delete(String(input.value))});
+    const checks=[...document.querySelectorAll('.active-row-check')],selectedVisible=checks.filter(x=>x.checked);
+    $('activeSelectionText').textContent=`선택 ${state.activeEmployeeSelected.size}명`;$('bulkDeleteButton').disabled=!state.activeEmployeeSelected.size;
+    $('selectAllActiveEmployees').checked=checks.length>0&&selectedVisible.length===checks.length;$('selectAllActiveEmployees').indeterminate=selectedVisible.length>0&&selectedVisible.length<checks.length;
+  };
+  window.renderActiveEmployees=function(){
+    const q=$('activeEmployeeSearch').value.trim().toLowerCase(),filter=$('activeStatusFilter').value;
+    const rows=state.activeEmployees.filter(x=>(!filter||x.employment_status===filter)&&(!q||`${x.employee_name} ${x.department_name} ${x.job_title||''}`.toLowerCase().includes(q)));
+    const validIds=new Set(state.activeEmployees.map(x=>String(x.employee_id)));[...state.activeEmployeeSelected].forEach(id=>{if(!validIds.has(id))state.activeEmployeeSelected.delete(id)});
+    const info=pageInfo(rows,'active'),body=$('activeEmployeeTableBody');body.replaceChildren();
+    if(!rows.length){setStatus('activeEmployeeStatus','조건에 맞는 재직자가 없습니다.');renderPager('activeEmployeePagination',0,'active',renderActiveEmployees);updateActiveSelection();return}setStatus('activeEmployeeStatus','');
+    const f=document.createDocumentFragment();info.items.forEach((x,index)=>{const tr=document.createElement('tr');const checkTd=document.createElement('td');checkTd.className='center';const check=document.createElement('input');check.type='checkbox';check.className='active-row-check';check.value=x.employee_id;check.checked=state.activeEmployeeSelected.has(String(x.employee_id));check.onchange=updateActiveSelection;checkTd.appendChild(check);tr.appendChild(checkTd);addTextCell(tr,info.start+index+1,'center');const statusTd=document.createElement('td');statusTd.appendChild(statusBadge(x.employment_status));tr.appendChild(statusTd);addTextCell(tr,x.department_name,'ellipsis',x.department_name);addTextCell(tr,x.job_title||'-','ellipsis',x.job_title||'-');addTextCell(tr,x.employee_name,'ellipsis',x.employee_name);addTextCell(tr,formatDate(x.hire_date));addTextCell(tr,formatDate(x.department_effective_date));const manage=document.createElement('td');manage.className='center row-actions';const edit=document.createElement('button');edit.className='mini';edit.textContent='수정';edit.onclick=()=>openEmployeeForm(x);const retire=document.createElement('button');retire.className='mini mini-danger';retire.textContent='퇴사처리';retire.onclick=()=>openRetireForm([x.employee_id],x.employee_name);const hardDelete=document.createElement('button');hardDelete.className='mini mini-danger';hardDelete.textContent='삭제';hardDelete.onclick=()=>openHardDeleteForm(x);manage.append(edit,retire,hardDelete);tr.appendChild(manage);f.appendChild(tr)});body.appendChild(f);renderPager('activeEmployeePagination',rows.length,'active',renderActiveEmployees);updateActiveSelection();
+  };
+  window.hardDeleteSelectedEmployees=async function(){const ids=[...state.activeEmployeeSelected].map(Number);if(!ids.length)return;if(!confirm(`선택한 ${ids.length}명의 사원자료를 완전 삭제하시겠습니까?\n교육이력이 연결된 사원은 삭제가 차단됩니다.`))return;const {data,error}=await db.rpc('hard_delete_employees',{p_employee_ids:ids,p_force:false});if(error){console.error('[선택 사원 삭제]',error);showToast('처리 중 오류가 발생했습니다.');return}const result=data||{};showToast(`삭제 ${result.deleted_count||0}명 · 차단 ${result.blocked_count||0}명`);state.activeEmployeeSelected.clear();await loadActiveEmployees()};
+
+  window.renderRetiredEmployees=function(){
+    const q=$('retiredEmployeeSearch').value.trim().toLowerCase(),dep=$('retiredDepartmentFilter').value,sort=$('retiredSort').value;
+    let rows=state.retiredEmployees.filter(x=>(!dep||String(x.department_id)===dep)&&(!q||`${x.employee_name} ${x.department_name} ${x.job_title||''}`.toLowerCase().includes(q)));
+    rows=[...rows].sort((a,b)=>sort==='name_asc'?a.employee_name.localeCompare(b.employee_name,'ko'):sort==='retired_asc'?(a.retirement_date||'').localeCompare(b.retirement_date||''):(b.retirement_date||'').localeCompare(a.retirement_date||''));
+    const info=pageInfo(rows,'retired'),body=$('retiredEmployeeTableBody');body.replaceChildren();if(!rows.length){setStatus('retiredEmployeeStatus','조건에 맞는 퇴사자가 없습니다.');renderPager('retiredEmployeePagination',0,'retired',renderRetiredEmployees);return}setStatus('retiredEmployeeStatus','');const f=document.createDocumentFragment();
+    info.items.forEach((x,index)=>{const tr=document.createElement('tr');addTextCell(tr,info.start+index+1,'center');addTextCell(tr,x.department_name,'ellipsis',x.department_name);addTextCell(tr,x.job_title||'-','ellipsis',x.job_title||'-');addTextCell(tr,x.employee_name,'ellipsis',x.employee_name);addTextCell(tr,formatDate(x.hire_date));addTextCell(tr,formatDate(x.retirement_date));const statusTd=document.createElement('td');statusTd.appendChild(statusBadge('retired'));tr.appendChild(statusTd);const manage=document.createElement('td');manage.className='center';const history=document.createElement('button');history.className='mini';history.textContent='교육이력 확인';history.onclick=()=>openRetiredHistory(x);const hardDelete=document.createElement('button');hardDelete.className='mini mini-danger';hardDelete.textContent='삭제';hardDelete.onclick=()=>openHardDeleteForm(x);manage.append(history,hardDelete);tr.appendChild(manage);f.appendChild(tr)});body.appendChild(f);renderPager('retiredEmployeePagination',rows.length,'retired',renderRetiredEmployees);
+  };
+
+  window.renderHealthExams=function(){
+    if(state.healthMode!=='status')return;healthUpdateDashboard();const rows=healthFilteredRows(),info=pageInfo(rows,'healthStatus'),body=$('healthExamTableBody');body.replaceChildren();$('healthResultCount').textContent=rows.length?`${rows.length}명 · ${info.page}/${info.pages}페이지`:'0명';
+    if(!rows.length){setStatus('healthExamStatus','조건에 해당하는 재직자가 없습니다.');renderPager('healthExamPagination',0,'healthStatus',renderHealthExams);return}setStatus('healthExamStatus','');const fragment=document.createDocumentFragment();
+    info.items.forEach((row,index)=>{const tr=document.createElement('tr');tr.dataset.employeeId=String(row.employee_id);addTextCell(tr,info.start+index+1,'center');addTextCell(tr,row.department_name||'-','ellipsis',row.department_name||'-');addTextCell(tr,row.job_title||'-','center');const nameTd=document.createElement('td'),strong=document.createElement('strong');strong.textContent=row.employee_name||'-';nameTd.appendChild(strong);tr.appendChild(nameTd);const required=document.createElement('td');required.className='center';const requiredBadge=document.createElement('span');requiredBadge.className='health-required-badge';requiredBadge.textContent=healthRequiredText(row);required.appendChild(requiredBadge);tr.appendChild(required);const statusTd=document.createElement('td');statusTd.className='center';const badge=document.createElement('span');badge.className=`health-status-badge ${row.excluded?'excluded':row.completed?'completed':'incomplete'}`;badge.textContent=row.excluded?'제외':row.completed?'완료':'미완료';statusTd.appendChild(badge);tr.appendChild(statusTd);const makeInput=(type,field,value,placeholder,disabled=false)=>{const td=document.createElement('td'),input=document.createElement('input');input.type=type;input.dataset.field=field;input.value=value||'';input.placeholder=placeholder||'';input.disabled=disabled;td.appendChild(input);tr.appendChild(td)};makeInput('date','generalDate',row.general_exam_date,'',Boolean(row.excluded));makeInput('text','generalInstitution',row.general_institution,'검진기관',Boolean(row.excluded));const noAdditional=!row.additional_exam_type||row.excluded;makeInput('date','additionalDate',row.additional_exam_date,'',noAdditional);makeInput('text','additionalInstitution',row.additional_institution,noAdditional?'추가검진 없음':`${healthTypeLabels[row.additional_exam_type]} 기관`,noAdditional);const manage=document.createElement('td');manage.className='center';const save=document.createElement('button');save.type='button';save.className='health-save-row';save.textContent='저장';save.disabled=Boolean(row.excluded);save.onclick=()=>saveHealthRosterRow(tr,row);manage.appendChild(save);tr.appendChild(manage);fragment.appendChild(tr)});body.appendChild(fragment);renderPager('healthExamPagination',rows.length,'healthStatus',renderHealthExams);
+  };
+
+  window.renderHealthTargets=function(){
+    if(state.healthMode!=='target')return;const rows=healthTargetRows(),info=pageInfo(rows,'healthTarget'),body=$('healthTargetTableBody');body.replaceChildren();$('healthTargetResultCount').textContent=rows.length?`${rows.length}명 · ${info.page}/${info.pages}페이지`:'0명';if(!rows.length){setStatus('healthTargetStatus','조건에 해당하는 재직자가 없습니다.');renderPager('healthTargetPagination',0,'healthTarget',renderHealthTargets);return}setStatus('healthTargetStatus','');const fragment=document.createDocumentFragment();
+    info.items.forEach((row,index)=>{const tr=document.createElement('tr');tr.dataset.employeeId=String(row.employee_id);addTextCell(tr,info.start+index+1,'center');addTextCell(tr,row.department_name||'-','ellipsis',row.department_name||'-');addTextCell(tr,row.job_title||'-','center');addTextCell(tr,row.employee_name||'-');const base=document.createElement('td');base.className='center';base.innerHTML='<span class="health-required-badge">일반검진</span>';tr.appendChild(base);const additionalTd=document.createElement('td'),additional=document.createElement('select');additional.dataset.field='additionalType';[['','해당 없음'],['special','특수검진'],['pre-placement','배치전'],['post-placement','배치후']].forEach(([value,label])=>additional.appendChild(new Option(label,value)));additional.value=row.additional_exam_type||'';additionalTd.appendChild(additional);tr.appendChild(additionalTd);const exclusionTd=document.createElement('td'),exclusion=document.createElement('select');exclusion.dataset.field='exclusionReason';[['','제외 없음'],['pregnancy','임신'],['leave','휴직'],['overseas','해외출장'],['comprehensive','종합검진']].forEach(([value,label])=>exclusion.appendChild(new Option(label,value)));exclusion.value=row.exclusion_reason||'';exclusionTd.appendChild(exclusion);tr.appendChild(exclusionTd);const comprehensiveTd=document.createElement('td'),comprehensive=document.createElement('input');comprehensive.type='date';comprehensive.dataset.field='comprehensiveDate';comprehensive.value=row.comprehensive_exam_date||'';comprehensive.hidden=exclusion.value!=='comprehensive';comprehensive.className='health-comprehensive-date';comprehensiveTd.appendChild(comprehensive);tr.appendChild(comprehensiveTd);const manage=document.createElement('td');manage.className='center';const save=document.createElement('button');save.type='button';save.className='health-target-save';save.textContent='저장';save.onclick=()=>saveHealthTargetRow(tr,row);manage.appendChild(save);tr.appendChild(manage);const sync=()=>{const excluded=Boolean(exclusion.value);additional.disabled=excluded;if(excluded)additional.value='';comprehensive.hidden=exclusion.value!=='comprehensive';if(exclusion.value!=='comprehensive')comprehensive.value=''};exclusion.onchange=sync;sync();fragment.appendChild(tr)});body.appendChild(fragment);renderPager('healthTargetPagination',rows.length,'healthTarget',renderHealthTargets);
+  };
+
+  window.renderEmployeePicker=function(){
+    const q=$('employeePickerSearch').value.trim().toLowerCase(),selected=new Set(state.participants.map(x=>Number(x.employee_id))),rows=state.currentEmployees.filter(x=>!q||`${x.employee_name} ${x.department_name||''}`.toLowerCase().includes(q)),info=pageInfo(rows,'employeePicker');const list=$('employeePickerList');list.replaceChildren();const f=document.createDocumentFragment();info.items.forEach(x=>{const row=document.createElement('div');row.className='picker-row';const infoBox=document.createElement('div');infoBox.className='picker-info';const strong=document.createElement('strong');strong.textContent=x.employee_name;const small=document.createElement('small');small.textContent=x.department_name||'-';infoBox.append(strong,small);const button=document.createElement('button');button.className='mini';button.textContent=selected.has(Number(x.employee_id))?'추가됨':'추가';button.disabled=selected.has(Number(x.employee_id));button.onclick=()=>addParticipant(x.employee_id);row.append(infoBox,button);f.appendChild(row)});list.appendChild(f);renderPager('employeePickerPagination',rows.length,'employeePicker',renderEmployeePicker);
+  };
+
+  window.renderParticipants=function(){
+    const q=$('participantSearch').value.trim().toLowerCase(),rows=state.participants.filter(x=>!q||`${x.employee_name} ${x.department_name||''}`.toLowerCase().includes(q)),info=pageInfo(rows,'participants'),body=$('participantTableBody');body.replaceChildren();if(!rows.length){setStatus('participantStatus','등록된 대상자가 없습니다.');renderPager('participantPagination',0,'participants',renderParticipants);return}setStatus('participantStatus','');const f=document.createDocumentFragment();info.items.forEach(x=>{const tr=document.createElement('tr');const checkTd=document.createElement('td');checkTd.className='center';const check=document.createElement('input');check.type='checkbox';check.dataset.id=x.participant_id;checkTd.appendChild(check);tr.appendChild(checkTd);addTextCell(tr,x.department_name||'-');addTextCell(tr,x.employee_name);const manage=document.createElement('td');manage.className='center';const remove=document.createElement('button');remove.className='mini mini-danger';remove.textContent='삭제';remove.onclick=()=>removeParticipant(x.participant_id,x.employee_name);manage.appendChild(remove);tr.appendChild(manage);f.appendChild(tr)});body.appendChild(f);renderPager('participantPagination',rows.length,'participants',renderParticipants);
+  };
+
+  window.attendanceRenderPagination=function(totalRows){
+    const box=$('attendancePagination'),pages=Math.max(1,Math.ceil(totalRows/PAGE_SIZE));state.attendancePage=Math.min(Math.max(1,state.attendancePage||1),pages);box.replaceChildren();if(totalRows<=PAGE_SIZE){box.hidden=true;return}box.hidden=false;
+    const summary=document.createElement('span');summary.className='platform-page-summary';summary.textContent=`총 ${totalRows}명 · ${state.attendancePage}/${pages}페이지`;box.appendChild(summary);
+    const add=(label,page,{active=false,disabled=false}={})=>{const button=document.createElement('button');button.type='button';button.className='attendance-page-button'+(active?' active':'');button.textContent=label;button.disabled=disabled;if(!disabled&&!active)button.onclick=()=>{state.attendancePage=page;attendanceRenderBoard()};box.appendChild(button)};
+    add('이전',state.attendancePage-1,{disabled:state.attendancePage===1});for(let page=1;page<=pages;page++)add(String(page),page,{active:page===state.attendancePage});add('다음',state.attendancePage+1,{disabled:state.attendancePage===pages});
+  };
+
+  window.attendanceUpdateSelection=function(){
+    const count=state.attendanceSelected.size;
+    $('attendanceSelectedCount').textContent=`선택 ${count}명`;
+    $('attendanceClearSelectionButton').disabled=!state.attendanceSessionId||!count;
+    $('attendanceStartPeopleButton').disabled=!count;
+    $('attendanceEndPeopleButton').disabled=!count;
+    const visible=attendanceCurrentPageRows();
+    $('attendanceSelectAll').checked=visible.length>0&&visible.every(row=>state.attendanceSelected.has(String(row.employee_id)));
+    $('attendanceSelectAll').indeterminate=visible.some(row=>state.attendanceSelected.has(String(row.employee_id)))&&!$('attendanceSelectAll').checked;
+  };
+
+  window.attendanceResetSelectedLogs=async function(){
+    const session=attendanceCurrentSession();
+    const selectedRows=attendanceBulkRows();
+    if(!session){showToast('교육 회차를 선택하세요.');return}
+    if(!selectedRows.length){showToast('초기화할 사원을 선택하세요.');return}
+    const names=selectedRows.slice(0,8).map(row=>row.employee_name).join(', ')+(selectedRows.length>8?` 외 ${selectedRows.length-8}명`:'');
+    if(!confirm(`${session.session_name||'교육'} ${session.round_no||1}차에서 선택한 ${selectedRows.length}명의 입·퇴실 로그를 초기화하시겠습니까?\n${names}\n비고와 수동 미수강 서명은 유지됩니다.`))return;
+    const button=$('attendanceClearSelectionButton'),original=button.textContent;
+    button.disabled=true;button.textContent='초기화 중';
+    try{
+      const employeeIds=selectedRows.map(row=>Number(row.employee_id));
+      const {data,error}=await db.rpc('reset_selected_attendance_logs',{p_session_id:state.attendanceSessionId,p_employee_ids:employeeIds});
+      if(error)throw error;
+      state.attendanceSelected.clear();
+      await attendanceLoadBoard({silent:true});
+      showToast(`선택한 ${Number(data?.selected_employee_count||employeeIds.length)}명의 입·퇴실 로그를 초기화했습니다.`);
+    }catch(error){
+      console.error('[선택 출결 로그 초기화]',error);
+      showToast('처리 중 오류가 발생했습니다.');
+    }finally{
+      button.textContent=original;
+      attendanceUpdateSelection();
+    }
+  };
+  // Reset page when search/filter criteria changes.
+  $('activeEmployeeSearch').oninput=debounce(()=>{paging.active=1;state.activeEmployeeSelected.clear();renderActiveEmployees()});
+  $('activeStatusFilter').onchange=()=>{paging.active=1;state.activeEmployeeSelected.clear();renderActiveEmployees()};
+  $('retiredEmployeeSearch').oninput=debounce(()=>{paging.retired=1;renderRetiredEmployees()});
+  $('retiredDepartmentFilter').onchange=()=>{paging.retired=1;renderRetiredEmployees()};
+  $('retiredSort').onchange=()=>{paging.retired=1;renderRetiredEmployees()};
+  $('healthSearch').oninput=debounce(()=>{paging.healthStatus=1;renderHealthExams()});
+  $('healthStatusFilter').onchange=()=>{paging.healthStatus=1;renderHealthExams()};
+  $('healthTargetSearch').oninput=debounce(()=>{paging.healthTarget=1;renderHealthTargets()});
+  $('employeePickerSearch').oninput=debounce(()=>{paging.employeePicker=1;renderEmployeePicker()});
+  $('participantSearch').oninput=debounce(()=>{paging.participants=1;renderParticipants()});
+  $('selectAllActiveEmployees').onchange=event=>{document.querySelectorAll('.active-row-check').forEach(x=>{x.checked=event.target.checked;x.checked?state.activeEmployeeSelected.add(String(x.value)):state.activeEmployeeSelected.delete(String(x.value))});updateActiveSelection()};
+  $('bulkDeleteButton').onclick=hardDeleteSelectedEmployees;
+  $('attendanceClearSelectionButton').onclick=attendanceResetSelectedLogs;
+
+  // Force current lists to use the overridden paginated renderers.
+  if(state.educationLinks.length)renderEducationTable();
+  if(state.activeEmployees.length)renderActiveEmployees();
+  if(state.retiredEmployees.length)renderRetiredEmployees();
+  if(state.healthExams.length){renderHealthExams();renderHealthTargets()}
+  attendanceUpdateSelection();
+})();
+</script>
+<style id="finalAttendanceUxPatch">
+/* Direct time editing */
+.attendance-time-text{cursor:text!important;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.attendance-time-text:focus{outline:none;border-color:#2f6fed!important;box-shadow:0 0 0 3px rgba(47,111,237,.12)!important}
+/* Remove orange change/missed highlight; keep a clean red status marker only. */
+#attendanceView .attendance-row-missed,#attendanceView .attendance-row-missed td,#attendanceView .attendance-row-missed:hover td{background:#fff!important}
+#attendanceView .attendance-missed-toggle.active{border-color:#dc2626!important;background:#fff!important;color:#b42318!important}
+#attendanceView .attendance-missed-toggle.active:hover{background:#fef2f2!important}
+/* All page numbers are displayed; allow wrapping without ellipsis. */
+.platform-pagination,.attendance-pagination{flex-wrap:wrap!important}
+.platform-page-ellipsis,.attendance-page-ellipsis{display:none!important}
+</style>
+
+<script id="employeeDeleteAndAttendanceResetFinalPatch">
+(()=>{
+  const $id=id=>document.getElementById(id);
+
+  function currentFilteredActiveEmployees(){
+    const q=($id('activeEmployeeSearch')?.value||'').trim().toLowerCase();
+    const filter=$id('activeStatusFilter')?.value||'';
+    return (state.activeEmployees||[]).filter(employee=>(!filter||employee.employment_status===filter)&&(!q||`${employee.employee_name||''} ${employee.department_name||''} ${employee.job_title||''}`.toLowerCase().includes(q)));
+  }
+
+  async function deleteEmployeeIds(employeeIds, label){
+    const ids=[...new Set((employeeIds||[]).map(Number).filter(Number.isFinite))];
+    if(!ids.length){showToast('삭제할 사원이 없습니다.');return false}
+    const result=await db.rpc('hard_delete_employees',{p_employee_ids:ids,p_force:true});
+    if(result.error){
+      console.error(`[${label}]`,result.error);
+      showToast('사원명부 삭제 중 오류가 발생했습니다.');
+      return false;
+    }
+    const data=result.data||{};
+    const deleted=Number(data.deleted_count||0),blocked=Number(data.blocked_count||0);
+    if(blocked>0)console.error(`[${label} 차단 상세]`,data.errors||[]);
+    showToast(blocked>0?`삭제 ${deleted}명 · 실패 ${blocked}명`:`${deleted}명의 사원자료를 삭제했습니다.`);
+    state.activeEmployeeSelected?.clear?.();
+    state.employeeRostersLoaded=false;
+    await loadAllEmployeeRosters();
+    return blocked===0;
+  }
+
+  window.hardDeleteEmployee=async function(event){
+    event.preventDefault();
+    const employeeId=Number($id('hardDeleteEmployeeId').value);
+    const employeeName=$id('hardDeleteEmployeeNameValue').value;
+    const confirmName=$id('hardDeleteConfirmName').value.trim();
+    const force=$id('hardDeleteForce').checked;
+    $id('hardDeleteError').textContent='';
+    if(confirmName!==employeeName){$id('hardDeleteError').textContent='사원명이 일치하지 않습니다.';return}
+    const warning=force
+      ? `${employeeName} 사원과 연결된 교육·건강검진·출결·근무 이력을 모두 영구 삭제합니다. 계속하시겠습니까?`
+      : `${employeeName} 사원 기본정보를 삭제합니다. 연결된 이력이 있으면 삭제되지 않습니다. 계속하시겠습니까?`;
+    if(!confirm(warning))return;
+    const result=await db.rpc('hard_delete_employee',{p_employee_id:employeeId,p_force:force});
+    if(result.error){
+      console.error('[사원 개별 삭제]',result.error);
+      $id('hardDeleteError').textContent='사원명부 삭제 중 오류가 발생했습니다.';
+      return;
+    }
+    closeModal('hardDeleteModal');
+    showToast(`${employeeName} 사원자료를 삭제했습니다.`);
+    state.employeeRostersLoaded=false;
+    await loadAllEmployeeRosters();
+  };
+
+  window.hardDeleteSelectedEmployees=async function(){
+    const ids=[...(state.activeEmployeeSelected||new Set())].map(Number);
+    if(!ids.length){showToast('삭제할 사원을 선택하세요.');return}
+    if(!confirm(`선택한 ${ids.length}명의 사원자료와 연결된 교육·건강검진·출결 이력을 모두 삭제하시겠습니까?`))return;
+    await deleteEmployeeIds(ids,'선택 사원 삭제');
+  };
+
+  window.deleteAllFilteredEmployees=async function(){
+    const rows=currentFilteredActiveEmployees();
+    if(!rows.length){showToast('현재 조건에 삭제할 사원이 없습니다.');return}
+    const q=($id('activeEmployeeSearch')?.value||'').trim();
+    const filterText=$id('activeStatusFilter')?.selectedOptions?.[0]?.textContent||'전체 상태';
+    const scope=q?`검색어 “${q}”, ${filterText}`:filterText;
+    const typed=prompt(`${scope}에 해당하는 ${rows.length}명의 사원자료를 전체 삭제합니다.\n연결된 교육·건강검진·출결 이력도 함께 삭제됩니다.\n계속하려면 전체삭제를 입력하세요.`,'');
+    if(typed!=='전체삭제'){if(typed!==null)showToast('전체 삭제가 취소되었습니다.');return}
+    await deleteEmployeeIds(rows.map(row=>row.employee_id),'검색결과 전체 삭제');
+  };
+
+  const previousRenderActiveEmployees=window.renderActiveEmployees;
+  window.renderActiveEmployees=function(){
+    const result=previousRenderActiveEmployees.apply(this,arguments);
+    const allButton=$id('deleteAllFilteredEmployeesButton');
+    if(allButton)allButton.disabled=currentFilteredActiveEmployees().length===0;
+    return result;
+  };
+
+  window.attendanceResetSelectedLogs=async function(){
+    const session=attendanceCurrentSession();
+    const selectedRows=attendanceBulkRows();
+    if(!session){showToast('교육 회차를 선택하세요.');return}
+    if(!selectedRows.length){showToast('초기화할 사원을 선택하세요.');return}
+    const names=selectedRows.slice(0,8).map(row=>row.employee_name).join(', ')+(selectedRows.length>8?` 외 ${selectedRows.length-8}명`:'');
+    if(!confirm(`${session.session_name||'교육'} ${session.round_no||1}차에서 선택한 ${selectedRows.length}명의 입·퇴실 로그와 미수강 서명을 초기화하시겠습니까?\n${names}\n비고는 유지됩니다.`))return;
+    const button=$id('attendanceClearSelectionButton'),original=button.textContent;
+    button.disabled=true;button.textContent='초기화 중';
+    try{
+      const employeeIds=selectedRows.map(row=>Number(row.employee_id));
+      const result=await db.rpc('reset_selected_attendance_logs',{p_session_id:state.attendanceSessionId,p_employee_ids:employeeIds});
+      if(result.error)throw result.error;
+      state.attendanceSelected.clear();
+      await attendanceLoadBoard({silent:true});
+      showToast(`선택한 ${Number(result.data?.selected_employee_count||employeeIds.length)}명의 출결 로그와 미수강 서명을 초기화했습니다.`);
+    }catch(error){
+      console.error('[선택 출결 로그·미수강 서명 초기화]',error);
+      showToast('처리 중 오류가 발생했습니다.');
+    }finally{
+      button.textContent=original;
+      attendanceUpdateSelection();
+    }
+  };
+
+  const allDeleteButton=$id('deleteAllFilteredEmployeesButton');
+  if(allDeleteButton)allDeleteButton.onclick=deleteAllFilteredEmployees;
+  const selectedDeleteButton=$id('bulkDeleteButton');
+  if(selectedDeleteButton)selectedDeleteButton.onclick=hardDeleteSelectedEmployees;
+  const resetButton=$id('attendanceClearSelectionButton');
+  if(resetButton)resetButton.onclick=attendanceResetSelectedLogs;
+  const hardDeleteForm=$id('hardDeleteForm');
+  if(hardDeleteForm)hardDeleteForm.onsubmit=hardDeleteEmployee;
+})();
+</script>
+<style id="employeeDeleteAndAttendanceResetFinalStyle">
+#deleteAllFilteredEmployeesButton{min-width:74px}
+</style>
+
 </body>
 </html>
