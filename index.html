@@ -6,7 +6,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="사내 안전교육 자료 및 교육이력 관리" name="description"/>
 <meta content="#2f6fed" name="theme-color"/>
-<title>사내 안전교육 자료실</title>
+<title>사내 안전보건 자료실</title>
 <style>
     :root{
       --primary:#2f6fed;--primary-hover:#2458bd;--primary-soft:#eef4ff;
@@ -516,7 +516,7 @@
 <aside class="sidebar" id="sidebar">
 <div class="logo-box">
 <img alt="H&amp;iruja" class="logo" src="https://hniruja.com/wp-content/uploads/2024/02/h-%EC%9D%B4%EB%A3%A8%EC%9E%90.png"/>
-<div class="site-name">안전교육 자료실</div>
+<div class="site-name">안전보건 자료실</div>
 </div>
 <nav aria-label="교육 분류" class="menu" id="categoryMenu"></nav>
 <nav class="menu" hidden="" id="adminMenu">
@@ -787,8 +787,8 @@
 <div class="attendance-toolbar-right">
 <span class="attendance-count" id="attendanceSelectedCount">선택 0명</span>
 <button class="btn btn-danger" disabled="" id="attendanceClearSelectionButton" type="button">선택 로그 초기화</button>
-<button class="btn btn-primary" disabled="" id="attendanceStartPeopleButton" type="button">시작인원</button>
-<button class="btn btn-secondary" disabled="" id="attendanceEndPeopleButton" type="button">종료인원</button>
+<button class="btn btn-primary" disabled="" id="attendanceStartPeopleButton" type="button">시작체크</button>
+<button class="btn btn-secondary" disabled="" id="attendanceEndPeopleButton" type="button">종료체크</button>
 </div>
 </div>
 <div class="card attendance-table-card">
@@ -2163,8 +2163,8 @@
         body.appendChild(tr);
       }
       body.querySelectorAll(".attendance-row-check").forEach(el=>el.onchange=()=>{el.checked?state.attendanceSelected.add(el.value):state.attendanceSelected.delete(el.value);attendanceUpdateSelection()});
-      body.querySelectorAll(".attendance-check-in").forEach(el=>el.onclick=()=>attendanceOpenConfirm("check_in",[attendanceRow(el.dataset.id)]));
-      body.querySelectorAll(".attendance-check-out").forEach(el=>el.onclick=()=>attendanceOpenConfirm("check_out",[attendanceRow(el.dataset.id)]));
+      body.querySelectorAll(".attendance-check-in").forEach(el=>el.onclick=()=>attendanceRunIndividual("check_in",attendanceRow(el.dataset.id)));
+      body.querySelectorAll(".attendance-check-out").forEach(el=>el.onclick=()=>attendanceRunIndividual("check_out",attendanceRow(el.dataset.id)));
       body.querySelectorAll(".attendance-open-log").forEach(el=>el.onclick=()=>attendanceOpenLog(attendanceRow(el.dataset.id)));
       body.querySelectorAll(".attendance-missed-toggle").forEach(el=>el.onclick=()=>attendanceToggleMissed(el.dataset.id));
       body.querySelectorAll(".attendance-memo-input").forEach(el=>{el.onkeydown=event=>{if(event.key==="Enter"){event.preventDefault();el.blur()}};el.onblur=()=>attendanceSaveMemoInline(el)});
@@ -2369,8 +2369,76 @@
         submit.disabled=false;submit.textContent="저장";
       }
     }
-    function attendanceOpenConfirm(action,rows){if(!rows.length)return;state.attendanceConfirmAction=action;state.attendanceConfirmEmployeeIds=rows.map(x=>Number(x.employee_id));const bulk=action==="bulk_start"||action==="bulk_end";$("attendanceConfirmTitle").textContent=action==="check_in"?"입실 기록":action==="check_out"?"퇴실 기록":action==="bulk_start"?"시작인원 기록":"종료인원 기록";$("attendanceConfirmSummary").textContent=`${attendanceCurrentSession()?.session_name||"교육"} · ${rows.length}명`;$("attendanceConfirmList").innerHTML=rows.map(x=>`<div class="attendance-confirm-item">${escapeHtml(x.department_name||"-")} / ${escapeHtml(x.job_title||"-")} / ${escapeHtml(x.employee_name)}</div>`).join("");$("attendanceBulkTimeField").hidden=!bulk;$("attendanceBulkTime").value=attendanceNowLocalInput();$("attendanceConfirmError").textContent="";openModal("attendanceConfirmModal")}
-    async function attendanceSubmitConfirm(){const action=state.attendanceConfirmAction,ids=state.attendanceConfirmEmployeeIds;if(!action||!ids.length)return;$("attendanceConfirmSubmit").disabled=true;ids.forEach(id=>state.attendanceLoadingRows.add(String(id)));try{let result;if(action==="check_in"||action==="check_out")result=await db.rpc(action==="check_in"?"check_in_attendance_v2":"check_out_attendance_v2",{p_session_id:state.attendanceSessionId,p_employee_id:ids[0]});else{const raw=$("attendanceBulkTime").value;if(!raw){$("attendanceConfirmError").textContent="기록시각을 입력하세요.";return}const iso=new Date(`${raw}:00+09:00`).toISOString();result=await db.rpc(action==="bulk_start"?"bulk_start_attendance":"bulk_end_attendance",{p_session_id:state.attendanceSessionId,p_employee_ids:ids,p_recorded_at:iso})}if(result.error){console.error("[출결 처리]",result.error);$("attendanceConfirmError").textContent="처리 중 오류가 발생했습니다.";return}closeModal("attendanceConfirmModal");state.attendanceSelected.clear();if(action.startsWith("bulk")){const d=result.data||{};showToast(`성공 ${(d.success||[]).length}명 · 건너뜀 ${(d.skipped||[]).length}명 · 실패 ${(d.failed||[]).length}명`)}else showToast(action==="check_in"?"입실시각을 기록했습니다.":"퇴실시각을 기록했습니다.");await attendanceLoadBoard({silent:true})}finally{ids.forEach(id=>state.attendanceLoadingRows.delete(String(id)));$("attendanceConfirmSubmit").disabled=false;attendanceRenderBoard()}}
+    function attendanceBulkDefaultTime(action){
+      const session=attendanceCurrentSession();
+      const date=String(session?.session_date||new Date().toLocaleDateString("en-CA",{timeZone:"Asia/Seoul"}));
+      return `${date}T${action==="bulk_start"?"09:30":"11:30"}`;
+    }
+    async function attendanceRunIndividual(action,row){
+      if(!row||!state.attendanceSessionId)return;
+      const employeeId=String(row.employee_id);
+      if(state.attendanceLoadingRows.has(employeeId))return;
+      state.attendanceLoadingRows.add(employeeId);
+      attendanceRenderBoard();
+      try{
+        const result=await db.rpc(action==="check_in"?"check_in_attendance_v2":"check_out_attendance_v2",{
+          p_session_id:state.attendanceSessionId,
+          p_employee_id:Number(row.employee_id)
+        });
+        if(result.error){
+          console.error("[개별 출결 처리]",result.error);
+          showToast("처리 중 오류가 발생했습니다.");
+          return;
+        }
+        showToast(action==="check_in"?"입실시각을 기록했습니다.":"퇴실시각을 기록했습니다.");
+        await attendanceLoadBoard({silent:true});
+      }finally{
+        state.attendanceLoadingRows.delete(employeeId);
+        attendanceRenderBoard();
+      }
+    }
+    function attendanceOpenConfirm(action,rows){
+      if(!rows.length)return;
+      state.attendanceConfirmAction=action;
+      state.attendanceConfirmEmployeeIds=rows.map(x=>Number(x.employee_id));
+      $("attendanceConfirmTitle").textContent=action==="bulk_start"?"시작체크":"종료체크";
+      $("attendanceConfirmSummary").textContent=`${attendanceCurrentSession()?.session_name||"교육"} · ${rows.length}명`;
+      $("attendanceConfirmList").innerHTML=rows.map(x=>`<div class="attendance-confirm-item">${escapeHtml(x.department_name||"-")} / ${escapeHtml(x.job_title||"-")} / ${escapeHtml(x.employee_name)}</div>`).join("");
+      $("attendanceBulkTimeField").hidden=false;
+      $("attendanceBulkTime").value=attendanceBulkDefaultTime(action);
+      $("attendanceConfirmError").textContent="";
+      openModal("attendanceConfirmModal");
+    }
+    async function attendanceSubmitConfirm(){
+      const action=state.attendanceConfirmAction,ids=state.attendanceConfirmEmployeeIds;
+      if(!action||!ids.length)return;
+      $("attendanceConfirmSubmit").disabled=true;
+      ids.forEach(id=>state.attendanceLoadingRows.add(String(id)));
+      try{
+        const raw=$("attendanceBulkTime").value;
+        if(!raw){$("attendanceConfirmError").textContent="기록시각을 입력하세요.";return}
+        const iso=new Date(`${raw}:00+09:00`).toISOString();
+        const result=await db.rpc(action==="bulk_start"?"bulk_start_attendance":"bulk_end_attendance",{
+          p_session_id:state.attendanceSessionId,
+          p_employee_ids:ids,
+          p_recorded_at:iso
+        });
+        if(result.error){
+          console.error("[일괄 출결 처리]",result.error);
+          $("attendanceConfirmError").textContent="처리 중 오류가 발생했습니다.";
+          return;
+        }
+        closeModal("attendanceConfirmModal");
+        state.attendanceSelected.clear();
+        const data=result.data||{};
+        showToast(`성공 ${(data.success||[]).length}명 · 건너뜀 ${(data.skipped||[]).length}명 · 실패 ${(data.failed||[]).length}명`);
+        await attendanceLoadBoard({silent:true});
+      }finally{
+        ids.forEach(id=>state.attendanceLoadingRows.delete(String(id)));
+        $("attendanceConfirmSubmit").disabled=false;
+        attendanceRenderBoard();
+      }
+    }
     async function attendanceSaveMemoInline(input){
       const row=attendanceRow(input.dataset.employeeId),value=input.value.trim();
       if(!row||String(row.memo||"")===value)return;
