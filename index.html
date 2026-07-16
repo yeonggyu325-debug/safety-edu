@@ -6,7 +6,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="사내 안전교육 자료 및 교육이력 관리" name="description"/>
 <meta content="#2f6fed" name="theme-color"/>
-<title>사내 안전보건 자료실</title>
+<title>사내 안전교육 자료실</title>
 <style>
     :root{
       --primary:#2f6fed;--primary-hover:#2458bd;--primary-soft:#eef4ff;
@@ -516,7 +516,7 @@
 <aside class="sidebar" id="sidebar">
 <div class="logo-box">
 <img alt="H&amp;iruja" class="logo" src="https://hniruja.com/wp-content/uploads/2024/02/h-%EC%9D%B4%EB%A3%A8%EC%9E%90.png"/>
-<div class="site-name">안전보건 자료실</div>
+<div class="site-name">안전교육 자료실</div>
 </div>
 <nav aria-label="교육 분류" class="menu" id="categoryMenu"></nav>
 <nav class="menu" hidden="" id="adminMenu">
@@ -579,12 +579,12 @@
 <div class="toolbar-left">
 <input class="search-input" id="activeEmployeeSearch" placeholder="사원명·부서·직급 검색" type="search"/>
 <select class="filter-select" id="activeStatusFilter">
-<option value="">전체 상태</option>
+<option value="">전체 근무구분</option>
 <option value="employed">재직</option>
+<option value="china_expat">중국주재원</option>
 <option value="leave">휴직</option>
 <option value="non_regular">비상근</option>
 <option value="long_trip">해외출장</option>
-<option value="other">기타</option>
 </select>
 </div>
 <div class="toolbar-right">
@@ -924,10 +924,13 @@
 <div class="field"><label for="employeeTransferDate">전배일</label><input id="employeeTransferDate" required="" type="date"/></div>
 </div>
 <div class="field">
-<label for="employeeStatusSelect">현재 상태</label>
+<label for="employeeStatusSelect">근무구분</label>
 <select id="employeeStatusSelect">
-<option value="employed">재직</option><option value="leave">휴직</option>
-<option value="non_regular">비상근</option><option value="long_trip">해외출장</option><option value="other">기타</option>
+<option value="employed">재직</option>
+<option value="china_expat">중국주재원</option>
+<option value="leave">휴직</option>
+<option value="non_regular">비상근</option>
+<option value="long_trip">해외출장</option>
 </select>
 </div>
 <div class="form-row" hidden="" id="leaveDateFields">
@@ -1113,7 +1116,7 @@
     function escapeHtml(value){
       return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
     }
-    const statusLabels={employed:"재직",leave:"휴직",retired:"퇴사",non_regular:"비상근",long_trip:"해외출장",other:"기타"};
+    const statusLabels={employed:"재직",china_expat:"중국주재원",leave:"휴직",retired:"퇴사",non_regular:"비상근",long_trip:"해외출장"};
 
     function debounce(fn,delay=180){let timer;return(...args)=>{clearTimeout(timer);timer=setTimeout(()=>fn(...args),delay)}}
     function formatDate(value){if(!value)return"-";const d=new Date(value+"T00:00:00");if(Number.isNaN(d.getTime()))return"-";return new Intl.DateTimeFormat("ko-KR",{year:"numeric",month:"2-digit",day:"2-digit"}).format(d)}
@@ -1125,7 +1128,7 @@
     function closeModal(id){$(id).hidden=true;const any=[...document.querySelectorAll(".modal-backdrop")].some(x=>!x.hidden);document.body.classList.toggle("modal-open",any)}
     function renderSkeleton(tbodyId,columns,rows=6){const body=$(tbodyId);body.replaceChildren();const f=document.createDocumentFragment();for(let r=0;r<rows;r++){const tr=document.createElement("tr");for(let c=0;c<columns;c++){const td=document.createElement("td");const line=document.createElement("div");line.className="skeleton";line.style.width=`${52+((r+c)*17)%42}%`;td.appendChild(line);tr.appendChild(td)}f.appendChild(tr)}body.appendChild(f)}
     function addTextCell(tr,value,className="",title=""){const td=document.createElement("td");td.textContent=value??"-";if(className)td.className=className;if(title||value)td.title=title||String(value);tr.appendChild(td);return td}
-    function statusBadge(status){const span=document.createElement("span");let cls="status-other";if(status==="employed")cls="status-active";else if(["leave","non_regular","long_trip"].includes(status))cls="status-warning";else if(status==="retired")cls="status-retired";span.className=`status-badge ${cls}`;const dot=document.createElement("span");dot.className="status-dot";const label=document.createElement("span");label.textContent=statusLabels[status]||status;span.append(dot,label);return span}
+    function statusBadge(status){const span=document.createElement("span");let cls="status-other";if(status==="employed")cls="status-active";else if(["china_expat","leave","non_regular","long_trip"].includes(status))cls="status-warning";else if(status==="retired")cls="status-retired";span.className=`status-badge ${cls}`;const dot=document.createElement("span");dot.className="status-dot";const label=document.createElement("span");label.textContent=statusLabels[status]||status;span.append(dot,label);return span}
     function categoryMeta(categoryId){
       const category=state.categories.find(x=>Number(x.id)===Number(categoryId));
       const parent=state.categories.find(x=>Number(x.id)===Number(category?.parent_id));
@@ -1923,16 +1926,48 @@
 
     async function downloadExcelTemplate(){
       const ws=XLSX.utils.aoa_to_sheet([
-        ["사원명","부서","직급","상태","입사일","전배일","휴직일","휴직종료일","복귀일","비고"],
+        ["사원명","부서","직급","근무구분","입사일","전배일","휴직일","휴직종료일","복귀일","비고"],
         ["홍길동","고객기술지원","사원","재직","2026-01-02","2026-01-02","","","",""]
       ]);
       const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"재직자");XLSX.writeFile(wb,"재직자_일괄등록_양식.xlsx");
     }
-    function excelDate(value){if(!value)return"";const d=new Date(value);return Number.isNaN(d.getTime())?String(value).slice(0,10):d.toISOString().slice(0,10)}
+    function excelDate(value){
+      if(value===null||value===undefined||value==="")return"";
+      const pad=n=>String(n).padStart(2,"0");
+      const fromParts=(y,m,d)=>{
+        y=Number(y);m=Number(m);d=Number(d);
+        if(!Number.isInteger(y)||!Number.isInteger(m)||!Number.isInteger(d)||y<1900||m<1||m>12||d<1||d>31)return"";
+        const check=new Date(y,m-1,d);
+        if(check.getFullYear()!==y||check.getMonth()!==m-1||check.getDate()!==d)return"";
+        return `${y}-${pad(m)}-${pad(d)}`;
+      };
+      if(value instanceof Date&&!Number.isNaN(value.getTime())){
+        return fromParts(value.getFullYear(),value.getMonth()+1,value.getDate());
+      }
+      if(typeof value==="number"&&Number.isFinite(value)){
+        const parsed=window.XLSX?.SSF?.parse_date_code(value);
+        return parsed?fromParts(parsed.y,parsed.m,parsed.d):"";
+      }
+      const text=String(value).trim();
+      if(!text)return"";
+      if(/^\d+(?:\.\d+)?$/.test(text)){
+        const parsed=window.XLSX?.SSF?.parse_date_code(Number(text));
+        if(parsed)return fromParts(parsed.y,parsed.m,parsed.d);
+      }
+      const match=text.match(/^(\d{4})[.\/-](\d{1,2})[.\/-](\d{1,2})(?:\s.*)?$/);
+      if(match)return fromParts(match[1],match[2],match[3]);
+      const korean=text.match(/^(\d{4})\s*년\s*(\d{1,2})\s*월\s*(\d{1,2})\s*일?$/);
+      if(korean)return fromParts(korean[1],korean[2],korean[3]);
+      const d=new Date(text);
+      return Number.isNaN(d.getTime())?"":fromParts(d.getFullYear(),d.getMonth()+1,d.getDate());
+    }
     async function importExcel(file){
-      const buffer=await file.arrayBuffer(),wb=XLSX.read(buffer,{type:"array",cellDates:true}),sheet=wb.Sheets[wb.SheetNames[0]],rows=XLSX.utils.sheet_to_json(sheet,{defval:"",raw:false});
-      const map={재직:"employed",휴직:"leave",비상근:"non_regular",해외출장:"long_trip",장기출장:"long_trip",기타:"other"};
-      const payload=rows.filter(r=>r["사원명"]).map(r=>({employee_code:`AUTO-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,employee_name:String(r["사원명"]||"").trim(),department_name:String(r["부서"]||"").trim(),job_title:String(r["직급"]||"").trim(),employment_status:map[String(r["상태"]||"재직").trim()]||"employed",hire_date:excelDate(r["입사일"]),department_effective_date:excelDate(r["전배일"])||excelDate(r["입사일"]),leave_start_date:excelDate(r["휴직일"]),leave_end_date:excelDate(r["휴직종료일"]),return_date:excelDate(r["복귀일"]),note:String(r["비고"]||"").trim()}));
+      const buffer=await file.arrayBuffer(),wb=XLSX.read(buffer,{type:"array",cellDates:true}),sheet=wb.Sheets[wb.SheetNames[0]],rows=XLSX.utils.sheet_to_json(sheet,{defval:"",raw:true});
+      const map={재직:"employed",중국주재원:"china_expat",휴직:"leave",비상근:"non_regular",해외출장:"long_trip",장기출장:"long_trip"};
+      const payload=rows.filter(r=>r["사원명"]).map(r=>{
+        const workType=String(r["근무구분"]||r["상태"]||"재직").trim();
+        return {employee_code:`AUTO-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,employee_name:String(r["사원명"]||"").trim(),department_name:String(r["부서"]||"").trim(),job_title:String(r["직급"]||"").trim(),employment_status:map[workType]||"employed",hire_date:excelDate(r["입사일"]),department_effective_date:excelDate(r["전배일"])||excelDate(r["입사일"]),leave_start_date:excelDate(r["휴직일"]),leave_end_date:excelDate(r["휴직종료일"]),return_date:excelDate(r["복귀일"]),note:String(r["비고"]||"").trim()};
+      });
       const {data,error}=await db.rpc("bulk_import_active_employees_v2",{p_rows:payload});if(error){showToast(error.message);return}const result=data?.[0]||{};showToast(`성공 ${result.success_count||0}명 · 실패 ${result.failed_count||0}명`);state.employeeRostersLoaded=false;await loadAllEmployeeRosters();
     }
 
