@@ -6,7 +6,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="사내 안전교육 자료 및 교육이력 관리" name="description"/>
 <meta content="#2f6fed" name="theme-color"/>
-<title>사내 안전교육 자료실</title>
+<title>안전보건 자료실</title>
 <style>
     :root{
       --primary:#2f6fed;--primary-hover:#2458bd;--primary-soft:#eef4ff;
@@ -510,6 +510,193 @@
 @media(max-width:900px){
   .platform-pagination,.attendance-pagination{justify-content:flex-start;overflow-x:auto}
 }
+
+    /* 2026-07 compact/search/snapshot refinements */
+    #attendanceView .attendance-table{min-width:1220px;table-layout:fixed}
+    #attendanceView .attendance-table th{height:30px;padding:0 6px;font-size:10px}
+    #attendanceView .attendance-table td{height:31px;padding:2px 6px;font-size:10.5px;line-height:1.1}
+    #attendanceView .attendance-cell-action{display:inline-flex;min-width:72px;height:24px;align-items:center;justify-content:center;margin-left:7px;padding:0 9px;border-radius:5px;white-space:nowrap}
+    #attendanceView .attendance-time-cell{white-space:nowrap}
+    #attendanceView .attendance-time-main{display:inline-block;min-width:38px;font-variant-numeric:tabular-nums}
+    #attendanceView .attendance-person-button,#attendanceView .attendance-visit-button,#attendanceView .attendance-missed-toggle{min-height:23px;padding:0 7px;font-size:10px}
+    #attendanceView .attendance-memo-input{height:25px;font-size:10px}
+    .attendance-target-load-row{display:flex;align-items:center;gap:10px;grid-column:1/-1;padding:9px 10px;border:1px solid #dce3ed;border-radius:7px;background:#f8fafc}
+    .attendance-target-load-row span{font-size:11px;color:#667085}
+    .row-delete-button{min-width:42px;height:24px;padding:0 6px;border:1px solid #efc7c7;border-radius:5px;background:#fff;color:#b42318;font-size:10px;font-weight:750;cursor:pointer}
+    .row-delete-button:hover{background:#fff1f1}
+
+    /* Final UI, interaction and performance consolidation */
+    html{scroll-behavior:auto}
+    button,input,select,textarea{touch-action:manipulation}
+    .sidebar,.topbar,.content{transform:translateZ(0)}
+    .card,.attendance-control-card,.attendance-table-card,.health-roster-card{contain:layout paint}
+    .modal-backdrop[hidden]{display:none!important;pointer-events:none!important}
+    .modal-backdrop:not([hidden]){pointer-events:auto}
+    .close{position:relative;z-index:3;display:inline-grid!important;place-items:center;min-width:32px!important;width:32px;height:32px;cursor:pointer;pointer-events:auto}
+    #attendanceView .attendance-table{min-width:990px;table-layout:fixed}
+    #attendanceView .attendance-table th{height:29px;padding:0 5px;line-height:1}
+    #attendanceView .attendance-table td{height:29px;padding:1px 5px;line-height:1}
+    #attendanceView .attendance-time-inline{display:flex;align-items:center;justify-content:center;gap:5px;min-width:0;white-space:nowrap}
+    #attendanceView .attendance-time-main{min-width:37px;text-align:center}
+    #attendanceView .attendance-cell-action{min-width:38px!important;width:auto!important;height:21px!important;margin:0!important;padding:0 6px!important;border-radius:4px!important;font-size:9.5px!important;line-height:1!important}
+    #attendanceView .attendance-person-button,#attendanceView .attendance-missed-toggle{height:21px;min-height:21px;padding:0 6px;font-size:9.5px}
+    #attendanceView .attendance-memo-input{height:23px;padding:0 5px;font-size:10px}
+    .attendance-rate-panel{margin:0 0 9px;padding:10px 12px;border:1px solid #d9e0e8;border-radius:8px;background:#fff;box-shadow:0 2px 8px rgba(16,24,40,.035)}
+    .attendance-rate-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+    .attendance-rate-head>div{display:grid;gap:2px}.attendance-rate-head strong{font-size:12px;color:#172033}.attendance-rate-head span{font-size:10px;color:#667085}
+    .attendance-rate-legend{white-space:nowrap}.attendance-rate-chart{display:grid;gap:6px;max-height:280px;overflow:auto;padding-right:4px}
+    .attendance-rate-row{display:grid;grid-template-columns:120px minmax(180px,1fr) 56px;align-items:center;gap:8px;min-height:27px}
+    .attendance-rate-dept{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10.5px;font-weight:750;color:#344054}
+    .attendance-rate-bars{display:grid;gap:3px}.attendance-rate-track{position:relative;height:8px;border-radius:999px;background:#edf1f5;overflow:hidden}
+    .attendance-rate-fill{height:100%;border-radius:999px;background:#2f6fed}.attendance-rate-fill.first{background:#a9b8d5}
+    .attendance-rate-value{text-align:right;font-size:10.5px;font-weight:850;color:#2458bd;font-variant-numeric:tabular-nums}
+    .attendance-rate-empty{padding:16px;text-align:center;color:#98a2b3;font-size:11px}
+    .health-selection-actions{display:flex;align-items:center;gap:7px}.health-selected-count{font-size:10.5px;font-weight:750;color:#667085}
+    #healthView .health-roster-table{min-width:1085px}#healthView .health-target-table{min-width:875px}
+    #healthView .health-roster-table th,#healthView .health-target-table th{height:30px;padding:0 5px}
+    #healthView .health-roster-table td,#healthView .health-target-table td{height:32px;padding:2px 5px}
+    #healthView .health-roster-table input,#healthView .health-target-table input,#healthView .health-target-table select{height:26px}
+    .health-autosave-pending input,.health-autosave-pending select{border-color:#8ca9dc!important;background:#f8fbff!important}
+    .health-autosave-error input,.health-autosave-error select{border-color:#d92d20!important;background:#fff7f6!important}
+    @media(max-width:900px){.attendance-rate-row{grid-template-columns:90px minmax(150px,1fr) 48px}.health-selection-actions{width:100%;justify-content:flex-end}}
+
+
+    /* ===== 2026-07 final integrated requirements ===== */
+    #employeeView table{table-layout:fixed}
+    #employeeView th{height:30px;padding:0 5px;font-size:10.5px;vertical-align:middle}
+    #employeeView td{height:31px;padding:3px 5px;font-size:11px;vertical-align:middle;line-height:1.2}
+    #employeeView th:nth-child(2),#employeeView td:nth-child(2){width:40px!important;min-width:40px!important;max-width:40px!important;padding-left:2px!important;padding-right:2px!important;text-align:center}
+    #employeeView .mini{min-height:24px;height:24px;padding:0 7px;font-size:10px;border-radius:5px}
+    #employeeView .status-badge{min-height:21px;padding:0 6px;font-size:9.5px}
+
+    #attendanceView .attendance-table-card{overflow:hidden}
+    #attendanceView .attendance-table{min-width:1230px;table-layout:fixed;border-collapse:collapse}
+    #attendanceView .attendance-table th{height:26px;padding:0 4px;font-size:10px;line-height:1.1;vertical-align:middle}
+    #attendanceView .attendance-table td{height:30px;padding:3px 4px;font-size:10.5px;line-height:1.15;vertical-align:middle}
+    #attendanceView .attendance-table tbody tr{min-height:0}
+    #attendanceView .attendance-table .ellipsis{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    #attendanceView .attendance-table td:nth-child(2),#attendanceView .attendance-table th:nth-child(2){padding-left:2px;padding-right:2px;text-align:center}
+    .attendance-round1-head{background:#fff8dc!important;color:#725b00!important;border-color:#eadb99!important}
+    .attendance-round2-head{background:#edf5ff!important;color:#2458bd!important;border-color:#c9daf5!important}
+    .attendance-round1-cell{background:#fffdf4}
+    .attendance-round2-cell{background:#f7fbff}
+    .attendance-paired-table tbody tr:hover .attendance-round1-cell{background:#fff9df}
+    .attendance-paired-table tbody tr:hover .attendance-round2-cell{background:#edf6ff}
+    .attendance-paired-table .sticky-identity{position:sticky;z-index:2;background:#fff}
+    .attendance-paired-table th.sticky-identity{z-index:4;background:#f7f9fc}
+    .attendance-person-button{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .attendance-round-action{display:grid;grid-template-columns:minmax(48px,1fr) minmax(42px,1fr);width:100%;min-width:94px;height:24px;padding:0;border:1px solid #9cb7eb;border-radius:6px;background:#fff;color:#2458bd;overflow:hidden;font-weight:800;font-size:10px;line-height:1;vertical-align:middle}
+    .attendance-round-action>span{display:flex;align-items:center;justify-content:center;height:100%;white-space:nowrap}
+    .attendance-round-action .attendance-action-time{font-size:12px;font-weight:900;font-variant-numeric:tabular-nums;border-right:1px solid currentColor}
+    .attendance-round-action:hover{background:#eef4ff;border-color:#6f95df}
+    .attendance-round-action.checkout{color:#dc2626;border-color:#ef4444;background:#fff}
+    .attendance-round-action.checkout:hover,.attendance-round-action.checkout:focus-visible{background:#fff1f1;border-color:#dc2626;color:#b91c1c}
+    .attendance-round-action:disabled{opacity:.48;background:#f7f8fa;color:#667085;border-color:#d6dbe3}
+    .attendance-round-action.is-loading{position:relative;color:transparent!important;pointer-events:none}
+    .attendance-round-action.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:11px;height:11px;border:2px solid rgba(47,111,237,.24);border-top-color:#2f6fed;border-radius:50%;animation:attendanceSpin .65s linear infinite}
+    .attendance-round-action.checkout.is-loading::after{border-color:rgba(220,38,38,.22);border-top-color:#dc2626}
+    @keyframes attendanceSpin{to{transform:rotate(360deg)}}
+    .attendance-round-static{display:grid;grid-template-columns:1fr 1fr;width:100%;min-width:94px;height:24px;border:1px solid #dde3eb;border-radius:6px;background:#f9fafb;color:#667085;overflow:hidden;font-size:10px;font-weight:750}
+    .attendance-round-static span{display:flex;align-items:center;justify-content:center;white-space:nowrap}
+    .attendance-round-static span:first-child{font-size:12px;font-weight:900;font-variant-numeric:tabular-nums;border-right:1px solid #dde3eb;color:#344054}
+    .attendance-round-static.not-target{grid-template-columns:1fr;color:#98a2b3}
+    .attendance-duration-pair{display:grid;gap:1px;text-align:center;font-size:9.5px;line-height:1.1;white-space:nowrap}
+    .attendance-duration-pair strong{font-size:10px;color:#344054}
+    #attendanceView .attendance-missed-toggle{height:23px;min-height:23px;padding:0 7px;font-size:9.5px}
+    #attendanceView .attendance-memo-input{height:24px;padding:0 6px;font-size:10px}
+
+    .attendance-chart-card{margin-top:10px;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:var(--shadow);overflow:hidden}
+    .attendance-chart-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 13px}
+    .attendance-chart-card-head h3{margin:0;font-size:14px;color:#172033;letter-spacing:-.02em}
+    .attendance-chart-card-head p{margin:3px 0 0;font-size:10.5px;color:#667085}
+    .attendance-chart-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}
+    .attendance-chart-actions .btn{min-height:29px;height:29px;padding:0 9px;font-size:10.5px}
+    .attendance-chart-collapse{max-height:0;opacity:0;overflow:hidden;border-top:0 solid var(--line);transition:max-height .32s ease,opacity .22s ease,border-top-width .18s ease}
+    .attendance-chart-collapse.open{max-height:520px;opacity:1;border-top-width:1px}
+    .attendance-chart-scroll{display:none;overflow-x:auto;overflow-y:hidden;padding:12px 12px 8px;background:#fff}
+    .attendance-chart-collapse.open .attendance-chart-scroll.has-data{display:block}
+    .attendance-chart-scroll canvas{display:block;max-width:none;height:330px}
+    .attendance-chart-empty{padding:24px 14px;text-align:center;color:#98a2b3;font-size:11px}
+    .attendance-chart-collapse:not(.open) .attendance-chart-empty{display:none}
+    .attendance-rate-legend{font-size:10px;color:#667085;white-space:nowrap}
+
+    .health-autosave-pending{box-shadow:inset 3px 0 0 #7aa2e8}
+    .health-autosave-error{box-shadow:inset 3px 0 0 #d92d20}
+    .health-save-note{font-size:10px;color:#667085}
+
+    @media(max-width:900px){
+      #employeeView th{height:32px}#employeeView td{height:34px;padding-top:4px;padding-bottom:4px}
+      #attendanceView .attendance-table{min-width:1180px}
+      #attendanceView .attendance-table td{height:33px;padding-top:4px;padding-bottom:4px}
+      .attendance-chart-card-head{align-items:flex-start;flex-direction:column}
+      .attendance-chart-actions{width:100%;justify-content:flex-start}
+      .attendance-chart-collapse.open{max-height:560px}
+      .attendance-chart-scroll canvas{height:310px}
+    }
+</style>
+
+<style id="finalCompactCheckboxAndRowFix">
+  #attendanceView .attendance-row-check,
+  #attendanceView #attendanceSelectAll,
+  #employeeView .active-row-check,
+  #employeeView #activeSelectAll,
+  #employeeView #retiredSelectAll,
+  #healthView .health-row-check,
+  #healthView #healthStatusSelectAll,
+  #healthView #healthTargetSelectAll{width:14px!important;height:14px!important;min-width:14px!important;min-height:14px!important;padding:0!important;margin:0!important;vertical-align:middle}
+  #attendanceView .attendance-duration-pair{display:flex!important;align-items:center;justify-content:center;gap:5px;white-space:nowrap;line-height:1!important}
+  #attendanceView .attendance-duration-pair strong,#attendanceView .attendance-duration-pair span{font-size:9.4px!important;line-height:1!important}
+  #attendanceView .attendance-table tbody tr{height:30px!important}
+  #employeeView .roster-table th,#employeeView .roster-table td{padding-top:3px!important;padding-bottom:3px!important;vertical-align:middle}
+</style>
+
+<style id="participant-date-compact-style">
+  /* 교육 대상자 관리: 밀도와 정렬 */
+  #participantModal .modal-body{padding:12px 15px 15px}
+  #participantModal .summary-strip{gap:7px;margin-bottom:7px}
+  #participantModal .summary-card{min-height:48px;padding:7px 10px}
+  #participantModal .summary-label{text-align:center}
+  #participantModal .summary-value{text-align:center;font-size:18px}
+  #participantModal .participant-toolbar{min-height:32px;margin:0 0 7px;padding:0;gap:6px}
+  #participantModal .participant-layout{gap:8px;grid-template-columns:minmax(245px,.72fr) minmax(550px,1.55fr)}
+  #participantModal .participant-panel{border-radius:8px}
+  #participantModal .participant-panel-head{justify-content:center;position:relative;min-height:34px;padding:5px 7px;text-align:center}
+  #participantModal .participant-panel-head strong{width:100%;text-align:center;font-size:12px}
+  #participantModal .participant-panel-head input{position:absolute;right:6px;width:164px;height:26px;padding:3px 7px;font-size:11px}
+  #participantModal .picker-list{max-height:365px}
+  #participantModal .picker-row{min-height:31px;padding:4px 7px}
+  #participantModal .picker-info strong{font-size:11px}
+  #participantModal .picker-info small{margin-top:0;font-size:9px}
+  #participantModal .participant-table th{height:29px;padding:4px 5px;text-align:center;vertical-align:middle}
+  #participantModal .participant-table td{height:30px;padding:3px 5px;vertical-align:middle}
+  #participantModal .participant-select-col{width:34px;min-width:34px;max-width:34px;padding-left:2px!important;padding-right:2px!important}
+  #participantModal .participant-department-col{width:132px}
+  #participantModal .participant-name-col{width:92px}
+  #participantModal .participant-date-col{width:132px}
+  #participantModal .participant-manage-col{width:58px}
+  #participantModal .participant-date-input{display:block;width:118px;height:24px;margin:0 auto;padding:2px 5px;border:1px solid var(--line);border-radius:5px;background:#fff;font-size:11px;text-align:center}
+  #participantModal .participant-date-input.is-saving{background:#eff6ff;border-color:#93b4f5}
+  #participantModal .participant-date-input.is-conflict{border-color:#ef4444;background:#fff5f5}
+  #participantModal .participant-table .mini{height:23px;min-height:23px;padding:2px 7px;font-size:10px}
+  #participantModal .platform-pagination{margin-top:5px;padding-top:5px}
+  #participantModal .selection-text{font-size:11px;font-weight:750;color:#475467}
+  #participantDateModal .modal-body{padding-top:14px}
+
+  /* 교육 출결관리 헤더 중앙 정렬 및 비고 입력 힌트 제거 */
+  #attendanceView table thead th{text-align:center!important;vertical-align:middle}
+  #attendanceView .attendance-memo-input::placeholder{color:transparent}
+  #attendanceView .attendance-memo-input{padding-left:6px;padding-right:6px}
+
+  /* 본인 교육이력 */
+  #selfHistoryModal table th,#selfHistoryModal table td{text-align:center;vertical-align:middle}
+
+  @media(max-width:860px){
+    #participantModal .participant-layout{grid-template-columns:1fr}
+    #participantModal .participant-panel-head{justify-content:space-between}
+    #participantModal .participant-panel-head strong{width:auto}
+    #participantModal .participant-panel-head input{position:static;width:min(170px,52vw)}
+    #participantModal .participant-table{min-width:560px}
+  }
 </style>
 </head>
 <body>
@@ -534,7 +721,7 @@
 <p hidden="" id="pageSubtitle"></p>
 </div>
 <div class="top-actions">
-<button class="btn btn-secondary" id="loginButton" type="button">관리자 로그인</button>
+<button class="btn btn-secondary" id="loginButton" type="button">로그인</button>
 <div class="top-actions" hidden="" id="adminTopActions">
 <button class="btn btn-primary" id="addEducationButton" type="button">교육 추가</button>
 <button class="btn btn-danger" id="logoutButton" type="button">로그아웃</button>
@@ -623,10 +810,8 @@
 <div class="toolbar-left">
 <input class="search-input" id="retiredEmployeeSearch" placeholder="사원명·부서·직급 검색" type="search"/>
 <select class="filter-select" id="retiredDepartmentFilter"><option value="">전체 부서</option></select>
-<select class="filter-select" id="retiredSort">
-<option value="retired_desc">퇴사일 최신순</option>
-<option value="retired_asc">퇴사일 오래된순</option>
-<option value="name_asc">사원명 가나다순</option>
+<select class="filter-select" id="retiredSort" disabled title="부서·성명순으로 고정됩니다.">
+<option value="department_name">부서·성명순</option>
 </select>
 </div>
 <div class="toolbar-right"></div>
@@ -689,7 +874,7 @@
 <div class="health-dashboard">
 <div class="health-dashboard-card">
 <div class="health-ring target" id="healthTargetRing" style="--progress:100"><strong id="healthTargetRate">100%</strong></div>
-<div class="health-dashboard-copy"><span>대상 인원</span><strong id="healthTargetTotal">0명</strong><small>제외사유 대상자는 제외</small></div>
+<div class="health-dashboard-copy"><span>총원</span><strong id="healthTargetTotal">0명</strong><small>퇴사자를 제외한 전체 사원 기준</small></div>
 </div>
 <div class="health-dashboard-card">
 <div class="health-ring completed" id="healthCompletedRing"><strong id="healthCompletedRate">0%</strong></div>
@@ -710,19 +895,19 @@
 <option value="excluded">대상 제외</option>
 </select>
 </div>
-<span class="health-result-count" id="healthResultCount">0명</span>
+<div class="health-selection-actions"><span class="health-result-count" id="healthResultCount">0명</span><span class="health-selected-count" id="healthStatusSelectedCount">선택 0명</span><button class="btn btn-danger" disabled id="healthStatusDeleteSelected" type="button">선택 삭제</button></div>
 </div>
 <div class="card health-roster-card">
 <div class="table-wrap">
 <table class="health-roster-table">
 <colgroup>
-<col style="width:42px"/><col style="width:125px"/><col style="width:68px"/><col style="width:82px"/>
-<col style="width:108px"/><col style="width:68px"/><col style="width:112px"/><col style="width:132px"/>
-<col style="width:112px"/><col style="width:132px"/><col style="width:62px"/>
+<col style="width:34px"/><col style="width:42px"/><col style="width:118px"/><col style="width:64px"/><col style="width:82px"/>
+<col style="width:104px"/><col style="width:64px"/><col style="width:110px"/><col style="width:128px"/>
+<col style="width:110px"/><col style="width:128px"/>
 </colgroup>
 <thead><tr>
-<th class="center">No.</th><th>부서</th><th>직급</th><th>성명</th><th class="center">필수 검진</th><th class="center">상태</th>
-<th>일반검진 실시일</th><th>일반검진 기관</th><th>추가검진 실시일</th><th>추가검진 기관</th><th class="center">저장</th>
+<th class="center"><input aria-label="현재 페이지 전체 선택" id="healthStatusSelectAll" type="checkbox"/></th><th class="center">No.</th><th>부서</th><th>직급</th><th>성명</th><th class="center">필수 검진</th><th class="center">상태</th>
+<th>일반검진 실시일</th><th>일반검진 기관</th><th>추가검진 실시일</th><th>추가검진 기관</th>
 </tr></thead>
 <tbody id="healthExamTableBody"></tbody>
 </table>
@@ -735,13 +920,13 @@
 <div class="health-roster-filters">
 <input class="search-input" id="healthTargetSearch" placeholder="성명·부서·직급 검색" type="search"/>
 </div>
-<span class="health-result-count" id="healthTargetResultCount">0명</span>
+<div class="health-selection-actions"><span class="health-result-count" id="healthTargetResultCount">0명</span><span class="health-selected-count" id="healthTargetSelectedCount">선택 0명</span><button class="btn btn-danger" disabled id="healthTargetDeleteSelected" type="button">선택 삭제</button></div>
 </div>
 <div class="card health-roster-card">
 <div class="table-wrap">
 <table class="health-target-table">
-<colgroup><col style="width:42px"/><col style="width:130px"/><col style="width:70px"/><col style="width:90px"/><col style="width:100px"/><col style="width:135px"/><col style="width:135px"/><col style="width:125px"/><col style="width:62px"/></colgroup>
-<thead><tr><th class="center">No.</th><th>부서</th><th>직급</th><th>성명</th><th class="center">기본검진</th><th>추가 검진종류</th><th>제외사유</th><th>종합검진 실시일</th><th class="center">저장</th></tr></thead>
+<colgroup><col style="width:34px"/><col style="width:42px"/><col style="width:126px"/><col style="width:66px"/><col style="width:88px"/><col style="width:96px"/><col style="width:132px"/><col style="width:132px"/><col style="width:124px"/></colgroup>
+<thead><tr><th class="center"><input aria-label="현재 페이지 전체 선택" id="healthTargetSelectAll" type="checkbox"/></th><th class="center">No.</th><th>부서</th><th>직급</th><th>성명</th><th class="center">기본검진</th><th>추가 검진종류</th><th>제외사유</th><th>종합검진 실시일</th></tr></thead>
 <tbody id="healthTargetTableBody"></tbody>
 </table>
 </div>
@@ -786,26 +971,38 @@
 </div>
 <div class="attendance-toolbar-right">
 <span class="attendance-count" id="attendanceSelectedCount">선택 0명</span>
-<button class="btn btn-danger" disabled="" id="attendanceClearSelectionButton" type="button">선택 로그 초기화</button>
+<button class="btn btn-secondary" disabled="" id="attendanceClearSelectionButton" type="button">선택 로그 초기화</button>
+<button class="btn btn-danger" disabled="" id="attendanceDeleteSelectedButton" type="button">선택 삭제</button>
 <button class="btn btn-primary" disabled="" id="attendanceStartPeopleButton" type="button">시작체크</button>
 <button class="btn btn-secondary" disabled="" id="attendanceEndPeopleButton" type="button">종료체크</button>
 </div>
 </div>
+<div id="attendanceStatus"></div>
 <div class="card attendance-table-card">
 <div class="table-wrap">
-<table class="attendance-table">
+<table class="attendance-table attendance-paired-table">
 <colgroup>
-<col style="width:36px"/><col style="width:142px"/><col style="width:70px"/><col style="width:92px"/>
-<col style="width:96px"/><col style="width:96px"/><col style="width:94px"/><col style="width:58px"/>
-<col style="width:92px"/><col style="width:170px"/>
+<col style="width:32px"/><col style="width:42px"/><col style="width:104px"/><col style="width:64px"/><col style="width:88px"/>
+<col style="width:132px"/><col style="width:132px"/><col style="width:92px"/><col style="width:84px"/><col style="width:158px"/>
 </colgroup>
-<thead><tr><th class="center"><input aria-label="전체 선택" id="attendanceSelectAll" type="checkbox"/></th><th>부서</th><th>직급</th><th>성명</th><th class="center">최초 입실</th><th class="center">최종 퇴실</th><th class="center">교육인정시간</th><th class="center">출입</th><th class="center">미수강 서명</th><th>비고</th></tr></thead>
+<thead>
+<tr><th class="center"><input aria-label="현재 페이지 전체 선택" id="attendanceSelectAll" type="checkbox"/></th><th class="center">No.</th><th>부서</th><th>직급</th><th>성명</th><th class="center attendance-unified-head">입실</th><th class="center attendance-unified-head">퇴실</th><th class="center">교육인정시간</th><th class="center">미수강 서명</th><th>비고</th></tr>
+</thead>
 <tbody id="attendanceTableBody"></tbody>
 </table>
 </div>
 <div class="attendance-pagination" hidden="" id="attendancePagination"></div>
-<div id="attendanceStatus"></div>
 </div>
+<section class="attendance-chart-card" id="attendanceRatePanel">
+  <div class="attendance-chart-card-head">
+    <div><h3 id="attendanceRateTitle">교육 출석 현황</h3><p id="attendanceRateDescription">1·2차를 합산한 부서별 통합 참석률입니다.</p></div>
+    <div class="attendance-chart-actions"><span class="attendance-rate-legend" id="attendanceRateLegend"></span><button class="btn btn-secondary" id="attendanceChartToggle" type="button" aria-expanded="false">그래프 열기</button><button class="btn btn-secondary" id="attendanceChartDownload" type="button" disabled>이미지 다운로드</button></div>
+  </div>
+  <div class="attendance-chart-collapse" id="attendanceChartCollapse" aria-hidden="true">
+    <div class="attendance-chart-scroll" id="attendanceDepartmentChart"><canvas id="attendanceChartCanvas" role="img" aria-label="부서별 교육 출석 현황 세로 막대그래프"></canvas></div>
+    <div class="attendance-chart-empty" id="attendanceChartEmpty">교육 회차를 선택하세요.</div>
+  </div>
+</section>
 </section>
 </section>
 </main>
@@ -839,6 +1036,10 @@
 <label for="attendanceSessionEnd">종료시각</label>
 <input autocomplete="off" class="attendance-time-text" id="attendanceSessionEnd" inputmode="numeric" maxlength="5" pattern="(?:[01]\d|2[0-3]):[0-5]\d" placeholder="11:30" required="" type="text"/>
 </div>
+</div>
+<div class="attendance-target-load-row">
+<button class="btn btn-secondary" id="attendanceLoadTargetsButton" type="button">대상인원 불러오기</button>
+<span id="attendanceTargetLoadInfo">신규 회차 저장 시 현재 월 대상자를 자동으로 불러옵니다.</span>
 </div>
 <div class="form-error" id="attendanceSessionError" role="alert"></div>
 <div class="modal-actions">
@@ -895,7 +1096,7 @@
 <div class="card">
 <div class="table-wrap">
 <table>
-<thead><tr><th>교육구분</th><th>교육명</th><th>결과보고서</th></tr></thead>
+<thead><tr><th class="center">교육구분</th><th class="center">교육명</th><th class="center">교육일자</th><th class="center">결과보고서</th></tr></thead>
 <tbody id="selfHistoryTableBody"></tbody>
 </table>
 </div>
@@ -917,7 +1118,7 @@
 </div>
 <div class="form-row">
 <div class="field"><label for="employeeDepartment">부서</label><select id="employeeDepartment" required=""></select></div>
-<div class="field"><label for="employeeJobTitle">직급</label><input id="employeeJobTitle" required=""/></div>
+<div class="field"><label for="employeeJobTitle">직급</label><select id="employeeJobTitle" required=""><option value="">직급을 선택하세요</option><option value="사원">사원</option><option value="대리">대리</option><option value="과장">과장</option><option value="차장">차장</option><option value="부장">부장</option><option value="이사">이사</option><option value="전무">전무</option><option value="상무">상무</option><option value="부사장">부사장</option><option value="대표이사">대표이사</option></select></div>
 </div>
 <div class="form-row">
 <div class="field"><label for="employeeHireDate">입사일</label><input id="employeeHireDate" type="date"/></div>
@@ -933,11 +1134,6 @@
 <option value="long_trip">해외출장</option>
 </select>
 </div>
-<div class="form-row" hidden="" id="leaveDateFields">
-<div class="field"><label for="leaveStartDate">휴직일</label><input id="leaveStartDate" type="date"/></div>
-<div class="field"><label for="leaveEndDate">휴직 종료예정일</label><input id="leaveEndDate" type="date"/></div>
-</div>
-<div class="field" hidden="" id="returnDateField"><label for="returnDate">복귀일</label><input id="returnDate" type="date"/></div>
 <div class="field"><label for="employeeNote">비고</label><textarea id="employeeNote"></textarea></div>
 </div>
 <div class="form-error" id="employeeFormError"></div>
@@ -1014,26 +1210,39 @@
 <div class="summary-card"><span class="summary-label">현재 재직자</span><strong class="summary-value" id="currentEmployeeCount">0</strong></div>
 <div class="summary-card"><span class="summary-label">교육 대상자</span><strong class="summary-value" id="participantCount">0</strong></div>
 </div>
-<div class="toolbar">
-<div class="toolbar-left"></div>
+<div class="toolbar participant-toolbar">
+<div class="toolbar-left"><span class="selection-text" id="participantSelectionText">선택 0명</span></div>
 <div class="toolbar-right">
+<button class="btn btn-secondary" disabled="" id="participantBulkDateButton" type="button">선택 교육일 입력</button>
 <button class="btn btn-primary" id="assignAllButton" type="button">일괄 등록</button>
 <button class="btn btn-danger" id="deleteAllParticipantsButton" type="button">전체 삭제</button>
 </div>
 </div>
 <div class="participant-layout">
-<div class="panel">
-<div class="panel-head"><strong>개별 직원 추가</strong><input id="employeePickerSearch" placeholder="사원명·부서 검색" type="search"/></div>
+<div class="panel participant-panel">
+<div class="panel-head participant-panel-head"><strong>개별 직원 추가</strong><input autocomplete="off" id="employeePickerSearch" placeholder="사원명·부서 검색" type="search"/></div>
 <div class="picker-list" id="employeePickerList"></div>
 </div>
-<div class="panel">
-<div class="panel-head"><strong>현재 대상자</strong><input id="participantSearch" placeholder="사원명·부서 검색" type="search"/></div>
-<div class="table-wrap">
-<table><thead><tr><th class="center">선택</th><th>부서</th><th>사원명</th><th class="center">관리</th></tr></thead><tbody id="participantTableBody"></tbody></table>
+<div class="panel participant-panel">
+<div class="panel-head participant-panel-head"><strong>현재 대상자</strong><input autocomplete="off" id="participantSearch" placeholder="사원명·부서 검색" type="search"/></div>
+<div class="table-wrap participant-table-wrap">
+<table class="participant-table"><thead><tr><th class="center participant-select-col"><input aria-label="현재 페이지 전체 선택" id="participantSelectAll" type="checkbox"/></th><th class="center participant-department-col">부서</th><th class="center participant-name-col">사원명</th><th class="center participant-date-col">교육일자</th><th class="center participant-manage-col">관리</th></tr></thead><tbody id="participantTableBody"></tbody></table>
 </div>
 <div id="participantStatus"></div>
 </div>
 </div>
+</div>
+</div>
+</div>
+<div class="modal-backdrop" hidden="" id="participantDateModal">
+<div class="modal modal-small">
+<div class="modal-head"><div><h2>선택 대상자 교육일 입력</h2></div><button class="close" data-close="participantDateModal" type="button">×</button></div>
+<div class="modal-body">
+<form id="participantDateForm">
+<div class="field"><label for="participantBulkDate">교육일자</label><input id="participantBulkDate" required="" type="date"/></div>
+<div class="form-error" id="participantDateError"></div>
+<div class="modal-actions"><button class="btn btn-secondary" data-close="participantDateModal" type="button">취소</button><button class="btn btn-primary" type="submit">선택 대상자에 입력</button></div>
+</form>
 </div>
 </div>
 </div>
@@ -1186,24 +1395,23 @@
     }
 
     async function checkAdmin(session){
-      if(!session?.user){
-        state.isAdmin=false;
-        document.body.classList.remove("admin-mode");
-        syncAdminUI();
-        return;
+      state.isAuthenticated=Boolean(session?.user);
+      state.isAdmin=false;
+      if(state.isAuthenticated){
+        const {data,error}=await db.rpc("is_admin");
+        if(error)console.error("[관리자 권한 확인]",error);
+        state.isAdmin=!error&&data===true;
       }
-      const {data,error}=await db.rpc("is_admin");
-      if(error)console.error("[관리자 권한 확인]",error);
-      state.isAdmin=!error&&data===true;
       document.body.classList.toggle("admin-mode",state.isAdmin);
-      if(!state.isAdmin)await db.auth.signOut();
       syncAdminUI();
     }
 
     function syncAdminUI(){
       $("adminMenu").hidden=!state.isAdmin;
-      $("loginButton").hidden=state.isAdmin;
-      $("adminTopActions").hidden=!state.isAdmin;
+      $("loginButton").hidden=Boolean(state.isAuthenticated);
+      $("adminTopActions").hidden=!state.isAuthenticated;
+      $("logoutButton").hidden=!state.isAuthenticated;
+      $("addEducationButton").hidden=!(state.isAdmin&&state.currentView==="education");
       if(!state.isAdmin&&state.currentView!=="education")showView("education");
       if(state.isAdmin&&state.currentView==="employees")loadEmployeeTab(state.employeeTab);
       if(state.categories.length)renderEducationTable();
@@ -1623,13 +1831,13 @@
     function fillEmployeeDepartmentOptions(){const select=$("employeeDepartment");select.replaceChildren(new Option("부서를 선택하세요",""));state.departments.filter(x=>x.is_active).sort((a,b)=>a.department_name.localeCompare(b.department_name,"ko")).forEach(d=>select.appendChild(new Option(d.department_name,String(d.id))))}
     function openEmployeeForm(employee=null){
       $("employeeForm").reset();$("employeeFormError").textContent="";$("employeeId").value=employee?.employee_id||"";$("employeeModalTitle").textContent=employee?"사원 정보 수정":"사원 추가";
-      $("employeeCode").value=employee?.employee_code||`AUTO-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;$("employeeName").value=employee?.employee_name||"";$("employeeDepartment").value=employee?.department_id||"";$("employeeJobTitle").value=employee?.job_title||"";$("employeeHireDate").value=employee?.hire_date||"";$("employeeTransferDate").value=employee?.department_effective_date||employee?.hire_date||new Date().toISOString().slice(0,10);$("employeeStatusSelect").value=employee?.employment_status||"employed";$("leaveStartDate").value=employee?.leave_start_date||"";$("leaveEndDate").value=employee?.leave_end_date||"";$("returnDate").value=employee?.return_date||"";$("employeeNote").value=employee?.note||"";toggleEmployeeStatusFields();openModal("employeeModal");
+      $("employeeCode").value=employee?.employee_code||`AUTO-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;$("employeeName").value=employee?.employee_name||"";$("employeeDepartment").value=employee?.department_id||"";$("employeeJobTitle").value=employee?.job_title||"";$("employeeHireDate").value=employee?.hire_date||"";$("employeeTransferDate").value=employee?.department_effective_date||employee?.hire_date||new Date().toISOString().slice(0,10);$("employeeStatusSelect").value=employee?.employment_status||"employed";$("employeeNote").value=employee?.note||"";openModal("employeeModal");
     }
-    function toggleEmployeeStatusFields(){const status=$("employeeStatusSelect").value;$("leaveDateFields").hidden=status!=="leave";$("returnDateField").hidden=status!=="employed";if(status==="leave"&&$("leaveStartDate").value&&!$("leaveEndDate").value){const d=new Date($("leaveStartDate").value+"T00:00:00");d.setFullYear(d.getFullYear()+1);$("leaveEndDate").value=d.toISOString().slice(0,10)}}
+    function toggleEmployeeStatusFields(){}
     async function saveEmployee(event){
       event.preventDefault();$("employeeFormError").textContent="";
-      const args={p_employee_id:$("employeeId").value?Number($("employeeId").value):null,p_employee_code:$("employeeCode").value.trim(),p_employee_name:$("employeeName").value.trim(),p_department_id:Number($("employeeDepartment").value),p_job_title:$("employeeJobTitle").value.trim(),p_department_effective_date:$("employeeTransferDate").value||null,p_employment_status:$("employeeStatusSelect").value,p_hire_date:$("employeeHireDate").value||null,p_leave_start_date:$("leaveStartDate").value||null,p_leave_end_date:$("leaveEndDate").value||null,p_return_date:$("returnDate").value||null,p_note:$("employeeNote").value.trim()||null};
-      const {error}=await db.rpc("save_employee_profile_v2",args);if(error){$("employeeFormError").textContent=error.message;return}closeModal("employeeModal");showToast("사원 정보가 저장되었습니다.");await loadActiveEmployees();
+      const args={p_employee_id:$("employeeId").value?Number($("employeeId").value):null,p_employee_code:$("employeeCode").value.trim(),p_employee_name:$("employeeName").value.trim(),p_department_id:Number($("employeeDepartment").value),p_job_title:$("employeeJobTitle").value.trim(),p_department_effective_date:$("employeeTransferDate").value||null,p_employment_status:$("employeeStatusSelect").value,p_hire_date:$("employeeHireDate").value||null,p_note:$("employeeNote").value.trim()||null};
+      const {error}=await db.rpc("save_employee_profile_v3",args);if(error){$("employeeFormError").textContent=error.message;return}closeModal("employeeModal");showToast("사원 정보가 저장되었습니다.");await loadActiveEmployees();
     }
     function openRetireForm(ids,label){$("retireForm").reset();$("retireEmployeeIds").value=ids.join(",");$("retireModalTitle").textContent=ids.length===1?`${label} 퇴사 처리`:`선택 ${ids.length}명 퇴사 처리`;$("retirementDateInput").value=new Date().toISOString().slice(0,10);$("retireError").textContent="";openModal("retireModal")}
     async function processRetirement(event){
@@ -1692,8 +1900,8 @@
       if(error){
         console.error("[건강검진 명단 조회]",error);
         $("healthExamTableBody").replaceChildren();$("healthTargetTableBody").replaceChildren();
-        setStatus("healthExamStatus","처리 중 오류가 발생했습니다.",true);
-        setStatus("healthTargetStatus","처리 중 오류가 발생했습니다.",true);
+        setStatus("healthExamStatus","건강검진 목록을 불러오지 못했습니다.",true);
+        setStatus("healthTargetStatus","건강검진 목록을 불러오지 못했습니다.",true);
         return;
       }
       state.healthExams=Array.isArray(data)?data:[];
@@ -1783,7 +1991,7 @@
           if(additional.error)throw additional.error;
         }
         showToast(`${row.employee_name}님의 검진정보를 저장했습니다.`);await loadHealthExams();
-      }catch(error){console.error("[건강검진 저장]",error);showToast("처리 중 오류가 발생했습니다.")}
+      }catch(error){console.error("[건강검진 관리] 정보 저장 실패",error);showToast("건강검진 정보를 저장하지 못했습니다.")}
       finally{tr.classList.remove("health-row-saving");button.disabled=false}
     }
 
@@ -1815,7 +2023,7 @@
       try{
         const {error}=await db.rpc("save_employee_health_exam_target",{p_employee_id:Number(row.employee_id),p_exam_year:year,p_additional_exam_type:additional,p_exclusion_reason:exclusion,p_comprehensive_exam_date:comprehensive});
         if(error)throw error;showToast(`${row.employee_name}님의 검진종류를 저장했습니다.`);await loadHealthExams();
-      }catch(error){console.error("[검진종류 저장]",error);showToast("처리 중 오류가 발생했습니다.")}
+      }catch(error){console.error("[건강검진 관리] 검진종류 저장 실패",error);showToast("건강검진 정보를 저장하지 못했습니다.")}
       finally{tr.classList.remove("health-row-saving");button.disabled=false}
     }
 
@@ -1840,7 +2048,7 @@
           }catch(error){console.error("[건강검진 엑셀 행 저장]",error);failed++}
         }
         showToast(`성공 ${success}건 · 실패 ${failed}건`);await loadHealthExams();
-      }catch(error){console.error("[건강검진 엑셀 업로드]",error);showToast("처리 중 오류가 발생했습니다.")}
+      }catch(error){console.error("[건강검진 관리] 엑셀 업로드 실패",error);showToast("건강검진 엑셀 파일을 처리하지 못했습니다.")}
     }
 
     function fillEducationCategories(){const select=$("educationCategory");select.replaceChildren();state.categories.filter(x=>!state.categories.some(c=>Number(c.parent_id)===Number(x.id))).forEach(x=>{const parent=state.categories.find(c=>Number(c.id)===Number(x.parent_id));select.appendChild(new Option(parent?`${parent.category_name} - ${x.category_name}`:x.category_name,String(x.id)))})}
@@ -1926,51 +2134,119 @@
 
     async function downloadExcelTemplate(){
       const ws=XLSX.utils.aoa_to_sheet([
-        ["사원명","부서","직급","근무구분","입사일","전배일","휴직일","휴직종료일","복귀일","비고"],
+        ["사원명","부서","직급","근무구분","입사일","전배일","비고"],
         ["홍길동","고객기술지원","사원","재직","2026-01-02","2026-01-02","","","",""]
       ]);
       const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"재직자");XLSX.writeFile(wb,"재직자_일괄등록_양식.xlsx");
     }
-    function excelDate(value){
-      if(value===null||value===undefined||value==="")return"";
+    function normalizeExcelHeader(value){
+      return String(value??"")
+        .replace(/^\ufeff/,"")
+        .replace(/[\s\u00a0]+/g,"")
+        .replace(/[()（）]/g,"")
+        .trim();
+    }
+    function excelDate(value,date1904=false){
+      if(value===null||value===undefined||value==="")return null;
       const pad=n=>String(n).padStart(2,"0");
       const fromParts=(y,m,d)=>{
         y=Number(y);m=Number(m);d=Number(d);
-        if(!Number.isInteger(y)||!Number.isInteger(m)||!Number.isInteger(d)||y<1900||m<1||m>12||d<1||d>31)return"";
-        const check=new Date(y,m-1,d);
-        if(check.getFullYear()!==y||check.getMonth()!==m-1||check.getDate()!==d)return"";
+        if(!Number.isInteger(y)||!Number.isInteger(m)||!Number.isInteger(d)||y<1900||m<1||m>12||d<1||d>31)return null;
+        const check=new Date(Date.UTC(y,m-1,d));
+        if(check.getUTCFullYear()!==y||check.getUTCMonth()!==m-1||check.getUTCDate()!==d)return null;
         return `${y}-${pad(m)}-${pad(d)}`;
       };
+      if(typeof value==="number"&&Number.isFinite(value)){
+        const parsed=window.XLSX?.SSF?.parse_date_code(value,{date1904});
+        return parsed?fromParts(parsed.y,parsed.m,parsed.d):null;
+      }
       if(value instanceof Date&&!Number.isNaN(value.getTime())){
         return fromParts(value.getFullYear(),value.getMonth()+1,value.getDate());
       }
-      if(typeof value==="number"&&Number.isFinite(value)){
-        const parsed=window.XLSX?.SSF?.parse_date_code(value);
-        return parsed?fromParts(parsed.y,parsed.m,parsed.d):"";
-      }
-      const text=String(value).trim();
-      if(!text)return"";
-      if(/^\d+(?:\.\d+)?$/.test(text)){
-        const parsed=window.XLSX?.SSF?.parse_date_code(Number(text));
-        if(parsed)return fromParts(parsed.y,parsed.m,parsed.d);
-      }
-      const match=text.match(/^(\d{4})[.\/-](\d{1,2})[.\/-](\d{1,2})(?:\s.*)?$/);
+      let text=String(value).trim();
+      if(!text)return null;
+      text=text.replace(/\u00a0/g," ").trim();
+      let match=text.match(/^(\d{4})[.\/-](\d{1,2})[.\/-](\d{1,2})(?:\s+.*)?$/);
       if(match)return fromParts(match[1],match[2],match[3]);
-      const korean=text.match(/^(\d{4})\s*년\s*(\d{1,2})\s*월\s*(\d{1,2})\s*일?$/);
-      if(korean)return fromParts(korean[1],korean[2],korean[3]);
-      const d=new Date(text);
-      return Number.isNaN(d.getTime())?"":fromParts(d.getFullYear(),d.getMonth()+1,d.getDate());
+      match=text.match(/^(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{4})(?:\s+.*)?$/);
+      if(match)return fromParts(match[3],match[1],match[2]);
+      match=text.match(/^(\d{4})\s*년\s*(\d{1,2})\s*월\s*(\d{1,2})\s*일?(?:\s+.*)?$/);
+      if(match)return fromParts(match[1],match[2],match[3]);
+      if(/^\d+(?:\.\d+)?$/.test(text)){
+        const parsed=window.XLSX?.SSF?.parse_date_code(Number(text),{date1904});
+        return parsed?fromParts(parsed.y,parsed.m,parsed.d):null;
+      }
+      return null;
+    }
+    function excelRowsWithNormalizedHeaders(sheet){
+      const matrix=XLSX.utils.sheet_to_json(sheet,{header:1,defval:null,raw:true,blankrows:false});
+      if(!matrix.length)return [];
+      const headers=(matrix[0]||[]).map(normalizeExcelHeader);
+      return matrix.slice(1).map((values,rowIndex)=>{
+        const row={__rowNumber:rowIndex+2};
+        headers.forEach((header,index)=>{if(header)row[header]=values[index]??null;});
+        return row;
+      });
+    }
+    function excelField(row,...aliases){
+      for(const alias of aliases){
+        const key=normalizeExcelHeader(alias);
+        if(Object.prototype.hasOwnProperty.call(row,key)&&row[key]!==null&&row[key]!==undefined&&row[key]!=="")return row[key];
+      }
+      return null;
     }
     async function importExcel(file){
-      const buffer=await file.arrayBuffer(),wb=XLSX.read(buffer,{type:"array",cellDates:true}),sheet=wb.Sheets[wb.SheetNames[0]],rows=XLSX.utils.sheet_to_json(sheet,{defval:"",raw:true});
+      const buffer=await file.arrayBuffer();
+      const wb=XLSX.read(buffer,{type:"array",cellDates:false,cellNF:true,cellText:true});
+      const sheet=wb.Sheets[wb.SheetNames[0]];
+      const date1904=Boolean(wb.Workbook?.WBProps?.date1904);
+      const rows=excelRowsWithNormalizedHeaders(sheet);
       const map={재직:"employed",중국주재원:"china_expat",휴직:"leave",비상근:"non_regular",해외출장:"long_trip",장기출장:"long_trip"};
-      const payload=rows.filter(r=>r["사원명"]).map(r=>{
-        const workType=String(r["근무구분"]||r["상태"]||"재직").trim();
-        return {employee_code:`AUTO-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,employee_name:String(r["사원명"]||"").trim(),department_name:String(r["부서"]||"").trim(),job_title:String(r["직급"]||"").trim(),employment_status:map[workType]||"employed",hire_date:excelDate(r["입사일"]),department_effective_date:excelDate(r["전배일"])||excelDate(r["입사일"]),leave_start_date:excelDate(r["휴직일"]),leave_end_date:excelDate(r["휴직종료일"]),return_date:excelDate(r["복귀일"]),note:String(r["비고"]||"").trim()};
+      const payload=[];
+      const invalid=[];
+      rows.forEach(r=>{
+        const employeeName=String(excelField(r,"사원명","성명","이름")||"").trim();
+        if(!employeeName)return;
+        const hireDate=excelDate(excelField(r,"입사일","입사일자","입사년월일"),date1904);
+        const transferDate=excelDate(excelField(r,"전배일","전배일자","부서전배일","발령일"),date1904);
+        const missing=[];
+        if(!hireDate)missing.push("입사일");
+        if(!transferDate)missing.push("전배일");
+        if(missing.length){
+          invalid.push(`${r.__rowNumber}행 ${employeeName}: ${missing.join(", ")}`);
+          return;
+        }
+        const workType=String(excelField(r,"근무구분","상태","재직상태")||"재직").trim();
+        payload.push({
+          employee_code:`AUTO-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,
+          employee_name:employeeName,
+          department_name:String(excelField(r,"부서","소속","부서명")||"").trim(),
+          job_title:String(excelField(r,"직급","직위")||"").trim(),
+          employment_status:map[workType]||"employed",
+          hire_date:hireDate,
+          department_effective_date:transferDate,
+          note:String(excelField(r,"비고","메모")||"").trim()
+        });
       });
-      const {data,error}=await db.rpc("bulk_import_active_employees_v2",{p_rows:payload});if(error){showToast(error.message);return}const result=data?.[0]||{};showToast(`성공 ${result.success_count||0}명 · 실패 ${result.failed_count||0}명`);state.employeeRostersLoaded=false;await loadAllEmployeeRosters();
+      if(!payload.length){
+        if(invalid.length)console.error("[엑셀 업로드 제외 행]",invalid);
+        showToast(invalid.length?`정상적으로 읽힌 행이 없습니다. 제외 ${invalid.length}건을 확인해 주세요.`:"업로드할 사원 데이터가 없습니다. 엑셀 헤더를 확인해 주세요.");
+        return;
+      }
+      if(invalid.length)console.warn("[엑셀 업로드 제외 행]",invalid);
+      const {data,error}=await db.rpc("bulk_import_active_employees_v3",{p_rows:payload});
+      if(error){console.error("[사원 엑셀 업로드]",error);showToast("사원명부 업로드 중 오류가 발생했습니다.");return;}
+      const result=data?.[0]||{};
+      const skippedText=invalid.length?` · 제외 ${invalid.length}명`:"";
+      showToast(`성공 ${result.success_count||0}명 · 실패 ${result.failed_count||0}명${skippedText}`);
+      if(invalid.length){
+        const preview=invalid.slice(0,20).join("\n");
+        const remain=invalid.length>20?`\n외 ${invalid.length-20}건`:"";
+        setTimeout(()=>alert(`다음 행은 날짜를 읽지 못해 업로드에서 제외했습니다.\n\n${preview}${remain}`),100);
+      }
+      state.employeeRostersLoaded=false;
+      await loadAllEmployeeRosters();
     }
-
 
     const ATTENDANCE_CONFIG={
       lastSessionKey:"attendance_last_session_id",searchKey:"attendance_search",departmentKey:"attendance_department_filter",statusKey:"attendance_status_filter",fallbackRefreshMs:15000
@@ -2111,7 +2387,7 @@
         setStatus("attendanceStatus","사원명부를 불러오지 못했습니다.",true);
         return;
       }
-      state.attendanceBoard=(Array.isArray(data)?data:[]).sort((a,b)=>(a.department_name||"").localeCompare(b.department_name||"","ko")||attendancePositionRank(a.job_title)-attendancePositionRank(b.job_title)||(a.employee_name||"").localeCompare(b.employee_name||"","ko"));
+      state.attendanceBoard=(Array.isArray(data)?data:[]).sort((a,b)=>(a.department_name||"").localeCompare(b.department_name||"","ko")||(a.employee_name||"").localeCompare(b.employee_name||"","ko"));
       attendancePopulateDepartmentFilter();
       attendanceRenderBoard();
       setStatus("attendanceStatus","");
@@ -2516,7 +2792,7 @@
     async function attendanceFetchBoardForSession(sessionId){
       const {data,error}=await db.rpc('attendance_get_board',{p_session_id:sessionId});
       if(error)throw error;
-      return (Array.isArray(data)?data:[]).sort((a,b)=>(a.department_name||'').localeCompare(b.department_name||'','ko')||attendancePositionRank(a.job_title)-attendancePositionRank(b.job_title)||(a.employee_name||'').localeCompare(b.employee_name||'','ko'));
+      return (Array.isArray(data)?data:[]).sort((a,b)=>(a.department_name||"").localeCompare(b.department_name||"","ko")||(a.employee_name||"").localeCompare(b.employee_name||"","ko"));
     }
     function attendanceMonthKey(session){return String(session?.session_date||'').slice(0,7)}
     async function attendanceDownloadMissingCsv(){
@@ -2535,7 +2811,7 @@
           const secondRow=secondMap.get(String(row.employee_id));
           const secondAttended=Number(secondRow?.visit_count||0)>0;
           return !firstAttended&&!secondAttended;
-        }).sort((a,b)=>(a.department_name||'').localeCompare(b.department_name||'','ko')||attendancePositionRank(a.job_title)-attendancePositionRank(b.job_title)||(a.employee_name||'').localeCompare(b.employee_name||'','ko'));
+        }).sort((a,b)=>(a.department_name||"").localeCompare(b.department_name||"","ko")||(a.employee_name||"").localeCompare(b.employee_name||"","ko"));
         const rows=[["부서","성명"]];
         missing.forEach(row=>rows.push([row.department_name||'',row.employee_name||'']));
         const csv='\ufeff'+rows.map(values=>values.map(value=>`"${String(value??'').replace(/"/g,'""')}"`).join(',')).join('\r\n');
@@ -2553,8 +2829,8 @@
     function attendanceStopPolling(){if(state.attendancePollTimer){clearInterval(state.attendancePollTimer);state.attendancePollTimer=null}}
 
     $("loginButton").onclick=()=>openModal("loginModal");
-    $("loginForm").onsubmit=async event=>{event.preventDefault();$("loginError").textContent="";const {data,error}=await db.auth.signInWithPassword({email:$("loginEmail").value.trim(),password:$("loginPassword").value});if(error){$("loginError").textContent="이메일 또는 비밀번호를 확인하세요.";return}await checkAdmin(data.session);if(!state.isAdmin){$("loginError").textContent="관리자 권한이 없습니다.";return}closeModal("loginModal");await loadDepartments();state.employeeTab="active";showView("employees");showToast("관리자 로그인되었습니다.")};
-    $("logoutButton").onclick=async()=>{await db.auth.signOut();state.isAdmin=false;syncAdminUI();showView("education");showToast("로그아웃되었습니다.")};
+    $("loginForm").onsubmit=async event=>{event.preventDefault();$("loginError").textContent="";const {data,error}=await db.auth.signInWithPassword({email:$("loginEmail").value.trim(),password:$("loginPassword").value});if(error){$("loginError").textContent="이메일 또는 비밀번호를 확인하세요.";return}await checkAdmin(data.session);closeModal("loginModal");await loadPublicData();if(state.isAdmin){await loadDepartments();state.employeeTab="active";showView("employees");showToast("관리자 로그인되었습니다.")}else{showView("education");showToast("로그인되었습니다.")}};
+    $("logoutButton").onclick=async()=>{await db.auth.signOut();state.isAuthenticated=false;state.isAdmin=false;syncAdminUI();await loadPublicData();showView("education");showToast("로그아웃되었습니다.")};
     $("employeeMenuButton").onclick=()=>showView("employees");
     $("departmentMenuButton").onclick=()=>showView("departments");
     $("healthMenuButton").onclick=()=>showView("health");
@@ -2603,7 +2879,6 @@
     $("addEmployeeButton").onclick=()=>openEmployeeForm();
     $("employeeForm").onsubmit=saveEmployee;
     $("employeeStatusSelect").onchange=toggleEmployeeStatusFields;
-    $("leaveStartDate").onchange=toggleEmployeeStatusFields;
     $("retireForm").onsubmit=processRetirement;
     $("hardDeleteForm").onsubmit=hardDeleteEmployee;
     $("excelTemplateButton").onclick=downloadExcelTemplate;
@@ -2731,7 +3006,7 @@
   };
   window.renderActiveEmployees=function(){
     const q=$('activeEmployeeSearch').value.trim().toLowerCase(),filter=$('activeStatusFilter').value;
-    const rows=state.activeEmployees.filter(x=>(!filter||x.employment_status===filter)&&(!q||`${x.employee_name} ${x.department_name} ${x.job_title||''}`.toLowerCase().includes(q)));
+    const rows=state.activeEmployees.filter(x=>(!filter||x.employment_status===filter)&&(!q||`${x.employee_name} ${x.department_name} ${x.job_title||''}`.toLowerCase().includes(q))).sort((a,b)=>String(a.department_name||'').localeCompare(String(b.department_name||''),'ko')||String(a.employee_name||'').localeCompare(String(b.employee_name||''),'ko'));
     const validIds=new Set(state.activeEmployees.map(x=>String(x.employee_id)));[...state.activeEmployeeSelected].forEach(id=>{if(!validIds.has(id))state.activeEmployeeSelected.delete(id)});
     const info=pageInfo(rows,'active'),body=$('activeEmployeeTableBody');body.replaceChildren();
     if(!rows.length){setStatus('activeEmployeeStatus','조건에 맞는 재직자가 없습니다.');renderPager('activeEmployeePagination',0,'active',renderActiveEmployees);updateActiveSelection();return}setStatus('activeEmployeeStatus','');
@@ -2740,9 +3015,8 @@
   window.hardDeleteSelectedEmployees=async function(){const ids=[...state.activeEmployeeSelected].map(Number);if(!ids.length)return;if(!confirm(`선택한 ${ids.length}명의 사원자료를 완전 삭제하시겠습니까?\n교육이력이 연결된 사원은 삭제가 차단됩니다.`))return;const {data,error}=await db.rpc('hard_delete_employees',{p_employee_ids:ids,p_force:false});if(error){console.error('[선택 사원 삭제]',error);showToast('처리 중 오류가 발생했습니다.');return}const result=data||{};showToast(`삭제 ${result.deleted_count||0}명 · 차단 ${result.blocked_count||0}명`);state.activeEmployeeSelected.clear();await loadActiveEmployees()};
 
   window.renderRetiredEmployees=function(){
-    const q=$('retiredEmployeeSearch').value.trim().toLowerCase(),dep=$('retiredDepartmentFilter').value,sort=$('retiredSort').value;
-    let rows=state.retiredEmployees.filter(x=>(!dep||String(x.department_id)===dep)&&(!q||`${x.employee_name} ${x.department_name} ${x.job_title||''}`.toLowerCase().includes(q)));
-    rows=[...rows].sort((a,b)=>sort==='name_asc'?a.employee_name.localeCompare(b.employee_name,'ko'):sort==='retired_asc'?(a.retirement_date||'').localeCompare(b.retirement_date||''):(b.retirement_date||'').localeCompare(a.retirement_date||''));
+    const q=$('retiredEmployeeSearch').value.trim().toLowerCase(),dep=$('retiredDepartmentFilter').value;
+    const rows=state.retiredEmployees.filter(x=>(!dep||String(x.department_id)===dep)&&(!q||`${x.employee_name} ${x.department_name} ${x.job_title||''}`.toLowerCase().includes(q))).sort((a,b)=>String(a.department_name||'').localeCompare(String(b.department_name||''),'ko')||String(a.employee_name||'').localeCompare(String(b.employee_name||''),'ko'));
     const info=pageInfo(rows,'retired'),body=$('retiredEmployeeTableBody');body.replaceChildren();if(!rows.length){setStatus('retiredEmployeeStatus','조건에 맞는 퇴사자가 없습니다.');renderPager('retiredEmployeePagination',0,'retired',renderRetiredEmployees);return}setStatus('retiredEmployeeStatus','');const f=document.createDocumentFragment();
     info.items.forEach((x,index)=>{const tr=document.createElement('tr');addTextCell(tr,info.start+index+1,'center');addTextCell(tr,x.department_name,'ellipsis',x.department_name);addTextCell(tr,x.job_title||'-','ellipsis',x.job_title||'-');addTextCell(tr,x.employee_name,'ellipsis',x.employee_name);addTextCell(tr,formatDate(x.hire_date));addTextCell(tr,formatDate(x.retirement_date));const statusTd=document.createElement('td');statusTd.appendChild(statusBadge('retired'));tr.appendChild(statusTd);const manage=document.createElement('td');manage.className='center';const history=document.createElement('button');history.className='mini';history.textContent='교육이력 확인';history.onclick=()=>openRetiredHistory(x);const hardDelete=document.createElement('button');hardDelete.className='mini mini-danger';hardDelete.textContent='삭제';hardDelete.onclick=()=>openHardDeleteForm(x);manage.append(history,hardDelete);tr.appendChild(manage);f.appendChild(tr)});body.appendChild(f);renderPager('retiredEmployeePagination',rows.length,'retired',renderRetiredEmployees);
   };
@@ -2759,11 +3033,11 @@
   };
 
   window.renderEmployeePicker=function(){
-    const q=$('employeePickerSearch').value.trim().toLowerCase(),selected=new Set(state.participants.map(x=>Number(x.employee_id))),rows=state.currentEmployees.filter(x=>!q||`${x.employee_name} ${x.department_name||''}`.toLowerCase().includes(q)),info=pageInfo(rows,'employeePicker');const list=$('employeePickerList');list.replaceChildren();const f=document.createDocumentFragment();info.items.forEach(x=>{const row=document.createElement('div');row.className='picker-row';const infoBox=document.createElement('div');infoBox.className='picker-info';const strong=document.createElement('strong');strong.textContent=x.employee_name;const small=document.createElement('small');small.textContent=x.department_name||'-';infoBox.append(strong,small);const button=document.createElement('button');button.className='mini';button.textContent=selected.has(Number(x.employee_id))?'추가됨':'추가';button.disabled=selected.has(Number(x.employee_id));button.onclick=()=>addParticipant(x.employee_id);row.append(infoBox,button);f.appendChild(row)});list.appendChild(f);renderPager('employeePickerPagination',rows.length,'employeePicker',renderEmployeePicker);
+    const q=$('employeePickerSearch').value.trim().toLowerCase(),selected=new Set(state.participants.map(x=>Number(x.employee_id))),rows=state.currentEmployees.filter(x=>!q||`${x.employee_name} ${x.department_name||''}`.toLowerCase().includes(q)).sort((a,b)=>String(a.department_name||'').localeCompare(String(b.department_name||''),'ko')||String(a.employee_name||'').localeCompare(String(b.employee_name||''),'ko')),info=pageInfo(rows,'employeePicker');const list=$('employeePickerList');list.replaceChildren();const f=document.createDocumentFragment();info.items.forEach(x=>{const row=document.createElement('div');row.className='picker-row';const infoBox=document.createElement('div');infoBox.className='picker-info';const strong=document.createElement('strong');strong.textContent=x.employee_name;const small=document.createElement('small');small.textContent=x.department_name||'-';infoBox.append(strong,small);const button=document.createElement('button');button.className='mini';button.textContent=selected.has(Number(x.employee_id))?'추가됨':'추가';button.disabled=selected.has(Number(x.employee_id));button.onclick=()=>addParticipant(x.employee_id);row.append(infoBox,button);f.appendChild(row)});list.appendChild(f);renderPager('employeePickerPagination',rows.length,'employeePicker',renderEmployeePicker);
   };
 
   window.renderParticipants=function(){
-    const q=$('participantSearch').value.trim().toLowerCase(),rows=state.participants.filter(x=>!q||`${x.employee_name} ${x.department_name||''}`.toLowerCase().includes(q)),info=pageInfo(rows,'participants'),body=$('participantTableBody');body.replaceChildren();if(!rows.length){setStatus('participantStatus','등록된 대상자가 없습니다.');renderPager('participantPagination',0,'participants',renderParticipants);return}setStatus('participantStatus','');const f=document.createDocumentFragment();info.items.forEach(x=>{const tr=document.createElement('tr');const checkTd=document.createElement('td');checkTd.className='center';const check=document.createElement('input');check.type='checkbox';check.dataset.id=x.participant_id;checkTd.appendChild(check);tr.appendChild(checkTd);addTextCell(tr,x.department_name||'-');addTextCell(tr,x.employee_name);const manage=document.createElement('td');manage.className='center';const remove=document.createElement('button');remove.className='mini mini-danger';remove.textContent='삭제';remove.onclick=()=>removeParticipant(x.participant_id,x.employee_name);manage.appendChild(remove);tr.appendChild(manage);f.appendChild(tr)});body.appendChild(f);renderPager('participantPagination',rows.length,'participants',renderParticipants);
+    const q=$('participantSearch').value.trim().toLowerCase(),rows=state.participants.filter(x=>!q||`${x.employee_name} ${x.department_name||''}`.toLowerCase().includes(q)).sort((a,b)=>String(a.department_name||'').localeCompare(String(b.department_name||''),'ko')||String(a.employee_name||'').localeCompare(String(b.employee_name||''),'ko')),info=pageInfo(rows,'participants'),body=$('participantTableBody');body.replaceChildren();if(!rows.length){setStatus('participantStatus','등록된 대상자가 없습니다.');renderPager('participantPagination',0,'participants',renderParticipants);return}setStatus('participantStatus','');const f=document.createDocumentFragment();info.items.forEach(x=>{const tr=document.createElement('tr');const checkTd=document.createElement('td');checkTd.className='center';const check=document.createElement('input');check.type='checkbox';check.dataset.id=x.participant_id;checkTd.appendChild(check);tr.appendChild(checkTd);addTextCell(tr,x.department_name||'-');addTextCell(tr,x.employee_name);const manage=document.createElement('td');manage.className='center';const remove=document.createElement('button');remove.className='mini mini-danger';remove.textContent='삭제';remove.onclick=()=>removeParticipant(x.participant_id,x.employee_name);manage.appendChild(remove);tr.appendChild(manage);f.appendChild(tr)});body.appendChild(f);renderPager('participantPagination',rows.length,'participants',renderParticipants);
   };
 
   window.attendanceRenderPagination=function(totalRows){
@@ -2957,10 +3231,1144 @@
   const hardDeleteForm=$id('hardDeleteForm');
   if(hardDeleteForm)hardDeleteForm.onsubmit=hardDeleteEmployee;
 })();
+
+
+    // ===== Search reset, fixed attendance target snapshot, compact row actions =====
+    const PLATFORM_SEARCH_IDS={
+      employees:["activeEmployeeSearch","retiredEmployeeSearch"],
+      departments:["departmentSearch"],
+      health:["healthSearch","healthTargetSearch"],
+      attendance:["attendanceSearch"]
+    };
+    function clearViewSearchInputs(view){
+      (PLATFORM_SEARCH_IDS[view]||[]).forEach(id=>{const el=$(id);if(el)el.value=""});
+      if(view==="attendance")localStorage.removeItem(ATTENDANCE_CONFIG.searchKey);
+    }
+    const _showViewOriginal=showView;
+    showView=function(name){
+      const previous=state.currentView;
+      if(previous!==name)clearViewSearchInputs(name);
+      return _showViewOriginal(name);
+    };
+
+    // Search values are cleared after a search is applied when leaving the page.
+    ["activeEmployeeSearch","retiredEmployeeSearch","departmentSearch","healthSearch","healthTargetSearch","attendanceSearch"].forEach(id=>{
+      const el=$(id);if(!el)return;
+      el.addEventListener("search",()=>{if(!el.value){
+        if(id==="activeEmployeeSearch")renderActiveEmployees();
+        else if(id==="retiredEmployeeSearch")renderRetiredEmployees();
+        else if(id==="departmentSearch")renderDepartments();
+        else if(id==="healthSearch")renderHealthExams();
+        else if(id==="healthTargetSearch")renderHealthTargets();
+        else if(id==="attendanceSearch"){state.attendancePage=1;attendanceRenderBoard()}
+      }});
+    });
+
+    // Health dashboard is based on the entire employee roster, including excluded employees.
+    healthUpdateDashboard=function(){
+      const totalRows=state.healthExams||[];
+      const completed=totalRows.filter(row=>Boolean(row.completed)&&!row.excluded).length;
+      const incomplete=Math.max(0,totalRows.length-completed);
+      const completedRate=totalRows.length?Math.round(completed/totalRows.length*100):0;
+      const incompleteRate=totalRows.length?Math.round(incomplete/totalRows.length*100):0;
+      $("healthTargetTotal").textContent=`${totalRows.length}명`;
+      $("healthCompletedTotal").textContent=`${completed}명`;
+      $("healthIncompleteTotal").textContent=`${incomplete}명`;
+      $("healthTargetRate").textContent=totalRows.length?"100%":"0%";
+      $("healthCompletedRate").textContent=`${completedRate}%`;
+      $("healthIncompleteRate").textContent=`${incompleteRate}%`;
+      $("healthTargetRing").style.setProperty("--progress",totalRows.length?100:0);
+      $("healthCompletedRing").style.setProperty("--progress",completedRate);
+      $("healthIncompleteRing").style.setProperty("--progress",incompleteRate);
+    };
+
+    async function deleteHealthEmployeeYear(employeeId,employeeName){
+      const year=Number($("healthYearFilter").value);
+      if(!confirm(`${employeeName}님의 ${year}년 건강검진 자료를 삭제하시겠습니까?`))return;
+      const {error}=await db.rpc("delete_employee_health_year",{p_employee_id:Number(employeeId),p_exam_year:year});
+      if(error){console.error("[건강검진 행 삭제]",error);showToast("건강검진 자료 삭제 중 오류가 발생했습니다.");return}
+      showToast("건강검진 자료를 삭제했습니다.");await loadHealthExams();
+    }
+    const _renderHealthExamsOriginal=renderHealthExams;
+    renderHealthExams=function(){
+      _renderHealthExamsOriginal();
+      if(state.healthMode!=="status")return;
+      [...$("healthExamTableBody").rows].forEach(tr=>{
+        const employeeId=tr.dataset.employeeId;if(!employeeId||tr.querySelector(".row-delete-button"))return;
+        const row=state.healthExams.find(x=>String(x.employee_id)===String(employeeId));
+        const td=document.createElement("td");td.className="center";
+        const btn=document.createElement("button");btn.type="button";btn.className="row-delete-button";btn.textContent="삭제";
+        btn.onclick=()=>deleteHealthEmployeeYear(employeeId,row?.employee_name||"해당 직원");td.appendChild(btn);tr.appendChild(td);
+      });
+    };
+    const _renderHealthTargetsOriginal=renderHealthTargets;
+    renderHealthTargets=function(){
+      _renderHealthTargetsOriginal();
+      if(state.healthMode!=="target")return;
+      [...$("healthTargetTableBody").rows].forEach(tr=>{
+        const employeeId=tr.dataset.employeeId;if(!employeeId||tr.querySelector(".row-delete-button"))return;
+        const row=state.healthExams.find(x=>String(x.employee_id)===String(employeeId));
+        const td=document.createElement("td");td.className="center";
+        const btn=document.createElement("button");btn.type="button";btn.className="row-delete-button";btn.textContent="삭제";
+        btn.onclick=()=>deleteHealthEmployeeYear(employeeId,row?.employee_name||"해당 직원");td.appendChild(btn);tr.appendChild(td);
+      });
+    };
+
+    async function attendanceLoadSnapshotTargets(sessionId,{quiet=false}={}){
+      if(!sessionId){showToast("먼저 교육 회차를 저장하세요.");return false}
+      const {data,error}=await db.rpc("attendance_load_session_targets",{p_session_id:sessionId});
+      if(error){console.error("[출결 대상 불러오기]",error);showToast(error.message||"대상인원을 불러오지 못했습니다.");return false}
+      if(!quiet)showToast(`대상인원 ${Number(data?.target_count||0)}명을 불러왔습니다.`);
+      return true;
+    }
+    $("attendanceLoadTargetsButton").onclick=async()=>{
+      const id=$("attendanceSessionId").value;
+      if(!id){showToast("신규 회차는 저장할 때 대상인원을 자동으로 불러옵니다.");return}
+      if(await attendanceLoadSnapshotTargets(id)){
+        $("attendanceTargetLoadInfo").textContent="저장된 대상인원을 확인했습니다.";
+        if(String(state.attendanceSessionId)===String(id))await attendanceLoadBoard({silent:true});
+      }
+    };
+
+    const _attendanceOpenSessionFormOriginal=attendanceOpenSessionForm;
+    attendanceOpenSessionForm=function(session=null){
+      _attendanceOpenSessionFormOriginal(session);
+      const button=$("attendanceLoadTargetsButton"),info=$("attendanceTargetLoadInfo");
+      button.disabled=!session;
+      info.textContent=session?`저장된 회차 대상자를 확인합니다. 출결 기록이 시작된 뒤에는 인원을 변경할 수 없습니다.`:"신규 회차 저장 시 현재 월 대상자를 자동으로 불러옵니다.";
+    };
+
+    // Use the immutable target snapshot board.
+    attendanceLoadBoard=async function({silent=false}={}){
+      if(!state.attendanceSessionId){attendanceRenderEmpty();return}
+      if(!silent)setStatus("attendanceStatus","대상인원을 불러오는 중입니다.");
+      let result=await db.rpc("attendance_get_snapshot_board",{p_session_id:state.attendanceSessionId});
+      if(result.error){
+        console.warn("[snapshot board fallback]",result.error);
+        result=await db.rpc("attendance_get_board",{p_session_id:state.attendanceSessionId});
+      }
+      if(result.error){console.error("[출결 대상 조회]",result.error);state.attendanceBoard=[];attendanceRenderEmpty();setStatus("attendanceStatus","대상인원을 불러오지 못했습니다.",true);return}
+      const raw=Array.isArray(result.data)?result.data:[];
+      state.attendanceBoard=raw.sort((a,b)=>(a.department_name||"").localeCompare(b.department_name||"","ko")||(a.employee_name||"").localeCompare(b.employee_name||"","ko"));
+      attendancePopulateDepartmentFilter();attendanceRenderBoard();setStatus("attendanceStatus","");
+    };
+
+    async function deleteAttendanceEmployeeRow(employeeId,employeeName){
+      if(!confirm(`${employeeName}님의 현재 회차 입·퇴실 기록과 미수강 서명을 삭제하시겠습니까?`))return;
+      const {error}=await db.rpc("delete_attendance_employee_row",{p_session_id:state.attendanceSessionId,p_employee_id:Number(employeeId)});
+      if(error){console.error("[출결 행 삭제]",error);showToast("출결 행 삭제 중 오류가 발생했습니다.");return}
+      state.attendanceSelected.delete(String(employeeId));await attendanceLoadBoard({silent:true});showToast("해당 직원의 출결 기록을 삭제했습니다.");
+    }
+    const _attendanceRenderBoardOriginal=attendanceRenderBoard;
+    attendanceRenderBoard=function(){
+      _attendanceRenderBoardOriginal();
+      [...$("attendanceTableBody").rows].forEach(tr=>{
+        const check=tr.querySelector(".attendance-row-check");if(!check||tr.querySelector(".attendance-row-delete"))return;
+        const row=attendanceRow(check.value),td=document.createElement("td");td.className="center";
+        const btn=document.createElement("button");btn.type="button";btn.className="row-delete-button attendance-row-delete";btn.textContent="삭제";
+        btn.onclick=()=>deleteAttendanceEmployeeRow(check.value,row?.employee_name||"해당 직원");td.appendChild(btn);tr.appendChild(td);
+      });
+    };
+
+    // Newly created sessions automatically freeze the current month's eligible target roster.
+    const _attendanceSaveSessionOriginal=attendanceSaveSession;
+    attendanceSaveSession=async function(event){
+      const wasNew=!$("attendanceSessionId").value;
+      await _attendanceSaveSessionOriginal(event);
+      if(wasNew&&state.attendanceSessionId){
+        await attendanceLoadSnapshotTargets(state.attendanceSessionId,{quiet:true});
+        await attendanceLoadBoard({silent:true});
+      }
+    };
+    $("attendanceSessionForm").onsubmit=attendanceSaveSession;
 </script>
 <style id="employeeDeleteAndAttendanceResetFinalStyle">
 #deleteAllFilteredEmployeesButton{min-width:74px}
 </style>
+
+
+<style id="platformFinalCorrectionStyle">
+  #attendanceView .attendance-table{min-width:920px;table-layout:fixed}
+  #attendanceView .attendance-table th{height:29px!important;padding:0 5px!important;font-size:9.8px!important}
+  #attendanceView .attendance-table td{height:30px!important;padding:2px 5px!important;font-size:10.2px!important;line-height:1!important}
+  #attendanceView .attendance-time-cell{padding:2px 4px!important}
+  #attendanceView .attendance-time-inline{display:grid;grid-template-columns:40px minmax(78px,1fr);align-items:center;gap:5px;min-width:0}
+  #attendanceView .attendance-time-main{display:block;min-width:0;text-align:center;font-size:10px;font-variant-numeric:tabular-nums}
+  #attendanceView .attendance-cell-action{display:flex!important;width:100%;min-width:0!important;height:23px!important;margin:0!important;padding:0 7px!important;font-size:9.6px!important;white-space:nowrap}
+  #attendanceView .attendance-person-button{height:22px!important;padding:0 4px!important;font-size:10px!important}
+  #attendanceView .attendance-missed-toggle{height:22px!important;padding:0 6px!important;font-size:9.5px!important}
+  #attendanceView .attendance-memo-input{height:23px!important;padding:0 6px!important;font-size:10px!important}
+  #attendanceView .attendance-duration{white-space:nowrap}
+  #attendanceDeleteSelectedButton{height:30px;padding:0 10px}
+  @media(max-width:1100px){#attendanceView .attendance-table{min-width:880px}}
+
+    /* 2026-07 integrated attendance and compact roster refinements */
+    .attendance-paired-table{min-width:920px!important;table-layout:fixed}
+    .attendance-paired-table thead th{height:29px!important;padding:0 4px!important;font-size:10.5px!important;vertical-align:middle}
+    .attendance-paired-table tbody td{height:30px!important;padding:2px 4px!important;font-size:11px!important;vertical-align:middle}
+    .attendance-unified-head{background:#eef4ff!important;color:#2458bd!important}
+    .attendance-unified-cell{background:#fbfcfe}
+    .attendance-unified-cell .attendance-round-action,.attendance-unified-cell .attendance-round-static{width:100%;max-width:124px;margin:0 auto}
+    .attendance-round-static.first-complete{border-color:#b8c8e5;background:#f4f7fc;color:#526173}
+    .attendance-round-static.first-complete span:last-child{font-size:9px;color:#667085}
+    .attendance-duration-total{display:flex;align-items:center;justify-content:center;min-height:22px;font-size:11.5px;font-weight:900;color:#172033;font-variant-numeric:tabular-nums;white-space:nowrap}
+    #healthView .health-roster-table th,#healthView .health-target-table th{height:27px!important;padding:0 4px!important;font-size:9.8px!important}
+    #healthView .health-roster-table td,#healthView .health-target-table td{height:29px!important;padding:1px 4px!important;font-size:10.5px!important}
+    #healthView .health-roster-table input,#healthView .health-target-table input,#healthView .health-target-table select{height:24px!important;padding:0 5px!important;font-size:10px!important;border-radius:4px!important}
+    #healthView .health-required-badge,#healthView .health-status-badge{min-height:20px!important;height:20px!important;padding:0 6px!important;font-size:9.5px!important}
+    #departmentView th{height:28px!important;padding:0 5px!important;font-size:10.5px!important}
+    #departmentView td{height:30px!important;padding:2px 5px!important;font-size:11px!important;vertical-align:middle}
+    #departmentView .mini{min-height:23px!important;height:23px!important;padding:0 7px!important;font-size:10px!important}
+    #employeeJobTitle{height:36px}
+    @media(max-width:760px){.attendance-paired-table{min-width:900px!important}.attendance-paired-table tbody td{height:32px!important}.attendance-unified-cell .attendance-round-action,.attendance-unified-cell .attendance-round-static{max-width:122px}}
+</style>
+<script id="platformFinalCorrectionPatch">
+(()=>{
+  state.isAuthenticated=Boolean(state.isAuthenticated);
+  state.attendanceTargetPreviewDate="";
+  state.attendanceTargetPreviewCount=null;
+
+  // 일반직원도 로그인 세션을 유지하고 교육자료 화면을 사용한다.
+  window.checkAdmin=async function(session){
+    state.isAuthenticated=Boolean(session?.user);
+    state.isAdmin=false;
+    if(state.isAuthenticated){
+      const result=await db.rpc("is_admin");
+      if(result.error)console.error("[관리자 권한 확인]",result.error);
+      state.isAdmin=!result.error&&result.data===true;
+    }
+    document.body.classList.toggle("admin-mode",state.isAdmin);
+    syncAdminUI();
+  };
+
+  window.syncAdminUI=function(){
+    $("adminMenu").hidden=!state.isAdmin;
+    $("loginButton").hidden=state.isAuthenticated;
+    $("adminTopActions").hidden=!state.isAuthenticated;
+    $("logoutButton").hidden=!state.isAuthenticated;
+    $("addEducationButton").hidden=!(state.isAdmin&&state.currentView==="education");
+    if(!state.isAdmin&&state.currentView!=="education")showView("education");
+    if(state.isAdmin&&state.currentView==="employees")loadEmployeeTab(state.employeeTab);
+    if(state.categories.length)renderEducationTable();
+  };
+
+  $("loginForm").onsubmit=async event=>{
+    event.preventDefault();
+    $("loginError").textContent="";
+    const result=await db.auth.signInWithPassword({email:$("loginEmail").value.trim(),password:$("loginPassword").value});
+    if(result.error){$("loginError").textContent="이메일 또는 비밀번호를 확인하세요.";return}
+    await checkAdmin(result.data.session);
+    closeModal("loginModal");
+    await loadPublicData();
+    if(state.isAdmin){
+      await loadDepartments();
+      state.employeeTab="active";
+      showView("employees");
+      showToast("관리자 로그인되었습니다.");
+    }else{
+      showView("education");
+      showToast("로그인되었습니다.");
+    }
+  };
+
+  $("logoutButton").onclick=async()=>{
+    await db.auth.signOut();
+    state.isAuthenticated=false;
+    state.isAdmin=false;
+    document.body.classList.remove("admin-mode");
+    syncAdminUI();
+    await loadPublicData();
+    showView("education");
+    showToast("로그아웃되었습니다.");
+  };
+
+  // 건강검진 대시보드는 퇴사자를 제외한 전체 현재 명부를 기준으로 계산한다.
+  window.healthUpdateDashboard=function(){
+    const totalRows=Array.isArray(state.healthExams)?state.healthExams:[];
+    const targetRows=totalRows.filter(row=>!row.excluded);
+    const completed=targetRows.filter(row=>Boolean(row.completed)).length;
+    const incomplete=Math.max(0,targetRows.length-completed);
+    const completedRate=targetRows.length?Math.round(completed/targetRows.length*100):0;
+    const incompleteRate=targetRows.length?Math.round(incomplete/targetRows.length*100):0;
+    $("healthTargetTotal").textContent=`${totalRows.length}명`;
+    $("healthCompletedTotal").textContent=`${completed}명`;
+    $("healthIncompleteTotal").textContent=`${incomplete}명`;
+    $("healthTargetRate").textContent=totalRows.length?"100%":"0%";
+    $("healthCompletedRate").textContent=`${completedRate}%`;
+    $("healthIncompleteRate").textContent=`${incompleteRate}%`;
+    $("healthTargetRing").style.setProperty("--progress",totalRows.length?100:0);
+    $("healthCompletedRing").style.setProperty("--progress",completedRate);
+    $("healthIncompleteRing").style.setProperty("--progress",incompleteRate);
+  };
+
+  function attendancePageRowsFinal(){
+    const filtered=attendanceFilteredRows();
+    const pages=Math.max(1,Math.ceil(filtered.length/state.attendancePageSize));
+    state.attendancePage=Math.min(Math.max(1,state.attendancePage),pages);
+    const start=(state.attendancePage-1)*state.attendancePageSize;
+    return {filtered,pages,rows:filtered.slice(start,start+state.attendancePageSize)};
+  }
+
+  // 출입/행 삭제 열을 제거하고 시간과 버튼을 같은 셀 한 줄에 배치한다.
+  window.attendanceRenderBoard=function(){
+    const page=attendancePageRowsFinal(),body=$("attendanceTableBody");
+    body.replaceChildren();
+    for(const row of page.rows){
+      const tr=document.createElement("tr"),employeeId=String(row.employee_id);
+      if(state.attendanceLoadingRows.has(employeeId))tr.classList.add("attendance-row-loading");
+      const intervals=attendanceIntervals(row),firstIn=attendanceFirstCheckIn(row),lastOut=attendanceLastCheckOut(row),hasOpen=Boolean(row.open_visit_id);
+      const checkInAction=!hasOpen?`<button class="attendance-cell-action attendance-check-in" data-id="${employeeId}" type="button">${intervals.length?"추가 입실":"입실 기록"}</button>`:"<span></span>";
+      const checkOutAction=hasOpen?`<button class="attendance-cell-action attendance-check-out" data-id="${employeeId}" type="button">퇴실 기록</button>`:"<span></span>";
+      tr.innerHTML=`
+        <td class="center"><input class="attendance-row-check" type="checkbox" value="${employeeId}" ${state.attendanceSelected.has(employeeId)?"checked":""}></td>
+        <td class="ellipsis" title="${escapeHtml(row.department_name||"-")}">${escapeHtml(row.department_name||"-")}</td>
+        <td class="center">${escapeHtml(row.job_title||"-")}</td>
+        <td class="center"><button class="attendance-person-button attendance-open-log" data-id="${employeeId}" type="button">${escapeHtml(row.employee_name||"-")}</button></td>
+        <td class="attendance-time-cell"><div class="attendance-time-inline"><span class="attendance-time-main">${attendanceFormatTime(firstIn)}</span>${checkInAction}</div></td>
+        <td class="attendance-time-cell"><div class="attendance-time-inline"><span class="attendance-time-main">${attendanceFormatTime(lastOut)}</span>${checkOutAction}</div></td>
+        <td class="attendance-duration center">${attendanceDurationText(row.education_minutes)}</td>
+        <td class="center"><button class="attendance-missed-toggle ${row.missed_signature?"active":""}" data-id="${employeeId}" type="button">${row.missed_signature?"미수강":"정상"}</button></td>
+        <td><input class="attendance-memo-input" data-employee-id="${employeeId}" value="${escapeHtml(row.memo||"")}" placeholder="클릭하여 입력"></td>`;
+      body.appendChild(tr);
+    }
+    body.querySelectorAll(".attendance-row-check").forEach(el=>el.onchange=()=>{el.checked?state.attendanceSelected.add(el.value):state.attendanceSelected.delete(el.value);attendanceUpdateSelection()});
+    body.querySelectorAll(".attendance-check-in").forEach(el=>el.onclick=()=>attendanceRunIndividual("check_in",attendanceRow(el.dataset.id)));
+    body.querySelectorAll(".attendance-check-out").forEach(el=>el.onclick=()=>attendanceRunIndividual("check_out",attendanceRow(el.dataset.id)));
+    body.querySelectorAll(".attendance-open-log").forEach(el=>el.onclick=()=>attendanceOpenLog(attendanceRow(el.dataset.id)));
+    body.querySelectorAll(".attendance-missed-toggle").forEach(el=>el.onclick=()=>attendanceToggleMissed(el.dataset.id));
+    body.querySelectorAll(".attendance-memo-input").forEach(el=>{el.onkeydown=event=>{if(event.key==="Enter"){event.preventDefault();el.blur()}};el.onblur=()=>attendanceSaveMemoInline(el)});
+    $("attendanceResultCount").textContent=page.filtered.length?`${page.filtered.length}명 · ${state.attendancePage}/${page.pages}페이지`:"0명";
+    attendanceRenderPagination(page.filtered.length);
+    const all=state.attendanceBoard;
+    $("attendanceActiveCount").textContent=all.length;
+    $("attendanceCheckInCount").textContent=all.filter(item=>Number(item.visit_count||0)>0).length;
+    $("attendanceCheckOutCount").textContent=all.filter(item=>Number(item.closed_visit_count||0)>0&&!item.open_visit_id).length;
+    $("attendanceSuspectedCount").textContent=all.filter(item=>Boolean(item.missed_signature)).length;
+    attendanceUpdateSelection();
+  };
+
+  window.attendanceRenderEmpty=function(){
+    state.attendanceBoard=[];state.attendancePage=1;
+    $("attendanceTableBody").innerHTML='<tr><td colspan="9" class="attendance-empty-session">교육 회차를 선택하세요.</td></tr>';
+    ["attendanceActiveCount","attendanceCheckInCount","attendanceCheckOutCount","attendanceSuspectedCount"].forEach(id=>$(id).textContent="0");
+    $("attendanceResultCount").textContent="0명";
+    $("attendancePagination").replaceChildren();$("attendancePagination").hidden=true;
+    attendanceUpdateSelection();
+  };
+
+  window.attendanceUpdateSelection=function(){
+    const count=state.attendanceSelected.size;
+    $("attendanceSelectedCount").textContent=`선택 ${count}명`;
+    $("attendanceClearSelectionButton").disabled=!state.attendanceSessionId||!count;
+    $("attendanceDeleteSelectedButton").disabled=!state.attendanceSessionId||!count;
+    $("attendanceStartPeopleButton").disabled=!count;
+    $("attendanceEndPeopleButton").disabled=!count;
+    const visible=attendanceCurrentPageRows();
+    $("attendanceSelectAll").checked=visible.length>0&&visible.every(row=>state.attendanceSelected.has(String(row.employee_id)));
+    $("attendanceSelectAll").indeterminate=visible.some(row=>state.attendanceSelected.has(String(row.employee_id)))&&!$("attendanceSelectAll").checked;
+  };
+
+  window.attendanceDeleteSelected=async function(){
+    const rows=attendanceBulkRows();
+    if(!state.attendanceSessionId){showToast("교육 회차를 선택하세요.");return}
+    if(!rows.length){showToast("삭제할 사원을 선택하세요.");return}
+    if(!confirm(`선택한 ${rows.length}명의 현재 회차 출결 기록·비고·미수강 서명을 삭제하시겠습니까?\n대상인원 명단에서는 삭제되지 않습니다.`))return;
+    const button=$("attendanceDeleteSelectedButton"),original=button.textContent;
+    button.disabled=true;button.textContent="삭제 중";
+    try{
+      const result=await db.rpc("delete_attendance_employee_rows",{p_session_id:state.attendanceSessionId,p_employee_ids:rows.map(row=>Number(row.employee_id))});
+      if(result.error)throw result.error;
+      state.attendanceSelected.clear();
+      await attendanceLoadBoard({silent:true});
+      showToast(`${Number(result.data?.selected_employee_count||rows.length)}명의 출결 기록을 삭제했습니다.`);
+    }catch(error){console.error("[선택 출결 삭제]",error);showToast("출결 기록 삭제 중 오류가 발생했습니다.")}
+    finally{button.textContent=original;attendanceUpdateSelection()}
+  };
+  $("attendanceDeleteSelectedButton").onclick=attendanceDeleteSelected;
+
+  // 대상인원은 회차 생성 시 한 번만 고정한다. 기존 회차에서는 수만 확인한다.
+  async function attendancePreviewTargets(){
+    const date=$("attendanceSessionDate").value;
+    const sessionId=$("attendanceSessionId").value;
+    if(sessionId){
+      const result=await db.rpc("attendance_session_target_count",{p_session_id:sessionId});
+      if(result.error){console.error("[회차 대상인원 확인]",result.error);showToast("대상인원을 확인하지 못했습니다.");return}
+      const count=Number(result.data?.target_count||0);
+      $("attendanceTargetLoadInfo").textContent=`이 회차의 고정 대상인원은 ${count}명입니다. 생성 후에는 변경되지 않습니다.`;
+      return;
+    }
+    if(!date){showToast("교육일자를 먼저 선택하세요.");return}
+    const result=await db.rpc("attendance_preview_month_targets",{p_session_date:date});
+    if(result.error){console.error("[월별 대상인원 미리보기]",result.error);showToast("대상인원을 불러오지 못했습니다.");return}
+    const count=Number(result.data?.target_count||0);
+    state.attendanceTargetPreviewDate=date;
+    state.attendanceTargetPreviewCount=count;
+    $("attendanceTargetLoadInfo").textContent=`${date.slice(0,7)} 대상인원 ${count}명을 확인했습니다. 저장하면 이 명단으로 고정됩니다.`;
+  }
+  $("attendanceLoadTargetsButton").onclick=attendancePreviewTargets;
+
+  window.attendanceOpenSessionForm=function(session=null){
+    const date=session?.session_date||new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Seoul",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
+    $("attendanceSessionModalTitle").textContent=session?"교육 회차 수정":"교육 회차 생성";
+    $("attendanceSessionId").value=session?.id||"";
+    $("attendanceSessionDate").value=date;
+    $("attendanceSessionName").value=attendanceAutoSessionName(date);
+    $("attendanceRoundNo").value=String(session?.round_no||1);
+    $("attendanceSessionStart").value=session?attendanceFormatTime(session.start_at):"09:30";
+    $("attendanceSessionEnd").value=session?attendanceFormatTime(session.end_at):"11:30";
+    $("attendanceSessionError").textContent="";
+    $("attendanceSessionSubmit").disabled=false;
+    $("attendanceSessionSubmit").textContent="저장";
+    state.attendanceTargetPreviewDate="";
+    state.attendanceTargetPreviewCount=null;
+    $("attendanceLoadTargetsButton").textContent=session?"대상인원 확인":"대상인원 불러오기";
+    $("attendanceTargetLoadInfo").textContent=session?"저장된 고정 대상인원을 확인할 수 있습니다.":"교육일자를 선택한 뒤 대상인원을 불러오세요.";
+    openModal("attendanceSessionModal");
+    if(session)attendancePreviewTargets();
+  };
+
+  $("attendanceSessionDate").onchange=event=>{
+    $("attendanceSessionName").value=attendanceAutoSessionName(event.target.value);
+    if(!$("attendanceSessionId").value){
+      state.attendanceTargetPreviewDate="";
+      state.attendanceTargetPreviewCount=null;
+      $("attendanceTargetLoadInfo").textContent="교육일자가 변경되었습니다. 대상인원을 다시 불러오세요.";
+    }
+  };
+
+  window.attendanceSaveSession=async function(event){
+    event.preventDefault();
+    const id=$("attendanceSessionId").value||null,date=$("attendanceSessionDate").value,roundNo=Number($("attendanceRoundNo").value);
+    const startTime=$("attendanceSessionStart").value,endTime=$("attendanceSessionEnd").value,errorBox=$("attendanceSessionError"),submit=$("attendanceSessionSubmit");
+    errorBox.textContent="";
+    if(!date){errorBox.textContent="교육일자를 입력하세요.";return}
+    if(!startTime||!endTime){errorBox.textContent="시작시각과 종료시각을 입력하세요.";return}
+    if(attendanceTimeToMinutes(endTime)<=attendanceTimeToMinutes(startTime)){errorBox.textContent="종료시각은 시작시각보다 늦어야 합니다.";return}
+    if(!id&&(state.attendanceTargetPreviewDate!==date||state.attendanceTargetPreviewCount===null)){errorBox.textContent="대상인원 불러오기를 먼저 실행하세요.";return}
+    submit.disabled=true;submit.textContent="저장 중";
+    try{
+      const savedResult=await db.rpc("save_attendance_session",{p_session_id:id,p_session_date:date,p_round_no:roundNo,p_start_time:startTime,p_end_time:endTime});
+      if(savedResult.error)throw savedResult.error;
+      const saved=Array.isArray(savedResult.data)?savedResult.data[0]:savedResult.data;
+      if(!saved?.id)throw new Error("저장된 회차 ID가 없습니다.");
+      const savedId=String(saved.id);
+      if(!id){
+        const targetResult=await db.rpc("attendance_load_session_targets",{p_session_id:savedId});
+        if(targetResult.error)throw targetResult.error;
+      }
+      state.attendanceSessionId=savedId;
+      localStorage.setItem(ATTENDANCE_CONFIG.lastSessionKey,savedId);
+      attendanceUpsertSessionLocal(saved);
+      await attendanceLoadSessions({preferredId:savedId,autoSelect:true});
+      await attendanceLoadBoard();
+      attendanceSubscribeRealtime();
+      closeModal("attendanceSessionModal");
+      showToast(id?"교육 회차를 수정했습니다.":`교육 회차와 대상인원 ${state.attendanceTargetPreviewCount||0}명을 생성했습니다.`);
+    }catch(error){console.error("[교육 회차 저장]",error);errorBox.textContent="교육 회차 또는 대상인원 저장 중 오류가 발생했습니다."}
+    finally{submit.disabled=false;submit.textContent="저장"}
+  };
+  $("attendanceSessionForm").onsubmit=attendanceSaveSession;
+
+  // 반드시 고정 대상자 스냅샷만 사용한다. 실시간 사원명부 fallback은 사용하지 않는다.
+  window.attendanceLoadBoard=async function({silent=false}={}){
+    if(!state.attendanceSessionId){attendanceRenderEmpty();return}
+    if(!silent)setStatus("attendanceStatus","고정 대상인원을 불러오는 중입니다.");
+    const result=await db.rpc("attendance_get_snapshot_board",{p_session_id:state.attendanceSessionId});
+    if(result.error){console.error("[고정 출결 대상 조회]",result.error);state.attendanceBoard=[];attendanceRenderEmpty();setStatus("attendanceStatus","고정 대상인원을 불러오지 못했습니다. 적용 SQL을 실행하세요.",true);return}
+    state.attendanceBoard=(Array.isArray(result.data)?result.data:[]).sort((a,b)=>(a.department_name||"").localeCompare(b.department_name||"","ko")||(a.employee_name||"").localeCompare(b.employee_name||"","ko"));
+    attendancePopulateDepartmentFilter();
+    attendanceRenderBoard();
+    setStatus("attendanceStatus",state.attendanceBoard.length?"":"이 회차에 고정된 대상인원이 없습니다.",!state.attendanceBoard.length);
+  };
+
+  // 현재 화면에 이전 패치가 추가한 삭제 셀이 남아 있어도 최종 렌더에서 제거된다.
+  attendanceUpdateSelection();
+})();
+</script>
+
+<script>
+(function finalPlatformConsolidation(){
+  "use strict";
+  const byId=id=>document.getElementById(id);
+  const PAGE_SIZE=50;
+
+  // Deleted leave-date controls must never stop the application boot sequence.
+  window.addEventListener("error",event=>{console.error("[화면 실행 오류]",event.error||event.message)},false);
+
+  // Reliable modal close: capture-phase delegation survives re-rendering and overwritten onclick handlers.
+  document.addEventListener("click",event=>{
+    const closeButton=event.target.closest?.("[data-close]");
+    if(closeButton){event.preventDefault();event.stopPropagation();closeModal(closeButton.dataset.close);return}
+    const backdrop=event.target.classList?.contains("modal-backdrop")?event.target:null;
+    if(backdrop)closeModal(backdrop.id);
+  },true);
+
+  // Restore immediate sidebar/content visibility for authenticated and public users.
+  document.documentElement.classList.add("platform-ready");
+  const sidebar=byId("sidebar");
+  if(sidebar)sidebar.setAttribute("aria-hidden","false");
+
+  // Health examination state.
+  state.healthSelectedStatus=state.healthSelectedStatus||new Set();
+  state.healthSelectedTarget=state.healthSelectedTarget||new Set();
+  state.healthAutosaveTimers=state.healthAutosaveTimers||new Map();
+  state.healthSaving=state.healthSaving||new Set();
+  if(window.platformPaging){platformPaging.healthStatus=platformPaging.healthStatus||1;platformPaging.healthTarget=platformPaging.healthTarget||1}
+
+  function healthPageInfo(rows,key){
+    const paging=window.platformPaging||(window.platformPaging={healthStatus:1,healthTarget:1});
+    const pages=Math.max(1,Math.ceil(rows.length/PAGE_SIZE));
+    paging[key]=Math.min(Math.max(1,Number(paging[key])||1),pages);
+    const start=(paging[key]-1)*PAGE_SIZE;
+    return {items:rows.slice(start,start+PAGE_SIZE),page:paging[key],pages,start};
+  }
+  function healthRenderPager(boxId,total,key,rerender){
+    const box=byId(boxId);if(!box)return;
+    box.replaceChildren();const paging=window.platformPaging;const pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+    paging[key]=Math.min(Math.max(1,paging[key]||1),pages);
+    if(total<=PAGE_SIZE){box.hidden=true;return}box.hidden=false;
+    const add=(label,page,active=false,disabled=false)=>{const b=document.createElement("button");b.type="button";b.className="platform-page-button"+(active?" active":"");b.textContent=label;b.disabled=disabled;if(!disabled&&!active)b.onclick=()=>{paging[key]=page;rerender()};box.appendChild(b)};
+    add("이전",paging[key]-1,false,paging[key]===1);for(let p=1;p<=pages;p++)add(String(p),p,p===paging[key]);add("다음",paging[key]+1,false,paging[key]===pages);
+  }
+  function healthSelection(mode){return mode==="target"?state.healthSelectedTarget:state.healthSelectedStatus}
+  function healthUpdateSelection(mode,visibleIds=[]){
+    const selected=healthSelection(mode),prefix=mode==="target"?"healthTarget":"healthStatus";
+    const count=byId(prefix+"SelectedCount"),button=byId(prefix+"DeleteSelected"),all=byId(prefix+"SelectAll");
+    if(count)count.textContent=`선택 ${selected.size}명`;if(button)button.disabled=!selected.size;
+    if(all){all.checked=visibleIds.length>0&&visibleIds.every(id=>selected.has(String(id)));all.indeterminate=visibleIds.some(id=>selected.has(String(id)))&&!all.checked}
+  }
+  function healthMakeCheckCell(tr,row,mode){
+    const td=document.createElement("td");td.className="center";const input=document.createElement("input");input.type="checkbox";input.className="health-row-check";input.value=String(row.employee_id);input.checked=healthSelection(mode).has(input.value);input.onchange=()=>{input.checked?healthSelection(mode).add(input.value):healthSelection(mode).delete(input.value);healthUpdateSelection(mode,[...tr.parentElement.querySelectorAll('.health-row-check')].map(x=>x.value))};td.appendChild(input);tr.appendChild(td)
+  }
+  function healthRecomputeRow(row){row.completed=!row.excluded&&Boolean(row.general_exam_date)&&(!row.additional_exam_type||Boolean(row.additional_exam_date))}
+  function healthRefreshRowBadge(tr,row){const badge=tr.querySelector(".health-status-badge");if(!badge)return;badge.className=`health-status-badge ${row.excluded?"excluded":row.completed?"completed":"incomplete"}`;badge.textContent=row.excluded?"제외":row.completed?"완료":"미완료"}
+  function healthSetPending(tr,pending,error=false){tr.classList.toggle("health-autosave-pending",pending&&!error);tr.classList.toggle("health-autosave-error",error)}
+  function healthSchedule(key,tr,saveFn,delay=650){
+    clearTimeout(state.healthAutosaveTimers.get(key));healthSetPending(tr,true,false);
+    const timer=setTimeout(async()=>{state.healthAutosaveTimers.delete(key);try{await saveFn();healthSetPending(tr,false,false)}catch(error){console.error("[건강검진 자동저장]",error);healthSetPending(tr,false,true);showToast("건강검진 자동저장 중 오류가 발생했습니다.")}},delay);
+    state.healthAutosaveTimers.set(key,timer)
+  }
+  async function healthAutoSaveStatus(tr,row){
+    const employeeId=Number(row.employee_id),year=Number(byId("healthYearFilter").value),key=`status:${employeeId}`;
+    if(state.healthSaving.has(key))return;state.healthSaving.add(key);
+    try{
+      const generalDate=tr.querySelector('[data-field="generalDate"]').value||null;
+      const generalInstitution=tr.querySelector('[data-field="generalInstitution"]').value.trim()||null;
+      const additionalDate=tr.querySelector('[data-field="additionalDate"]').value||null;
+      const additionalInstitution=tr.querySelector('[data-field="additionalInstitution"]').value.trim()||null;
+      let result=await db.rpc("save_employee_health_exam_v2",{p_employee_id:employeeId,p_exam_year:year,p_exam_type:"general",p_exam_date:generalDate,p_institution:generalInstitution});if(result.error)throw result.error;
+      if(row.additional_exam_type){result=await db.rpc("save_employee_health_exam_v2",{p_employee_id:employeeId,p_exam_year:year,p_exam_type:row.additional_exam_type,p_exam_date:additionalDate,p_institution:additionalInstitution});if(result.error)throw result.error}
+      row.general_exam_date=generalDate;row.general_institution=generalInstitution;row.additional_exam_date=additionalDate;row.additional_institution=additionalInstitution;healthRecomputeRow(row);healthRefreshRowBadge(tr,row);healthUpdateDashboard();
+    }finally{state.healthSaving.delete(key)}
+  }
+  async function healthAutoSaveTarget(tr,row){
+    const employeeId=Number(row.employee_id),year=Number(byId("healthYearFilter").value),key=`target:${employeeId}`;
+    if(state.healthSaving.has(key))return;const additional=tr.querySelector('[data-field="additionalType"]').value||null,exclusion=tr.querySelector('[data-field="exclusionReason"]').value||null,comprehensive=tr.querySelector('[data-field="comprehensiveDate"]').value||null;
+    if(exclusion==="comprehensive"&&!comprehensive)return;
+    state.healthSaving.add(key);try{const result=await db.rpc("save_employee_health_exam_target",{p_employee_id:employeeId,p_exam_year:year,p_additional_exam_type:additional,p_exclusion_reason:exclusion,p_comprehensive_exam_date:comprehensive});if(result.error)throw result.error;row.additional_exam_type=additional;row.exclusion_reason=exclusion;row.comprehensive_exam_date=comprehensive;row.excluded=Boolean(exclusion);if(row.excluded){row.additional_exam_type=null}healthRecomputeRow(row);healthUpdateDashboard()}finally{state.healthSaving.delete(key)}
+  }
+
+  window.healthUpdateDashboard=function(){
+    const rows=Array.isArray(state.healthExams)?state.healthExams:[],total=rows.length,completed=rows.filter(row=>Boolean(row.completed)&&!row.excluded).length,incomplete=Math.max(0,total-completed),completeRate=total?Math.round(completed/total*100):0,incompleteRate=total?Math.round(incomplete/total*100):0;
+    byId("healthTargetTotal").textContent=`${total}명`;byId("healthCompletedTotal").textContent=`${completed}명`;byId("healthIncompleteTotal").textContent=`${incomplete}명`;byId("healthTargetRate").textContent=total?"100%":"0%";byId("healthCompletedRate").textContent=`${completeRate}%`;byId("healthIncompleteRate").textContent=`${incompleteRate}%`;byId("healthTargetRing").style.setProperty("--progress",total?100:0);byId("healthCompletedRing").style.setProperty("--progress",completeRate);byId("healthIncompleteRing").style.setProperty("--progress",incompleteRate)
+  };
+
+  window.renderHealthExams=function(){
+    if(state.healthMode!=="status")return;healthUpdateDashboard();const rows=healthFilteredRows(),info=healthPageInfo(rows,"healthStatus"),body=byId("healthExamTableBody");body.replaceChildren();byId("healthResultCount").textContent=rows.length?`${rows.length}명 · ${info.page}/${info.pages}페이지`:"0명";
+    if(!rows.length){setStatus("healthExamStatus","조건에 해당하는 사원이 없습니다.");healthRenderPager("healthExamPagination",0,"healthStatus",renderHealthExams);healthUpdateSelection("status",[]);return}setStatus("healthExamStatus","");const fragment=document.createDocumentFragment();
+    info.items.forEach((row,index)=>{const tr=document.createElement("tr");tr.dataset.employeeId=String(row.employee_id);healthMakeCheckCell(tr,row,"status");addTextCell(tr,info.start+index+1,"center");addTextCell(tr,row.department_name||"-","ellipsis",row.department_name||"-");addTextCell(tr,row.job_title||"-","center");const name=document.createElement("td");name.textContent=row.employee_name||"-";tr.appendChild(name);const required=document.createElement("td");required.className="center";const requiredBadge=document.createElement("span");requiredBadge.className="health-required-badge";requiredBadge.textContent=healthRequiredText(row);required.appendChild(requiredBadge);tr.appendChild(required);const status=document.createElement("td");status.className="center";const badge=document.createElement("span");badge.className=`health-status-badge ${row.excluded?"excluded":row.completed?"completed":"incomplete"}`;badge.textContent=row.excluded?"제외":row.completed?"완료":"미완료";status.appendChild(badge);tr.appendChild(status);
+      const makeInput=(type,field,value,placeholder,disabled=false)=>{const td=document.createElement("td"),input=document.createElement("input");input.type=type;input.dataset.field=field;input.value=value||"";input.placeholder=placeholder||"";input.disabled=disabled;const schedule=()=>healthSchedule(`status:${row.employee_id}`,tr,()=>healthAutoSaveStatus(tr,row),type==="text"?700:250);input.addEventListener(type==="text"?"input":"change",schedule);if(type==="text")input.addEventListener("blur",schedule);td.appendChild(input);tr.appendChild(td)};
+      makeInput("date","generalDate",row.general_exam_date,"",Boolean(row.excluded));makeInput("text","generalInstitution",row.general_institution,"검진기관",Boolean(row.excluded));const noAdditional=!row.additional_exam_type||row.excluded;makeInput("date","additionalDate",row.additional_exam_date,"",noAdditional);makeInput("text","additionalInstitution",row.additional_institution,noAdditional?"추가검진 없음":`${healthTypeLabels[row.additional_exam_type]} 기관`,noAdditional);fragment.appendChild(tr)});
+    body.appendChild(fragment);const visible=info.items.map(x=>String(x.employee_id));healthUpdateSelection("status",visible);healthRenderPager("healthExamPagination",rows.length,"healthStatus",renderHealthExams)
+  };
+
+  window.renderHealthTargets=function(){
+    if(state.healthMode!=="target")return;const rows=healthTargetRows(),info=healthPageInfo(rows,"healthTarget"),body=byId("healthTargetTableBody");body.replaceChildren();byId("healthTargetResultCount").textContent=rows.length?`${rows.length}명 · ${info.page}/${info.pages}페이지`:"0명";
+    if(!rows.length){setStatus("healthTargetStatus","조건에 해당하는 사원이 없습니다.");healthRenderPager("healthTargetPagination",0,"healthTarget",renderHealthTargets);healthUpdateSelection("target",[]);return}setStatus("healthTargetStatus","");const fragment=document.createDocumentFragment();
+    info.items.forEach((row,index)=>{const tr=document.createElement("tr");tr.dataset.employeeId=String(row.employee_id);healthMakeCheckCell(tr,row,"target");addTextCell(tr,info.start+index+1,"center");addTextCell(tr,row.department_name||"-","ellipsis",row.department_name||"-");addTextCell(tr,row.job_title||"-","center");addTextCell(tr,row.employee_name||"-");const base=document.createElement("td");base.className="center";base.innerHTML='<span class="health-required-badge">일반검진</span>';tr.appendChild(base);
+      const additionalTd=document.createElement("td"),additional=document.createElement("select");additional.dataset.field="additionalType";[["","해당 없음"],["special","특수검진"],["pre-placement","배치전"],["post-placement","배치후"]].forEach(([v,l])=>additional.appendChild(new Option(l,v)));additional.value=row.additional_exam_type||"";additionalTd.appendChild(additional);tr.appendChild(additionalTd);
+      const exclusionTd=document.createElement("td"),exclusion=document.createElement("select");exclusion.dataset.field="exclusionReason";[["","제외 없음"],["pregnancy","임신"],["leave","휴직"],["overseas","해외출장"],["comprehensive","종합검진"]].forEach(([v,l])=>exclusion.appendChild(new Option(l,v)));exclusion.value=row.exclusion_reason||"";exclusionTd.appendChild(exclusion);tr.appendChild(exclusionTd);
+      const comprehensiveTd=document.createElement("td"),comprehensive=document.createElement("input");comprehensive.type="date";comprehensive.dataset.field="comprehensiveDate";comprehensive.value=row.comprehensive_exam_date||"";comprehensive.hidden=exclusion.value!=="comprehensive";comprehensive.className="health-comprehensive-date";comprehensiveTd.appendChild(comprehensive);tr.appendChild(comprehensiveTd);
+      const sync=()=>{const excluded=Boolean(exclusion.value);additional.disabled=excluded;if(excluded)additional.value="";comprehensive.hidden=exclusion.value!=="comprehensive";if(exclusion.value!=="comprehensive")comprehensive.value=""};const schedule=()=>healthSchedule(`target:${row.employee_id}`,tr,()=>healthAutoSaveTarget(tr,row),250);additional.onchange=schedule;exclusion.onchange=()=>{sync();schedule()};comprehensive.onchange=schedule;sync();fragment.appendChild(tr)});
+    body.appendChild(fragment);const visible=info.items.map(x=>String(x.employee_id));healthUpdateSelection("target",visible);healthRenderPager("healthTargetPagination",rows.length,"healthTarget",renderHealthTargets)
+  };
+
+  async function healthDeleteSelected(mode){
+    const selected=[...healthSelection(mode)].map(Number),year=Number(byId("healthYearFilter").value);if(!selected.length){showToast("삭제할 직원을 선택하세요.");return}if(!confirm(`선택한 ${selected.length}명의 ${year}년 건강검진 기록과 검진종류 설정을 삭제하시겠습니까?`))return;
+    const button=byId(mode==="target"?"healthTargetDeleteSelected":"healthStatusDeleteSelected"),old=button.textContent;button.disabled=true;button.textContent="삭제 중";
+    try{const result=await db.rpc("delete_employee_health_year_bulk",{p_employee_ids:selected,p_exam_year:year});if(result.error)throw result.error;state.healthSelectedStatus.clear();state.healthSelectedTarget.clear();await loadHealthExams();showToast(`${Number(result.data?.deleted_employee_count||selected.length)}명의 건강검진 자료를 삭제했습니다.`)}catch(error){console.error("[건강검진 선택 삭제]",error);showToast("건강검진 자료 삭제 중 오류가 발생했습니다.")}finally{button.textContent=old;healthUpdateSelection(mode,[])}
+  }
+  byId("healthStatusDeleteSelected").onclick=()=>healthDeleteSelected("status");byId("healthTargetDeleteSelected").onclick=()=>healthDeleteSelected("target");
+  byId("healthStatusSelectAll").onchange=event=>{document.querySelectorAll("#healthExamTableBody .health-row-check").forEach(x=>{x.checked=event.target.checked;x.checked?state.healthSelectedStatus.add(x.value):state.healthSelectedStatus.delete(x.value)});healthUpdateSelection("status",[...document.querySelectorAll("#healthExamTableBody .health-row-check")].map(x=>x.value))};
+  byId("healthTargetSelectAll").onchange=event=>{document.querySelectorAll("#healthTargetTableBody .health-row-check").forEach(x=>{x.checked=event.target.checked;x.checked?state.healthSelectedTarget.add(x.value):state.healthSelectedTarget.delete(x.value)});healthUpdateSelection("target",[...document.querySelectorAll("#healthTargetTableBody .health-row-check")].map(x=>x.value))};
+  byId("healthYearFilter").addEventListener("change",()=>{state.healthSelectedStatus.clear();state.healthSelectedTarget.clear()});
+
+  // Compact attendance row: short button labels and consistent one-line alignment.
+  window.attendanceRenderBoard=function(){
+    const filtered=attendanceFilteredRows(),pages=Math.max(1,Math.ceil(filtered.length/state.attendancePageSize));state.attendancePage=Math.min(Math.max(1,state.attendancePage),pages);const start=(state.attendancePage-1)*state.attendancePageSize,rows=filtered.slice(start,start+state.attendancePageSize),body=byId("attendanceTableBody");body.replaceChildren();
+    for(const row of rows){const tr=document.createElement("tr"),id=String(row.employee_id);if(state.attendanceLoadingRows.has(id))tr.classList.add("attendance-row-loading");const intervals=attendanceIntervals(row),firstIn=attendanceFirstCheckIn(row),lastOut=attendanceLastCheckOut(row),hasOpen=Boolean(row.open_visit_id);const inButton=!hasOpen?`<button class="attendance-cell-action attendance-check-in" data-id="${id}" type="button">${intervals.length?"추가입실":"입실"}</button>`:"";const outButton=hasOpen?`<button class="attendance-cell-action attendance-check-out" data-id="${id}" type="button">퇴실</button>`:"";
+      tr.innerHTML=`<td class="center"><input class="attendance-row-check" type="checkbox" value="${id}" ${state.attendanceSelected.has(id)?"checked":""}></td><td class="ellipsis" title="${escapeHtml(row.department_name||"-")}">${escapeHtml(row.department_name||"-")}</td><td class="center">${escapeHtml(row.job_title||"-")}</td><td class="center"><button class="attendance-person-button attendance-open-log" data-id="${id}" type="button">${escapeHtml(row.employee_name||"-")}</button></td><td class="attendance-time-cell"><div class="attendance-time-inline"><span class="attendance-time-main">${attendanceFormatTime(firstIn)}</span>${inButton}</div></td><td class="attendance-time-cell"><div class="attendance-time-inline"><span class="attendance-time-main">${attendanceFormatTime(lastOut)}</span>${outButton}</div></td><td class="attendance-duration center">${attendanceDurationText(row.education_minutes)}</td><td class="center"><button class="attendance-missed-toggle ${row.missed_signature?"active":""}" data-id="${id}" type="button">${row.missed_signature?"미수강":"정상"}</button></td><td><input class="attendance-memo-input" data-employee-id="${id}" value="${escapeHtml(row.memo||"")}" aria-label="비고 입력" title="클릭하여 비고 입력"></td>`;body.appendChild(tr)}
+    body.querySelectorAll(".attendance-row-check").forEach(el=>el.onchange=()=>{el.checked?state.attendanceSelected.add(el.value):state.attendanceSelected.delete(el.value);attendanceUpdateSelection()});body.querySelectorAll(".attendance-check-in").forEach(el=>el.onclick=()=>attendanceRunIndividual("check_in",attendanceRow(el.dataset.id)));body.querySelectorAll(".attendance-check-out").forEach(el=>el.onclick=()=>attendanceRunIndividual("check_out",attendanceRow(el.dataset.id)));body.querySelectorAll(".attendance-open-log").forEach(el=>el.onclick=()=>attendanceOpenLog(attendanceRow(el.dataset.id)));body.querySelectorAll(".attendance-missed-toggle").forEach(el=>el.onclick=()=>attendanceToggleMissed(el.dataset.id));body.querySelectorAll(".attendance-memo-input").forEach(el=>{el.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();el.blur()}};el.onblur=()=>attendanceSaveMemoInline(el)});
+    byId("attendanceResultCount").textContent=filtered.length?`${filtered.length}명 · ${state.attendancePage}/${pages}페이지`:"0명";attendanceRenderPagination(filtered.length);const all=state.attendanceBoard;byId("attendanceActiveCount").textContent=all.length;byId("attendanceCheckInCount").textContent=all.filter(x=>Number(x.visit_count||0)>0).length;byId("attendanceCheckOutCount").textContent=all.filter(x=>Number(x.closed_visit_count||0)>0&&!x.open_visit_id).length;byId("attendanceSuspectedCount").textContent=all.filter(x=>Boolean(x.missed_signature)).length;attendanceUpdateSelection()
+  };
+
+  // Department attendance rate chart. Round 1 = first attendance, Round 2 = cumulative unique attendance across rounds 1+2.
+  let rateRequestToken=0;
+  async function attendanceLoadDepartmentRates(){
+    const chart=byId("attendanceDepartmentChart"),title=byId("attendanceRateTitle"),description=byId("attendanceRateDescription"),legend=byId("attendanceRateLegend");if(!state.attendanceSessionId){chart.innerHTML='<div class="attendance-rate-empty">교육 회차를 선택하세요.</div>';description.textContent="교육 회차를 선택하면 표시됩니다.";legend.textContent="";return}
+    const token=++rateRequestToken;chart.innerHTML='<div class="attendance-rate-empty">부서별 참석률 계산 중...</div>';
+    const result=await db.rpc("attendance_department_rates",{p_session_id:state.attendanceSessionId});if(token!==rateRequestToken)return;if(result.error){console.error("[부서별 참석률]",result.error);chart.innerHTML='<div class="attendance-rate-empty">참석률을 불러오지 못했습니다. SQL 패치를 실행하세요.</div>';return}
+    const payload=result.data||{},round=Number(payload.round_no||1),rows=Array.isArray(payload.departments)?payload.departments:[];title.textContent=round>=2?"부서별 참석률 · 2차 누적":"부서별 참석률 · 1차";description.textContent=round>=2?"1차와 2차 중 한 번 이상 참석한 고유 인원 기준":"1차 참석 인원 기준";legend.textContent=round>=2?"회색 1차 · 파랑 누적":"파랑 참석률";chart.replaceChildren();
+    if(!rows.length){chart.innerHTML='<div class="attendance-rate-empty">교육대상이 있는 부서가 없습니다.</div>';return}
+    rows.sort((a,b)=>Number(b.display_rate||0)-Number(a.display_rate||0)||String(a.department_name||"").localeCompare(String(b.department_name||""),"ko"));const f=document.createDocumentFragment();
+    rows.forEach(row=>{const item=document.createElement("div");item.className="attendance-rate-row";const dept=document.createElement("div");dept.className="attendance-rate-dept";dept.textContent=row.department_name||"미지정";dept.title=dept.textContent;const bars=document.createElement("div");bars.className="attendance-rate-bars";const makeBar=(rate,cls="")=>{const track=document.createElement("div");track.className="attendance-rate-track";const fill=document.createElement("div");fill.className="attendance-rate-fill"+(cls?` ${cls}`:"");fill.style.width=`${Math.max(0,Math.min(100,Number(rate)||0))}%`;track.appendChild(fill);bars.appendChild(track)};if(round>=2)makeBar(row.first_rate,"first");makeBar(row.display_rate);const value=document.createElement("div");value.className="attendance-rate-value";value.textContent=`${Number(row.display_rate||0).toFixed(1)}%`;value.title=`대상 ${row.target_count}명 · 참석 ${row.display_attended}명`;item.append(dept,bars,value);f.appendChild(item)});chart.appendChild(f)
+  }
+  window.attendanceLoadDepartmentRates=attendanceLoadDepartmentRates;
+  const previousAttendanceLoadBoard=window.attendanceLoadBoard;
+  window.attendanceLoadBoard=async function(options={}){await previousAttendanceLoadBoard(options);clearTimeout(window.__attendanceRateTimer);window.__attendanceRateTimer=setTimeout(attendanceLoadDepartmentRates,120)};
+  const previousAttendanceRenderEmpty=window.attendanceRenderEmpty;
+  window.attendanceRenderEmpty=function(){previousAttendanceRenderEmpty();attendanceLoadDepartmentRates()};
+
+  // Throttle realtime refreshes to one render per burst and reduce fallback polling frequency.
+  ATTENDANCE_CONFIG.fallbackRefreshMs=30000;
+  let realtimeRefreshTimer=null;
+  function scheduleRealtimeRefresh(){clearTimeout(realtimeRefreshTimer);realtimeRefreshTimer=setTimeout(()=>{if(state.currentView==="attendance"&&state.attendanceSessionId)attendanceLoadBoard({silent:true})},350)}
+  window.attendanceSubscribeRealtime=function(){attendanceUnsubscribeRealtime();if(!state.attendanceSessionId)return;state.attendanceChannel=db.channel(`attendance-final-${state.attendanceSessionId}`).on("postgres_changes",{event:"*",schema:"public",table:"attendance_intervals"},scheduleRealtimeRefresh).on("postgres_changes",{event:"*",schema:"public",table:"attendance_records",filter:`session_id=eq.${state.attendanceSessionId}`},scheduleRealtimeRefresh).on("postgres_changes",{event:"*",schema:"public",table:"attendance_sessions"},async()=>{await attendanceLoadSessions({preferredId:state.attendanceSessionId,autoSelect:true});attendanceRenderSessionInfo()}).subscribe(status=>{if(status==="SUBSCRIBED")attendanceStopPolling();else attendanceStartPolling()})};
+
+  // Rebind key events after every previous patch has run.
+  byId("loginButton").onclick=()=>openModal("loginModal");
+  byId("healthStatusTab").onclick=()=>healthSetMode("status");byId("healthTargetTab").onclick=()=>healthSetMode("target");
+  byId("attendanceSessionSelect").addEventListener("change",()=>setTimeout(attendanceLoadDepartmentRates,0));
+
+  // If a session is already active at boot, draw its chart without waiting for a manual click.
+  if(state.currentView==="attendance")setTimeout(attendanceLoadDepartmentRates,0);
+})();
+</script>
+
+
+<script id="environmentSafetyFinalRequirementsPatch">
+(function environmentSafetyFinalRequirementsPatch(){
+  "use strict";
+  const byId=id=>document.getElementById(id);
+  const PAGE_SIZE=50;
+  const clone=value=>typeof structuredClone==="function"?structuredClone(value):JSON.parse(JSON.stringify(value));
+  const safeText=value=>String(value??"");
+
+  // ------------------------------------------------------------------
+  // Common search reset: menu entry, tab entry and modal opening.
+  // ------------------------------------------------------------------
+  const searchIdsByView={
+    education:["selfEmployeeQuery"],
+    employees:["activeEmployeeSearch","retiredEmployeeSearch"],
+    departments:["departmentSearch"],
+    health:["healthSearch","healthTargetSearch"],
+    attendance:["attendanceSearch"]
+  };
+  document.querySelectorAll('input[type="search"]').forEach(input=>{
+    input.setAttribute("autocomplete","off");
+    input.setAttribute("autocorrect","off");
+    input.setAttribute("autocapitalize","off");
+    input.setAttribute("spellcheck","false");
+  });
+  function clearSearchInputs(ids){
+    ids.forEach(id=>{const input=byId(id);if(input)input.value=""});
+  }
+  function resetPagingForView(view){
+    if(window.platformPaging){
+      if(view==="employees"){platformPaging.active=1;platformPaging.retired=1}
+      if(view==="departments")platformPaging.department=1;
+      if(view==="health"){platformPaging.healthStatus=1;platformPaging.healthTarget=1}
+      if(view==="education")platformPaging.education=1;
+    }
+    if(window.paging){
+      if(view==="employees"){paging.active=1;paging.retired=1}
+      if(view==="departments")paging.department=1;
+      if(view==="education")paging.education=1;
+    }
+    if(view==="attendance")state.attendancePage=1;
+  }
+  function renderResetView(view){
+    if(view==="employees")state.employeeTab==="retired"?renderRetiredEmployees():renderActiveEmployees();
+    else if(view==="departments")renderDepartments();
+    else if(view==="health")state.healthMode==="target"?renderHealthTargets():renderHealthExams();
+    else if(view==="attendance")attendanceRenderBoard();
+    else if(view==="education")renderEducationTable();
+  }
+  const previousShowView=window.showView;
+  window.showView=function(name){
+    clearSearchInputs(searchIdsByView[name]||[]);
+    resetPagingForView(name);
+    if(name==="attendance"&&typeof ATTENDANCE_CONFIG!=="undefined"&&ATTENDANCE_CONFIG.searchKey)localStorage.removeItem(ATTENDANCE_CONFIG.searchKey);
+    const result=previousShowView(name);
+    if(name!=="attendance")queueMicrotask(()=>renderResetView(name));
+    return result;
+  };
+  const previousOpenModal=window.openModal;
+  window.openModal=function(id){
+    const modal=byId(id);
+    if(modal)clearSearchInputs([...modal.querySelectorAll('input[type="search"]')].map(input=>input.id).filter(Boolean));
+    if(id==="participantModal"){
+      if(window.platformPaging){platformPaging.employeePicker=1;platformPaging.participant=1}
+    }
+    return previousOpenModal(id);
+  };
+  const previousLoadEmployeeTab=window.loadEmployeeTab;
+  if(typeof previousLoadEmployeeTab==="function")window.loadEmployeeTab=function(tab){
+    clearSearchInputs(tab==="retired"?["retiredEmployeeSearch"]:["activeEmployeeSearch"]);
+    resetPagingForView("employees");
+    return previousLoadEmployeeTab(tab);
+  };
+  const previousHealthSetMode=window.healthSetMode;
+  if(typeof previousHealthSetMode==="function")window.healthSetMode=function(mode){
+    clearSearchInputs(mode==="target"?["healthTargetSearch"]:["healthSearch"]);
+    resetPagingForView("health");
+    return previousHealthSetMode(mode);
+  };
+
+  // ------------------------------------------------------------------
+  // Health management: corrected RPCs, friendly errors and autosave.
+  // Actual cause fixed by SQL: legacy table has no exam_year column.
+  // ------------------------------------------------------------------
+  state.healthSelectedStatus=state.healthSelectedStatus||new Set();
+  state.healthSelectedTarget=state.healthSelectedTarget||new Set();
+  state.finalHealthTimers=state.finalHealthTimers||new Map();
+  state.finalHealthSaving=state.finalHealthSaving||new Set();
+  state.finalHealthPages=state.finalHealthPages||{status:1,target:1};
+
+  function healthFriendlyError(error,operation){
+    const message=String(error?.message||"").toLowerCase();
+    const code=String(error?.code||"");
+    console.error(`[건강검진 관리] ${operation} 실패`,error);
+    if(code==="42501"||message.includes("permission")||message.includes("권한")||message.includes("row-level security"))return "접근 권한이 없습니다.";
+    if(message.includes("date")||message.includes("날짜")||code==="22007"||code==="22008")return "입력한 날짜와 필수 항목을 확인해 주세요.";
+    if(operation.includes("목록"))return "건강검진 목록을 불러오지 못했습니다.";
+    if(operation.includes("삭제"))return "건강검진 정보를 삭제하지 못했습니다.";
+    return "건강검진 정보를 저장하지 못했습니다.";
+  }
+  async function healthRpc(operation,name,payload){
+    const result=await db.rpc(name,payload);
+    if(result.error)throw Object.assign(result.error,{healthOperation:operation});
+    return result.data;
+  }
+  function healthNormalizeRow(row){
+    const normalized={...row};
+    normalized.excluded=Boolean(row.excluded||row.exclusion_reason);
+    normalized.completed=!normalized.excluded&&Boolean(row.general_exam_date)&&(!row.additional_exam_type||Boolean(row.additional_exam_date));
+    return normalized;
+  }
+  window.loadHealthExams=async function(){
+    if(!state.isAdmin)return;
+    healthInitializeYearFilter();
+    const year=Number(byId("healthYearFilter").value)||new Date().getFullYear();
+    renderSkeleton("healthExamTableBody",11,5);renderSkeleton("healthTargetTableBody",9,5);
+    setStatus("healthExamStatus","");setStatus("healthTargetStatus","");
+    try{
+      const data=await healthRpc("목록 조회","health_management_get_roster",{p_exam_year:year});
+      state.healthExams=(Array.isArray(data)?data:[]).map(healthNormalizeRow);
+      healthUpdateDashboard();
+      state.healthMode==="target"?renderHealthTargets():renderHealthExams();
+    }catch(error){
+      const message=healthFriendlyError(error,"목록 조회");
+      state.healthExams=[];byId("healthExamTableBody").replaceChildren();byId("healthTargetTableBody").replaceChildren();
+      setStatus("healthExamStatus",message,true);setStatus("healthTargetStatus",message,true);healthUpdateDashboard();
+    }
+  };
+  window.healthUpdateDashboard=function(){
+    const rows=Array.isArray(state.healthExams)?state.healthExams:[];
+    const total=rows.length,completed=rows.filter(row=>row.completed&&!row.excluded).length,incomplete=Math.max(0,total-completed);
+    const completedRate=total?Math.round(completed/total*100):0,incompleteRate=total?Math.round(incomplete/total*100):0;
+    byId("healthTargetTotal").textContent=`${total}명`;byId("healthCompletedTotal").textContent=`${completed}명`;byId("healthIncompleteTotal").textContent=`${incomplete}명`;
+    byId("healthTargetRate").textContent=total?"100%":"0%";byId("healthCompletedRate").textContent=`${completedRate}%`;byId("healthIncompleteRate").textContent=`${incompleteRate}%`;
+    byId("healthTargetRing").style.setProperty("--progress",total?100:0);byId("healthCompletedRing").style.setProperty("--progress",completedRate);byId("healthIncompleteRing").style.setProperty("--progress",incompleteRate);
+  };
+  function healthPage(rows,mode){
+    const pages=Math.max(1,Math.ceil(rows.length/PAGE_SIZE));state.finalHealthPages[mode]=Math.min(Math.max(1,state.finalHealthPages[mode]||1),pages);
+    const start=(state.finalHealthPages[mode]-1)*PAGE_SIZE;return {items:rows.slice(start,start+PAGE_SIZE),pages,start,page:state.finalHealthPages[mode]};
+  }
+  function healthPager(boxId,total,mode,render){
+    const box=byId(boxId);if(!box)return;box.replaceChildren();const pages=Math.max(1,Math.ceil(total/PAGE_SIZE));
+    if(total<=PAGE_SIZE){box.hidden=true;return}box.hidden=false;
+    const add=(label,page,active=false,disabled=false)=>{const b=document.createElement("button");b.type="button";b.className="platform-page-button"+(active?" active":"");b.textContent=label;b.disabled=disabled;if(!disabled&&!active)b.onclick=()=>{state.finalHealthPages[mode]=page;render()};box.appendChild(b)};
+    add("이전",state.finalHealthPages[mode]-1,false,state.finalHealthPages[mode]===1);for(let p=1;p<=pages;p++)add(String(p),p,p===state.finalHealthPages[mode]);add("다음",state.finalHealthPages[mode]+1,false,state.finalHealthPages[mode]===pages);
+  }
+  function healthSelection(mode){return mode==="target"?state.healthSelectedTarget:state.healthSelectedStatus}
+  function healthSelectionUI(mode,visible=[]){
+    const prefix=mode==="target"?"healthTarget":"healthStatus",selected=healthSelection(mode),all=byId(prefix+"SelectAll");
+    byId(prefix+"SelectedCount").textContent=`선택 ${selected.size}명`;byId(prefix+"DeleteSelected").disabled=!selected.size;
+    all.checked=visible.length>0&&visible.every(id=>selected.has(String(id)));all.indeterminate=visible.some(id=>selected.has(String(id)))&&!all.checked;
+  }
+  function healthCheckCell(tr,row,mode){
+    const td=document.createElement("td");td.className="center";const input=document.createElement("input");input.type="checkbox";input.className="health-row-check";input.value=String(row.employee_id);input.checked=healthSelection(mode).has(input.value);
+    input.onchange=()=>{input.checked?healthSelection(mode).add(input.value):healthSelection(mode).delete(input.value);healthSelectionUI(mode,[...tr.parentElement.querySelectorAll('.health-row-check')].map(x=>x.value))};td.appendChild(input);tr.appendChild(td);
+  }
+  function healthSchedule(key,tr,save,delay){
+    clearTimeout(state.finalHealthTimers.get(key));tr.classList.add("health-autosave-pending");tr.classList.remove("health-autosave-error");
+    const timer=setTimeout(async()=>{state.finalHealthTimers.delete(key);try{await save();tr.classList.remove("health-autosave-pending","health-autosave-error")}catch(error){tr.classList.remove("health-autosave-pending");tr.classList.add("health-autosave-error");showToast(healthFriendlyError(error,error.healthOperation||"저장"))}},delay);
+    state.finalHealthTimers.set(key,timer);
+  }
+  async function healthSaveStatusRow(tr,row){
+    const key=`status:${row.employee_id}`,year=Number(byId("healthYearFilter").value);if(state.finalHealthSaving.has(key))return;
+    const generalDate=tr.querySelector('[data-field="generalDate"]').value||null,generalInstitution=tr.querySelector('[data-field="generalInstitution"]').value.trim()||null;
+    const additionalDate=tr.querySelector('[data-field="additionalDate"]').value||null,additionalInstitution=tr.querySelector('[data-field="additionalInstitution"]').value.trim()||null;
+    if(generalInstitution&&!generalDate)throw Object.assign(new Error("일반검진 날짜가 필요합니다."),{healthOperation:"정보 저장"});
+    if(additionalInstitution&&!additionalDate)throw Object.assign(new Error("추가검진 날짜가 필요합니다."),{healthOperation:"정보 저장"});
+    state.finalHealthSaving.add(key);
+    try{
+      await healthRpc("일반검진 정보 저장","health_management_save_exam",{p_employee_id:Number(row.employee_id),p_exam_year:year,p_exam_type:"general",p_exam_date:generalDate,p_institution:generalInstitution});
+      if(row.additional_exam_type)await healthRpc("추가검진 정보 저장","health_management_save_exam",{p_employee_id:Number(row.employee_id),p_exam_year:year,p_exam_type:row.additional_exam_type,p_exam_date:additionalDate,p_institution:additionalInstitution});
+      row.general_exam_date=generalDate;row.general_institution=generalInstitution;row.additional_exam_date=additionalDate;row.additional_institution=additionalInstitution;row.completed=!row.excluded&&Boolean(generalDate)&&(!row.additional_exam_type||Boolean(additionalDate));
+      const badge=tr.querySelector(".health-status-badge");if(badge){badge.className=`health-status-badge ${row.excluded?"excluded":row.completed?"completed":"incomplete"}`;badge.textContent=row.excluded?"제외":row.completed?"완료":"미완료"}healthUpdateDashboard();
+    }finally{state.finalHealthSaving.delete(key)}
+  }
+  async function healthSaveTargetRow(tr,row){
+    const key=`target:${row.employee_id}`,year=Number(byId("healthYearFilter").value);if(state.finalHealthSaving.has(key))return;
+    const additional=tr.querySelector('[data-field="additionalType"]').value||null,exclusion=tr.querySelector('[data-field="exclusionReason"]').value||null,comprehensive=tr.querySelector('[data-field="comprehensiveDate"]').value||null;
+    if(exclusion==="comprehensive"&&!comprehensive)throw Object.assign(new Error("종합검진 실시일이 필요합니다."),{healthOperation:"검진종류 저장"});
+    state.finalHealthSaving.add(key);
+    try{
+      await healthRpc("검진종류 저장","health_management_save_target",{p_employee_id:Number(row.employee_id),p_exam_year:year,p_additional_exam_type:additional,p_exclusion_reason:exclusion,p_comprehensive_exam_date:comprehensive});
+      row.additional_exam_type=exclusion?null:additional;row.exclusion_reason=exclusion;row.comprehensive_exam_date=exclusion==="comprehensive"?comprehensive:null;row.excluded=Boolean(exclusion);row.completed=!row.excluded&&Boolean(row.general_exam_date)&&(!row.additional_exam_type||Boolean(row.additional_exam_date));healthUpdateDashboard();
+    }finally{state.finalHealthSaving.delete(key)}
+  }
+  window.renderHealthExams=function(){
+    if(state.healthMode!=="status")return;healthUpdateDashboard();const q=byId("healthSearch").value.trim().toLowerCase(),filter=byId("healthStatusFilter").value;
+    const rows=state.healthExams.filter(row=>healthMatchesSearch(row,q)&&(!filter||(filter==="completed"&&row.completed&&!row.excluded)||(filter==="incomplete"&&!row.completed&&!row.excluded)||(filter==="excluded"&&row.excluded))).sort((a,b)=>String(a.department_name||"").localeCompare(String(b.department_name||""),"ko")||String(a.employee_name||"").localeCompare(String(b.employee_name||""),"ko"));
+    const page=healthPage(rows,"status"),body=byId("healthExamTableBody");body.replaceChildren();byId("healthResultCount").textContent=rows.length?`${rows.length}명 · ${page.page}/${page.pages}페이지`:"0명";
+    if(!rows.length){setStatus("healthExamStatus","조건에 해당하는 사원이 없습니다.");healthPager("healthExamPagination",0,"status",renderHealthExams);healthSelectionUI("status",[]);return}setStatus("healthExamStatus","");
+    const f=document.createDocumentFragment();page.items.forEach((row,index)=>{const tr=document.createElement("tr");tr.dataset.employeeId=String(row.employee_id);healthCheckCell(tr,row,"status");addTextCell(tr,page.start+index+1,"center");addTextCell(tr,row.department_name||"-","ellipsis",row.department_name||"-");addTextCell(tr,row.job_title||"-","center");addTextCell(tr,row.employee_name||"-");
+      const required=document.createElement("td");required.className="center";required.innerHTML=`<span class="health-required-badge">${escapeHtml(healthRequiredText(row))}</span>`;tr.appendChild(required);const status=document.createElement("td");status.className="center";status.innerHTML=`<span class="health-status-badge ${row.excluded?"excluded":row.completed?"completed":"incomplete"}">${row.excluded?"제외":row.completed?"완료":"미완료"}</span>`;tr.appendChild(status);
+      const make=(type,field,value,placeholder,disabled)=>{const td=document.createElement("td"),input=document.createElement("input");input.type=type;input.dataset.field=field;input.value=value||"";input.placeholder=placeholder||"";input.disabled=disabled;const schedule=()=>healthSchedule(`status:${row.employee_id}`,tr,()=>healthSaveStatusRow(tr,row),type==="text"?650:180);input.addEventListener(type==="text"?"input":"change",schedule);if(type==="text")input.addEventListener("blur",schedule);td.appendChild(input);tr.appendChild(td)};
+      make("date","generalDate",row.general_exam_date,"",row.excluded);make("text","generalInstitution",row.general_institution,"검진기관",row.excluded);const noAdditional=!row.additional_exam_type||row.excluded;make("date","additionalDate",row.additional_exam_date,"",noAdditional);make("text","additionalInstitution",row.additional_institution,noAdditional?"추가검진 없음":`${healthTypeLabels[row.additional_exam_type]} 기관`,noAdditional);f.appendChild(tr)});body.appendChild(f);
+    const visible=page.items.map(row=>String(row.employee_id));healthSelectionUI("status",visible);healthPager("healthExamPagination",rows.length,"status",renderHealthExams);
+  };
+  window.renderHealthTargets=function(){
+    if(state.healthMode!=="target")return;const q=byId("healthTargetSearch").value.trim().toLowerCase(),rows=state.healthExams.filter(row=>healthMatchesSearch(row,q)).sort((a,b)=>String(a.department_name||"").localeCompare(String(b.department_name||""),"ko")||String(a.employee_name||"").localeCompare(String(b.employee_name||""),"ko")),page=healthPage(rows,"target"),body=byId("healthTargetTableBody");body.replaceChildren();byId("healthTargetResultCount").textContent=rows.length?`${rows.length}명 · ${page.page}/${page.pages}페이지`:"0명";
+    if(!rows.length){setStatus("healthTargetStatus","조건에 해당하는 사원이 없습니다.");healthPager("healthTargetPagination",0,"target",renderHealthTargets);healthSelectionUI("target",[]);return}setStatus("healthTargetStatus","");
+    const f=document.createDocumentFragment();page.items.forEach((row,index)=>{const tr=document.createElement("tr");tr.dataset.employeeId=String(row.employee_id);healthCheckCell(tr,row,"target");addTextCell(tr,page.start+index+1,"center");addTextCell(tr,row.department_name||"-","ellipsis",row.department_name||"-");addTextCell(tr,row.job_title||"-","center");addTextCell(tr,row.employee_name||"-");const base=document.createElement("td");base.className="center";base.innerHTML='<span class="health-required-badge">일반검진</span>';tr.appendChild(base);
+      const additionalTd=document.createElement("td"),additional=document.createElement("select");additional.dataset.field="additionalType";[["","해당 없음"],["special","특수검진"],["pre-placement","배치전"],["post-placement","배치후"]].forEach(([v,l])=>additional.appendChild(new Option(l,v)));additional.value=row.additional_exam_type||"";additionalTd.appendChild(additional);tr.appendChild(additionalTd);
+      const exclusionTd=document.createElement("td"),exclusion=document.createElement("select");exclusion.dataset.field="exclusionReason";[["","제외 없음"],["pregnancy","임신"],["leave","휴직"],["overseas","해외출장"],["comprehensive","종합검진"]].forEach(([v,l])=>exclusion.appendChild(new Option(l,v)));exclusion.value=row.exclusion_reason||"";exclusionTd.appendChild(exclusion);tr.appendChild(exclusionTd);
+      const comprehensiveTd=document.createElement("td"),comprehensive=document.createElement("input");comprehensive.type="date";comprehensive.dataset.field="comprehensiveDate";comprehensive.value=row.comprehensive_exam_date||"";comprehensive.className="health-comprehensive-date";comprehensiveTd.appendChild(comprehensive);tr.appendChild(comprehensiveTd);
+      const sync=()=>{const excluded=Boolean(exclusion.value);additional.disabled=excluded;if(excluded)additional.value="";comprehensive.hidden=exclusion.value!=="comprehensive";if(exclusion.value!=="comprehensive")comprehensive.value=""};const schedule=()=>healthSchedule(`target:${row.employee_id}`,tr,()=>healthSaveTargetRow(tr,row),180);additional.onchange=schedule;exclusion.onchange=()=>{sync();schedule()};comprehensive.onchange=schedule;sync();f.appendChild(tr)});body.appendChild(f);
+    const visible=page.items.map(row=>String(row.employee_id));healthSelectionUI("target",visible);healthPager("healthTargetPagination",rows.length,"target",renderHealthTargets);
+  };
+  async function deleteHealthSelected(mode){
+    const selected=[...healthSelection(mode)].map(Number),year=Number(byId("healthYearFilter").value);if(!selected.length){showToast("삭제할 직원을 선택하세요.");return}if(!confirm(`선택한 ${selected.length}명의 ${year}년 건강검진 자료를 삭제하시겠습니까?`))return;
+    const button=byId(mode==="target"?"healthTargetDeleteSelected":"healthStatusDeleteSelected"),original=button.textContent;button.disabled=true;button.textContent="삭제 중";
+    try{await healthRpc("선택 삭제","health_management_delete_year_bulk",{p_employee_ids:selected,p_exam_year:year});state.healthSelectedStatus.clear();state.healthSelectedTarget.clear();await loadHealthExams();showToast(`${selected.length}명의 건강검진 자료를 삭제했습니다.`)}catch(error){showToast(healthFriendlyError(error,"선택 삭제"))}finally{button.textContent=original}
+  }
+  byId("healthStatusDeleteSelected").onclick=()=>deleteHealthSelected("status");byId("healthTargetDeleteSelected").onclick=()=>deleteHealthSelected("target");
+  byId("healthStatusSelectAll").onchange=event=>{document.querySelectorAll("#healthExamTableBody .health-row-check").forEach(input=>{input.checked=event.target.checked;input.checked?state.healthSelectedStatus.add(input.value):state.healthSelectedStatus.delete(input.value)});healthSelectionUI("status",[...document.querySelectorAll("#healthExamTableBody .health-row-check")].map(input=>input.value))};
+  byId("healthTargetSelectAll").onchange=event=>{document.querySelectorAll("#healthTargetTableBody .health-row-check").forEach(input=>{input.checked=event.target.checked;input.checked?state.healthSelectedTarget.add(input.value):state.healthSelectedTarget.delete(input.value)});healthSelectionUI("target",[...document.querySelectorAll("#healthTargetTableBody .health-row-check")].map(input=>input.value))};
+  byId("healthSearch").oninput=debounce(()=>{state.finalHealthPages.status=1;renderHealthExams()},180);byId("healthStatusFilter").onchange=()=>{state.finalHealthPages.status=1;renderHealthExams()};byId("healthTargetSearch").oninput=debounce(()=>{state.finalHealthPages.target=1;renderHealthTargets()},180);
+  byId("healthYearFilter").onchange=()=>{state.healthSelectedStatus.clear();state.healthSelectedTarget.clear();state.finalHealthPages={status:1,target:1};loadHealthExams()};
+
+  // ------------------------------------------------------------------
+  // Attendance paired round board and partial row updates.
+  // ------------------------------------------------------------------
+  state.attendancePair={round1Session:null,round2Session:null,round1:[],round2:[],rows:[],chart:null};
+  function attendanceAnchorSession(){return state.attendanceSessions.find(session=>String(session.id)===String(state.attendanceSessionId))||null}
+  function attendancePairSessions(){
+    const anchor=attendanceAnchorSession();if(!anchor)return {round1:null,round2:null};const month=String(anchor.session_date||"").slice(0,7),name=String(anchor.session_name||"");
+    const same=state.attendanceSessions.filter(session=>String(session.session_date||"").slice(0,7)===month&&String(session.session_name||"")===name);
+    return {round1:same.find(session=>Number(session.round_no)===1)||null,round2:same.find(session=>Number(session.round_no)===2)||null};
+  }
+  async function attendanceFetchSnapshot(session){
+    if(!session)return [];
+    const result=await db.rpc("attendance_get_snapshot_board",{p_session_id:session.id});
+    if(result.error){console.error(`[교육 출결관리] ${session.round_no}차 명단 조회 실패`,result.error);throw result.error}
+    return (Array.isArray(result.data)?result.data:[]).map(row=>({...row,intervals:Array.isArray(row.intervals)?row.intervals:[]}));
+  }
+  function attendancePairMerge(){
+    const map=new Map(),add=(rows,round)=>rows.forEach(row=>{const key=String(row.employee_id),item=map.get(key)||{employee_id:row.employee_id,employee_name:row.employee_name,department_name:row.department_name,job_title:row.job_title,round1:null,round2:null};item[`round${round}`]=row;if(!item.employee_name)item.employee_name=row.employee_name;if(!item.department_name)item.department_name=row.department_name;if(!item.job_title)item.job_title=row.job_title;map.set(key,item)});add(state.attendancePair.round1,1);add(state.attendancePair.round2,2);
+    state.attendancePair.rows=[...map.values()].sort((a,b)=>String(a.department_name||"").localeCompare(String(b.department_name||""),"ko")||String(a.employee_name||"").localeCompare(String(b.employee_name||""),"ko"));
+  }
+  function attendanceSelectedRound(){return Number(attendanceAnchorSession()?.round_no||1)}
+  function attendanceRoundCompleted(row){return Boolean(row&&Number(row.visit_count||0)>0&&Number(row.closed_visit_count||0)>0&&!row.open_visit_id)}
+  function attendanceSelectedData(item){const round=attendanceSelectedRound();if(round===2&&attendanceRoundCompleted(item?.round1))return null;return item?.[`round${round}`]||null}
+  function attendanceDisplayData(item){const selectedRound=attendanceSelectedRound();if(selectedRound===2&&attendanceRoundCompleted(item?.round1))return {row:item.round1,round:1,excluded:true};return {row:item?.[`round${selectedRound}`]||null,round:selectedRound,excluded:false}}
+  function attendanceEligibleRows(){return state.attendancePair.rows.map(item=>attendanceSelectedData(item)).filter(Boolean)}
+  function attendancePairFilteredRows(){
+    const q=byId("attendanceSearch").value.trim().toLowerCase(),department=byId("attendanceDepartmentFilter").value,status=byId("attendanceStatusFilter").value;
+    return state.attendancePair.rows.filter(item=>{if(q&&!`${item.employee_name||""} ${item.department_name||""} ${item.job_title||""}`.toLowerCase().includes(q))return false;if(department&&item.department_name!==department)return false;const display=attendanceDisplayData(item),row=display.row;if(!row)return status?false:true;const hasIn=Number(row.visit_count||0)>0,hasOut=Number(row.closed_visit_count||0)>0;if(status==="not_started"&&(hasIn||display.excluded))return false;if(status==="entered"&&(!hasIn||display.excluded))return false;if(status==="completed"&&(!display.excluded&&(!hasOut||row.open_visit_id)))return false;if(status==="missed"&&(!attendanceSelectedData(item)?.missed_signature))return false;return true});
+  }
+  function attendancePopulatePairDepartments(){
+    const select=byId("attendanceDepartmentFilter"),current=select.value,depts=[...new Set(state.attendancePair.rows.map(row=>row.department_name).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"ko"));select.replaceChildren(new Option("전체 부서",""));depts.forEach(dept=>select.appendChild(new Option(dept,dept)));select.value=depts.includes(current)?current:"";
+  }
+  function attendanceUnifiedCell(item,kind){
+    const display=attendanceDisplayData(item),row=display.row,round=display.round,session=state.attendancePair[`round${round}Session`];
+    if(!session||!row)return `<div class="attendance-round-static not-target"><span>--:--</span><span>${session?"비대상":"회차 없음"}</span></div>`;
+    const hasOpen=Boolean(row.open_visit_id),intervals=attendanceIntervals(row),time=kind==="in"?attendanceFormatTime(attendanceFirstCheckIn(row)):attendanceFormatTime(attendanceLastCheckOut(row));
+    if(display.excluded){return `<div class="attendance-round-static first-complete"><span>${escapeHtml(time==="-"?"--:--":time)}</span><span>${kind==="in"?"1차완료":"2차제외"}</span></div>`}
+    if(kind==="in"){
+      if(hasOpen)return `<div class="attendance-round-static"><span>${escapeHtml(time)}</span><span>입실중</span></div>`;
+      return `<button class="attendance-round-action attendance-round-checkin" data-id="${item.employee_id}" data-round="${round}" type="button"><span class="attendance-action-time">${escapeHtml(time==="-"?"--:--":time)}</span><span>${intervals.length?"추가입실":"입실"}</span></button>`;
+    }
+    if(hasOpen)return `<button class="attendance-round-action checkout attendance-round-checkout" data-id="${item.employee_id}" data-round="${round}" type="button"><span class="attendance-action-time">${escapeHtml(time==="-"?"--:--":time)}</span><span>퇴실</span></button>`;
+    return `<div class="attendance-round-static"><span>${escapeHtml(time==="-"?"--:--":time)}</span><span>${intervals.length?"완료":"미퇴실"}</span></div>`;
+  }
+  function attendancePairRowElement(item,index){
+    const tr=document.createElement("tr"),id=String(item.employee_id),selected=attendanceSelectedData(item),display=attendanceDisplayData(item),selectable=Boolean(selected),totalMinutes=Number(item.round1?.education_minutes||0)+Number(item.round2?.education_minutes||0);tr.dataset.employeeId=id;
+    const missedLabel=display.excluded?"제외":selected?.missed_signature?"미수강":"정상";
+    tr.innerHTML=`<td class="center"><input class="attendance-row-check" type="checkbox" value="${id}" ${state.attendanceSelected.has(id)?"checked":""} ${selectable?"":"disabled"}></td><td class="center">${index}</td><td class="ellipsis" title="${escapeHtml(item.department_name||"-")}">${escapeHtml(item.department_name||"-")}</td><td class="center">${escapeHtml(item.job_title||"-")}</td><td class="center"><button class="attendance-person-button attendance-open-log" data-id="${id}" type="button">${escapeHtml(item.employee_name||"-")}</button></td><td class="attendance-unified-cell">${attendanceUnifiedCell(item,"in")}</td><td class="attendance-unified-cell">${attendanceUnifiedCell(item,"out")}</td><td><div class="attendance-duration-total">${totalMinutes}분</div></td><td class="center"><button class="attendance-missed-toggle ${selected?.missed_signature?"active":""}" data-id="${id}" type="button" ${selectable?"":"disabled"}>${missedLabel}</button></td><td><input class="attendance-memo-input" data-employee-id="${id}" value="${escapeHtml(selected?.memo||"")}" aria-label="비고 입력" title="클릭하여 비고 입력" ${selectable?"":"disabled"}></td>`;
+    bindAttendancePairRow(tr);return tr;
+  }
+  function bindAttendancePairRow(tr){
+    tr.querySelector(".attendance-row-check")?.addEventListener("change",event=>{event.target.checked?state.attendanceSelected.add(event.target.value):state.attendanceSelected.delete(event.target.value);attendanceUpdateSelection()});
+    tr.querySelectorAll(".attendance-round-checkin").forEach(button=>button.onclick=event=>attendanceRunRoundAction(event,"check_in",button));tr.querySelectorAll(".attendance-round-checkout").forEach(button=>button.onclick=event=>attendanceRunRoundAction(event,"check_out",button));
+    tr.querySelector(".attendance-open-log")?.addEventListener("click",event=>{const item=state.attendancePair.rows.find(row=>String(row.employee_id)===String(event.currentTarget.dataset.id)),row=attendanceDisplayData(item).row||item?.round1||item?.round2;if(row)attendanceOpenLog(row)});
+    tr.querySelector(".attendance-missed-toggle")?.addEventListener("click",event=>attendanceToggleMissed(event.currentTarget.dataset.id));
+    const memo=tr.querySelector(".attendance-memo-input");if(memo){memo.onkeydown=event=>{if(event.key==="Enter"){event.preventDefault();memo.blur()}};memo.onblur=()=>attendanceSaveMemoInline(memo)}
+  }
+  function attendancePairPage(){const filtered=attendancePairFilteredRows(),pages=Math.max(1,Math.ceil(filtered.length/state.attendancePageSize));state.attendancePage=Math.min(Math.max(1,state.attendancePage),pages);const start=(state.attendancePage-1)*state.attendancePageSize;return {filtered,pages,start,items:filtered.slice(start,start+state.attendancePageSize)}}
+  window.attendanceRenderBoard=function(){
+    const page=attendancePairPage(),body=byId("attendanceTableBody");body.replaceChildren();const f=document.createDocumentFragment();page.items.forEach((item,index)=>f.appendChild(attendancePairRowElement(item,page.start+index+1)));body.appendChild(f);
+    byId("attendanceResultCount").textContent=page.filtered.length?`${page.filtered.length}명 · ${state.attendancePage}/${page.pages}페이지`:"0명";attendanceRenderPagination(page.filtered.length);
+    const selectedRows=attendanceEligibleRows();state.attendanceBoard=selectedRows;
+    byId("attendanceActiveCount").textContent=selectedRows.length;byId("attendanceCheckInCount").textContent=selectedRows.filter(row=>Number(row.visit_count||0)>0).length;byId("attendanceCheckOutCount").textContent=selectedRows.filter(row=>Number(row.closed_visit_count||0)>0&&!row.open_visit_id).length;byId("attendanceSuspectedCount").textContent=selectedRows.filter(row=>Boolean(row.missed_signature)).length;attendanceUpdateSelection();
+  };
+  window.attendanceRenderEmpty=function(){state.attendancePair={round1Session:null,round2Session:null,round1:[],round2:[],rows:[],chart:null};state.attendanceBoard=[];state.attendancePage=1;byId("attendanceTableBody").innerHTML='<tr><td colspan="10" class="attendance-empty-session">교육 회차를 선택하세요.</td></tr>';["attendanceActiveCount","attendanceCheckInCount","attendanceCheckOutCount","attendanceSuspectedCount"].forEach(id=>byId(id).textContent="0");byId("attendanceResultCount").textContent="0명";byId("attendancePagination").hidden=true;attendanceUpdateSelection();attendanceSetChartEmpty("교육 회차를 선택하세요.")};
+  window.attendanceLoadBoard=async function({silent=false}={}){
+    if(!state.attendanceSessionId){attendanceRenderEmpty();return}const sessions=attendancePairSessions();state.attendancePair.round1Session=sessions.round1;state.attendancePair.round2Session=sessions.round2;if(!silent)setStatus("attendanceStatus","1차·2차 고정 대상인원을 불러오는 중입니다.");
+    try{const [round1,round2]=await Promise.all([attendanceFetchSnapshot(sessions.round1),attendanceFetchSnapshot(sessions.round2)]);state.attendancePair.round1=round1;state.attendancePair.round2=round2;attendancePairMerge();attendancePopulatePairDepartments();attendanceRenderBoard();setStatus("attendanceStatus",state.attendancePair.rows.length?"":"이 교육에 고정된 대상인원이 없습니다.",!state.attendancePair.rows.length);attendanceLoadDepartmentRatesFinal()}catch(error){console.error("[교육 출결관리] 1차·2차 명단 조회 실패",error);attendanceRenderEmpty();setStatus("attendanceStatus","교육 출석체크 명단을 불러오지 못했습니다.",true)}
+  };
+  function replacePairBoardRow(round,serverRow){
+    const rows=state.attendancePair[`round${round}`],index=rows.findIndex(row=>String(row.employee_id)===String(serverRow.employee_id));if(index>=0)rows[index]=serverRow;else rows.push(serverRow);attendancePairMerge();state.attendanceBoard=attendanceEligibleRows();
+  }
+  function patchAttendancePairRow(employeeId){
+    const page=attendancePairPage(),itemIndex=page.items.findIndex(item=>String(item.employee_id)===String(employeeId));if(itemIndex<0)return;const current=byId("attendanceTableBody").querySelector(`tr[data-employee-id="${CSS.escape(String(employeeId))}"]`),next=attendancePairRowElement(page.items[itemIndex],page.start+itemIndex+1);if(current)current.replaceWith(next);
+    const selectedRows=attendanceEligibleRows();byId("attendanceActiveCount").textContent=selectedRows.length;byId("attendanceCheckInCount").textContent=selectedRows.filter(row=>Number(row.visit_count||0)>0).length;byId("attendanceCheckOutCount").textContent=selectedRows.filter(row=>Number(row.closed_visit_count||0)>0&&!row.open_visit_id).length;byId("attendanceSuspectedCount").textContent=selectedRows.filter(row=>Boolean(row.missed_signature)).length;
+  }
+  function optimisticRoundMutation(row,action){
+    const now=new Date().toISOString(),intervals=attendanceIntervals(row).map(item=>({...item}));if(action==="check_in"){const temp=`temp-${Date.now()}`;intervals.push({id:temp,check_in_at:now,check_out_at:null,duration_minutes:null});row.open_visit_id=temp}else{const open=intervals.slice().reverse().find(item=>!item.check_out_at);if(open){open.check_out_at=now;open.duration_minutes=Math.max(0,Math.floor((new Date(now)-new Date(open.check_in_at))/60000))}row.open_visit_id=null}row.intervals=intervals;row.visit_count=intervals.length;row.closed_visit_count=intervals.filter(item=>item.check_out_at).length;row.education_minutes=intervals.reduce((sum,item)=>sum+(Number(item.duration_minutes)||0),0);
+  }
+  async function attendanceRunRoundAction(event,action,button){
+    event.preventDefault();event.stopPropagation();const employeeId=String(button.dataset.id),round=Number(button.dataset.round),session=state.attendancePair[`round${round}Session`],item=state.attendancePair.rows.find(row=>String(row.employee_id)===employeeId),row=item?.[`round${round}`];if(!session||!row||button.classList.contains("is-loading"))return;
+    const backup=clone(row),tableScroll=button.closest(".table-wrap")?.scrollLeft||0;button.classList.add("is-loading");button.disabled=true;optimisticRoundMutation(row,action);patchAttendancePairRow(employeeId);
+    try{const result=await db.rpc(action==="check_in"?"check_in_attendance_v2":"check_out_attendance_v2",{p_session_id:session.id,p_employee_id:Number(employeeId)});if(result.error)throw result.error;const refreshed=await attendanceFetchSnapshot(session),serverRow=refreshed.find(item=>String(item.employee_id)===employeeId);state.attendancePair[`round${round}`]=refreshed;if(serverRow)replacePairBoardRow(round,serverRow);patchAttendancePairRow(employeeId);attendanceLoadDepartmentRatesFinal();showToast(action==="check_in"?`${round}차 입실을 기록했습니다.`:`${round}차 퇴실을 기록했습니다.`)}catch(error){console.error(`[교육 출결관리] ${round}차 ${action==="check_in"?"입실":"퇴실"} 저장 실패`,error);Object.assign(row,backup);patchAttendancePairRow(employeeId);showToast(action==="check_in"?"입실 기록을 저장하지 못했습니다.":"퇴실 기록을 저장하지 못했습니다.")}finally{const wrap=byId("attendanceTableBody").closest(".table-wrap");if(wrap)wrap.scrollLeft=tableScroll}
+  }
+  window.attendanceUpdateSelection=function(){const count=state.attendanceSelected.size;byId("attendanceSelectedCount").textContent=`선택 ${count}명`;byId("attendanceClearSelectionButton").disabled=!state.attendanceSessionId||!count;byId("attendanceDeleteSelectedButton").disabled=!state.attendanceSessionId||!count;byId("attendanceStartPeopleButton").disabled=!count;byId("attendanceEndPeopleButton").disabled=!count;const visible=attendancePairPage().items.filter(item=>attendanceSelectedData(item));byId("attendanceSelectAll").checked=visible.length>0&&visible.every(item=>state.attendanceSelected.has(String(item.employee_id)));byId("attendanceSelectAll").indeterminate=visible.some(item=>state.attendanceSelected.has(String(item.employee_id)))&&!byId("attendanceSelectAll").checked};
+  byId("attendanceSelectAll").onchange=event=>{attendancePairPage().items.forEach(item=>{if(!attendanceSelectedData(item))return;event.target.checked?state.attendanceSelected.add(String(item.employee_id)):state.attendanceSelected.delete(String(item.employee_id))});attendanceRenderBoard()};
+  byId("attendanceSearch").oninput=debounce(()=>{state.attendancePage=1;attendanceRenderBoard()},160);byId("attendanceDepartmentFilter").onchange=()=>{state.attendancePage=1;attendanceRenderBoard()};byId("attendanceStatusFilter").onchange=()=>{state.attendancePage=1;attendanceRenderBoard()};
+
+  // Remove old session-select listeners by replacing the node, then bind one stable handler.
+  const oldSessionSelect=byId("attendanceSessionSelect"),newSessionSelect=oldSessionSelect.cloneNode(true);oldSessionSelect.replaceWith(newSessionSelect);
+  newSessionSelect.onchange=async event=>{state.attendanceSessionId=event.target.value;state.attendanceSelected.clear();state.attendancePage=1;if(state.attendanceSessionId)localStorage.setItem(ATTENDANCE_CONFIG.lastSessionKey,state.attendanceSessionId);else localStorage.removeItem(ATTENDANCE_CONFIG.lastSessionKey);attendanceRenderSessionInfo();await attendanceLoadBoard();attendanceSubscribeRealtime()};
+
+  // ------------------------------------------------------------------
+  // Bottom responsive canvas chart with collapse and PNG export.
+  // ------------------------------------------------------------------
+  const chartCollapse=byId("attendanceChartCollapse"),chartToggle=byId("attendanceChartToggle"),chartDownload=byId("attendanceChartDownload"),chartCanvas=byId("attendanceChartCanvas"),chartEmpty=byId("attendanceChartEmpty"),chartScroll=byId("attendanceDepartmentChart");
+  let chartResizeTimer=null,chartRequestToken=0;
+  function chartIsOpen(){return chartCollapse.classList.contains("open")}
+  function setChartOpen(open){chartCollapse.classList.toggle("open",open);chartCollapse.setAttribute("aria-hidden",String(!open));chartToggle.setAttribute("aria-expanded",String(open));chartToggle.textContent=open?"그래프 닫기":"그래프 열기";localStorage.setItem("attendance_chart_open",open?"1":"0");if(open&&state.attendancePair.chart)requestAnimationFrame(()=>drawAttendanceChart(false))}
+  function attendanceSetChartEmpty(message){state.attendancePair.chart=null;chartEmpty.textContent=message;chartEmpty.hidden=false;chartScroll.classList.remove("has-data");chartDownload.disabled=true;const ctx=chartCanvas.getContext("2d");ctx.clearRect(0,0,chartCanvas.width,chartCanvas.height)}
+  async function attendanceLoadDepartmentRatesFinal(){
+    if(!state.attendanceSessionId){attendanceSetChartEmpty("교육 회차를 선택하세요.");return}const token=++chartRequestToken;chartEmpty.hidden=false;chartEmpty.textContent="출석 현황을 계산하는 중입니다.";chartScroll.classList.remove("has-data");chartDownload.disabled=true;
+    const rateSession=state.attendancePair.round2Session||state.attendancePair.round1Session||attendanceAnchorSession();const result=await db.rpc("attendance_department_rates",{p_session_id:rateSession?.id||state.attendanceSessionId});if(token!==chartRequestToken)return;if(result.error){console.error("[교육 출결관리] 출석 현황 조회 실패",result.error);attendanceSetChartEmpty("교육 출석 현황을 불러오지 못했습니다.");return}
+    const payload=result.data||{},rows=Array.isArray(payload.departments)?payload.departments:[];rows.sort((a,b)=>Number(b.display_rate||0)-Number(a.display_rate||0)||String(a.department_name||"").localeCompare(String(b.department_name||""),"ko"));state.attendancePair.chart={...payload,departments:rows};
+    byId("attendanceRateDescription").textContent="1·2차를 합산한 부서별 통합 참석률입니다.";byId("attendanceRateLegend").textContent="통합 참석률";
+    if(!rows.length){attendanceSetChartEmpty("교육대상이 있는 부서가 없습니다.");return}chartEmpty.hidden=true;chartScroll.classList.add("has-data");chartDownload.disabled=false;if(chartIsOpen())drawAttendanceChart(false);
+  }
+  function drawAttendanceChart(download=false){
+    const payload=state.attendancePair.chart;if(!payload?.departments?.length)return null;const rows=payload.departments,ratio=download?1:Math.max(1,window.devicePixelRatio||1),logicalWidth=download?Math.max(1100,rows.length*105+150):Math.max(chartScroll.clientWidth-24,rows.length*82+100),logicalHeight=download?570:330,canvas=download?document.createElement("canvas"):chartCanvas;canvas.width=Math.round(logicalWidth*ratio);canvas.height=Math.round(logicalHeight*ratio);canvas.style.width=`${logicalWidth}px`;canvas.style.height=`${logicalHeight}px`;const ctx=canvas.getContext("2d");ctx.setTransform(ratio,0,0,ratio,0,0);ctx.fillStyle="#ffffff";ctx.fillRect(0,0,logicalWidth,logicalHeight);
+    const anchor=attendanceAnchorSession(),title=`교육 출석 현황${anchor?` · ${anchor.session_name}`:""}`;ctx.fillStyle="#172033";ctx.font="700 18px sans-serif";ctx.textAlign="left";ctx.fillText(title,56,34);
+    const legendY=62;ctx.fillStyle="#2f6fed";ctx.fillRect(56,legendY-9,12,12);ctx.fillStyle="#475467";ctx.font="11px sans-serif";ctx.fillText("1·2차 통합 참석률",73,legendY+1);
+    const left=58,right=28,top=download?92:84,bottom=download?105:78,chartW=logicalWidth-left-right,chartH=logicalHeight-top-bottom;ctx.strokeStyle="#dce2ea";ctx.lineWidth=1;ctx.fillStyle="#667085";ctx.font="10px sans-serif";ctx.textAlign="right";
+    for(let tick=0;tick<=100;tick+=20){const y=top+chartH-(tick/100)*chartH;ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(logicalWidth-right,y);ctx.stroke();ctx.fillText(`${tick}%`,left-8,y+3)}ctx.save();ctx.translate(15,top+chartH/2);ctx.rotate(-Math.PI/2);ctx.textAlign="center";ctx.font="11px sans-serif";ctx.fillStyle="#475467";ctx.fillText("참석률",0,0);ctx.restore();ctx.textAlign="center";ctx.fillText("부서",left+chartW/2,logicalHeight-12);
+    const groupW=chartW/rows.length,barW=Math.min(34,groupW*.48);rows.forEach((row,index)=>{const center=left+groupW*(index+.5),value=Math.max(0,Math.min(100,Number(row.display_rate||0))),height=value/100*chartH,y=top+chartH-height,x=center-barW/2;ctx.fillStyle="#2f6fed";ctx.fillRect(x,y,barW,height);ctx.fillStyle="#344054";ctx.font="700 9px sans-serif";ctx.fillText(`${value.toFixed(1)}%`,center,Math.max(top+9,y-4));ctx.save();ctx.translate(center,top+chartH+9);ctx.rotate(-Math.PI/4);ctx.textAlign="right";ctx.fillStyle="#475467";ctx.font="10px sans-serif";const label=String(row.department_name||"미지정");ctx.fillText(label.length>12?label.slice(0,11)+"…":label,0,0);ctx.restore()});return canvas;
+  }
+  chartToggle.onclick=()=>setChartOpen(!chartIsOpen());chartDownload.onclick=()=>{const canvas=drawAttendanceChart(true);if(!canvas)return;const session=attendanceAnchorSession(),name=String(session?.session_name||"교육명").replace(/[\/:*?"<>|]/g,"_");const link=document.createElement("a");link.download=`교육출석현황_${name}.png`;link.href=canvas.toDataURL("image/png",1);link.click()};
+  setChartOpen(localStorage.getItem("attendance_chart_open")==="1");window.addEventListener("resize",()=>{clearTimeout(chartResizeTimer);chartResizeTimer=setTimeout(()=>{if(chartIsOpen()&&state.attendancePair.chart)drawAttendanceChart(false)},180)});
+  window.attendanceLoadDepartmentRates=attendanceLoadDepartmentRatesFinal;
+
+  // Multi-person actions retain the current page/filter; no window scroll command is used.
+  const previousAttendanceSubmitConfirm=window.attendanceSubmitConfirm;
+  byId("attendanceConfirmSubmit").onclick=()=>previousAttendanceSubmitConfirm();
+
+  // Rebind session and menu actions after the final overrides.
+  byId("healthStatusTab").onclick=()=>healthSetMode("status");byId("healthTargetTab").onclick=()=>healthSetMode("target");
+  byId("attendanceRefreshButton").onclick=async()=>{const selected=await attendanceLoadSessions({preferredId:state.attendanceSessionId,autoSelect:true});if(selected)await attendanceLoadBoard({silent:true});showToast("최신 데이터로 새로고침했습니다.")};
+})();
+</script>
+
+
+<script id="participant-date-concurrency-script">
+(function(){
+  const byId=id=>document.getElementById(id);
+  const PARTICIPANT_PAGE_SIZE=50;
+  state.participantSelected=state.participantSelected||new Set();
+  state.participantChannel=state.participantChannel||null;
+  state.participantRealtimeTimer=state.participantRealtimeTimer||null;
+  state.participantLocalMutationUntil=state.participantLocalMutationUntil||0;
+
+  function participantSort(rows){
+    return [...(rows||[])].sort((a,b)=>
+      String(a.department_name||'').localeCompare(String(b.department_name||''),'ko')||
+      String(a.employee_name||'').localeCompare(String(b.employee_name||''),'ko')
+    );
+  }
+  function participantFilteredRows(){
+    const q=byId('participantSearch').value.trim().toLowerCase();
+    return participantSort(state.participants).filter(x=>!q||`${x.employee_name||''} ${x.department_name||''}`.toLowerCase().includes(q));
+  }
+  function participantPageInfo(rows){
+    const paging=window.platformPaging||{};
+    const pages=Math.max(1,Math.ceil(rows.length/PARTICIPANT_PAGE_SIZE));
+    paging.participants=Math.min(Math.max(1,paging.participants||1),pages);
+    const start=(paging.participants-1)*PARTICIPANT_PAGE_SIZE;
+    return {paging,page:paging.participants,pages,start,items:rows.slice(start,start+PARTICIPANT_PAGE_SIZE)};
+  }
+  function renderParticipantPager(total,renderFn){
+    const box=byId('participantPagination');
+    if(!box)return;
+    const paging=window.platformPaging||{};
+    const pages=Math.max(1,Math.ceil(total/PARTICIPANT_PAGE_SIZE));
+    paging.participants=Math.min(Math.max(1,paging.participants||1),pages);
+    box.replaceChildren();
+    if(total<=PARTICIPANT_PAGE_SIZE){box.hidden=true;return}
+    box.hidden=false;
+    const summary=document.createElement('span');summary.className='platform-page-summary';summary.textContent=`총 ${total}건 · ${paging.participants}/${pages}페이지`;box.appendChild(summary);
+    const add=(label,page,active=false,disabled=false)=>{const b=document.createElement('button');b.type='button';b.className='platform-page-button'+(active?' active':'');b.textContent=label;b.disabled=disabled;if(!disabled&&!active)b.onclick=()=>{paging.participants=page;renderFn()};box.appendChild(b)};
+    add('이전',paging.participants-1,false,paging.participants===1);
+    for(let p=1;p<=pages;p++)add(String(p),p,p===paging.participants,false);
+    add('다음',paging.participants+1,false,paging.participants===pages);
+  }
+  function currentParticipantPageItems(){return participantPageInfo(participantFilteredRows()).items}
+  function updateParticipantSelectionUI(){
+    const count=state.participantSelected.size;
+    byId('participantSelectionText').textContent=`선택 ${count}명`;
+    byId('participantBulkDateButton').disabled=!count;
+    const visible=currentParticipantPageItems();
+    const all=visible.length>0&&visible.every(x=>state.participantSelected.has(String(x.participant_id)));
+    const some=visible.some(x=>state.participantSelected.has(String(x.participant_id)));
+    const master=byId('participantSelectAll');master.checked=all;master.indeterminate=some&&!all;
+  }
+
+  window.renderParticipants=function(){
+    const rows=participantFilteredRows(),info=participantPageInfo(rows),body=byId('participantTableBody');
+    body.replaceChildren();
+    if(!rows.length){setStatus('participantStatus','등록된 대상자가 없습니다.');renderParticipantPager(0,renderParticipants);updateParticipantSelectionUI();return}
+    setStatus('participantStatus','');
+    const fragment=document.createDocumentFragment();
+    info.items.forEach(x=>{
+      const tr=document.createElement('tr');tr.dataset.participantId=String(x.participant_id);
+      const checkTd=document.createElement('td');checkTd.className='center participant-select-col';
+      const check=document.createElement('input');check.type='checkbox';check.className='participant-row-check';check.value=String(x.participant_id);check.checked=state.participantSelected.has(String(x.participant_id));
+      check.onchange=()=>{check.checked?state.participantSelected.add(check.value):state.participantSelected.delete(check.value);updateParticipantSelectionUI()};checkTd.appendChild(check);tr.appendChild(checkTd);
+      addTextCell(tr,x.department_name||'-','center ellipsis',x.department_name||'-');
+      addTextCell(tr,x.employee_name||'-','center');
+      const dateTd=document.createElement('td');dateTd.className='center';
+      const dateInput=document.createElement('input');dateInput.type='date';dateInput.className='participant-date-input';dateInput.value=x.education_date||'';dateInput.dataset.participantId=String(x.participant_id);dateInput.setAttribute('aria-label',`${x.employee_name||'대상자'} 교육일자`);
+      dateInput.onchange=()=>saveParticipantEducationDate(x,dateInput);
+      dateTd.appendChild(dateInput);tr.appendChild(dateTd);
+      const manage=document.createElement('td');manage.className='center';const remove=document.createElement('button');remove.type='button';remove.className='mini mini-danger';remove.textContent='삭제';remove.onclick=()=>removeParticipant(x.participant_id,x.employee_name);manage.appendChild(remove);tr.appendChild(manage);
+      fragment.appendChild(tr);
+    });
+    body.appendChild(fragment);renderParticipantPager(rows.length,renderParticipants);updateParticipantSelectionUI();
+  };
+
+  async function saveParticipantEducationDate(participant,input){
+    if(input.disabled)return;
+    const previous=participant.education_date||'';input.disabled=true;input.classList.add('is-saving');
+    state.participantLocalMutationUntil=Date.now()+1600;
+    const {data,error}=await db.rpc('update_education_participant_date',{
+      p_education_link_id:Number(state.currentEducation.id),
+      p_participant_id:Number(participant.participant_id),
+      p_education_date:input.value||null,
+      p_expected_updated_at:participant.updated_at||null
+    });
+    input.disabled=false;input.classList.remove('is-saving');
+    if(error){
+      console.error('[교육 대상자 관리] 개인 교육일 저장 실패',error);
+      input.value=previous;input.classList.add('is-conflict');setTimeout(()=>input.classList.remove('is-conflict'),1200);
+      const conflict=String(error.message||'').includes('다른 관리자가');showToast(conflict?'다른 관리자가 먼저 수정했습니다. 최신 정보를 다시 불러옵니다.':'교육일자를 저장하지 못했습니다.');
+      if(conflict)await reloadParticipants({silent:true});
+      return;
+    }
+    const row=Array.isArray(data)?data[0]:data;
+    participant.education_date=row?.education_date??(input.value||null);participant.updated_at=row?.updated_at||participant.updated_at;input.value=participant.education_date||'';showToast('교육일자를 저장했습니다.');
+  }
+
+  function openParticipantDateModal(){
+    if(!state.participantSelected.size)return;
+    byId('participantDateForm').reset();byId('participantDateError').textContent='';
+    const dates=[...state.participants].filter(x=>state.participantSelected.has(String(x.participant_id))).map(x=>x.education_date).filter(Boolean);
+    byId('participantBulkDate').value=dates.length&&dates.every(d=>d===dates[0])?dates[0]:'';
+    openModal('participantDateModal');
+  }
+  async function applyBulkParticipantDate(event){
+    event.preventDefault();const date=byId('participantBulkDate').value;const ids=[...state.participantSelected].map(Number).filter(Number.isFinite);
+    if(!date){byId('participantDateError').textContent='교육일자를 입력하세요.';return}
+    if(!ids.length){closeModal('participantDateModal');return}
+    const submit=event.submitter;submit.disabled=true;state.participantLocalMutationUntil=Date.now()+2000;
+    const {data,error}=await db.rpc('bulk_update_education_participant_dates',{p_education_link_id:Number(state.currentEducation.id),p_participant_ids:ids,p_education_date:date});submit.disabled=false;
+    if(error){console.error('[교육 대상자 관리] 교육일 일괄 입력 실패',error);byId('participantDateError').textContent='선택한 대상자의 교육일자를 저장하지 못했습니다.';return}
+    const updated=new Map((data||[]).map(x=>[String(x.participant_id),x]));
+    state.participants.forEach(x=>{const row=updated.get(String(x.participant_id));if(row){x.education_date=row.education_date;x.updated_at=row.updated_at}});
+    state.participantSelected.clear();closeModal('participantDateModal');renderParticipants();showToast(`${updated.size||ids.length}명의 교육일자를 입력했습니다.`);
+  }
+
+  function unsubscribeParticipantRealtime(){
+    clearTimeout(state.participantRealtimeTimer);state.participantRealtimeTimer=null;
+    if(state.participantChannel){db.removeChannel(state.participantChannel);state.participantChannel=null}
+  }
+  function subscribeParticipantRealtime(){
+    unsubscribeParticipantRealtime();if(!state.currentEducation?.id)return;
+    state.participantChannel=db.channel(`education-participants-${state.currentEducation.id}`)
+      .on('postgres_changes',{event:'*',schema:'public',table:'education_participants',filter:`education_link_id=eq.${state.currentEducation.id}`},()=>{
+        if(Date.now()<state.participantLocalMutationUntil)return;
+        clearTimeout(state.participantRealtimeTimer);state.participantRealtimeTimer=setTimeout(()=>{
+          const modal=byId('participantModal');const editing=modal&&!modal.hidden&&modal.contains(document.activeElement)&&document.activeElement?.classList?.contains('participant-date-input');
+          if(modal&&!modal.hidden&&!editing)reloadParticipants({silent:true});
+        },280);
+      }).subscribe(status=>{if(status==='CHANNEL_ERROR')console.warn('[교육 대상자 관리] 실시간 연결 실패 - 수동 새로고침은 계속 사용할 수 있습니다.')});
+  }
+
+  window.reloadParticipants=async function(options={}){
+    const silent=Boolean(options.silent);
+    if(!silent)renderSkeleton('participantTableBody',5,7);byId('employeePickerList').replaceChildren();
+    const [employees,participants]=await Promise.all([db.rpc('get_current_employees'),db.rpc('get_education_participants',{p_education_link_id:state.currentEducation.id})]);
+    if(employees.error||participants.error){console.error('[교육 대상자 관리] 목록 조회 실패',employees.error||participants.error);setStatus('participantStatus','대상자 정보를 불러오지 못했습니다.',true);return}
+    state.currentEmployees=participantSort(employees.data||[]);state.participants=participantSort(participants.data||[]);
+    const valid=new Set(state.participants.map(x=>String(x.participant_id)));state.participantSelected=new Set([...state.participantSelected].filter(id=>valid.has(id)));
+    byId('currentEmployeeCount').textContent=state.currentEmployees.length;byId('participantCount').textContent=state.participants.length;renderEmployeePicker();renderParticipants();
+  };
+  window.openParticipants=async function(education){
+    state.currentEducation=education;state.participantSelected.clear();
+    byId('employeePickerSearch').value='';byId('participantSearch').value='';if(window.platformPaging){platformPaging.employeePicker=1;platformPaging.participants=1}
+    openModal('participantModal');byId('participantTitle').textContent=`${education.title} 대상자 관리`;await reloadParticipants();subscribeParticipantRealtime();
+  };
+
+  const originalCloseModal=window.closeModal;
+  window.closeModal=function(id){if(id==='participantModal')unsubscribeParticipantRealtime();return originalCloseModal(id)};
+
+  byId('participantSelectAll').onchange=event=>{currentParticipantPageItems().forEach(x=>event.target.checked?state.participantSelected.add(String(x.participant_id)):state.participantSelected.delete(String(x.participant_id)));renderParticipants()};
+  byId('participantBulkDateButton').onclick=openParticipantDateModal;
+  byId('participantDateForm').onsubmit=applyBulkParticipantDate;
+  byId('participantSearch').oninput=debounce(()=>{if(window.platformPaging)platformPaging.participants=1;renderParticipants()},160);
+
+  // 일반직원 본인 교육이력에 개인별 교육일 표시.
+  window.renderHistoryRows=function(tbodyId,rows,adminRetired){
+    const body=byId(tbodyId),fragment=document.createDocumentFragment();
+    rows.forEach(item=>{
+      const tr=document.createElement('tr');
+      if(adminRetired){
+        addTextCell(tr,item.education_title,'ellipsis',item.education_title);addTextCell(tr,scheduleText({...item,category_id:state.categories.find(c=>c.category_name===item.education_category)?.id}));addTextCell(tr,item.education_category);addTextCell(tr,item.completion_label||'이수');addTextCell(tr,item.note||'-','ellipsis',item.note||'-');
+      }else{
+        addTextCell(tr,item.education_category||'-','center');addTextCell(tr,item.education_title||'-','center ellipsis',item.education_title||'-');addTextCell(tr,item.education_date?formatDateDot(item.education_date):'-','center');
+      }
+      const report=document.createElement('td');report.className='center';
+      if(validUrl(item.result_report_url)){const a=document.createElement('a');a.className='download-link';a.textContent='결과보고서';a.href=item.result_report_url;a.target='_blank';a.rel='noopener noreferrer';report.appendChild(a)}else{const p=document.createElement('span');p.className='progress';p.textContent='교육진행중';report.appendChild(p)}tr.appendChild(report);fragment.appendChild(tr);
+    });body.appendChild(fragment);
+  };
+  window.openSelfHistory=async function(department,name){
+    openModal('selfHistoryModal');byId('selfHistoryTitle').textContent=`${department} / ${name}`;renderSkeleton('selfHistoryTableBody',4,5);setStatus('selfHistoryStatus','');
+    const {data,error}=await db.rpc('lookup_my_training_history',{p_department_name:department,p_employee_name:name});byId('selfHistoryTableBody').replaceChildren();
+    if(error){console.error('[일반직원 교육이력] 조회 실패',error);setStatus('selfHistoryStatus','교육이력을 불러오지 못했습니다.',true);return}
+    if(!data?.length){setStatus('selfHistoryStatus','등록된 교육이력이 없습니다.');return}renderHistoryRows('selfHistoryTableBody',data,false);
+  };
+})();
+</script>
 
 </body>
 </html>
