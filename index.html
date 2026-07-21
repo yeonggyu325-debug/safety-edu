@@ -902,6 +902,318 @@
 .self-history-date{white-space:normal!important;line-height:1.55}
 #participantSummaryStrip[hidden]{display:none!important}
 
+
+
+/* ================================================================
+   1920px PC 화면 안정화: 가로 스크롤 제거, 표/버튼 넘침 방지,
+   대상자 관리 모달을 한 화면에서 편집할 수 있도록 재배치
+   ================================================================ */
+@media (min-width:1200px){
+  html,body{max-width:100%;overflow-x:hidden!important}
+  .main,.content,.view,.card,.panel,.toolbar,.table-wrap{min-width:0!important;max-width:100%!important;box-sizing:border-box}
+  .content{width:100%;max-width:none!important;padding-left:24px!important;padding-right:24px!important}
+
+  /* PC에서는 어떤 업무 표도 가로 스크롤을 만들지 않는다. */
+  .table-wrap{overflow-x:hidden!important}
+  .table-wrap>table,
+  #educationDataTable,
+  #activeEmployeePanel table,
+  #retiredEmployeePanel table,
+  #departmentView table,
+  .health-roster-table,
+  .health-target-table,
+  #attendanceView .attendance-table,
+  .attendance-log-table,
+  .self-history-table,
+  #participantModal .participant-table{
+    width:100%!important;max-width:100%!important;min-width:0!important;table-layout:fixed!important
+  }
+  table th,table td{min-width:0!important;max-width:none;overflow:hidden;text-overflow:ellipsis;box-sizing:border-box}
+  table th{white-space:nowrap}
+  table td{white-space:nowrap}
+  table td>*{max-width:100%;box-sizing:border-box}
+  table input,table select,table textarea{width:100%;min-width:0;max-width:100%;box-sizing:border-box}
+  table button,table a{max-width:100%;box-sizing:border-box}
+  .ellipsis{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  /* 교육 목록: 특별안전교육 관리자 관리 열을 충분히 확보한다. */
+  #educationDataTable .education-col-no{width:4%!important}
+  #educationDataTable .education-col-date{width:13%!important}
+  #educationDataTable .education-col-title{width:18%!important}
+  #educationDataTable .education-col-topic{width:20%!important}
+  #educationDataTable .education-col-material{width:10%!important}
+  #educationDataTable .education-col-report{width:11%!important}
+  #educationDataTable .education-col-manage{width:24%!important}
+  #educationDataTable[data-education-type="special"] .education-col-no,
+  #educationDataTable[data-education-type="hiring"] .education-col-no{width:5%!important}
+  #educationDataTable[data-education-type="special"] .education-col-date,
+  #educationDataTable[data-education-type="hiring"] .education-col-date{width:17%!important}
+  #educationDataTable[data-education-type="special"] .education-col-category,
+  #educationDataTable[data-education-type="hiring"] .education-col-category{width:38%!important}
+  #educationDataTable[data-education-type="special"] .education-col-report,
+  #educationDataTable[data-education-type="hiring"] .education-col-report{width:14%!important}
+  #educationDataTable[data-education-type="special"] .education-col-manage,
+  #educationDataTable[data-education-type="hiring"] .education-col-manage{width:26%!important}
+  #educationDataTable .row-actions{display:flex!important;align-items:center;justify-content:center;gap:6px!important;overflow:visible!important;white-space:nowrap}
+  #educationDataTable .row-actions .mini{flex:0 1 auto;min-width:52px;max-width:none!important;padding-left:9px!important;padding-right:9px!important}
+  #educationDataTable[data-education-type="special"] .row-actions .mini:first-child{min-width:88px}
+
+  /* 재직자/퇴사자/부서 관리 표 */
+  #activeEmployeePanel th:nth-child(1),#activeEmployeePanel td:nth-child(1){width:3.5%!important}
+  #activeEmployeePanel th:nth-child(2),#activeEmployeePanel td:nth-child(2){width:4%!important}
+  #activeEmployeePanel th:nth-child(3),#activeEmployeePanel td:nth-child(3){width:8%!important}
+  #activeEmployeePanel th:nth-child(4),#activeEmployeePanel td:nth-child(4){width:18%!important}
+  #activeEmployeePanel th:nth-child(5),#activeEmployeePanel td:nth-child(5){width:10%!important}
+  #activeEmployeePanel th:nth-child(6),#activeEmployeePanel td:nth-child(6){width:11%!important}
+  #activeEmployeePanel th:nth-child(7),#activeEmployeePanel td:nth-child(7){width:11%!important}
+  #activeEmployeePanel th:nth-child(8),#activeEmployeePanel td:nth-child(8){width:34.5%!important;min-width:0!important}
+  #activeEmployeePanel td:nth-child(8),#retiredEmployeePanel td:nth-child(8){white-space:normal!important}
+  #activeEmployeePanel td:nth-child(8)>button,#retiredEmployeePanel td:nth-child(8)>button{margin:2px 3px}
+
+  #retiredEmployeePanel table{min-width:0!important}
+  #retiredEmployeePanel th:nth-child(1),#retiredEmployeePanel td:nth-child(1){width:4%!important}
+  #retiredEmployeePanel th:nth-child(2),#retiredEmployeePanel td:nth-child(2){width:19%!important}
+  #retiredEmployeePanel th:nth-child(3),#retiredEmployeePanel td:nth-child(3){width:10%!important}
+  #retiredEmployeePanel th:nth-child(4),#retiredEmployeePanel td:nth-child(4){width:11%!important}
+  #retiredEmployeePanel th:nth-child(5),#retiredEmployeePanel td:nth-child(5){width:11%!important}
+  #retiredEmployeePanel th:nth-child(6),#retiredEmployeePanel td:nth-child(6){width:11%!important}
+  #retiredEmployeePanel th:nth-child(7),#retiredEmployeePanel td:nth-child(7){width:8%!important}
+  #retiredEmployeePanel th:nth-child(8),#retiredEmployeePanel td:nth-child(8){width:26%!important}
+
+  #departmentView th:nth-child(1),#departmentView td:nth-child(1){width:6%!important}
+  #departmentView th:nth-child(2),#departmentView td:nth-child(2){width:38%!important}
+  #departmentView th:nth-child(3),#departmentView td:nth-child(3){width:16%!important}
+  #departmentView th:nth-child(4),#departmentView td:nth-child(4){width:16%!important}
+  #departmentView th:nth-child(5),#departmentView td:nth-child(5){width:24%!important}
+
+  /* 건강검진 표: 긴 기관명은 말줄임, 입력칸은 셀 안에서만 확장 */
+  .health-roster-table{min-width:0!important}
+  .health-roster-table th:nth-child(1),.health-roster-table td:nth-child(1){width:3%!important}
+  .health-roster-table th:nth-child(2),.health-roster-table td:nth-child(2){width:3.5%!important}
+  .health-roster-table th:nth-child(3),.health-roster-table td:nth-child(3){width:10%!important}
+  .health-roster-table th:nth-child(4),.health-roster-table td:nth-child(4){width:7%!important}
+  .health-roster-table th:nth-child(5),.health-roster-table td:nth-child(5){width:8%!important}
+  .health-roster-table th:nth-child(6),.health-roster-table td:nth-child(6){width:8%!important}
+  .health-roster-table th:nth-child(7),.health-roster-table td:nth-child(7){width:7%!important}
+  .health-roster-table th:nth-child(8),.health-roster-table td:nth-child(8){width:10%!important}
+  .health-roster-table th:nth-child(9),.health-roster-table td:nth-child(9){width:15%!important}
+  .health-roster-table th:nth-child(10),.health-roster-table td:nth-child(10){width:10%!important}
+  .health-roster-table th:nth-child(11),.health-roster-table td:nth-child(11){width:18.5%!important}
+  .health-target-table{min-width:0!important}
+  .health-target-table th:nth-child(1),.health-target-table td:nth-child(1){width:3%!important}
+  .health-target-table th:nth-child(2),.health-target-table td:nth-child(2){width:4%!important}
+  .health-target-table th:nth-child(3),.health-target-table td:nth-child(3){width:14%!important}
+  .health-target-table th:nth-child(4),.health-target-table td:nth-child(4){width:9%!important}
+  .health-target-table th:nth-child(5),.health-target-table td:nth-child(5){width:10%!important}
+  .health-target-table th:nth-child(6),.health-target-table td:nth-child(6){width:10%!important}
+  .health-target-table th:nth-child(7),.health-target-table td:nth-child(7){width:17%!important}
+  .health-target-table th:nth-child(8),.health-target-table td:nth-child(8){width:17%!important}
+  .health-target-table th:nth-child(9),.health-target-table td:nth-child(9){width:16%!important}
+
+  /* 출결표도 1920 PC 폭 안에서 모두 보이도록 열 비율을 고정한다. */
+  #attendanceView .attendance-table{min-width:0!important}
+  #attendanceView .attendance-table th:nth-child(1),#attendanceView .attendance-table td:nth-child(1){width:3%!important}
+  #attendanceView .attendance-table th:nth-child(2),#attendanceView .attendance-table td:nth-child(2){width:3.5%!important}
+  #attendanceView .attendance-table th:nth-child(3),#attendanceView .attendance-table td:nth-child(3){width:11%!important}
+  #attendanceView .attendance-table th:nth-child(4),#attendanceView .attendance-table td:nth-child(4){width:7%!important}
+  #attendanceView .attendance-table th:nth-child(5),#attendanceView .attendance-table td:nth-child(5){width:8%!important}
+  #attendanceView .attendance-table th:nth-child(6),#attendanceView .attendance-table td:nth-child(6){width:16%!important;min-width:0!important}
+  #attendanceView .attendance-table th:nth-child(7),#attendanceView .attendance-table td:nth-child(7){width:16%!important;min-width:0!important}
+  #attendanceView .attendance-table th:nth-child(8),#attendanceView .attendance-table td:nth-child(8){width:9%!important}
+  #attendanceView .attendance-table th:nth-child(9),#attendanceView .attendance-table td:nth-child(9){width:9%!important}
+  #attendanceView .attendance-table th:nth-child(10),#attendanceView .attendance-table td:nth-child(10){width:17.5%!important}
+  #attendanceView .attendance-time-inline{grid-template-columns:minmax(34px,38px) minmax(0,1fr)!important;min-width:0!important;gap:4px!important}
+  #attendanceView .attendance-cell-action{min-width:0!important;width:100%!important;padding-left:4px!important;padding-right:4px!important;overflow:hidden;text-overflow:ellipsis}
+
+  /* 대상자 관리 모달: 바깥 스크롤 없이 화면 안에서 편집한다. */
+  #participantModal{padding:12px!important;overflow:hidden!important;place-items:center}
+  #participantModal>.modal{
+    width:min(1580px,calc(100vw - 28px))!important;
+    height:min(930px,calc(100vh - 24px))!important;
+    max-height:none!important;overflow:hidden!important;
+    display:flex;flex-direction:column
+  }
+  #participantModal .modal-head{flex:0 0 auto;align-items:center;padding:11px 15px 9px!important}
+  #participantModal .modal-head h2{font-size:16px}
+  #participantModal .close{width:30px;height:30px}
+  #participantModal .modal-body{flex:1;min-height:0;overflow:hidden!important;display:flex;flex-direction:column;padding:8px 12px 10px!important}
+  #participantModal .summary-strip{flex:0 0 auto;margin-bottom:5px!important}
+  #participantModal .summary-card{min-height:40px!important;padding:5px 9px!important}
+  #participantModal .summary-value{font-size:16px!important}
+  #participantModal .participant-toolbar{flex:0 0 auto;min-height:34px!important;margin-bottom:6px!important;padding:0 2px!important}
+  #participantModal .participant-toolbar .btn{min-height:29px!important;height:29px!important;padding:0 10px!important;font-size:10.5px!important}
+  #participantModal .participant-layout{
+    flex:1;min-height:0;height:auto;overflow:hidden;
+    grid-template-columns:minmax(290px,22%) minmax(0,78%)!important;gap:8px!important
+  }
+  #participantModal .participant-panel{min-width:0;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+  #participantModal .participant-panel-head{flex:0 0 auto;min-height:32px!important;height:32px!important;padding:3px 6px!important}
+  #participantModal .participant-panel-head input{height:24px!important;width:158px!important;font-size:10.5px!important}
+  #participantModal .picker-actions{flex:0 0 auto;min-height:27px!important;height:27px!important;padding:2px 5px!important}
+  #participantModal .picker-columns{flex:0 0 auto;min-height:22px!important;height:22px!important;padding:1px 5px!important}
+  #participantModal .picker-list{flex:1;min-height:0;max-height:none!important;overflow-y:auto!important;overflow-x:hidden!important}
+  #participantModal .picker-row{min-height:24px!important;height:24px!important;padding:1px 5px!important;line-height:1.05}
+  #participantModal #employeePickerPagination{flex:0 0 auto;max-height:72px;overflow-y:auto;overflow-x:hidden!important;margin:3px 4px!important;padding:3px 0!important}
+  #participantModal .participant-table-wrap{flex:1;min-height:0;overflow-y:auto!important;overflow-x:hidden!important}
+  #participantModal #participantStatus{flex:0 0 auto}
+  #participantModal #participantPagination{flex:0 0 auto;max-height:72px;overflow-y:auto;overflow-x:hidden!important;margin:3px 4px!important;padding:3px 0!important}
+  #participantModal .participant-table{min-width:0!important;width:100%!important}
+  #participantModal .participant-table th{height:27px!important;padding:2px 4px!important;font-size:10.5px!important}
+  #participantModal .participant-table td{height:28px!important;padding:2px 4px!important;font-size:10.8px!important}
+  #participantModal .participant-select-col{width:4%!important;min-width:0!important;max-width:none!important}
+  #participantModal .participant-row-check,#participantModal #participantSelectAll{width:14px!important;height:14px!important;min-width:14px!important;min-height:14px!important;margin:0!important;padding:0!important}
+  #participantModal .participant-department-col{width:18%!important}
+  #participantModal .participant-name-col{width:12%!important}
+  #participantModal .participant-common-col{width:16%!important}
+  #participantModal .participant-date-col{width:19%!important}
+  #participantModal .participant-manage-col{width:9%!important}
+  #participantModal .participant-date-input{width:100%!important;min-width:0!important;height:23px!important;padding:1px 3px!important;font-size:10.5px!important}
+  #participantModal .participant-table .mini{width:auto;min-width:43px;max-width:100%!important;height:22px!important;min-height:22px!important;padding:0 6px!important;font-size:9.8px!important}
+  #participantModal .platform-pagination{justify-content:center!important;gap:3px!important;flex-wrap:wrap!important}
+  #participantModal .platform-page-button{min-width:25px;height:24px;padding:0 6px;font-size:10px}
+  #participantModal .platform-page-summary{font-size:10px}
+  .platform-pagination,.attendance-pagination,.attendance-chart-scroll{overflow-x:hidden!important}
+}
+
+/* ================================================================
+   교육 목록 및 특별안전교육 대상자 카드 최종 정렬
+   - 1920px에서 가로 스크롤 없이 표시
+   - 교육 주제와 특별안전교육 법정 작업명을 충분히 표시
+   - 관리 버튼은 대상자 / 수정 / 삭제로 동일하게 유지
+   ================================================================ */
+#educationDataTable th,#educationDataTable td{vertical-align:middle!important}
+#educationDataTable th{padding-top:7px!important;padding-bottom:7px!important}
+#educationDataTable td{padding-top:6px!important;padding-bottom:6px!important;line-height:1.35}
+#educationDataTable .education-category-text{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;overflow-wrap:anywhere;word-break:keep-all;line-height:1.4;padding-left:9px!important;padding-right:9px!important}
+#educationDataTable .row-actions{white-space:nowrap!important;flex-wrap:nowrap!important}
+#educationDataTable .row-actions .mini{min-width:0!important;width:auto!important;padding-left:7px!important;padding-right:7px!important}
+
+@media (min-width:1200px){
+  /* 정기교육은 실시일·교육명·관리 폭을 줄이고 교육 주제를 넓힌다. */
+  #educationDataTable[data-education-type="regular"] .education-col-no{width:4%!important}
+  #educationDataTable[data-education-type="regular"] .education-col-date{width:10%!important}
+  #educationDataTable[data-education-type="regular"] .education-col-title{width:14%!important}
+  #educationDataTable[data-education-type="regular"] .education-col-topic{width:40%!important}
+  #educationDataTable[data-education-type="regular"] .education-col-material{width:8%!important}
+  #educationDataTable[data-education-type="regular"] .education-col-report{width:10%!important}
+  #educationDataTable[data-education-type="regular"] .education-col-manage{width:14%!important}
+  #educationDataTable[data-education-type="regular"] td:nth-child(4){white-space:normal!important;overflow:visible!important;text-overflow:clip!important;overflow-wrap:anywhere;word-break:keep-all;text-align:left!important;padding-left:10px!important;padding-right:10px!important}
+
+  /* 특별·채용교육은 긴 교육구분을 우선 배치하고 관리 버튼 폭은 필요한 만큼만 둔다. */
+  #educationDataTable[data-education-type="special"] .education-col-no,
+  #educationDataTable[data-education-type="hiring"] .education-col-no{width:4%!important}
+  #educationDataTable[data-education-type="special"] .education-col-date,
+  #educationDataTable[data-education-type="hiring"] .education-col-date{width:11%!important}
+  #educationDataTable[data-education-type="special"] .education-col-category{width:57%!important}
+  #educationDataTable[data-education-type="hiring"] .education-col-category{width:55%!important}
+  #educationDataTable[data-education-type="special"] .education-col-report,
+  #educationDataTable[data-education-type="hiring"] .education-col-report{width:10%!important}
+  #educationDataTable[data-education-type="special"] .education-col-manage{width:18%!important}
+  #educationDataTable[data-education-type="hiring"] .education-col-manage{width:20%!important}
+  #educationDataTable[data-education-type="special"] .row-actions .mini,
+  #educationDataTable[data-education-type="hiring"] .row-actions .mini{min-width:48px!important;padding-left:7px!important;padding-right:7px!important}
+
+  /* 대상자 모달은 카드와 표 내부 여백을 줄이고, 현재 대상자 표는 가로 스크롤을 만들지 않는다. */
+  #participantModal .modal-body{padding:6px 9px 8px!important}
+  #participantModal .participant-toolbar{min-height:30px!important;height:30px!important;margin-bottom:4px!important;padding:0!important}
+  #participantModal .participant-toolbar .btn{height:26px!important;min-height:26px!important;padding:0 8px!important}
+  #participantModal .participant-layout{grid-template-columns:minmax(220px,.62fr) minmax(0,2fr)!important;gap:5px!important}
+  #participantModal .participant-panel{border-radius:6px!important;min-width:0!important;overflow:hidden!important}
+  #participantModal .participant-panel-head{height:29px!important;min-height:29px!important;padding:2px 5px!important}
+  #participantModal .participant-panel-head strong{font-size:11px!important}
+  #participantModal .participant-panel-head input{height:22px!important;width:148px!important;padding:1px 6px!important;font-size:10px!important}
+  #participantModal .picker-actions{height:24px!important;min-height:24px!important;padding:1px 4px!important;gap:4px!important}
+  #participantModal .picker-columns{height:20px!important;min-height:20px!important;padding:0 4px!important}
+  #participantModal .picker-row{height:22px!important;min-height:22px!important;padding:0 4px!important}
+  #participantModal .participant-table-wrap{width:100%!important;min-width:0!important;max-width:100%!important;overflow-x:clip!important;overflow-y:auto!important;scrollbar-gutter:stable}
+  #participantModal .participant-table{width:100%!important;min-width:0!important;max-width:100%!important;table-layout:fixed!important;margin:0!important}
+  #participantModal .participant-table th{height:24px!important;padding:1px 3px!important;font-size:10.3px!important;line-height:1.1}
+  #participantModal .participant-table td{height:25px!important;padding:1px 3px!important;font-size:10.5px!important;line-height:1.1}
+  #participantModal .participant-table[data-mode="special"] .participant-select-col{width:4%!important}
+  #participantModal .participant-table[data-mode="special"] .participant-department-col{width:17%!important}
+  #participantModal .participant-table[data-mode="special"] .participant-name-col{width:11%!important}
+  #participantModal .participant-table[data-mode="special"] .participant-common-col{width:15%!important}
+  #participantModal .participant-table[data-mode="special"] .participant-date-col{width:21%!important}
+  #participantModal .participant-table[data-mode="special"] .participant-manage-col{width:11%!important}
+  #participantModal .participant-date-input{height:21px!important;padding:0 2px!important;font-size:10px!important}
+  #participantModal .participant-table .mini{height:20px!important;min-height:20px!important;min-width:40px!important;padding:0 5px!important;font-size:9.5px!important}
+  #participantModal #participantStatus{min-height:0!important;margin:0!important;padding:0!important}
+  #participantModal #participantPagination,#participantModal #employeePickerPagination{margin:2px 3px!important;padding:2px 0!important;max-height:54px!important}
+}
+
+
+
+/* 날짜 8자리 직접 입력 및 교육 관리 버튼 한 줄 고정 */
+input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing:.01em}
+#educationDataTable td.education-manage-cell{display:table-cell!important;vertical-align:middle!important;white-space:nowrap!important;overflow:visible!important}
+#educationDataTable .row-action-group{display:flex!important;align-items:center!important;justify-content:center!important;flex-wrap:nowrap!important;gap:5px!important;width:100%;min-width:0}
+#educationDataTable .row-action-group .mini{flex:0 0 auto!important;white-space:nowrap!important;margin:0!important}
+
+
+
+/* ================================================================
+   날짜 단축입력·사원명부 체크박스·대상자 추가 카드 최종 안정화
+   ================================================================ */
+#employeeView #selectAllActiveEmployees,
+#employeeView .active-row-check{
+  appearance:auto!important;
+  width:14px!important;height:14px!important;
+  min-width:14px!important;min-height:14px!important;
+  max-width:14px!important;max-height:14px!important;
+  padding:0!important;margin:0!important;
+  display:inline-block!important;vertical-align:middle!important
+}
+#employeeView thead th:first-child,
+#employeeView tbody td:first-child{padding-left:3px!important;padding-right:3px!important;text-align:center!important}
+
+#participantModal .participant-panel:first-child{min-width:0!important;max-width:100%!important;overflow:hidden!important}
+#participantModal .participant-panel:first-child .participant-panel-head{
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr)!important;
+  align-items:center!important;
+  column-gap:6px!important;
+  overflow:hidden!important
+}
+#participantModal .participant-panel:first-child .participant-panel-head strong{
+  width:auto!important;min-width:max-content!important;white-space:nowrap!important
+}
+#participantModal #employeePickerSearch{
+  position:static!important;inset:auto!important;
+  width:100%!important;min-width:0!important;max-width:100%!important;
+  justify-self:stretch!important;box-sizing:border-box!important;
+  ime-mode:active
+}
+#participantModal .picker-actions{
+  width:100%!important;min-width:0!important;max-width:100%!important;
+  box-sizing:border-box!important;
+  grid-template-columns:auto minmax(0,1fr) auto!important;
+  overflow:hidden!important
+}
+#participantModal .picker-select-all{min-width:0!important;overflow:hidden!important}
+#participantModal #employeePickerSelectionText{
+  min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  white-space:nowrap!important
+}
+#participantModal #addSelectedParticipantsButton{
+  min-width:max-content!important;max-width:100%!important;white-space:nowrap!important
+}
+#participantModal .picker-columns,
+#participantModal .picker-row{
+  width:100%!important;min-width:0!important;max-width:100%!important;
+  grid-template-columns:22px minmax(64px,.82fr) minmax(0,1.18fr)!important;
+  box-sizing:border-box!important;overflow:hidden!important
+}
+#participantModal .picker-list{width:100%!important;min-width:0!important;max-width:100%!important;overflow-x:hidden!important}
+#participantModal .picker-row>*{min-width:0!important;max-width:100%!important}
+#participantModal .picker-name,
+#participantModal .picker-department{overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+#participantModal .employee-picker-check,
+#participantModal #employeePickerSelectAll{
+  appearance:auto!important;width:14px!important;height:14px!important;
+  min-width:14px!important;min-height:14px!important;max-width:14px!important;max-height:14px!important;
+  padding:0!important;margin:0!important
+}
+
 </style></head>
 <body>
 <aside class="sidebar" id="sidebar">
@@ -1424,7 +1736,7 @@
 </div>
 <div class="participant-layout">
 <div class="panel participant-panel">
-<div class="panel-head participant-panel-head"><strong>대상자 추가</strong><input autocomplete="off" id="employeePickerSearch" placeholder="성명·부서 검색" type="search"/></div>
+<div class="panel-head participant-panel-head"><strong>대상자 추가</strong><input autocapitalize="none" autocomplete="off" autocorrect="off" enterkeyhint="search" id="employeePickerSearch" inputmode="text" lang="ko" placeholder="성명·부서 검색" spellcheck="false" type="search"/></div>
 <div class="picker-actions">
 <label class="picker-select-all" for="employeePickerSelectAll"><input aria-label="현재 페이지 후보 전체 선택" id="employeePickerSelectAll" type="checkbox"/><span>현재 페이지</span></label>
 <span class="selection-text" id="employeePickerSelectionText">선택 0명</span>
@@ -1590,6 +1902,13 @@
       };
     }
     function isSpecialCategory(categoryId){return categoryMeta(categoryId).type==="special"}
+    function specialEducationDisplayLabel(value){
+      const normalized=normalizedCategoryName(value);
+      if(normalized.includes("크레인"))return "1톤 이상의 크레인을 사용하는 작업 또는 1톤 미만의 크레인 또는 호이스트를 5대 이상 보유한 사업자에서 해당 기계로 하는 작업";
+      if(normalized.includes("밀폐공간"))return "밀폐공간에서의 작업";
+      if(normalized.includes("75V")&&(normalized.includes("활선")||normalized.includes("정전")))return "전압이 75V 이상인 정전 및 활선 작업";
+      return value||"-";
+    }
     function scheduleText(item){
       const type=categoryMeta(item.category_id).type;
       const lines=[];
@@ -2777,10 +3096,14 @@
         addTextCell(tr,item.title||'-','center ellipsis',item.title||'-');addTextCell(tr,item.education_topic||'-','center ellipsis',item.education_topic||'-');
         const material=document.createElement('td');material.className='center';
         if(validUrl(item.web_url)){const a=document.createElement('a');a.className='download-link';a.textContent='교육자료';a.href=item.web_url;a.target='_blank';a.rel='noopener noreferrer';material.appendChild(a)}else material.textContent='-';tr.appendChild(material);
-      }else addTextCell(tr,meta.label,'center ellipsis',meta.label);
+      }else{
+        const categoryLabel=meta.type==='special'?specialEducationDisplayLabel(meta.label):meta.label;
+        const categoryCell=addTextCell(tr,categoryLabel,'center education-category-text',categoryLabel);
+        categoryCell.dataset.categoryKind=meta.type;
+      }
       const report=document.createElement('td');report.className='center';
       if(validUrl(item.result_report_url)){const a=document.createElement('a');a.className='download-link';a.textContent='결과보고서';a.href=item.result_report_url;a.target='_blank';a.rel='noopener noreferrer';report.appendChild(a)}else{const p=document.createElement('span');p.className='progress';p.textContent='교육진행중';report.appendChild(p)}tr.appendChild(report);
-      if(state.isAdmin){const manage=document.createElement('td');manage.className='center row-actions';const target=document.createElement('button');target.className='mini';target.textContent=meta.type==='special'?'대상자':'대상자';target.onclick=()=>openParticipants(item);const edit=document.createElement('button');edit.className='mini';edit.textContent='수정';edit.onclick=()=>openEducationForm(item);const del=document.createElement('button');del.className='mini mini-danger';del.textContent='삭제';del.onclick=()=>deleteEducation(item);manage.append(target,edit,del);tr.appendChild(manage)}
+      if(state.isAdmin){const manage=document.createElement('td');manage.className='center education-manage-cell';const actions=document.createElement('div');actions.className='row-actions row-action-group';const target=document.createElement('button');target.className='mini';target.textContent='대상자';target.onclick=()=>openParticipants(item);const edit=document.createElement('button');edit.className='mini';edit.textContent='수정';edit.onclick=()=>openEducationForm(item);const del=document.createElement('button');del.className='mini mini-danger';del.textContent='삭제';del.onclick=()=>deleteEducation(item);actions.append(target,edit,del);manage.appendChild(actions);tr.appendChild(manage)}
       f.appendChild(tr);
     });body.appendChild(f);renderPager('educationPagination',rows.length,'education',renderEducationTable);
   };
@@ -2812,9 +3135,16 @@
 
   function employeePickerRows(){
     state.employeePickerSelected=state.employeePickerSelected||new Set();
-    const q=$('employeePickerSearch').value.trim().toLowerCase(),registered=new Set(state.participants.map(x=>Number(x.employee_id)));
-    const rows=state.currentEmployees.filter(x=>!registered.has(Number(x.employee_id))&&(!q||`${x.employee_name||''} ${x.department_name||''}`.toLowerCase().includes(q))).sort((a,b)=>String(a.employee_name||'').localeCompare(String(b.employee_name||''),'ko')||String(a.department_name||'').localeCompare(String(b.department_name||''),'ko'));
-    const valid=new Set(rows.map(x=>String(x.employee_id)));[...state.employeePickerSelected].forEach(id=>{if(!valid.has(id))state.employeePickerSelected.delete(id)});return rows;
+    const q=$('employeePickerSearch').value.trim().toLowerCase();
+    const registered=new Set(state.participants.map(x=>Number(x.employee_id)));
+    // 검색어와 관계없는 전체 추가 가능 명단을 기준으로 선택값을 유지합니다.
+    // 따라서 검색 결과에서 잠시 사라져도 이전에 체크한 직원은 일괄 추가 대상에 남습니다.
+    const candidates=state.currentEmployees.filter(x=>!registered.has(Number(x.employee_id)));
+    const valid=new Set(candidates.map(x=>String(x.employee_id)));
+    [...state.employeePickerSelected].forEach(id=>{if(!valid.has(id))state.employeePickerSelected.delete(id)});
+    return candidates
+      .filter(x=>!q||`${x.employee_name||''} ${x.department_name||''}`.toLowerCase().includes(q))
+      .sort((a,b)=>String(a.employee_name||'').localeCompare(String(b.employee_name||''),'ko')||String(a.department_name||'').localeCompare(String(b.department_name||''),'ko'));
   }
   window.currentEmployeePickerPageItems=function(){return pageInfo(employeePickerRows(),'employeePicker').items};
   window.updateEmployeePickerSelectionUI=function(){
@@ -3405,7 +3735,7 @@
 (function participantManagementModule(){
   "use strict";
   const byId=id=>document.getElementById(id);
-  const PARTICIPANT_PAGE_SIZE=50;
+  const PARTICIPANT_PAGE_SIZE=22;
   const paging=window.platformPaging||{participants:1,employeePicker:1};window.platformPaging=paging;
   state.participantSelected=state.participantSelected||new Set();
   state.employeePickerSelected=state.employeePickerSelected||new Set();
@@ -3471,6 +3801,8 @@
     byId('participantBulkDateButton').hidden=mode==='hiring';
     byId('participantBulkDateButton').textContent=special?'선택 날짜 일괄입력':'선택 교육일 입력';
     byId('participantBulkDateButton').disabled=!state.participantSelected.size;
+    // 전체 재직자 등록은 정기안전보건교육에서만 사용합니다.
+    byId('assignAllButton').hidden=!regular;
     byId('participantSummaryStrip').hidden=!regular;
     byId('participantCountSummaryCard').hidden=!regular;
     byId('participantCountLabel').textContent='교육 대상자';
@@ -3682,6 +4014,161 @@
   };
   [['selfHistoryRegularTab','regular'],['selfHistorySpecialTab','special'],['selfHistoryHiringTab','hiring']].forEach(([id,type])=>{byId(id).onclick=()=>{state.selfHistoryType=type;state.selfHistoryPages[type]=1;renderSelfHistory()}});
   byId('selfHistoryRegularTab').parentElement.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)||!event.target.matches('[role="tab"]'))return;const order=['regular','special','hiring'],current=order.indexOf(state.selfHistoryType);let next=current;if(event.key==='ArrowRight')next=(current+1)%order.length;if(event.key==='ArrowLeft')next=(current-1+order.length)%order.length;if(event.key==='Home')next=0;if(event.key==='End')next=order.length-1;event.preventDefault();state.selfHistoryType=order[next];renderSelfHistory();byId({regular:'selfHistoryRegularTab',special:'selfHistorySpecialTab',hiring:'selfHistoryHiringTab'}[order[next]]).focus()});
+})();
+
+
+(function koreanEmployeePickerInputModule(){
+  "use strict";
+  const input=document.getElementById('employeePickerSearch');
+  if(!input)return;
+
+  const KEY={
+    r:'ㄱ',R:'ㄲ',s:'ㄴ',e:'ㄷ',E:'ㄸ',f:'ㄹ',a:'ㅁ',q:'ㅂ',Q:'ㅃ',t:'ㅅ',T:'ㅆ',d:'ㅇ',w:'ㅈ',W:'ㅉ',c:'ㅊ',z:'ㅋ',x:'ㅌ',v:'ㅍ',g:'ㅎ',
+    k:'ㅏ',o:'ㅐ',i:'ㅑ',O:'ㅒ',j:'ㅓ',p:'ㅔ',u:'ㅕ',P:'ㅖ',h:'ㅗ',y:'ㅛ',n:'ㅜ',b:'ㅠ',m:'ㅡ',l:'ㅣ'
+  };
+  const INITIAL=['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+  const MEDIAL=['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
+  const FINAL=['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+  const VOWEL_COMBINE={'ㅗㅏ':'ㅘ','ㅗㅐ':'ㅙ','ㅗㅣ':'ㅚ','ㅜㅓ':'ㅝ','ㅜㅔ':'ㅞ','ㅜㅣ':'ㅟ','ㅡㅣ':'ㅢ'};
+  const FINAL_COMBINE={'ㄱㅅ':'ㄳ','ㄴㅈ':'ㄵ','ㄴㅎ':'ㄶ','ㄹㄱ':'ㄺ','ㄹㅁ':'ㄻ','ㄹㅂ':'ㄼ','ㄹㅅ':'ㄽ','ㄹㅌ':'ㄾ','ㄹㅍ':'ㄿ','ㄹㅎ':'ㅀ','ㅂㅅ':'ㅄ'};
+  const FINAL_SPLIT={'ㄳ':['ㄱ','ㅅ'],'ㄵ':['ㄴ','ㅈ'],'ㄶ':['ㄴ','ㅎ'],'ㄺ':['ㄹ','ㄱ'],'ㄻ':['ㄹ','ㅁ'],'ㄼ':['ㄹ','ㅂ'],'ㄽ':['ㄹ','ㅅ'],'ㄾ':['ㄹ','ㅌ'],'ㄿ':['ㄹ','ㅍ'],'ㅀ':['ㄹ','ㅎ'],'ㅄ':['ㅂ','ㅅ']};
+  const initialSet=new Set(INITIAL),medialSet=new Set(MEDIAL),finalSet=new Set(FINAL.slice(1));
+
+  function composeSyllable(initial,medial,final=''){
+    const l=INITIAL.indexOf(initial),v=MEDIAL.indexOf(medial),t=FINAL.indexOf(final||'');
+    if(l<0||v<0||t<0)return `${initial||''}${medial||''}${final||''}`;
+    return String.fromCharCode(0xAC00+(l*21+v)*28+t);
+  }
+
+  function convertEnglishKeys(text){
+    let result='',initial=null,medial=null,final=null;
+    const flush=()=>{
+      if(initial&&medial)result+=composeSyllable(initial,medial,final||'');
+      else result+=`${initial||''}${medial||''}${final||''}`;
+      initial=medial=final=null;
+    };
+    for(const char of String(text||'')){
+      const jamo=KEY[char];
+      if(!jamo){flush();result+=char;continue}
+      if(medialSet.has(jamo)){
+        if(!initial&&!medial){medial=jamo;continue}
+        if(!initial&&medial){const combined=VOWEL_COMBINE[medial+jamo];if(combined)medial=combined;else{flush();medial=jamo}continue}
+        if(initial&&!medial){medial=jamo;continue}
+        if(initial&&medial&&!final){const combined=VOWEL_COMBINE[medial+jamo];if(combined)medial=combined;else{flush();medial=jamo}continue}
+        if(initial&&medial&&final){
+          const split=FINAL_SPLIT[final]||['',final];
+          result+=composeSyllable(initial,medial,split[0]);
+          initial=split[1];medial=jamo;final=null;continue;
+        }
+      }else{
+        if(!initial&&!medial){initial=jamo;continue}
+        if(initial&&!medial){flush();initial=jamo;continue}
+        if(!initial&&medial){flush();initial=jamo;continue}
+        if(initial&&medial&&!final){if(finalSet.has(jamo))final=jamo;else{flush();initial=jamo}continue}
+        if(initial&&medial&&final){const combined=FINAL_COMBINE[final+jamo];if(combined)final=combined;else{flush();initial=jamo}continue}
+      }
+    }
+    flush();
+    return result;
+  }
+
+  input.lang='ko';
+  input.inputMode='text';
+  input.autocomplete='off';
+  input.autocapitalize='none';
+  input.spellcheck=false;
+  input.style.imeMode='active';
+  input.setAttribute('aria-label','대상자 성명 또는 부서 한글 검색');
+  input.setAttribute('title','영문 키보드 상태로 입력해도 한글로 자동 변환됩니다.');
+
+  input.addEventListener('input',event=>{
+    if(event.isComposing||!/[A-Za-z]/.test(input.value))return;
+    const start=input.selectionStart??input.value.length;
+    const end=input.selectionEnd??start;
+    const before=convertEnglishKeys(input.value.slice(0,start));
+    const converted=convertEnglishKeys(input.value);
+    input.value=converted;
+    const caret=before.length;
+    try{input.setSelectionRange(caret,caret+(end-start))}catch(_error){}
+  },true);
+})();
+
+
+(function compactDateInputModule(){
+  "use strict";
+  const SELECTOR='input[data-compact-date="true"]';
+
+  function parseCompactDate(value){
+    const text=String(value||'').trim();
+    if(!text)return '';
+    const digits=text.replace(/\D/g,'');
+    if(digits.length!==6&&digits.length!==8)return null;
+    const shortYear=digits.length===6;
+    const year=shortYear?2000+Number(digits.slice(0,2)):Number(digits.slice(0,4));
+    const month=Number(digits.slice(shortYear?2:4,shortYear?4:6));
+    const day=Number(digits.slice(shortYear?4:6,shortYear?6:8));
+    const date=new Date(Date.UTC(year,month-1,day));
+    if(date.getUTCFullYear()!==year||date.getUTCMonth()!==month-1||date.getUTCDate()!==day)return null;
+    return `${String(year).padStart(4,'0')}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+  }
+
+  function prepare(input){
+    if(!(input instanceof HTMLInputElement)||input.dataset.compactDate==='true')return;
+    if(input.type!=='date')return;
+    const value=input.value;
+    input.type='text';
+    input.dataset.compactDate='true';
+    input.inputMode='numeric';
+    input.autocomplete='off';
+    input.maxLength=10;
+    input.placeholder='YYMMDD';
+    input.setAttribute('pattern','(?:\\d{6}|\\d{8}|\\d{4}-\\d{2}-\\d{2})');
+    input.setAttribute('title','날짜 6자리 입력 예: 261010 → 2026-10-10');
+    input.value=value;
+  }
+
+  function prepareTree(root){
+    if(root instanceof HTMLInputElement)prepare(root);
+    root.querySelectorAll?.('input[type="date"]').forEach(prepare);
+  }
+
+  function normalize(input,{notify=true}={}){
+    if(!input?.matches?.(SELECTOR))return true;
+    const normalized=parseCompactDate(input.value);
+    if(normalized===null){
+      input.setAttribute('aria-invalid','true');
+      if(notify)showToast('날짜를 261010처럼 6자리로 입력하세요.');
+      return false;
+    }
+    input.removeAttribute('aria-invalid');
+    input.value=normalized;
+    return true;
+  }
+
+  prepareTree(document);
+  const observer=new MutationObserver(records=>records.forEach(record=>record.addedNodes.forEach(node=>{
+    if(node.nodeType===Node.ELEMENT_NODE)prepareTree(node);
+  })));
+  observer.observe(document.body,{childList:true,subtree:true});
+
+  document.addEventListener('input',event=>{
+    const input=event.target;if(!input?.matches?.(SELECTOR))return;
+    const raw=String(input.value||'');
+    const cleaned=raw.replace(/[^0-9-]/g,'').slice(0,10);
+    if(cleaned!==raw)input.value=cleaned;
+    input.removeAttribute('aria-invalid');
+  },true);
+  document.addEventListener('change',event=>{
+    const input=event.target;if(!input?.matches?.(SELECTOR))return;
+    if(!normalize(input)){event.preventDefault();event.stopImmediatePropagation();input.focus()}
+  },true);
+  document.addEventListener('blur',event=>{
+    const input=event.target;if(input?.matches?.(SELECTOR)&&input.value)normalize(input,{notify:false});
+  },true);
+  document.addEventListener('submit',event=>{
+    const invalid=[...event.target.querySelectorAll?.(SELECTOR)||[]].find(input=>!normalize(input,{notify:false}));
+    if(invalid){event.preventDefault();event.stopImmediatePropagation();invalid.focus();showToast('날짜를 261010처럼 6자리로 입력하세요.')}
+  },true);
 })();
 
 
