@@ -899,7 +899,7 @@
 .self-history-tab.active{background:#fff;color:var(--primary);box-shadow:0 1px 3px rgba(16,24,40,.12)}
 .self-history-table{table-layout:fixed;width:100%;min-width:680px}
 .self-history-table th:nth-child(1){width:150px}.self-history-table th:nth-child(2){width:180px}.self-history-table th:nth-child(3){width:auto}.self-history-table th:nth-child(4){width:104px}
-.self-history-date{white-space:normal!important;line-height:1.55}
+.self-history-date{white-space:pre-line!important;line-height:1.55}
 #participantSummaryStrip[hidden]{display:none!important}
 
 
@@ -3976,15 +3976,23 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     return Math.max(0,...values.map(value=>new Date(`${String(value).slice(0,10)}T00:00:00`).getTime()||0));
   }
   function selfHistoryDateText(item,type){
+    // 공개 교육이력에는 교육 공통 일정이 아니라 조회된 직원 개인의 교육일자만 표시한다.
     if(type==='special'){
       const common=item.common_education_date||item.first_session_date||item.conducted_date;
-      const individual1=item.education_date||item.individual_date_1;
-      const individual2=item.education_date_2||item.individual_date_2;
-      const parts=[];if(common)parts.push(`(공통)${formatDateDot(common)}`);if(individual1)parts.push(`(개별)${formatDateDot(individual1)}`);if(individual2)parts.push(`(개별)${formatDateDot(individual2)}`);return parts.join(' ')||'-';
+      const first=item.education_date||item.individual_date_1;
+      const second=item.education_date_2||item.individual_date_2;
+      const lines=[];
+      if(common)lines.push(`(공통) ${formatDateDot(common)}`);
+      if(first)lines.push(`(개별) ${formatDateDot(first)}`);
+      if(second)lines.push(`(개별) ${formatDateDot(second)}`);
+      return lines.join('\n')||'-';
     }
-    if(type==='hiring')return formatDateDot(item.common_education_date||item.first_session_date||item.conducted_date||item.education_date)||'-';
-    const first=item.first_session_date||item.common_education_date,second=item.second_session_date,personal=item.education_date;
-    const parts=[];if(first)parts.push(`(1차)${formatDateDot(first)}`);if(second)parts.push(`(2차)${formatDateDot(second)}`);if(personal&&personal!==first&&personal!==second)parts.push(`(개별)${formatDateDot(personal)}`);return parts.join(' ')||'-';
+    if(type==='hiring'){
+      const hiringDate=item.education_date||item.conducted_date||item.common_education_date||item.first_session_date;
+      return hiringDate?formatDateDot(hiringDate):'-';
+    }
+    const personalDate=item.education_date||item.individual_date_1||item.conducted_date;
+    return personalDate?formatDateDot(personalDate):'-';
   }
   function syncSelfHistoryTabs(){
     const map={regular:'selfHistoryRegularTab',special:'selfHistorySpecialTab',hiring:'selfHistoryHiringTab'};
