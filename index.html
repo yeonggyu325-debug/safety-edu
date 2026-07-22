@@ -6,7 +6,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <meta content="사내 안전교육 자료 및 교육이력 관리" name="description"/>
 <meta content="#2f6fed" name="theme-color"/>
-<title>안전보건 자료실</title>
+<title>안전보건교육 자료실</title>
 
 
 
@@ -894,12 +894,31 @@
 #educationDataTable[data-education-type="hiring"] .education-col-report{width:104px!important}
 #educationDataTable[data-education-type="special"] .education-col-manage,
 #educationDataTable[data-education-type="hiring"] .education-col-manage{width:146px!important}
-.self-history-tabs{display:flex;align-items:center;gap:4px;margin-bottom:8px;padding:3px;border:1px solid #dfe4ec;border-radius:8px;background:#f7f8fa}
-.self-history-tab{flex:1;min-height:32px;border:0;border-radius:6px;background:transparent;color:#667085;font-size:11px;font-weight:800;cursor:pointer}
-.self-history-tab.active{background:#fff;color:var(--primary);box-shadow:0 1px 3px rgba(16,24,40,.12)}
-.self-history-table{table-layout:fixed;width:100%;min-width:680px}
-.self-history-table th:nth-child(1){width:150px}.self-history-table th:nth-child(2){width:180px}.self-history-table th:nth-child(3){width:auto}.self-history-table th:nth-child(4){width:104px}
-.self-history-date{white-space:pre-line!important;line-height:1.55}
+#selfHistoryModal .modal{width:min(1460px,calc(100vw - 40px));max-width:1460px;max-height:94vh}
+#selfHistoryModal .modal-body{padding:12px 14px 14px;overflow-y:auto;overflow-x:hidden}
+.self-history-sheet{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.self-history-section{min-width:0;border:1px solid #dfe4ec;border-radius:10px;background:#fff;overflow:hidden}
+.self-history-section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:42px;padding:7px 10px;border-bottom:1px solid #e8ebf0;background:#f8fafc}
+.self-history-section-head h3{margin:0;color:#172033;font-size:14px;font-weight:850;white-space:nowrap}
+.self-history-bottom-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;min-width:0}
+.self-history-table-wrap{width:100%;max-width:100%;overflow-x:hidden}
+.self-history-section:not(.self-history-regular) .self-history-table-wrap{max-height:310px;overflow-y:auto}
+.self-history-table{table-layout:fixed;width:100%;min-width:0!important;margin:0}
+.self-history-table th,.self-history-table td{padding:7px 8px;font-size:12px;vertical-align:middle}
+.self-history-table th:nth-child(1){width:auto}
+.self-history-table th:nth-child(2){width:220px}
+.self-history-table th:nth-child(3){width:104px}
+.self-history-date{white-space:normal!important;line-height:1.45;overflow:visible!important;text-overflow:clip!important}
+.self-history-date-line{display:block;white-space:nowrap!important;word-break:keep-all;overflow:visible;text-overflow:clip}
+.self-history-title-cell{white-space:normal!important;word-break:keep-all;line-height:1.35}
+.self-history-half-pagination{display:flex;align-items:center;justify-content:flex-end;gap:4px;flex-wrap:wrap;min-width:0}
+.self-history-half-pagination .platform-page-button{min-width:auto;height:27px;padding:0 8px;font-size:10.5px}
+.self-history-empty{padding:18px 10px;text-align:center;color:#98a2b3;font-size:12px}
+@media (max-width:980px){
+  #selfHistoryModal .modal{width:calc(100vw - 20px)}
+  .self-history-bottom-grid{grid-template-columns:1fr}
+  .self-history-table th:nth-child(2){width:190px}
+}
 #participantSummaryStrip[hidden]{display:none!important}
 
 
@@ -1213,12 +1232,32 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
   padding:0!important;margin:0!important
 }
 
+
+/* 정기교육 월별 개인 교육일 붙여넣기 */
+.regular-halfyear-import-modal{width:min(1120px,94vw);max-height:92vh}
+.regular-halfyear-import-modal .modal-body{display:flex;flex-direction:column;gap:10px;overflow-y:auto}
+.regular-import-guide{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid #cfe0ff;border-radius:8px;background:#f5f8ff;color:#344054;font-size:12px;line-height:1.5}
+.regular-import-guide strong{flex:0 0 auto;color:#2457c5}.regular-import-guide span{min-width:0}
+.regular-import-controls{display:grid;grid-template-columns:160px minmax(280px,1fr);gap:10px}
+#regularImportText{min-height:210px;max-height:320px;resize:vertical;white-space:pre;font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;font-size:11px;line-height:1.45}
+.regular-import-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.regular-import-summary>div{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.regular-import-summary span{font-size:11px;color:#667085}.regular-import-summary strong{font-size:17px;color:#1d2939}
+.regular-import-month-map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.regular-import-month-item{min-width:0;padding:7px 9px;border:1px solid var(--line);border-radius:7px;background:#fafbfc;font-size:10.5px;line-height:1.4}
+.regular-import-month-item strong{display:block;margin-bottom:2px;color:#344054}.regular-import-month-item span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#667085}
+.regular-import-month-item.ok{border-color:#a6d7b3;background:#f4fbf6}.regular-import-month-item.error{border-color:#f1b4b4;background:#fff6f6}
+.regular-import-preview{min-height:34px;padding:8px 10px;border-radius:7px;background:#f7f8fa;color:#475467;font-size:11px;line-height:1.5}
+.regular-import-preview.success{background:#f0f9f3;color:#176b34}.regular-import-preview.error{background:#fff3f2;color:#b42318}
+.regular-import-details{border:1px solid var(--line);border-radius:7px;background:#fff;font-size:11px}.regular-import-details summary{cursor:pointer;padding:7px 10px;font-weight:750;color:#475467}.regular-import-details>div{max-height:150px;overflow-y:auto;padding:0 10px 8px}
+.regular-import-excluded-row{display:grid;grid-template-columns:100px 130px 1fr;gap:8px;padding:4px 0;border-top:1px solid var(--line-soft);align-items:start}.regular-import-excluded-row span:last-child{color:#b42318}
+@media(max-width:900px){.regular-import-controls{grid-template-columns:1fr}.regular-import-summary{grid-template-columns:repeat(2,1fr)}.regular-import-month-map{grid-template-columns:1fr}}
 </style></head>
 <body>
 <aside class="sidebar" id="sidebar">
 <div class="logo-box">
 <img alt="H&amp;iruja" class="logo" src="https://hniruja.com/wp-content/uploads/2024/02/h-%EC%9D%B4%EB%A3%A8%EC%9E%90.png"/>
-<div class="site-name">안전교육 자료실</div>
+<div class="site-name">안전보건교육 자료실</div>
 </div>
 <nav aria-label="교육 분류" class="menu" id="categoryMenu"></nav>
 <nav class="menu" hidden="" id="adminMenu">
@@ -1238,6 +1277,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 <div class="top-actions">
 <button class="btn btn-secondary" id="loginButton" type="button">로그인</button>
 <div class="top-actions" hidden="" id="adminTopActions">
+<button class="btn btn-secondary" hidden="" id="regularHalfYearImportButton" type="button">월별 교육일 일괄입력</button>
 <button class="btn btn-primary" id="addEducationButton" type="button">교육 추가</button>
 <button class="btn btn-danger" id="logoutButton" type="button">로그아웃</button>
 </div>
@@ -1604,20 +1644,39 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 <div aria-labelledby="selfHistoryTitle" aria-modal="true" class="modal modal-wide" role="dialog" tabindex="-1">
 <div class="modal-head"><div><h2 id="selfHistoryTitle">본인 교육이력</h2></div><button aria-label="닫기" class="close" data-close="selfHistoryModal" type="button">×</button></div>
 <div class="modal-body">
-<div aria-label="교육이력 유형" class="self-history-tabs" role="tablist">
-<button aria-controls="selfHistoryPanel" aria-selected="true" class="self-history-tab active" id="selfHistoryRegularTab" role="tab" tabindex="0" type="button">정기안전교육</button>
-<button aria-controls="selfHistoryPanel" aria-selected="false" class="self-history-tab" id="selfHistorySpecialTab" role="tab" tabindex="-1" type="button">특별안전교육</button>
-<button aria-controls="selfHistoryPanel" aria-selected="false" class="self-history-tab" id="selfHistoryHiringTab" role="tab" tabindex="-1" type="button">채용시교육</button>
-</div>
-<div aria-labelledby="selfHistoryRegularTab" class="card" id="selfHistoryPanel" role="tabpanel">
-<div class="table-wrap">
+<div class="self-history-sheet">
+<section class="self-history-section self-history-regular" aria-labelledby="selfHistoryRegularHeading">
+<div class="self-history-section-head"><h3 id="selfHistoryRegularHeading">정기안전보건교육</h3><div class="self-history-half-pagination" id="selfHistoryHalfPagination"></div></div>
+<div class="self-history-table-wrap">
 <table class="self-history-table">
-<thead><tr><th class="center">교육구분</th><th class="center">교육명</th><th class="center">교육일자</th><th class="center">결과보고서</th></tr></thead>
-<tbody id="selfHistoryTableBody"></tbody>
+<thead><tr><th class="center">교육명</th><th class="center">개인 교육일자</th><th class="center">결과보고서</th></tr></thead>
+<tbody id="selfHistoryRegularBody"></tbody>
 </table>
 </div>
-<div aria-live="polite" id="selfHistoryStatus"></div>
-<div class="platform-pagination" hidden="" id="selfHistoryPagination"></div>
+<div aria-live="polite" id="selfHistoryRegularStatus"></div>
+</section>
+<div class="self-history-bottom-grid">
+<section class="self-history-section" aria-labelledby="selfHistorySpecialHeading">
+<div class="self-history-section-head"><h3 id="selfHistorySpecialHeading">특별안전교육</h3></div>
+<div class="self-history-table-wrap">
+<table class="self-history-table">
+<thead><tr><th class="center">교육구분</th><th class="center">교육일자</th><th class="center">결과보고서</th></tr></thead>
+<tbody id="selfHistorySpecialBody"></tbody>
+</table>
+</div>
+<div aria-live="polite" id="selfHistorySpecialStatus"></div>
+</section>
+<section class="self-history-section" aria-labelledby="selfHistoryHiringHeading">
+<div class="self-history-section-head"><h3 id="selfHistoryHiringHeading">채용시교육</h3></div>
+<div class="self-history-table-wrap">
+<table class="self-history-table">
+<thead><tr><th class="center">교육명</th><th class="center">교육일자</th><th class="center">결과보고서</th></tr></thead>
+<tbody id="selfHistoryHiringBody"></tbody>
+</table>
+</div>
+<div aria-live="polite" id="selfHistoryHiringStatus"></div>
+</section>
+</div>
 </div>
 </div>
 </div>
@@ -1715,6 +1774,34 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 <div aria-live="assertive" class="form-error" id="educationFormError" role="alert"></div>
 <div class="modal-actions"><button class="btn btn-secondary" data-close="educationModal" type="button">취소</button><button class="btn btn-primary" type="submit">저장</button></div>
 </form>
+</div>
+</div>
+</div>
+<div aria-hidden="true" class="modal-backdrop" hidden="" id="regularHalfYearImportModal">
+<div aria-labelledby="regularHalfYearImportTitle" aria-modal="true" class="modal modal-wide regular-halfyear-import-modal" role="dialog" tabindex="-1">
+<div class="modal-head"><div><h2 id="regularHalfYearImportTitle">정기교육 월별 교육일 일괄입력</h2></div><button aria-label="닫기" class="close" data-close="regularHalfYearImportModal" type="button">×</button></div>
+<div class="modal-body">
+<div class="regular-import-guide">
+<strong>붙여넣기 기준</strong>
+<span>상단에서 교육연도와 월을 지정한 뒤 <b>사원명·부서·직급·해당월</b> 순서의 표를 붙여넣으세요. 해당월 셀이 <b>YYYY-MM-DD</b> 날짜이면 등록하며, 공란이나 휴직·출장·신규입사자 같은 문구가 있는 직원은 제외합니다.</span>
+</div>
+<div class="regular-import-controls">
+<div class="field"><label for="regularImportYear">교육연도</label><input id="regularImportYear" max="2100" min="2000" step="1" type="number" value="2026"/></div>
+<div class="field"><label for="regularImportMonth">교육월</label><select id="regularImportMonth"><option value="1">1월</option><option value="2">2월</option><option value="3">3월</option><option value="4">4월</option><option value="5">5월</option><option value="6">6월</option><option value="7">7월</option><option value="8">8월</option><option value="9">9월</option><option value="10">10월</option><option value="11">11월</option><option value="12">12월</option></select></div>
+<div class="field"><label for="regularImportFile">텍스트 파일 불러오기</label><input accept=".txt,.tsv,.csv,text/plain,text/tab-separated-values,text/csv" id="regularImportFile" type="file"/></div>
+</div>
+<div class="field"><label for="regularImportText">표 붙여넣기</label><textarea id="regularImportText" placeholder="사원명&#9;부서&#9;직급&#9;해당월"></textarea></div>
+<div class="regular-import-summary" id="regularImportSummary">
+<div><span>전체 행</span><strong id="regularImportTotal">0</strong></div>
+<div><span>등록 대상</span><strong id="regularImportEligible">0</strong></div>
+<div><span>제외 직원</span><strong id="regularImportExcluded">0</strong></div>
+<div><span>직원 미일치</span><strong id="regularImportUnmatched">0</strong></div>
+</div>
+<div class="regular-import-month-map" id="regularImportMonthMap"></div>
+<div aria-live="polite" class="regular-import-preview" id="regularImportPreview"></div>
+<details class="regular-import-details" id="regularImportExcludedDetails"><summary>제외 월·미일치 내역 보기</summary><div id="regularImportExcludedList"></div></details>
+<div aria-live="assertive" class="form-error" id="regularImportError" role="alert"></div>
+<div class="modal-actions"><button class="btn btn-secondary" data-close="regularHalfYearImportModal" type="button">취소</button><button class="btn btn-secondary" id="regularImportPreviewButton" type="button">검증하기</button><button class="btn btn-primary" disabled="" id="regularImportRunButton" type="button">일괄등록</button></div>
 </div>
 </div>
 </div>
@@ -1859,7 +1946,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
       attendanceSelected:new Set(),attendanceChannel:null,attendancePollTimer:null,attendanceLoadingRows:new Set(),attendanceLogEmployeeId:null,
       attendanceConfirmAction:null,attendanceConfirmEmployeeIds:[],attendanceLocalMutationUntil:0,attendancePage:1,attendancePageSize:50,
       currentEmployeeTotal:null,educationParticipantCounts:new Map(),educationIndividualRanges:new Map(),participantSecondDateSupport:"unknown",
-      selfHistoryRows:[],selfHistoryType:"regular",selfHistoryPages:{regular:1,special:1,hiring:1}
+      selfHistoryRows:[],selfHistoryHalfIndex:-1
     };
     const $=id=>document.getElementById(id);
     function escapeHtml(value){
@@ -1940,6 +2027,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
       $("healthView").hidden=name!=="health";
       $("attendanceView").hidden=name!=="attendance";
       $("addEducationButton").hidden=!(state.isAdmin&&name==="education");
+      const halfYearButton=$("regularHalfYearImportButton");if(halfYearButton)halfYearButton.hidden=!(state.isAdmin&&name==="education"&&categoryMeta(state.selectedCategoryId).type==="regular");
       $("employeeMenuButton").classList.toggle("active",name==="employees");
       $("departmentMenuButton").classList.toggle("active",name==="departments");
       $("healthMenuButton").classList.toggle("active",name==="health");
@@ -1989,9 +2077,25 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
       return [...categories,result.data];
     }
 
+    async function fetchAllEducationParticipantDateRows(){
+      const rows=[],pageSize=1000,maxPages=50;
+      for(let page=0;page<maxPages;page++){
+        const from=page*pageSize,to=from+pageSize-1;
+        const result=await db.from("education_participants")
+          .select("id,education_link_id,education_date")
+          .order("id",{ascending:true})
+          .range(from,to);
+        if(result.error)return {data:rows,error:result.error};
+        const batch=result.data||[];rows.push(...batch);
+        if(batch.length<pageSize)return {data:rows,error:null};
+      }
+      console.warn("[교육 대상자 날짜 조회] 최대 조회 페이지에 도달했습니다.");
+      return {data:rows,error:null};
+    }
+
     async function loadPublicData(){
       renderSkeleton("educationTableBody",state.isAdmin?7:6,6);
-      const [categoriesResult,linksResult,currentEmployeesResult,participantRowsResult]=await Promise.all([
+      const [categoriesResult,linksResult,currentEmployeesResult]=await Promise.all([
         db.from("education_categories")
           .select("id,category_code,category_name,parent_id,display_order,is_active")
           .eq("is_active",true)
@@ -2003,8 +2107,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
           .order("second_session_date",{ascending:false,nullsFirst:false})
           .order("individual_start_date",{ascending:false,nullsFirst:false})
           .order("updated_at",{ascending:false}),
-        db.rpc("get_current_employees"),
-        db.from("education_participants").select("education_link_id,education_date")
+        db.rpc("get_current_employees")
       ]);
       if(categoriesResult.error||linksResult.error){
         console.error(categoriesResult.error||linksResult.error);
@@ -2014,16 +2117,27 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
       state.categories=sortEducationCategories(await ensureRequiredSpecialCategory(categoriesResult.data||[]));
       state.educationLinks=linksResult.data||[];
       state.currentEmployeeTotal=currentEmployeesResult.error?null:(currentEmployeesResult.data||[]).length;
+      const participantRowsResult=await fetchAllEducationParticipantDateRows();
       state.educationParticipantCounts=new Map();
       state.educationIndividualRanges=new Map();
+      const linkMap=new Map(state.educationLinks.map(item=>[String(item.id),item]));
+      state.educationLinks.forEach(link=>{
+        if(categoryMeta(link.category_id).type!=="regular"||!link.individual_start_date)return;
+        state.educationIndividualRanges.set(String(link.id),{start:link.individual_start_date,end:link.individual_end_date||link.individual_start_date});
+      });
       if(!participantRowsResult.error){
-        const linkMap=new Map(state.educationLinks.map(item=>[String(item.id),item]));
+        const datesByLink=new Map();
         (participantRowsResult.data||[]).forEach(row=>{
           const key=String(row.education_link_id);state.educationParticipantCounts.set(key,(state.educationParticipantCounts.get(key)||0)+1);
           const link=linkMap.get(key),date=row.education_date;
-          if(!link||categoryMeta(link.category_id).type!=="regular"||!date||date===link.first_session_date||date===link.second_session_date)return;
-          const range=state.educationIndividualRanges.get(key)||{start:date,end:date};
-          if(date<range.start)range.start=date;if(date>range.end)range.end=date;state.educationIndividualRanges.set(key,range);
+          if(!link||categoryMeta(link.category_id).type!=="regular"||!date)return;
+          if(!datesByLink.has(key))datesByLink.set(key,[]);datesByLink.get(key).push(date);
+        });
+        datesByLink.forEach((allDates,key)=>{
+          const link=linkMap.get(key),unique=[...new Set(allDates)].sort();
+          const withoutSessions=unique.filter(date=>date!==link.first_session_date&&date!==link.second_session_date);
+          const effective=withoutSessions.length?withoutSessions:unique;
+          if(effective.length)state.educationIndividualRanges.set(key,{start:effective[0],end:effective[effective.length-1]});
         });
       }
       renderCategoryMenu();
@@ -2179,7 +2293,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
       const department=candidate.department_name||"";
       const name=candidate.employee_name||"";
       clearSelfSearch();
-      await openSelfHistory(department,name);
+      await openSelfHistory(department,name,candidate.employee_id);
     }
 
 
@@ -2439,14 +2553,15 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
       if(report&&!validUrl(report)){$("educationFormError").textContent="결과보고서 링크를 확인하세요.";return}
       if(!$("firstDate").value){$("educationFormError").textContent="실시일을 입력하세요.";return}
       const storedTitle=meta.type==="regular"?$("educationTitle").value.trim():meta.label;
+      const id=$("educationId").value,existing=id?state.educationLinks.find(item=>Number(item.id)===Number(id)):null;
       const payload={
         category_id:categoryId,
         title:storedTitle,
         education_topic:meta.type==="regular"?$("educationTopic").value.trim():null,
         first_session_date:$("firstDate").value||null,
         second_session_date:meta.type==="regular"?($("secondDate").value||null):null,
-        individual_start_date:null,
-        individual_end_date:null,
+        individual_start_date:meta.type==="regular"?(existing?.individual_start_date||null):null,
+        individual_end_date:meta.type==="regular"?(existing?.individual_end_date||null):null,
         conducted_date:$("firstDate").value||null,
         description:null,
         web_url:meta.type==="regular"?material:null,
@@ -2455,10 +2570,9 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
         applicable_period:null,
         is_active:true
       };
-      const id=$("educationId").value;
       const result=id?await db.from("education_links").update(payload).eq("id",Number(id)).select("*").single():await db.from("education_links").insert(payload).select("*").single();
       if(result.error){$("educationFormError").textContent=friendlyErrorMessage(result.error,"저장");return}
-      closeModal("educationModal");showToast("교육이 저장되었습니다.");await loadPublicData();if(!id)await openParticipants(result.data);
+      closeModal("educationModal");showToast("교육이 저장되었습니다.");await loadPublicData();if(meta.type==="regular"&&id&&window.syncRegularEducationRange)await window.syncRegularEducationRange(Number(id));if(!id)await openParticipants(result.data);
     }
     async function deleteEducation(item){if(!confirm(`"${item.title}" 교육을 삭제하시겠습니까?`))return;const {error}=await db.from("education_links").delete().eq("id",item.id);if(error){showToast(friendlyErrorMessage(error,"요청"));return}showToast("교육이 삭제되었습니다.");await loadPublicData()}
 
@@ -2477,8 +2591,8 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
       if(failed)showToast(`대상자 ${success}명 추가 · ${failed}명 실패`);else showToast(`선택한 ${success}명을 대상자로 추가했습니다.`);
     }
     async function assignAllParticipants(){const {data,error}=await db.rpc("assign_all_current_employees",{p_education_link_id:state.currentEducation.id});if(error){showToast(friendlyErrorMessage(error,"요청"));return}const r=data?.[0]||{};state.employeePickerSelected?.clear();showToast(`전체 등록 ${r.inserted_count||0}명 · 대상자 총 ${r.total_current_employees||0}명`);await reloadParticipants()}
-    async function removeParticipant(id,name){if(!confirm(`${name}님을 대상자에서 삭제하시겠습니까?`))return;const {error}=await db.from("education_participants").delete().eq("id",id);if(error){showToast(friendlyErrorMessage(error,"요청"));return}await reloadParticipants()}
-    async function deleteAllParticipants(){if(!state.participants.length)return;if(!confirm(`대상자 ${state.participants.length}명을 모두 삭제하시겠습니까?`))return;const {error}=await db.from("education_participants").delete().eq("education_link_id",state.currentEducation.id);if(error){showToast(friendlyErrorMessage(error,"요청"));return}showToast("대상자를 모두 삭제했습니다.");await reloadParticipants()}
+    async function removeParticipant(id,name){if(!confirm(`${name}님을 대상자에서 삭제하시겠습니까?`))return;const {error}=await db.from("education_participants").delete().eq("id",id);if(error){showToast(friendlyErrorMessage(error,"요청"));return}await reloadParticipants();if(categoryMeta(state.currentEducation?.category_id).type==="regular"&&window.syncRegularEducationRange)await window.syncRegularEducationRange(state.currentEducation.id)}
+    async function deleteAllParticipants(){if(!state.participants.length)return;if(!confirm(`대상자 ${state.participants.length}명을 모두 삭제하시겠습니까?`))return;const {error}=await db.from("education_participants").delete().eq("education_link_id",state.currentEducation.id);if(error){showToast(friendlyErrorMessage(error,"요청"));return}showToast("대상자를 모두 삭제했습니다.");await reloadParticipants();if(categoryMeta(state.currentEducation?.category_id).type==="regular"&&window.syncRegularEducationRange)await window.syncRegularEducationRange(state.currentEducation.id)}
 
     async function downloadExcelTemplate(){
       const ws=XLSX.utils.aoa_to_sheet([
@@ -3082,6 +3196,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
   const originalSelectCategory=selectCategory;
   window.selectCategory=function(category){paging.education=1;return originalSelectCategory(category)};
   window.renderEducationTable=function(){
+    const halfYearButton=$('regularHalfYearImportButton');if(halfYearButton)halfYearButton.hidden=!(state.isAdmin&&state.currentView==='education'&&categoryMeta(state.selectedCategoryId).type==='regular');
     const body=$('educationTableBody');body.replaceChildren();
     const selectedMeta=categoryMeta(state.selectedCategoryId);renderEducationHeader(selectedMeta.type);
     const rows=state.educationLinks.filter(x=>Number(x.category_id)===Number(state.selectedCategoryId));
@@ -3291,6 +3406,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     $("adminTopActions").hidden=!state.isAuthenticated;
     $("logoutButton").hidden=!state.isAuthenticated;
     $("addEducationButton").hidden=!(state.isAdmin&&state.currentView==="education");
+    const halfYearButton=$("regularHalfYearImportButton");if(halfYearButton)halfYearButton.hidden=!(state.isAdmin&&state.currentView==="education"&&categoryMeta(state.selectedCategoryId).type==="regular");
     if(!state.isAdmin&&state.currentView!=="education")showView("education");
     if(state.isAdmin&&state.currentView==="employees")loadEmployeeTab(state.employeeTab);
     if(state.categories.length)renderEducationTable();
@@ -3851,12 +3967,24 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     body.appendChild(fragment);renderParticipantPager(rows.length,renderParticipants);updateParticipantSelectionUI();
   };
 
+  async function syncRegularEducationRange(linkId){
+    const link=state.educationLinks.find(item=>Number(item.id)===Number(linkId))||state.currentEducation;if(!link||categoryMeta(link.category_id).type!=='regular')return null;
+    const result=await db.from('education_participants').select('education_date').eq('education_link_id',Number(linkId));if(result.error){console.warn('[정기교육 개별기간 동기화]',result.error);return null}
+    const all=[...new Set((result.data||[]).map(row=>row.education_date).filter(Boolean))].sort();
+    const withoutSessions=all.filter(date=>date!==link.first_session_date&&date!==link.second_session_date),effective=withoutSessions.length?withoutSessions:all;
+    const start=effective[0]||null,end=effective[effective.length-1]||null;
+    const update=await db.from('education_links').update({individual_start_date:start,individual_end_date:end}).eq('id',Number(linkId));if(update.error){console.warn('[정기교육 개별기간 저장]',update.error);return null}
+    link.individual_start_date=start;link.individual_end_date=end;if(start)state.educationIndividualRanges.set(String(linkId),{start,end:end||start});else state.educationIndividualRanges.delete(String(linkId));
+    return {start,end};
+  }
+  window.syncRegularEducationRange=syncRegularEducationRange;
+
   async function saveRegularParticipantDate(participant,input){
     if(input.disabled)return;const previous=participant.education_date||'';input.disabled=true;input.classList.add('is-saving');state.participantLocalMutationUntil=Date.now()+1600;
     const {data,error}=await db.rpc('update_education_participant_date',{p_education_link_id:Number(state.currentEducation.id),p_participant_id:Number(participant.participant_id),p_education_date:input.value||null,p_expected_updated_at:participant.updated_at||null});
     input.disabled=false;input.classList.remove('is-saving');
     if(error){console.error('[교육 대상자 관리] 개인 교육일 저장 실패',error);input.value=previous;input.classList.add('is-conflict');setTimeout(()=>input.classList.remove('is-conflict'),1200);const conflict=String(error.message||'').includes('다른 관리자가');showToast(conflict?'다른 관리자가 먼저 수정했습니다. 최신 정보를 다시 불러옵니다.':'교육일자를 저장하지 못했습니다.');if(conflict)await reloadParticipants({silent:true});return}
-    const row=Array.isArray(data)?data[0]:data;participant.education_date=row?.education_date??(input.value||null);participant.updated_at=row?.updated_at||participant.updated_at;input.value=participant.education_date||'';showToast('교육일자를 저장했습니다.');
+    const row=Array.isArray(data)?data[0]:data;participant.education_date=row?.education_date??(input.value||null);participant.updated_at=row?.updated_at||participant.updated_at;input.value=participant.education_date||'';await syncRegularEducationRange(state.currentEducation.id);showToast('교육일자를 저장했습니다.');
   }
 
   function missingFunction(error){const raw=String(error?.message||'').toLowerCase();return error?.code==='PGRST202'||raw.includes('could not find the function')||raw.includes('function')&&raw.includes('not exist')}
@@ -3911,7 +4039,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
       const ids=[...state.participantSelected].map(Number).filter(Number.isFinite);if(!ids.length){closeModal('participantDateModal');return}submit.disabled=true;state.participantLocalMutationUntil=Date.now()+2000;
       const {data,error}=await db.rpc('bulk_update_education_participant_dates',{p_education_link_id:Number(state.currentEducation.id),p_participant_ids:ids,p_education_date:date1});submit.disabled=false;
       if(error){console.error('[교육 대상자 관리] 교육일 일괄 입력 실패',error);byId('participantDateError').textContent=friendlyErrorMessage(error,'교육일 일괄입력');return}
-      const updated=new Map((data||[]).map(x=>[String(x.participant_id),x]));state.participants.forEach(x=>{const row=updated.get(String(x.participant_id));if(row){x.education_date=row.education_date;x.updated_at=row.updated_at}});state.participantSelected.clear();closeModal('participantDateModal');renderParticipants();showToast(`${updated.size||ids.length}명의 교육일자를 입력했습니다.`);return;
+      const updated=new Map((data||[]).map(x=>[String(x.participant_id),x]));state.participants.forEach(x=>{const row=updated.get(String(x.participant_id));if(row){x.education_date=row.education_date;x.updated_at=row.updated_at}});await syncRegularEducationRange(state.currentEducation.id);state.participantSelected.clear();closeModal('participantDateModal');renderParticipants();showToast(`${updated.size||ids.length}명의 교육일자를 입력했습니다.`);return;
     }
     const selectedIds=new Set([...state.participantSelected].map(String)),targets=state.participants.filter(x=>selectedIds.has(String(x.participant_id)));if(!targets.length){byId('participantDateError').textContent='날짜를 입력할 대상자를 선택하세요.';return}
     if(date2&&state.participantSecondDateSupport==='unsupported'){byId('participantDateError').textContent=secondDateConfigurationError().userMessage;return}
@@ -3959,6 +4087,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
   byId('participantBulkDateButton').onclick=openParticipantDateModal;byId('participantDateForm').onsubmit=applyBulkParticipantDate;byId('participantSearch').oninput=debounce(()=>{if(window.platformPaging)platformPaging.participants=1;renderParticipants()},160);
 
   function selfHistoryType(item){
+    if(item?._history_type)return item._history_type;
     if(item.category_id)return categoryMeta(item.category_id).type;
     const categoryText=String(item.education_category||item.category_name||item.education_type||'').replace(/\s+/g,'');
     const titleText=String(item.education_title||'').replace(/\s+/g,'');
@@ -3971,56 +4100,167 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     });
     return matched?categoryMeta(matched.id).type:'regular';
   }
-  function historyLatestTime(item){
-    const values=[item.common_education_date,item.first_session_date,item.second_session_date,item.conducted_date,item.education_date,item.education_date_2,item.individual_date_1,item.individual_date_2].filter(Boolean);
-    return Math.max(0,...values.map(value=>new Date(`${String(value).slice(0,10)}T00:00:00`).getTime()||0));
+  function firstHistoryValue(item,keys){for(const key of keys){const value=item?.[key];if(value)return String(value).slice(0,10)}return ''}
+  function historyPersonalDate(item){return firstHistoryValue(item,['_personal_date','participant_education_date','personal_education_date','individual_education_date','employee_education_date','actual_education_date','training_date','completion_date','education_date','individual_date_1'])}
+  function historyPersonalDate2(item){return firstHistoryValue(item,['_personal_date_2','participant_education_date_2','personal_education_date_2','individual_education_date_2','employee_education_date_2','education_date_2','individual_date_2'])}
+  function historyCommonDate(item){return firstHistoryValue(item,['common_education_date','first_session_date','conducted_date'])}
+  function historyLinkId(item){
+    const explicit=[item.education_link_id,item.link_id,item.training_link_id,item.education_id].find(value=>value!==undefined&&value!==null&&value!=='');
+    if(explicit!==undefined)return String(explicit);
+    const type=selfHistoryType(item),title=String(item.education_title||'').trim(),category=String(item.education_category||item.category_name||'').trim(),common=historyCommonDate(item);
+    const candidates=state.educationLinks.filter(link=>categoryMeta(link.category_id).type===type);
+    const matched=candidates.find(link=>{
+      const sameTitle=title&&String(link.title||'').trim()===title;
+      const meta=categoryMeta(link.category_id),sameCategory=category&&(meta.label===category||meta.category?.category_name===category);
+      const linkDate=String(link.first_session_date||link.conducted_date||'').slice(0,10);
+      return (sameTitle||sameCategory)&&(!common||linkDate===common);
+    })||candidates.find(link=>title&&String(link.title||'').trim()===title);
+    return matched?String(matched.id):'';
   }
-  function selfHistoryDateText(item,type){
-    // 공개 교육이력에는 교육 공통 일정이 아니라 조회된 직원 개인의 교육일자만 표시한다.
+  function historyLinkRow(link,participant,existing={}){
+    const meta=categoryMeta(link.category_id),linkId=String(link.id);
+    return {
+      ...existing,
+      _history_link_id:linkId,
+      _history_type:meta.type,
+      category_id:link.category_id,
+      education_link_id:link.id,
+      education_title:existing.education_title||link.title||meta.label||'-',
+      education_category:existing.education_category||meta.label||meta.category?.category_name||'-',
+      category_name:existing.category_name||meta.label||meta.category?.category_name||'-',
+      first_session_date:link.first_session_date||existing.first_session_date||null,
+      second_session_date:link.second_session_date||existing.second_session_date||null,
+      conducted_date:link.conducted_date||existing.conducted_date||null,
+      common_education_date:link.first_session_date||link.conducted_date||existing.common_education_date||null,
+      result_report_url:link.result_report_url||existing.result_report_url||null,
+      _personal_date:participant?.education_date||historyPersonalDate(existing)||null,
+      _personal_date_2:participant?.education_date_2||historyPersonalDate2(existing)||null
+    };
+  }
+  async function enrichSelfHistoryPersonalDates(rows,employeeId){
+    const prepared=(rows||[]).map(item=>({...item,_history_link_id:historyLinkId(item)}));
+    if(!employeeId)return prepared;
+    let result=await db.from('education_participants')
+      .select('education_link_id,education_date,education_date_2')
+      .eq('employee_id',Number(employeeId));
+    if(result.error&&missingSecondDateColumn(result.error))result=await db.from('education_participants')
+      .select('education_link_id,education_date')
+      .eq('employee_id',Number(employeeId));
+    if(result.error){console.warn('[일반직원 개인 교육일 전체 조회]',result.error);return prepared}
+    const existingByLink=new Map();
+    prepared.forEach(item=>{if(item._history_link_id)existingByLink.set(String(item._history_link_id),item)});
+    const merged=new Map();
+    (result.data||[]).forEach(participant=>{
+      const linkId=String(participant.education_link_id||'');
+      const link=state.educationLinks.find(item=>String(item.id)===linkId);
+      if(!link)return;
+      merged.set(linkId,historyLinkRow(link,participant,existingByLink.get(linkId)||{}));
+    });
+    prepared.forEach((item,index)=>{
+      const linkId=String(item._history_link_id||'');
+      if(linkId&&merged.has(linkId))return;
+      const link=state.educationLinks.find(row=>String(row.id)===linkId);
+      if(link)merged.set(linkId,historyLinkRow(link,null,item));
+      else merged.set(`rpc-${index}`,item);
+    });
+    return [...merged.values()];
+  }
+  function historyDateTime(value){return /^\d{4}-\d{2}-\d{2}$/.test(String(value||'').slice(0,10))?new Date(`${String(value).slice(0,10)}T00:00:00`).getTime()||0:0}
+  function historyEducationPeriodDate(item){return firstHistoryValue(item,['common_education_date','first_session_date','conducted_date'])||historyPersonalDate(item)}
+  function historyLatestTime(item){
+    const values=[historyPersonalDate2(item),historyPersonalDate(item),historyEducationPeriodDate(item),item.second_session_date].filter(Boolean);
+    return Math.max(0,...values.map(historyDateTime));
+  }
+  function selfHistoryDateLines(item,type){
     if(type==='special'){
-      const common=item.common_education_date||item.first_session_date||item.conducted_date;
-      const first=item.education_date||item.individual_date_1;
-      const second=item.education_date_2||item.individual_date_2;
-      const lines=[];
+      const lines=[],common=historyCommonDate(item),first=historyPersonalDate(item),second=historyPersonalDate2(item);
       if(common)lines.push(`(공통) ${formatDateDot(common)}`);
       if(first)lines.push(`(개별) ${formatDateDot(first)}`);
       if(second)lines.push(`(개별) ${formatDateDot(second)}`);
-      return lines.join('\n')||'-';
+      return lines.length?lines:['-'];
     }
     if(type==='hiring'){
-      const hiringDate=item.education_date||item.conducted_date||item.common_education_date||item.first_session_date;
-      return hiringDate?formatDateDot(hiringDate):'-';
+      const date=historyPersonalDate(item)||historyCommonDate(item);
+      return [date?formatDateDot(date):'-'];
     }
-    const personalDate=item.education_date||item.individual_date_1||item.conducted_date;
-    return personalDate?formatDateDot(personalDate):'-';
+    const date=historyPersonalDate(item);
+    return [date?formatDateDot(date):'-'];
   }
-  function syncSelfHistoryTabs(){
-    const map={regular:'selfHistoryRegularTab',special:'selfHistorySpecialTab',hiring:'selfHistoryHiringTab'};
-    Object.entries(map).forEach(([type,id])=>{const tab=byId(id),active=type===state.selfHistoryType;tab.classList.toggle('active',active);tab.setAttribute('aria-selected',String(active));tab.tabIndex=active?0:-1});
-    byId('selfHistoryPanel').setAttribute('aria-labelledby',map[state.selfHistoryType]);
+  function appendHistoryDateCell(tr,item,type){
+    const td=document.createElement('td');td.className='center self-history-date';
+    selfHistoryDateLines(item,type).forEach(text=>{const line=document.createElement('span');line.className='self-history-date-line';line.textContent=text;td.appendChild(line)});
+    tr.appendChild(td);return td;
   }
-  function renderSelfHistoryPagination(total){
-    const box=byId('selfHistoryPagination'),pageSize=10,pages=Math.max(1,Math.ceil(total/pageSize)),key=state.selfHistoryType;
-    state.selfHistoryPages[key]=Math.min(Math.max(1,state.selfHistoryPages[key]||1),pages);box.replaceChildren();if(total<=pageSize){box.hidden=true;return}
-    box.hidden=false;const summary=document.createElement('span');summary.className='platform-page-summary';summary.textContent=`총 ${total}건 · ${state.selfHistoryPages[key]}/${pages}페이지`;box.appendChild(summary);
-    const add=(label,page,active=false,disabled=false)=>{const button=document.createElement('button');button.type='button';button.className='platform-page-button'+(active?' active':'');button.textContent=label;button.disabled=disabled;if(!disabled&&!active)button.onclick=()=>{state.selfHistoryPages[key]=page;renderSelfHistory()};box.appendChild(button)};
-    add('이전',state.selfHistoryPages[key]-1,false,state.selfHistoryPages[key]===1);for(let page=1;page<=pages;page++)add(String(page),page,page===state.selfHistoryPages[key]);add('다음',state.selfHistoryPages[key]+1,false,state.selfHistoryPages[key]===pages);
+  function appendHistoryReportCell(tr,item){
+    const report=document.createElement('td');report.className='center';
+    if(validUrl(item.result_report_url)){const a=document.createElement('a');a.className='download-link';a.textContent='결과보고서';a.href=item.result_report_url;a.target='_blank';a.rel='noopener noreferrer';report.appendChild(a)}
+    else{const p=document.createElement('span');p.className='progress';p.textContent='교육진행중';report.appendChild(p)}
+    tr.appendChild(report);
+  }
+  function historyTitle(item,type){
+    if(type==='special')return item.education_category||item.category_name||item.education_title||'-';
+    return item.education_title||item.education_category||item.category_name||'-';
+  }
+  function renderHistorySection(bodyId,statusId,rows,type){
+    const body=byId(bodyId),status=byId(statusId);body.replaceChildren();if(status)status.replaceChildren();
+    const sorted=[...(rows||[])].sort((a,b)=>{
+      if(type==='regular'){
+        const periodDiff=historyDateTime(historyEducationPeriodDate(b))-historyDateTime(historyEducationPeriodDate(a));
+        if(periodDiff)return periodDiff;
+      }
+      return historyLatestTime(b)-historyLatestTime(a);
+    });
+    if(!sorted.length){const tr=document.createElement('tr'),td=document.createElement('td');td.colSpan=3;td.className='self-history-empty';td.textContent='등록된 교육이력이 없습니다.';tr.appendChild(td);body.appendChild(tr);return}
+    const fragment=document.createDocumentFragment();sorted.forEach(item=>{const tr=document.createElement('tr');addTextCell(tr,historyTitle(item,type),'center self-history-title-cell',historyTitle(item,type));appendHistoryDateCell(tr,item,type);appendHistoryReportCell(tr,item);fragment.appendChild(tr)});body.appendChild(fragment);
+  }
+  function regularHalfGroups(rows){
+    const groups=new Map();
+    (rows||[]).forEach(item=>{
+      const date=historyEducationPeriodDate(item);if(!/^\d{4}-\d{2}-\d{2}$/.test(date))return;
+      const year=Number(date.slice(0,4)),month=Number(date.slice(5,7)),half=month<=6?1:2,key=year*10+half;
+      if(!groups.has(key))groups.set(key,{key,year,half,label:`${String(year).slice(-2)}년 ${half===1?'상반기':'하반기'}`,rows:[],latest:0});
+      const group=groups.get(key);group.rows.push(item);group.latest=Math.max(group.latest,historyLatestTime(item));
+    });
+    return [...groups.values()].sort((a,b)=>b.key-a.key);
+  }
+  function renderRegularHalfPagination(groups){
+    const box=byId('selfHistoryHalfPagination');box.replaceChildren();
+    if(groups.length<=1){box.hidden=true;return}box.hidden=false;
+    groups.forEach((group,index)=>{const button=document.createElement('button');button.type='button';button.className='platform-page-button'+(index===state.selfHistoryHalfIndex?' active':'');button.textContent=group.label;button.onclick=()=>{state.selfHistoryHalfIndex=index;renderSelfHistory()};box.appendChild(button)});
+  }
+  function latestCompletedHalfKey(referenceDate=new Date()){
+    const year=referenceDate.getFullYear(),month=referenceDate.getMonth()+1;
+    return month>=7?year*10+1:(year-1)*10+2;
+  }
+  function defaultCompletedHalfIndex(groups,referenceDate=new Date()){
+    if(!groups.length)return 0;
+    const completedKey=latestCompletedHalfKey(referenceDate);
+    const exactIndex=groups.findIndex(group=>group.key===completedKey);
+    if(exactIndex>=0)return exactIndex;
+    const olderIndex=groups.findIndex(group=>group.key<completedKey);
+    return olderIndex>=0?olderIndex:0;
   }
   function renderSelfHistory(){
-    syncSelfHistoryTabs();const type=state.selfHistoryType,rows=state.selfHistoryRows.filter(item=>selfHistoryType(item)===type).sort((a,b)=>historyLatestTime(b)-historyLatestTime(a));
-    const pageSize=10,page=state.selfHistoryPages[type]||1,start=(page-1)*pageSize,items=rows.slice(start,start+pageSize),body=byId('selfHistoryTableBody');body.replaceChildren();setStatus('selfHistoryStatus','');
-    if(!rows.length){setStatus('selfHistoryStatus',`${type==='regular'?'정기안전교육':type==='special'?'특별안전교육':'채용시교육'} 이력이 없습니다.`);renderSelfHistoryPagination(0);return}
-    const fragment=document.createDocumentFragment();items.forEach(item=>{const tr=document.createElement('tr');addTextCell(tr,item.education_category||'-','center ellipsis',item.education_category||'-');addTextCell(tr,item.education_title||item.education_category||'-','center ellipsis',item.education_title||item.education_category||'-');addTextCell(tr,selfHistoryDateText(item,type),'center self-history-date');const report=document.createElement('td');report.className='center';if(validUrl(item.result_report_url)){const a=document.createElement('a');a.className='download-link';a.textContent='결과보고서';a.href=item.result_report_url;a.target='_blank';a.rel='noopener noreferrer';report.appendChild(a)}else{const p=document.createElement('span');p.className='progress';p.textContent='교육진행중';report.appendChild(p)}tr.appendChild(report);fragment.appendChild(tr)});body.appendChild(fragment);renderSelfHistoryPagination(rows.length);
+    const regular=state.selfHistoryRows.filter(item=>selfHistoryType(item)==='regular'),special=state.selfHistoryRows.filter(item=>selfHistoryType(item)==='special'),hiring=state.selfHistoryRows.filter(item=>selfHistoryType(item)==='hiring');
+    const groups=regularHalfGroups(regular);
+    if(state.selfHistoryHalfIndex<0||state.selfHistoryHalfIndex>=groups.length)state.selfHistoryHalfIndex=defaultCompletedHalfIndex(groups);
+    const active=groups[state.selfHistoryHalfIndex];
+    byId('selfHistoryRegularHeading').textContent=active?`정기안전보건교육 · ${active.label}`:'정기안전보건교육';renderRegularHalfPagination(groups);
+    renderHistorySection('selfHistoryRegularBody','selfHistoryRegularStatus',active?.rows||[],'regular');
+    renderHistorySection('selfHistorySpecialBody','selfHistorySpecialStatus',special,'special');
+    renderHistorySection('selfHistoryHiringBody','selfHistoryHiringStatus',hiring,'hiring');
   }
   window.renderHistoryRows=function(tbodyId,rows,adminRetired){
-    if(!adminRetired){state.selfHistoryRows=[...(rows||[])];renderSelfHistory();return}
+    if(!adminRetired){state.selfHistoryRows=[...(rows||[])];state.selfHistoryHalfIndex=-1;renderSelfHistory();return}
     const body=byId(tbodyId),fragment=document.createDocumentFragment();rows.forEach(item=>{const tr=document.createElement('tr');addTextCell(tr,item.education_title,'center ellipsis',item.education_title);addTextCell(tr,scheduleText({...item,category_id:state.categories.find(c=>c.category_name===item.education_category)?.id}),'center');addTextCell(tr,item.education_category,'center');addTextCell(tr,item.completion_label||'이수','center');addTextCell(tr,item.note||'-','center ellipsis',item.note||'-');const report=document.createElement('td');report.className='center';if(validUrl(item.result_report_url)){const a=document.createElement('a');a.className='download-link';a.textContent='결과보고서';a.href=item.result_report_url;a.target='_blank';a.rel='noopener noreferrer';report.appendChild(a)}else{const p=document.createElement('span');p.className='progress';p.textContent='교육진행중';report.appendChild(p)}tr.appendChild(report);fragment.appendChild(tr)});body.appendChild(fragment);
   };
-  window.openSelfHistory=async function(department,name){
-    openModal('selfHistoryModal');byId('selfHistoryTitle').textContent=`${department} / ${name}`;state.selfHistoryRows=[];state.selfHistoryType='regular';state.selfHistoryPages={regular:1,special:1,hiring:1};syncSelfHistoryTabs();renderSkeleton('selfHistoryTableBody',4,5);byId('selfHistoryPagination').hidden=true;setStatus('selfHistoryStatus','');const {data,error}=await db.rpc('lookup_my_training_history',{p_department_name:department,p_employee_name:name});byId('selfHistoryTableBody').replaceChildren();if(error){console.error('[일반직원 교육이력] 조회 실패',error);setStatus('selfHistoryStatus','교육이력을 불러오지 못했습니다. 네트워크 상태를 확인한 뒤 다시 시도하세요.',true);return}state.selfHistoryRows=[...(data||[])];renderSelfHistory();
+  window.openSelfHistory=async function(department,name,employeeId){
+    openModal('selfHistoryModal');byId('selfHistoryTitle').textContent=`${department} / ${name} 교육현황`;state.selfHistoryRows=[];state.selfHistoryHalfIndex=-1;
+    renderSkeleton('selfHistoryRegularBody',3,6);renderSkeleton('selfHistorySpecialBody',3,3);renderSkeleton('selfHistoryHiringBody',3,2);byId('selfHistoryHalfPagination').hidden=true;
+    const {data,error}=await db.rpc('lookup_my_training_history',{p_department_name:department,p_employee_name:name});
+    if(error){console.error('[일반직원 교육이력] 조회 실패',error);['selfHistoryRegularBody','selfHistorySpecialBody','selfHistoryHiringBody'].forEach(id=>byId(id).replaceChildren());const td=document.createElement('div');td.className='status-box error';td.textContent='교육이력을 불러오지 못했습니다. 네트워크 상태를 확인한 뒤 다시 시도하세요.';byId('selfHistoryRegularStatus').replaceChildren(td);return}
+    state.selfHistoryRows=await enrichSelfHistoryPersonalDates(data||[],employeeId);renderSelfHistory();
   };
-  [['selfHistoryRegularTab','regular'],['selfHistorySpecialTab','special'],['selfHistoryHiringTab','hiring']].forEach(([id,type])=>{byId(id).onclick=()=>{state.selfHistoryType=type;state.selfHistoryPages[type]=1;renderSelfHistory()}});
-  byId('selfHistoryRegularTab').parentElement.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)||!event.target.matches('[role="tab"]'))return;const order=['regular','special','hiring'],current=order.indexOf(state.selfHistoryType);let next=current;if(event.key==='ArrowRight')next=(current+1)%order.length;if(event.key==='ArrowLeft')next=(current-1+order.length)%order.length;if(event.key==='Home')next=0;if(event.key==='End')next=order.length-1;event.preventDefault();state.selfHistoryType=order[next];renderSelfHistory();byId({regular:'selfHistoryRegularTab',special:'selfHistorySpecialTab',hiring:'selfHistoryHiringTab'}[order[next]]).focus()});
 })();
 
 
@@ -4202,7 +4442,104 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
   bind('attendanceSessionForm','onsubmit',attendanceSaveSession);bind('attendanceCsvButton','onclick',attendanceDownloadCsv);bind('attendanceMissingCsvButton','onclick',attendanceDownloadMissingCsv);
   bind('attendanceClearSelectionButton','onclick',attendanceResetSelectedLogs);bind('attendanceDeleteSelectedButton','onclick',attendanceDeleteSelected);bind('attendanceStartPeopleButton','onclick',()=>attendanceOpenConfirm('bulk_start',attendanceBulkRows()));bind('attendanceEndPeopleButton','onclick',()=>attendanceOpenConfirm('bulk_end',attendanceBulkRows()));bind('attendanceConfirmSubmit','onclick',attendanceSubmitConfirm);
 
-  bind('addEducationButton','onclick',()=>openEducationForm());bind('selfLookupForm','onsubmit',lookupSelfHistory);bind('selfEmployeeQuery','oninput',debounce(searchSelfCandidates,140));
+
+  // ---------------------------------------------------------------
+  // 정기안전보건교육 월별 개인 교육일 붙여넣기
+  // - 상단에서 연도와 월을 지정하고 사원명·부서·직급·해당월 표를 등록한다.
+  // - 해당월 셀이 ISO 날짜이면 등록하고, 텍스트·공란은 해당 직원만 제외한다.
+  // ---------------------------------------------------------------
+  const regularHalfYearImportState={preview:null};
+  const regularImportById=id=>document.getElementById(id);
+  function regularImportNormalize(value){return String(value??'').replace(/^\ufeff/,'').replace(/\s+/g,'').trim().toLowerCase()}
+  function regularImportStrictDate(value){
+    const text=String(value??'').trim(),match=text.match(/^(\d{4})-(\d{2})-(\d{2})$/);if(!match)return null;
+    const y=Number(match[1]),m=Number(match[2]),d=Number(match[3]),check=new Date(Date.UTC(y,m-1,d));
+    if(check.getUTCFullYear()!==y||check.getUTCMonth()!==m-1||check.getUTCDate()!==d)return null;
+    return `${match[1]}-${match[2]}-${match[3]}`;
+  }
+  function regularImportSplitLine(line,delimiter){return String(line).split(delimiter).map(value=>value.trim())}
+  function parseRegularMonthlyText(raw,selectedMonth){
+    const lines=String(raw||'').replace(/^\ufeff/,'').replace(/\r/g,'').split('\n').filter(line=>line.trim()!=='');
+    if(!lines.length)throw new Error('붙여넣은 내용이 없습니다.');
+    const delimiter=lines[0].includes('\t')?'\t':lines[0].includes(',')?',':null;if(!delimiter)throw new Error('엑셀 표처럼 탭으로 구분된 자료를 붙여넣으세요.');
+    const headers=regularImportSplitLine(lines[0],delimiter).map(value=>regularImportNormalize(value));
+    const findHeader=(...names)=>headers.findIndex(header=>names.some(name=>header===regularImportNormalize(name)));
+    const nameIndex=findHeader('사원명','성명'),departmentIndex=findHeader('부서','소속'),jobIndex=findHeader('직급');
+    let dateIndex=findHeader('해당월','교육일','교육일자','개별일자',`${selectedMonth}월`,String(selectedMonth));
+    if(dateIndex<0&&headers.length===4)dateIndex=3;
+    if(nameIndex<0||departmentIndex<0||dateIndex<0)throw new Error('헤더에 사원명, 부서, 직급, 해당월 열이 있어야 합니다.');
+    const rows=[],excluded=[],seen=new Set();let total=0;
+    lines.slice(1).forEach((line,lineOffset)=>{
+      const cells=regularImportSplitLine(line,delimiter),lineNumber=lineOffset+2,name=cells[nameIndex]||'',department=cells[departmentIndex]||'',jobTitle=jobIndex>=0?(cells[jobIndex]||''):'',rawDate=cells[dateIndex]||'';
+      if(!name&&!department&&!rawDate)return;total++;
+      if(!name||!department){excluded.push({lineNumber,name,department,reason:'사원명 또는 부서가 비어 있어 제외합니다.'});return}
+      const key=`${regularImportNormalize(department)}|${regularImportNormalize(name)}`;
+      if(seen.has(key)){excluded.push({lineNumber,name,department,reason:'동일 사원 행이 중복되어 제외합니다.'});return}seen.add(key);
+      const date=regularImportStrictDate(rawDate);
+      if(!date){excluded.push({lineNumber,name,department,reason:rawDate?`해당월 제외: ${rawDate}`:'해당월 공란 제외'});return}
+      rows.push({lineNumber,name,department,jobTitle,date,rawDate,key});
+    });
+    return {total,rows,excluded};
+  }
+  function regularImportLinkMonth(link){
+    const titleMatch=String(link.title||'').match(/(?:^|\D)(1[0-2]|[1-9])\s*월/);if(titleMatch)return Number(titleMatch[1]);
+    const date=link.first_session_date||link.conducted_date||'';return /^\d{4}-(\d{2})-/.test(date)?Number(date.slice(5,7)):0;
+  }
+  function regularImportLinkYear(link){return Number(link.applicable_year||String(link.first_session_date||link.conducted_date||'').slice(0,4))||0}
+  function regularImportMonthLink(year,month){
+    const candidates=state.educationLinks.filter(link=>Number(link.category_id)===Number(state.selectedCategoryId)&&categoryMeta(link.category_id).type==='regular'&&regularImportLinkYear(link)===Number(year)&&regularImportLinkMonth(link)===Number(month));
+    return {month,candidates,link:candidates.length===1?candidates[0]:null,status:candidates.length===1?'ok':candidates.length===0?'missing':'duplicate'};
+  }
+  function regularImportEmployeeKey(row){return `${regularImportNormalize(row.department_name||row.department)}|${regularImportNormalize(row.employee_name||row.name)}`}
+  function renderRegularImportMonthMap(item){
+    const box=regularImportById('regularImportMonthMap');box.replaceChildren();const div=document.createElement('div');div.className=`regular-import-month-item ${item.status==='ok'?'ok':'error'}`;const strong=document.createElement('strong');strong.textContent=`${item.month}월 ${item.status==='ok'?'연결 완료':item.status==='missing'?'교육자료 없음':'교육자료 중복'}`;const span=document.createElement('span');span.textContent=item.link?`${item.link.title||'정기안전보건교육'} · ${formatDateDot(item.link.first_session_date||item.link.conducted_date)}`:item.candidates.length?item.candidates.map(link=>link.title||link.first_session_date).join(' / '):'해당 월의 정기교육 자료를 먼저 등록하세요.';div.append(strong,span);box.appendChild(div);
+  }
+  function renderRegularImportExcluded(preview){
+    const box=regularImportById('regularImportExcludedList');box.replaceChildren();const combined=[...preview.parsed.excluded,...preview.unmatched];
+    if(!combined.length){box.textContent='제외되거나 일치하지 않는 직원이 없습니다.';return}
+    combined.slice(0,100).forEach(item=>{const row=document.createElement('div');row.className='regular-import-excluded-row';const name=document.createElement('span');name.textContent=item.name||'-';const department=document.createElement('span');department.textContent=item.department||'-';const reason=document.createElement('span');reason.textContent=item.reason||'제외';row.append(name,department,reason);box.appendChild(row)});if(combined.length>100){const more=document.createElement('div');more.textContent=`외 ${combined.length-100}명`;more.style.padding='6px 0';box.appendChild(more)}
+  }
+  async function buildRegularHalfYearPreview({showErrors=true}={}){
+    const errorBox=regularImportById('regularImportError'),previewBox=regularImportById('regularImportPreview');errorBox.textContent='';previewBox.className='regular-import-preview';regularImportById('regularImportRunButton').disabled=true;
+    try{
+      const year=Number(regularImportById('regularImportYear').value),month=Number(regularImportById('regularImportMonth').value);if(!year)throw new Error('교육연도를 입력하세요.');if(month<1||month>12)throw new Error('교육월을 선택하세요.');
+      const parsed=parseRegularMonthlyText(regularImportById('regularImportText').value,month),wrongYear=[];
+      parsed.rows=parsed.rows.filter(row=>{if(Number(row.date.slice(0,4))===year&&Number(row.date.slice(5,7))===month)return true;wrongYear.push({...row,reason:`해당월 제외: ${row.date} (${year}년 ${month}월 자료가 아님)`});return false});parsed.excluded.push(...wrongYear);
+      const employeesResult=await db.rpc('get_current_employees');if(employeesResult.error)throw new Error(friendlyErrorMessage(employeesResult.error,'직원 확인'));
+      const employeeGroups=new Map();(employeesResult.data||[]).forEach(employee=>{const key=regularImportEmployeeKey(employee);if(!employeeGroups.has(key))employeeGroups.set(key,[]);employeeGroups.get(key).push(employee)});
+      const importRows=[],unmatched=[];parsed.rows.forEach(row=>{const matches=employeeGroups.get(row.key)||[];if(matches.length===1)importRows.push({...row,employee:matches[0]});else unmatched.push({...row,reason:matches.length?'동일 부서에 같은 이름의 직원이 여러 명입니다.':'재직자 명부에서 이름과 부서가 일치하지 않습니다.'})});
+      const monthItem=regularImportMonthLink(year,month);renderRegularImportMonthMap(monthItem);const linksReady=monthItem.status==='ok',preview={year,month,parsed,monthItem,importRows,unmatched,linksReady,cellCount:importRows.length};regularHalfYearImportState.preview=preview;
+      regularImportById('regularImportTotal').textContent=parsed.total;regularImportById('regularImportEligible').textContent=importRows.length;regularImportById('regularImportExcluded').textContent=parsed.excluded.length;regularImportById('regularImportUnmatched').textContent=unmatched.length;renderRegularImportExcluded(preview);
+      if(!importRows.length){previewBox.textContent='등록 가능한 날짜가 없습니다.';previewBox.classList.add('error')}else if(!linksReady){previewBox.textContent=`${year}년 ${month}월 정기교육 자료가 없거나 중복되어 등록할 수 없습니다.`;previewBox.classList.add('error')}else{previewBox.textContent=`${year}년 ${month}월 개인 교육일자 ${importRows.length}건을 등록할 수 있습니다. 텍스트·공란 ${parsed.excluded.length}명은 제외됩니다.${unmatched.length?` 직원 미일치 ${unmatched.length}명은 등록되지 않습니다.`:''}`;previewBox.classList.add('success');regularImportById('regularImportRunButton').disabled=false}
+      return preview;
+    }catch(error){regularHalfYearImportState.preview=null;if(showErrors)errorBox.textContent=error.message||'자료를 검증하지 못했습니다.';previewBox.textContent='붙여넣기 형식과 교육자료 연결 상태를 확인하세요.';previewBox.classList.add('error');return null}
+  }
+  function openRegularHalfYearImport(){
+    if(!state.isAdmin||state.currentView!=='education'||categoryMeta(state.selectedCategoryId).type!=='regular'){showToast('정기안전보건교육 메뉴에서 사용할 수 있습니다.');return}
+    const now=new Date();regularImportById('regularImportYear').value=now.getFullYear();regularImportById('regularImportMonth').value=now.getMonth()+1;regularHalfYearImportState.preview=null;regularImportById('regularImportText').value='';regularImportById('regularImportFile').value='';regularImportById('regularImportError').textContent='';regularImportById('regularImportPreview').textContent='연도와 월을 선택하고 표를 붙여넣은 뒤 검증하세요.';regularImportById('regularImportPreview').className='regular-import-preview';regularImportById('regularImportRunButton').disabled=true;['regularImportTotal','regularImportEligible','regularImportExcluded','regularImportUnmatched'].forEach(id=>regularImportById(id).textContent='0');regularImportById('regularImportMonthMap').replaceChildren();regularImportById('regularImportExcludedList').replaceChildren();regularImportById('regularImportExcludedDetails').open=false;openModal('regularHalfYearImportModal');requestAnimationFrame(()=>regularImportById('regularImportText').focus());
+  }
+  async function regularImportAssignMissing(linkId,employeeIds){let failed=0;for(let start=0;start<employeeIds.length;start+=12){const batch=employeeIds.slice(start,start+12),results=await Promise.all(batch.map(employeeId=>db.rpc('assign_employee_to_education',{p_education_link_id:Number(linkId),p_employee_id:Number(employeeId),p_target_status:'target',p_exclusion_reason:null})));results.forEach(result=>{if(result.error)failed++})}return failed}
+  async function regularImportBulkSetDate(linkId,participants,date){const ids=participants.map(row=>Number(row.participant_id));let updated=0,failed=0;for(let start=0;start<ids.length;start+=200){const batchIds=ids.slice(start,start+200),result=await db.rpc('bulk_update_education_participant_dates',{p_education_link_id:Number(linkId),p_participant_ids:batchIds,p_education_date:date});if(!result.error){updated+=Array.isArray(result.data)&&result.data.length?result.data.length:batchIds.length;continue}console.warn('[정기교육 월별 일괄입력] 일괄 RPC 실패, 개별 저장으로 전환',result.error);const batchRows=participants.filter(row=>batchIds.includes(Number(row.participant_id)));const fallback=await Promise.all(batchRows.map(row=>db.rpc('update_education_participant_date',{p_education_link_id:Number(linkId),p_participant_id:Number(row.participant_id),p_education_date:date,p_expected_updated_at:row.updated_at||null})));fallback.forEach(item=>item.error?failed++:updated++)}return {updated,failed}}
+  async function runRegularHalfYearImport(){
+    const preview=await buildRegularHalfYearPreview();if(!preview||!preview.linksReady||!preview.cellCount)return;if(!confirm(`${preview.year}년 ${preview.month}월 개인 교육일자 ${preview.cellCount}건을 등록하시겠습니까?\n기존 날짜가 있으면 새 날짜로 변경됩니다.`))return;
+    const button=regularImportById('regularImportRunButton'),previewBox=regularImportById('regularImportPreview');button.disabled=true;regularImportById('regularImportPreviewButton').disabled=true;regularImportById('regularImportText').disabled=true;regularImportById('regularImportFile').disabled=true;let updated=0,failed=0,assigned=0;
+    try{
+      const link=preview.monthItem.link,rows=preview.importRows;previewBox.textContent=`${preview.month}월 자료 ${rows.length}건을 처리하고 있습니다...`;
+      let participantResult=await db.rpc('get_education_participants',{p_education_link_id:Number(link.id)});if(participantResult.error)throw participantResult.error;let participants=participantResult.data||[],participantByEmployee=new Map(participants.map(row=>[String(row.employee_id),row]));
+      const missing=rows.filter(row=>!participantByEmployee.has(String(row.employee.employee_id))).map(row=>Number(row.employee.employee_id));if(missing.length){const assignFailed=await regularImportAssignMissing(link.id,missing);failed+=assignFailed;assigned+=Math.max(0,missing.length-assignFailed);participantResult=await db.rpc('get_education_participants',{p_education_link_id:Number(link.id)});if(participantResult.error)throw participantResult.error;participants=participantResult.data||[];participantByEmployee=new Map(participants.map(row=>[String(row.employee_id),row]))}
+      const dateGroups=new Map();rows.forEach(row=>{const participant=participantByEmployee.get(String(row.employee.employee_id));if(!participant){failed++;return}if(!dateGroups.has(row.date))dateGroups.set(row.date,[]);dateGroups.get(row.date).push(participant)});
+      for(const [date,dateRows] of dateGroups){const result=await regularImportBulkSetDate(link.id,dateRows,date);updated+=result.updated;failed+=result.failed}if(window.syncRegularEducationRange)await window.syncRegularEducationRange(link.id);
+      previewBox.textContent=`등록 완료: ${updated}건${assigned?` · 새 대상자 연결 ${assigned}건`:''}${preview.parsed.excluded.length?` · 제외 ${preview.parsed.excluded.length}명`:''}${failed?` · 실패 ${failed}건`:''}`;previewBox.className=`regular-import-preview ${failed?'error':'success'}`;showToast(failed?'일부 자료를 저장하지 못했습니다. 결과를 확인하세요.':'월별 교육일 일괄등록을 완료했습니다.');await loadPublicData();
+    }catch(error){console.error('[정기교육 월별 일괄입력]',error);regularImportById('regularImportError').textContent=friendlyErrorMessage(error,'월별 교육일 일괄등록');previewBox.textContent=`처리 중단: ${updated}건 저장됨 · ${failed}건 실패`;previewBox.className='regular-import-preview error';
+    }finally{button.disabled=false;regularImportById('regularImportPreviewButton').disabled=false;regularImportById('regularImportText').disabled=false;regularImportById('regularImportFile').disabled=false}
+  }
+  regularImportById('regularImportFile').addEventListener('change',async event=>{const file=event.target.files?.[0];if(!file)return;if(file.size>5*1024*1024){regularImportById('regularImportError').textContent='5MB 이하의 텍스트 파일을 사용하세요.';return}regularImportById('regularImportText').value=await file.text();await buildRegularHalfYearPreview()});
+  regularImportById('regularImportText').addEventListener('paste',()=>setTimeout(()=>{regularHalfYearImportState.preview=null;regularImportById('regularImportRunButton').disabled=true},0));
+  regularImportById('regularImportText').addEventListener('input',()=>{regularHalfYearImportState.preview=null;regularImportById('regularImportRunButton').disabled=true});
+  ['regularImportYear','regularImportMonth'].forEach(id=>regularImportById(id).addEventListener('change',()=>{regularHalfYearImportState.preview=null;regularImportById('regularImportRunButton').disabled=true}));
+  regularImportById('regularImportPreviewButton').onclick=()=>buildRegularHalfYearPreview();regularImportById('regularImportRunButton').onclick=runRegularHalfYearImport;
+
+  bind('regularHalfYearImportButton','onclick',openRegularHalfYearImport);bind('addEducationButton','onclick',()=>openEducationForm());bind('selfLookupForm','onsubmit',lookupSelfHistory);bind('selfEmployeeQuery','oninput',debounce(searchSelfCandidates,140));
   bind('activeEmployeeTab','onclick',()=>loadEmployeeTab('active'));bind('retiredEmployeeTab','onclick',()=>loadEmployeeTab('retired'));
   bind('activeEmployeeSearch','oninput',debounce(()=>{platformPaging.active=1;state.activeEmployeeSelected.clear();renderActiveEmployees()},160));bind('activeStatusFilter','onchange',()=>{platformPaging.active=1;state.activeEmployeeSelected.clear();renderActiveEmployees()});
   bind('retiredEmployeeSearch','oninput',debounce(()=>{platformPaging.retired=1;renderRetiredEmployees()},160));bind('retiredDepartmentFilter','onchange',()=>{platformPaging.retired=1;renderRetiredEmployees()});bind('retiredSort','onchange',()=>{platformPaging.retired=1;renderRetiredEmployees()});
