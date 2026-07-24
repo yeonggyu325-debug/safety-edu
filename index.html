@@ -1280,6 +1280,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 .monthly-history-legend{display:flex;gap:12px;align-items:center;color:#667085;font-size:10.5px;flex-wrap:wrap}
 .monthly-history-legend span{display:inline-flex;gap:5px;align-items:center}.monthly-history-swatch{width:13px;height:13px;border-radius:3px;border:1px solid #ccd5e2;background:#fff}
 .monthly-history-swatch.attended{background:#eaf3ff;border-color:#9cb9e8}.monthly-history-swatch.excluded{background:#fff0d7;border-color:#e5ae55}
+.monthly-history-swatch.incomplete{background:#ffe4e4;border-color:#df5b5b}
 .monthly-matrix-wrap{overflow:auto;max-height:calc(100vh - 250px);border:1px solid #d8e0eb;border-radius:8px;background:#fff}
 .monthly-matrix{border-collapse:separate;border-spacing:0;min-width:100%;width:max-content;table-layout:fixed}
 .monthly-matrix th,.monthly-matrix td{border-right:1px solid #e4e9f0;border-bottom:1px solid #e4e9f0;padding:7px 8px;min-width:112px;max-width:150px;text-align:center;vertical-align:middle;font-size:11px;line-height:1.35;white-space:normal}
@@ -1411,11 +1412,12 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 <div class="monthly-history-legend" aria-label="표시 기준">
 <span><i class="monthly-history-swatch attended"></i>교육 참석일</span>
 <span><i class="monthly-history-swatch excluded"></i>비대상 사유</span>
+<span><i class="monthly-history-swatch incomplete"></i>미수료(반기)</span>
 </div>
 </div>
 <div class="monthly-matrix-wrap">
 <table class="monthly-matrix" id="monthlyHistoryTable">
-<caption class="sr-only">직원별 월별 교육 참석일 및 비대상 사유</caption>
+<caption class="sr-only">직원별 월별 교육 참석일, 비대상 사유 및 반기 미수료 상태</caption>
 <thead id="monthlyHistoryHead"></thead><tbody id="monthlyHistoryBody"></tbody>
 </table>
 </div>
@@ -2142,7 +2144,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 
     const monthlyExclusionLabels={
       leave:"휴직",overseas:"해외출장",long_trip:"해외출장",china_expat:"중국주재원",
-      non_regular:"비상근",retired:"퇴사",comprehensive:"종합검진",other:"기타"
+      non_regular:"비상근",retired:"퇴사",new_hire:"신규입사자",comprehensive:"종합검진",other:"기타"
     };
     function monthlyReasonLabel(value){
       const key=String(value||'').trim();
@@ -2167,27 +2169,48 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
       state.monthlyHistoryLoading=true;setStatus('monthlyHistoryStatus','월별 교육현황을 불러오는 중입니다.');
       try{
         const regularLinks=(state.educationLinks||[]).filter(link=>categoryMeta(link.category_id).type==='regular'&&educationLinkMonth(link));
-        const employeeResult=await db.rpc('get_current_employees');if(employeeResult.error)throw employeeResult.error;
-        const employees=employeeResult.data||[],participantResults=[];
+        const [employeeResult,retiredResult]=await Promise.all([
+          db.rpc('get_current_employees'),
+          db.rpc('get_admin_employee_roster',{p_roster:'retired'})
+        ]);
+        if(employeeResult.error)throw employeeResult.error;
+        if(retiredResult.error)console.warn('[월별 교육현황 퇴사자 조회]',retiredResult.error);
+        const employeeMap=new Map();
+        [...(employeeResult.data||[]),...(retiredResult.data||[])].forEach(employee=>{
+          const key=String(employee.employee_id);
+          const previous=employeeMap.get(key)||{};
+          employeeMap.set(key,{...previous,...employee});
+        });
+        const employees=[...employeeMap.values()],participantResults=[];
         for(let i=0;i<regularLinks.length;i+=8){
           const batch=regularLinks.slice(i,i+8);
           const results=await Promise.all(batch.map(link=>db.rpc('get_education_participants',{p_education_link_id:Number(link.id)})));
           results.forEach((result,index)=>participantResults.push({link:batch[index],result}));
         }
         const byEmployee=new Map(employees.map(employee=>[String(employee.employee_id),{
-          employee_id:employee.employee_id,employee_name:employee.employee_name||'-',department_name:employee.department_name||'-',hire_date:employee.hire_date||employee.employment_date||employee.join_date||null,months:new Map()
+          employee_id:employee.employee_id,
+          employee_name:employee.employee_name||'-',
+          department_name:employee.department_name||'-',
+          hire_date:employee.hire_date||employee.employment_date||employee.join_date||null,
+          retirement_date:employee.retirement_date||employee.retired_at||null,
+          months:new Map()
         }]));
         const monthSet=new Set();
         participantResults.forEach(({link,result})=>{
           if(result.error){console.warn('[월별 교육현황]',result.error);return}
           const month=educationLinkMonth(link);if(!month)return;monthSet.add(month);
           (result.data||[]).forEach(row=>{
-            const key=String(row.employee_id);if(!byEmployee.has(key))byEmployee.set(key,{employee_id:row.employee_id,employee_name:row.employee_name||'-',department_name:row.department_name||'-',hire_date:row.hire_date||row.employment_date||row.join_date||null,months:new Map()});
-            const record=byEmployee.get(key),existing=record.months.get(month)||{dates:new Set(),excluded:false,reasons:new Set(),linkId:Number(link.id),participantId:row.participant_id||row.id||null,updatedAt:row.updated_at||null}; existing.linkId=Number(link.id); existing.participantId=row.participant_id||row.id||existing.participantId||null; existing.updatedAt=row.updated_at||existing.updatedAt||null;
+            const key=String(row.employee_id);if(!byEmployee.has(key))byEmployee.set(key,{employee_id:row.employee_id,employee_name:row.employee_name||'-',department_name:row.department_name||'-',hire_date:row.hire_date||row.employment_date||row.join_date||null,retirement_date:row.retirement_date||row.retired_at||null,months:new Map()});
+            const record=byEmployee.get(key);record.retirement_date=record.retirement_date||row.retirement_date||row.retired_at||null;
+            const existing=record.months.get(month)||{dates:new Set(),excluded:false,incomplete:false,reasons:new Set(),linkId:Number(link.id),participantId:row.participant_id||row.id||null,updatedAt:row.updated_at||null}; existing.linkId=Number(link.id); existing.participantId=row.participant_id||row.id||existing.participantId||null; existing.updatedAt=row.updated_at||existing.updatedAt||null;
             const reason=row.exclusion_reason||row.non_target_reason||row.target_reason||'';
-            const excluded=Boolean(reason)||['excluded','non_target','not_target'].includes(String(row.target_status||'').toLowerCase());
-            if(excluded){existing.excluded=true;existing.reasons.add(monthlyReasonLabel(reason||row.target_status));}
+            const status=String(row.target_status||'').toLowerCase(),reasonLabel=monthlyReasonLabel(reason||row.target_status);
+            const incomplete=reasonLabel==='미수료'||['incomplete','not_completed','uncompleted'].includes(status);
+            const excluded=!incomplete&&(Boolean(reason)||['excluded','non_target','not_target'].includes(status));
+            if(incomplete){existing.incomplete=true;existing.excluded=false;existing.reasons=new Set(['미수료']);}
+            else if(excluded){existing.excluded=true;existing.incomplete=false;existing.reasons.add(reasonLabel);}
             else{
+              existing.incomplete=false;
               [row.education_date,row.education_date_2].filter(Boolean).forEach(date=>existing.dates.add(String(date).slice(0,10)));
             }
             record.months.set(month,existing);
@@ -2613,9 +2636,30 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     }
     function openRetireForm(ids,label){$("retireForm").reset();$("retireEmployeeIds").value=ids.join(",");$("retireModalTitle").textContent=ids.length===1?`${label} 퇴사 처리`:`선택 ${ids.length}명 퇴사 처리`;$("retirementDateInput").value=new Date().toISOString().slice(0,10);$("retireError").textContent="";openModal("retireModal")}
     async function processRetirement(event){
-      event.preventDefault();const ids=$("retireEmployeeIds").value.split(",").filter(Boolean).map(Number),date=$("retirementDateInput").value,note=$("retirementNote").value.trim()||null;$("retireError").textContent="";
-      for(const id of ids){const {error}=await db.rpc("retire_employee",{p_employee_id:id,p_retirement_date:date,p_note:note});if(error){$("retireError").textContent=friendlyErrorMessage(error,"저장");return}}
-      closeModal("retireModal");showToast(`${ids.length}명을 퇴사 처리했습니다.`);state.employeeRostersLoaded=false;await loadAllEmployeeRosters();
+      event.preventDefault();
+      const form=event.currentTarget,submit=form.querySelector('button[type="submit"]');
+      const ids=$("retireEmployeeIds").value.split(",").filter(Boolean).map(Number),date=$("retirementDateInput").value,note=$("retirementNote").value.trim()||null;
+      $("retireError").textContent="";
+      if(!ids.length){$("retireError").textContent="퇴사 처리할 직원을 찾지 못했습니다.";return}
+      if(!date){$("retireError").textContent="퇴사일을 입력하세요.";return}
+      const scrollX=window.scrollX,scrollY=window.scrollY,originalText=submit?.textContent||"퇴사 처리";
+      if(submit){submit.disabled=true;submit.textContent="처리 중"}
+      try{
+        const results=await Promise.all(ids.map(id=>db.rpc("retire_employee",{p_employee_id:id,p_retirement_date:date,p_note:note})));
+        const failed=results.find(result=>result.error);
+        if(failed?.error)throw failed.error;
+        closeModal("retireModal");
+        state.activeEmployeeSelected?.clear?.();
+        state.employeeRostersLoaded=false;
+        await loadAllEmployeeRosters();
+        showToast(`${ids.length}명을 퇴사 처리했습니다.`);
+        requestAnimationFrame(()=>window.scrollTo({left:scrollX,top:scrollY,behavior:'auto'}));
+      }catch(error){
+        console.error("[퇴사 처리]",error);
+        $("retireError").textContent=friendlyErrorMessage(error,"퇴사 처리");
+      }finally{
+        if(submit){submit.disabled=false;submit.textContent=originalText}
+      }
     }
     async function openRetiredHistory(employee){
       openModal("retiredHistoryModal");$("retiredHistoryTitle").textContent=`${employee.department_name}/${employee.employee_name} 교육이력`;renderSkeleton("retiredHistoryTableBody",6,5);setStatus("retiredHistoryStatus","");
@@ -3490,7 +3534,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
       }
       const report=document.createElement('td');report.className='center';
       if(validUrl(item.result_report_url)){const a=document.createElement('a');a.className='download-link';a.textContent='결과보고서';a.href=item.result_report_url;a.target='_blank';a.rel='noopener noreferrer';report.appendChild(a)}else{const p=document.createElement('span');p.className='progress';p.textContent='교육진행중';report.appendChild(p)}tr.appendChild(report);
-      if(state.isAdmin){const manage=document.createElement('td');manage.className='center education-manage-cell';const actions=document.createElement('div');actions.className='row-actions row-action-group';const target=document.createElement('button');target.className='mini';target.textContent='대상자';target.onclick=()=>openParticipants(item);const edit=document.createElement('button');edit.className='mini';edit.textContent='수정';edit.onclick=()=>openEducationForm(item);const del=document.createElement('button');del.className='mini mini-danger';del.textContent='삭제';del.onclick=()=>deleteEducation(item);actions.append(target,edit,del);manage.appendChild(actions);tr.appendChild(manage)}
+      if(state.isAdmin){const manage=document.createElement('td');manage.className='center education-manage-cell';const actions=document.createElement('div');actions.className='row-actions row-action-group';const target=document.createElement('button');target.className='mini';target.textContent='대상자';target.onclick=()=>openParticipants(item);const edit=document.createElement('button');edit.type='button';edit.className='mini';edit.textContent='수정';edit.onclick=()=>openEducationForm(item);const del=document.createElement('button');del.className='mini mini-danger';del.textContent='삭제';del.onclick=()=>deleteEducation(item);actions.append(target,edit,del);manage.appendChild(actions);tr.appendChild(manage)}
       f.appendChild(tr);
     });body.appendChild(f);renderPager('educationPagination',rows.length,'education',renderEducationTable);
   };
@@ -3510,14 +3554,37 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     const validIds=new Set(state.activeEmployees.map(x=>String(x.employee_id)));[...state.activeEmployeeSelected].forEach(id=>{if(!validIds.has(id))state.activeEmployeeSelected.delete(id)});
     const info=pageInfo(rows,'active'),body=$('activeEmployeeTableBody');body.replaceChildren();
     if(!rows.length){setStatus('activeEmployeeStatus','조건에 맞는 재직자가 없습니다.');renderPager('activeEmployeePagination',0,'active',renderActiveEmployees);updateActiveSelection();return}setStatus('activeEmployeeStatus','');
-    const f=document.createDocumentFragment();info.items.forEach((x,index)=>{const tr=document.createElement('tr');const checkTd=document.createElement('td');checkTd.className='center';const check=document.createElement('input');check.type='checkbox';check.className='active-row-check';check.value=x.employee_id;check.checked=state.activeEmployeeSelected.has(String(x.employee_id));check.onchange=updateActiveSelection;checkTd.appendChild(check);tr.appendChild(checkTd);addTextCell(tr,info.start+index+1,'center');const statusTd=document.createElement('td');statusTd.appendChild(statusBadge(x.employment_status));tr.appendChild(statusTd);addTextCell(tr,x.department_name,'ellipsis',x.department_name);addTextCell(tr,x.job_title||'-','ellipsis',x.job_title||'-');addTextCell(tr,x.employee_name,'ellipsis',x.employee_name);addTextCell(tr,formatDate(x.hire_date));const manage=document.createElement('td');manage.className='center row-actions';const edit=document.createElement('button');edit.className='mini';edit.textContent='수정';edit.onclick=()=>openEmployeeForm(x);const retire=document.createElement('button');retire.className='mini mini-warning';retire.textContent='퇴사처리';retire.onclick=()=>openRetireForm([x.employee_id],x.employee_name);const hardDelete=document.createElement('button');hardDelete.className='mini mini-danger';hardDelete.textContent='삭제';hardDelete.onclick=()=>openHardDeleteForm(x);manage.append(edit,retire,hardDelete);tr.appendChild(manage);f.appendChild(tr)});body.appendChild(f);renderPager('activeEmployeePagination',rows.length,'active',renderActiveEmployees);updateActiveSelection();
+    const f=document.createDocumentFragment();info.items.forEach((x,index)=>{const tr=document.createElement('tr');const checkTd=document.createElement('td');checkTd.className='center';const check=document.createElement('input');check.type='checkbox';check.className='active-row-check';check.value=x.employee_id;check.checked=state.activeEmployeeSelected.has(String(x.employee_id));check.onchange=updateActiveSelection;checkTd.appendChild(check);tr.appendChild(checkTd);addTextCell(tr,info.start+index+1,'center');const statusTd=document.createElement('td');statusTd.appendChild(statusBadge(x.employment_status));tr.appendChild(statusTd);addTextCell(tr,x.department_name,'ellipsis',x.department_name);addTextCell(tr,x.job_title||'-','ellipsis',x.job_title||'-');addTextCell(tr,x.employee_name,'ellipsis',x.employee_name);addTextCell(tr,formatDate(x.hire_date));const manage=document.createElement('td');manage.className='center row-actions';const edit=document.createElement('button');edit.type='button';edit.className='mini';edit.textContent='수정';edit.onclick=()=>openEmployeeForm(x);const retire=document.createElement('button');retire.type='button';retire.className='mini mini-warning';retire.textContent='퇴사처리';retire.onclick=()=>openRetireForm([x.employee_id],x.employee_name);const hardDelete=document.createElement('button');hardDelete.type='button';hardDelete.className='mini mini-danger';hardDelete.textContent='삭제';hardDelete.onclick=()=>openHardDeleteForm(x);manage.append(edit,retire,hardDelete);tr.appendChild(manage);f.appendChild(tr)});body.appendChild(f);renderPager('activeEmployeePagination',rows.length,'active',renderActiveEmployees);updateActiveSelection();
+  };
+
+  window.saveRetirementDate=async function(employee,input){
+    const next=String(input.value||'').trim(),previous=String(employee.retirement_date||'').slice(0,10),hire=String(employee.hire_date||'').slice(0,10);
+    if(!next){input.value=previous;showToast('퇴사일을 입력하세요.');return}
+    if(hire&&next<hire){input.value=previous;showToast('퇴사일은 입사일보다 빠를 수 없습니다.');return}
+    if(next===previous)return;
+    input.disabled=true;input.classList.add('is-saving');input.classList.remove('is-error');
+    try{
+      let result=await db.from('employees').update({retirement_date:next}).eq('id',Number(employee.employee_id));
+      if(result.error){
+        const fallback=await db.rpc('retire_employee',{p_employee_id:Number(employee.employee_id),p_retirement_date:next,p_note:employee.note||null});
+        if(fallback.error)throw fallback.error;
+      }
+      employee.retirement_date=next;
+      const monthlyRow=(state.monthlyHistoryRows||[]).find(row=>Number(row.employee_id)===Number(employee.employee_id));
+      if(monthlyRow)monthlyRow.retirement_date=employee.retirement_date;
+      input.value=String(employee.retirement_date).slice(0,10);input.classList.add('is-saved');setTimeout(()=>input.classList.remove('is-saved'),900);
+      showToast('퇴사일을 수정했습니다.');
+      if(state.educationPanel==='monthly')renderMonthlyEducationHistory();
+    }catch(error){
+      console.error('[퇴사일 수정]',error);input.value=previous;input.classList.add('is-error');setTimeout(()=>input.classList.remove('is-error'),1200);showToast(friendlyErrorMessage(error,'퇴사일 수정'));
+    }finally{input.disabled=false;input.classList.remove('is-saving')}
   };
 
   window.renderRetiredEmployees=function(){
     const q=$('retiredEmployeeSearch').value.trim().toLowerCase(),dep=$('retiredDepartmentFilter').value;
     const rows=state.retiredEmployees.filter(x=>(!dep||String(x.department_id)===dep)&&(!q||`${x.employee_name} ${x.department_name} ${x.job_title||''}`.toLowerCase().includes(q))).sort((a,b)=>String(a.department_name||'').localeCompare(String(b.department_name||''),'ko')||String(a.employee_name||'').localeCompare(String(b.employee_name||''),'ko'));
     const info=pageInfo(rows,'retired'),body=$('retiredEmployeeTableBody');body.replaceChildren();if(!rows.length){setStatus('retiredEmployeeStatus','조건에 맞는 퇴사자가 없습니다.');renderPager('retiredEmployeePagination',0,'retired',renderRetiredEmployees);return}setStatus('retiredEmployeeStatus','');const f=document.createDocumentFragment();
-    info.items.forEach((x,index)=>{const tr=document.createElement('tr');addTextCell(tr,info.start+index+1,'center');addTextCell(tr,x.department_name,'ellipsis',x.department_name);addTextCell(tr,x.job_title||'-','ellipsis',x.job_title||'-');addTextCell(tr,x.employee_name,'ellipsis',x.employee_name);addTextCell(tr,formatDate(x.hire_date));addTextCell(tr,formatDate(x.retirement_date));const statusTd=document.createElement('td');statusTd.appendChild(statusBadge('retired'));tr.appendChild(statusTd);const manage=document.createElement('td');manage.className='center';const history=document.createElement('button');history.className='mini';history.textContent='교육이력 확인';history.onclick=()=>openRetiredHistory(x);const hardDelete=document.createElement('button');hardDelete.className='mini mini-danger';hardDelete.textContent='삭제';hardDelete.onclick=()=>openHardDeleteForm(x);manage.append(history,hardDelete);tr.appendChild(manage);f.appendChild(tr)});body.appendChild(f);renderPager('retiredEmployeePagination',rows.length,'retired',renderRetiredEmployees);
+    info.items.forEach((x,index)=>{const tr=document.createElement('tr');addTextCell(tr,info.start+index+1,'center');addTextCell(tr,x.department_name,'ellipsis',x.department_name);addTextCell(tr,x.job_title||'-','ellipsis',x.job_title||'-');addTextCell(tr,x.employee_name,'ellipsis',x.employee_name);addTextCell(tr,formatDate(x.hire_date));const retirementTd=document.createElement('td');retirementTd.className='center';const retirementInput=document.createElement('input');retirementInput.type='date';retirementInput.className='retirement-date-editor';retirementInput.value=String(x.retirement_date||'').slice(0,10);retirementInput.setAttribute('aria-label',`${x.employee_name} 퇴사일 수정`);retirementInput.addEventListener('change',()=>saveRetirementDate(x,retirementInput));retirementInput.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();saveRetirementDate(x,retirementInput)}});retirementTd.appendChild(retirementInput);tr.appendChild(retirementTd);const statusTd=document.createElement('td');statusTd.appendChild(statusBadge('retired'));tr.appendChild(statusTd);const manage=document.createElement('td');manage.className='center';const history=document.createElement('button');history.className='mini';history.textContent='교육이력 확인';history.onclick=()=>openRetiredHistory(x);const hardDelete=document.createElement('button');hardDelete.type='button';hardDelete.className='mini mini-danger';hardDelete.textContent='삭제';hardDelete.onclick=()=>openHardDeleteForm(x);manage.append(history,hardDelete);tr.appendChild(manage);f.appendChild(tr)});body.appendChild(f);renderPager('retiredEmployeePagination',rows.length,'retired',renderRetiredEmployees);
   };
 
   function employeePickerRows(){
@@ -4441,7 +4508,12 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     });
     return [...merged.values()];
   }
+  function historyIncomplete(item){
+    const status=String(item?._target_status||item?.target_status||'').toLowerCase(),reason=monthlyReasonLabel(item?._exclusion_reason||item?.exclusion_reason||item?.non_target_reason||'');
+    return reason==='미수료'||['incomplete','not_completed','uncompleted'].includes(status);
+  }
   function historyExcluded(item){
+    if(historyIncomplete(item))return false;
     const status=String(item?._target_status||item?.target_status||'').toLowerCase();
     return Boolean(item?._exclusion_reason||item?.exclusion_reason||item?.non_target_reason)||['excluded','non_target','not_target'].includes(status);
   }
@@ -4453,6 +4525,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     return Math.max(0,...values.map(historyDateTime));
   }
   function selfHistoryDateLines(item,type){
+    if(historyIncomplete(item))return ['미수료'];
     if(historyExcluded(item))return [`비대상(${historyExclusionText(item)})`];
     if(type==='special'){
       const lines=[],common=historyCommonDate(item),first=historyPersonalDate(item),second=historyPersonalDate2(item);
@@ -4664,7 +4737,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
   window.closeModal=function(id){
     const backdrop=byId(id);if(!backdrop)return;
     closeModalBase(id);backdrop.setAttribute('aria-hidden','true');
-    const trigger=modalTriggers.get(id);modalTriggers.delete(id);requestAnimationFrame(()=>trigger?.focus?.());
+    const trigger=modalTriggers.get(id);modalTriggers.delete(id);requestAnimationFrame(()=>{if(!trigger?.focus)return;try{trigger.focus({preventScroll:true})}catch(_){trigger.focus()}});
   };
   document.addEventListener('click',event=>{
     const close=event.target.closest?.('[data-close]');if(close){event.preventDefault();closeModal(close.dataset.close);return}
@@ -4823,6 +4896,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
   regularImportById('regularImportPreviewButton').onclick=()=>buildRegularHalfYearPreview();regularImportById('regularImportRunButton').onclick=runRegularHalfYearImport;
 
   bind('regularHalfYearImportButton','onclick',openRegularHalfYearImport);bind('addEducationButton','onclick',()=>openEducationForm());bind('selfLookupForm','onsubmit',lookupSelfHistory);bind('selfEmployeeQuery','oninput',debounce(searchSelfCandidates,140));
+  bind('employeeForm','onsubmit',saveEmployee);bind('retireForm','onsubmit',processRetirement);
   bind('activeEmployeeTab','onclick',()=>loadEmployeeTab('active'));bind('retiredEmployeeTab','onclick',()=>loadEmployeeTab('retired'));
   bind('activeEmployeeSearch','oninput',debounce(()=>{platformPaging.active=1;state.activeEmployeeSelected.clear();renderActiveEmployees()},160));bind('activeStatusFilter','onchange',()=>{platformPaging.active=1;state.activeEmployeeSelected.clear();renderActiveEmployees()});
   bind('retiredEmployeeSearch','oninput',debounce(()=>{platformPaging.retired=1;renderRetiredEmployees()},160));bind('retiredDepartmentFilter','onchange',()=>{platformPaging.retired=1;renderRetiredEmployees()});bind('retiredSort','onchange',()=>{platformPaging.retired=1;renderRetiredEmployees()});
@@ -4871,17 +4945,27 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 .monthly-direct-date.is-error{border-color:#d64545!important;background:#fff4f4!important}
 .monthly-cell-display{display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-height:27px!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;text-align:center!important;font-size:12px!important;font-weight:800!important;line-height:1.15!important}
 .monthly-matrix td.month-excluded .monthly-cell-display{color:#9a4d00}
+.monthly-matrix td.month-incomplete{background:#ffe4e4!important;color:#a61b1b!important;box-shadow:inset 0 0 0 1px #df5b5b!important}
+.monthly-matrix td.month-incomplete .monthly-cell-display{color:#a61b1b!important;font-size:12px!important;font-weight:900!important}
 .monthly-history-pagination{display:flex!important;align-items:center;justify-content:center;gap:4px;flex-wrap:wrap;padding:8px 4px 3px;min-height:38px}
 .monthly-history-pagination:empty{display:none!important}
 .monthly-history-pagination .platform-page-button{min-width:30px;height:28px;padding:0 8px;font-size:11px}
 .monthly-history-pagination .platform-page-button.active{font-weight:900}
+
+.monthly-matrix td.month-retired-lock,.monthly-matrix td.month-special-dash{background:#f4f5f7!important;color:#8a94a3!important;text-align:center!important;font-size:13px!important;font-weight:800!important}
+.monthly-matrix td.month-retired-lock{cursor:not-allowed!important}
+.monthly-matrix td.month-special-dash{cursor:pointer!important}
+.retirement-date-editor{width:118px;height:27px;padding:2px 5px;border:1px solid #cfd8e6;border-radius:5px;background:#fff;font-size:11px;text-align:center}
+.retirement-date-editor.is-saving{opacity:.6;pointer-events:none}
+.retirement-date-editor.is-saved{border-color:#3a9b63;background:#effaf3}
+.retirement-date-editor.is-error{border-color:#d64545;background:#fff1f1}
 </style>
 <script>
 (function monthlyAttendanceAuthoritativeModule(){
   'use strict';
   const byId=id=>document.getElementById(id);
   const PAGE_SIZE=25;
-  const reasonOptions=[['leave','휴직'],['overseas','해외출장'],['china_expat','중국주재원'],['non_regular','비상근'],['retired','퇴사'],['other','기타']];
+  const reasonOptions=[['leave','휴직'],['overseas','해외출장'],['china_expat','중국주재원'],['non_regular','비상근'],['retired','퇴사'],['new_hire','신규입사자'],['other','기타']];
   let selected=null;
   let searchTimer=0;
 
@@ -4898,48 +4982,60 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
   function linkForMonth(month){
     return (state.educationLinks||[]).find(item=>categoryMeta(item.category_id).type==='regular'&&educationLinkMonth(item)===month)||null;
   }
-  function nextMonthKey(month){
-    const year=Number(month.slice(0,4)),monthNumber=Number(month.slice(5,7));
-    const next=new Date(year,monthNumber,1);
-    return `${next.getFullYear()}-${String(next.getMonth()+1).padStart(2,'0')}`;
+  function halfYearInfo(month){
+    const year=Number(month.slice(0,4)),monthNumber=Number(month.slice(5,7)),start=monthNumber<=6?1:7;
+    return {year,start,end:start+5,months:Array.from({length:6},(_,index)=>`${year}-${String(start+index).padStart(2,'0')}`)};
+  }
+  function employeeHireMonth(row){
+    const value=String(row?.hire_date||'');
+    return /^\d{4}-\d{2}/.test(value)?value.slice(0,7):'';
+  }
+  function employeeRetirementMonth(row){
+    const value=String(row?.retirement_date||'');
+    return /^\d{4}-\d{2}/.test(value)?value.slice(0,7):'';
+  }
+  function entryReason(entry){return [...(entry?.reasons||[])][0]||''}
+  function isDashReason(entry,month,row){
+    const reason=entryReason(entry);
+    if(reason==='퇴사')return true;
+    return reason==='신규입사자'&&month===employeeHireMonth(row);
   }
   function normalizeDate(value,month){
     const text=String(value||'').trim();
     if(!text)return '';
     if(/^\d{4}-\d{2}-\d{2}$/.test(text))return text;
     const digits=text.replace(/\D/g,'');
-    if(digits.length===4){
-      const typedMonth=digits.slice(0,2),nextMonth=nextMonthKey(month);
-      const year=typedMonth===nextMonth.slice(5,7)?nextMonth.slice(0,4):month.slice(0,4);
-      return `${year}-${typedMonth}-${digits.slice(2,4)}`;
-    }
+    if(digits.length===4)return `${month.slice(0,4)}-${digits.slice(0,2)}-${digits.slice(2,4)}`;
     if(digits.length===6)return `20${digits.slice(0,2)}-${digits.slice(2,4)}-${digits.slice(4,6)}`;
     if(digits.length===8)return `${digits.slice(0,4)}-${digits.slice(4,6)}-${digits.slice(6,8)}`;
     return null;
   }
   function validMonthDate(date,month){
     if(!date)return true;
-    const parsed=new Date(`${date}T00:00:00`),dateMonth=date.slice(0,7);
-    const realDate=!Number.isNaN(parsed.getTime())&&parsed.getFullYear()===Number(date.slice(0,4))&&parsed.getMonth()+1===Number(date.slice(5,7))&&parsed.getDate()===Number(date.slice(8,10));
-    return realDate&&(dateMonth===month||dateMonth===nextMonthKey(month));
+    const parsed=new Date(`${date}T00:00:00`),info=halfYearInfo(month),dateMonth=Number(date.slice(5,7));
+    const realDate=!Number.isNaN(parsed.getTime())&&parsed.getFullYear()===Number(date.slice(0,4))&&parsed.getMonth()+1===dateMonth&&parsed.getDate()===Number(date.slice(8,10));
+    return realDate&&Number(date.slice(0,4))===info.year&&dateMonth>=info.start&&dateMonth<=info.end;
   }
   function firstResultRow(data){return Array.isArray(data)?data[0]||null:data||null}
   function entryFor(row,month){
     let entry=row.months.get(month);
-    if(!entry){entry={dates:new Set(),excluded:false,reasons:new Set(),linkId:null,participantId:null,updatedAt:null};row.months.set(month,entry)}
+    if(!entry){entry={dates:new Set(),excluded:false,incomplete:false,reasons:new Set(),linkId:null,participantId:null,updatedAt:null};row.months.set(month,entry)}
     return entry;
   }
   function markCell(td,entry){
-    td.classList.remove('month-attended','month-excluded','month-empty');
-    td.classList.add(entry.excluded?'month-excluded':entry.dates?.size?'month-attended':'month-empty');
+    td.classList.remove('month-attended','month-excluded','month-incomplete','month-empty');
+    td.classList.add(entry.incomplete?'month-incomplete':entry.excluded?'month-excluded':entry.dates?.size?'month-attended':'month-empty');
   }
+  function halfHasIncomplete(row,month){return halfYearInfo(month).months.some(key=>entryFor(row,key).incomplete)}
   function selectCell(td,row,month,entry){
     const body=byId('monthlyHistoryBody');
     body?.querySelectorAll('.month-selected').forEach(cell=>cell.classList.remove('month-selected'));
     td.classList.add('month-selected');
     selected={td,row,month,entry};
     const button=byId('monthlyNonTargetButton');if(button)button.disabled=false;
+    const incompleteButton=byId('monthlyIncompleteButton');if(incompleteButton)incompleteButton.disabled=false;
     const editor=byId('monthlyTopEditor');if(editor&&!editor.hidden)hydrateEditor();
+    const incompleteEditor=byId('monthlyIncompleteEditor');if(incompleteEditor&&!incompleteEditor.hidden)hydrateIncompleteEditor();
   }
   async function fetchParticipant(linkId,employeeId){
     const result=await db.rpc('get_education_participants',{p_education_link_id:Number(linkId)});
@@ -4968,7 +5064,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     const normalized=normalizeDate(input.value,month);
     if(normalized===null||!validMonthDate(normalized,month)){
       input.classList.add('is-error');
-      showToast(`${Number(month.slice(5))}월 또는 다음 달 날짜를 MMDD 형식으로 입력하세요.`);
+      const info=halfYearInfo(month);showToast(`${info.start}월부터 ${info.end}월 사이 날짜를 MMDD 형식으로 입력하세요.`);
       input.focus();
       return;
     }
@@ -4985,7 +5081,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
       const saved=await db.rpc('update_education_participant_date',{p_education_link_id:Number(link.id),p_participant_id:Number(participantId),p_education_date:normalized||null,p_expected_updated_at:entry.updatedAt||participant.updated_at||null});
       if(saved.error)throw saved.error;
       const savedRow=firstResultRow(saved.data);
-      entry.participantId=Number(participantId);entry.updatedAt=savedRow?.updated_at||entry.updatedAt;entry.linkId=Number(link.id);entry.excluded=false;entry.reasons=new Set();entry.dates=new Set(normalized?[normalized]:[]);
+      entry.participantId=Number(participantId);entry.updatedAt=savedRow?.updated_at||entry.updatedAt;entry.linkId=Number(link.id);entry.excluded=false;entry.incomplete=false;entry.reasons=new Set();entry.dates=new Set(normalized?[normalized]:[]);
       input.dataset.saved=normalized;input.value=normalized?normalized.slice(5,7)+normalized.slice(8,10):'';markCell(td,entry);
       input.classList.add('is-saved');setTimeout(()=>input.classList.remove('is-saved'),900);
       state.educationParticipantCounts?.delete?.(String(link.id));scheduleRangeSync(link.id);
@@ -5046,7 +5142,11 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
   function ensureTopEditor(){
     const panel=byId('educationMonthlyPanel'),toolbar=panel?.querySelector('.monthly-history-toolbar');
     if(!panel||!toolbar||byId('monthlyNonTargetButton'))return;
-    const button=document.createElement('button');button.type='button';button.id='monthlyNonTargetButton';button.className='btn secondary';button.textContent='비대상 설정';button.disabled=true;toolbar.querySelector('.toolbar-left')?.appendChild(button);
+    const toolbarLeft=toolbar.querySelector('.toolbar-left');
+    const button=document.createElement('button');button.type='button';button.id='monthlyNonTargetButton';button.className='btn secondary';button.textContent='비대상 설정';button.disabled=true;
+    const incompleteButton=document.createElement('button');incompleteButton.type='button';incompleteButton.id='monthlyIncompleteButton';incompleteButton.className='btn secondary';incompleteButton.textContent='미수료 설정';incompleteButton.disabled=true;
+    toolbarLeft?.append(button,incompleteButton);
+
     const editor=document.createElement('div');editor.id='monthlyTopEditor';editor.className='monthly-top-editor';editor.hidden=true;
     const label=document.createElement('span');label.id='monthlySelectedCellLabel';label.className='selected-cell-label';label.textContent='수정할 셀을 선택하세요.';
     const reason=document.createElement('select');reason.id='monthlyTopReason';reason.className='monthly-top-reason';reason.setAttribute('aria-label','비대상 사유');reasonOptions.forEach(([v,l])=>reason.appendChild(new Option(l,v)));
@@ -5056,18 +5156,34 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     const clear=document.createElement('button');clear.type='button';clear.id='monthlyTopClear';clear.className='btn secondary';clear.textContent='비대상 해제';
     const close=document.createElement('button');close.type='button';close.id='monthlyTopCancel';close.className='btn secondary';close.textContent='닫기';
     editor.append(label,reason,other,save,clear,close);toolbar.insertAdjacentElement('afterend',editor);
-    button.onclick=()=>{if(!selected)return;editor.hidden=!editor.hidden;if(!editor.hidden)hydrateEditor()};
+
+    const incompleteEditor=document.createElement('div');incompleteEditor.id='monthlyIncompleteEditor';incompleteEditor.className='monthly-top-editor';incompleteEditor.hidden=true;
+    const incompleteLabel=document.createElement('span');incompleteLabel.id='monthlyIncompleteLabel';incompleteLabel.className='selected-cell-label';incompleteLabel.textContent='미수료 처리할 셀을 선택하세요.';
+    const incompleteSave=document.createElement('button');incompleteSave.type='button';incompleteSave.id='monthlyIncompleteSave';incompleteSave.className='btn primary';incompleteSave.textContent='반기 미수료 저장';
+    const incompleteClear=document.createElement('button');incompleteClear.type='button';incompleteClear.id='monthlyIncompleteClear';incompleteClear.className='btn secondary';incompleteClear.textContent='미수료 해제';
+    const incompleteClose=document.createElement('button');incompleteClose.type='button';incompleteClose.id='monthlyIncompleteCancel';incompleteClose.className='btn secondary';incompleteClose.textContent='닫기';
+    incompleteEditor.append(incompleteLabel,incompleteSave,incompleteClear,incompleteClose);editor.insertAdjacentElement('afterend',incompleteEditor);
+
+    button.onclick=()=>{if(!selected)return;incompleteEditor.hidden=true;editor.hidden=!editor.hidden;if(!editor.hidden)hydrateEditor()};
+    incompleteButton.onclick=()=>{if(!selected)return;editor.hidden=true;incompleteEditor.hidden=!incompleteEditor.hidden;if(!incompleteEditor.hidden)hydrateIncompleteEditor()};
     close.onclick=()=>{editor.hidden=true};save.onclick=()=>saveNonTarget(false);clear.onclick=()=>saveNonTarget(true);
+    incompleteClose.onclick=()=>{incompleteEditor.hidden=true};incompleteSave.onclick=()=>saveIncomplete(false);incompleteClear.onclick=()=>saveIncomplete(true);
   }
   function hydrateEditor(){
     if(!selected)return;
     byId('monthlySelectedCellLabel').textContent=`${selected.row.department_name} · ${selected.row.employee_name} · ${Number(selected.month.slice(5))}월`;
     const label=[...(selected.entry?.reasons||[])][0]||'기타';
-    const reverse=Object.entries(monthlyExclusionLabels).find(([,value])=>value===label)?.[0]||'other';
+    const reverse=label==='신규입사자'?'new_hire':(Object.entries(monthlyExclusionLabels).find(([,value])=>value===label)?.[0]||'other');
     const known=reasonOptions.some(([value])=>value===reverse)&&reverse!=='other';
     byId('monthlyTopReason').value=known?reverse:'other';
     const other=byId('monthlyTopOther');other.hidden=known;other.value=known?'':(label==='기타'?'':label);
     byId('monthlyTopClear').disabled=!selected.entry?.excluded;
+  }
+  function hydrateIncompleteEditor(){
+    if(!selected)return;
+    const info=halfYearInfo(selected.month),label=info.start===1?'상반기(1~6월)':'하반기(7~12월)';
+    byId('monthlyIncompleteLabel').textContent=`${selected.row.department_name} · ${selected.row.employee_name} · ${label}`;
+    byId('monthlyIncompleteClear').disabled=!halfHasIncomplete(selected.row,selected.month);
   }
   async function saveNonTarget(clear){
     if(!selected)return;
@@ -5079,11 +5195,15 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
         const selectedReason=byId('monthlyTopReason').value;
         reason=selectedReason==='other'?String(byId('monthlyTopOther').value||'').trim():selectedReason;
         if(!reason){showToast('기타 비대상 사유를 입력하세요.');byId('monthlyTopOther').focus();return}
+        if(selectedReason==='new_hire'){
+          if(selected.month!==employeeHireMonth(selected.row)){showToast('신규입사자는 입사한 달에만 설정할 수 있습니다.');return}
+          reason='신규입사자';
+        }
       }
       const result=await db.rpc('assign_employee_to_education',{p_education_link_id:Number(link.id),p_employee_id:Number(selected.row.employee_id),p_target_status:clear?'target':'excluded',p_exclusion_reason:reason});
       if(result.error)throw result.error;
       const entry=entryFor(selected.row,selected.month),returned=firstResultRow(result.data);
-      entry.linkId=Number(link.id);entry.participantId=returned?.participant_id||returned?.id||entry.participantId;entry.updatedAt=returned?.updated_at||entry.updatedAt;entry.excluded=!clear;entry.reasons=new Set(clear?[]:[monthlyReasonLabel(reason)]);
+      entry.linkId=Number(link.id);entry.participantId=returned?.participant_id||returned?.id||entry.participantId;entry.updatedAt=returned?.updated_at||entry.updatedAt;entry.excluded=!clear;entry.incomplete=false;entry.reasons=new Set(clear?[]:[monthlyReasonLabel(reason)]);
       const row=selected.row,month=selected.month;
       selected=null;byId('monthlyTopEditor').hidden=true;state.educationParticipantCounts?.delete?.(String(link.id));renderMonthlyEducationHistory();
       showToast(clear?'비대상을 해제했습니다.':'비대상 사유를 저장했습니다.');
@@ -5091,12 +5211,40 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     }catch(error){console.error('[월별 비대상 저장]',error);showToast(friendlyErrorMessage(error,'비대상 저장'))}
     finally{button.disabled=false}
   }
+  async function saveIncomplete(clear){
+    if(!selected)return;
+    const row=selected.row,info=halfYearInfo(selected.month);
+    const links=(state.educationLinks||[]).filter(link=>categoryMeta(link.category_id).type==='regular'&&info.months.includes(educationLinkMonth(link)));
+    const targets=clear?links.filter(link=>entryFor(row,educationLinkMonth(link)).incomplete):links;
+    if(!targets.length){showToast(clear?'해제할 미수료 기록이 없습니다.':'해당 반기에 등록된 정기교육 자료가 없습니다.');return}
+    const button=clear?byId('monthlyIncompleteClear'):byId('monthlyIncompleteSave');button.disabled=true;
+    try{
+      const results=await Promise.all(targets.map(link=>db.rpc('assign_employee_to_education',{
+        p_education_link_id:Number(link.id),p_employee_id:Number(row.employee_id),p_target_status:clear?'target':'excluded',p_exclusion_reason:clear?null:'미수료'
+      })));
+      const failed=results.find(result=>result.error);if(failed?.error)throw failed.error;
+      targets.forEach((link,index)=>{
+        const month=educationLinkMonth(link),entry=entryFor(row,month),returned=firstResultRow(results[index].data);
+        entry.linkId=Number(link.id);entry.participantId=returned?.participant_id||returned?.id||entry.participantId;entry.updatedAt=returned?.updated_at||entry.updatedAt;
+        entry.incomplete=!clear;entry.excluded=false;entry.reasons=new Set(clear?[]:['미수료']);
+        state.educationParticipantCounts?.delete?.(String(link.id));
+      });
+      if(!clear)info.months.forEach(month=>{const entry=entryFor(row,month);entry.incomplete=true;entry.excluded=false;entry.reasons=new Set(['미수료'])});
+      else info.months.forEach(month=>{const entry=entryFor(row,month);if(entry.incomplete){entry.incomplete=false;entry.reasons=new Set()}});
+      selected=null;byId('monthlyIncompleteEditor').hidden=true;renderMonthlyEducationHistory();
+      showToast(clear?'반기 미수료를 해제했습니다.':'해당 반기 전체를 미수료로 표시했습니다.');
+    }catch(error){console.error('[월별 미수료 저장]',error);showToast(friendlyErrorMessage(error,'미수료 저장'))}
+    finally{button.disabled=false}
+  }
 
   window.renderMonthlyEducationHistory=renderMonthlyEducationHistory=function(){
     ensureTopEditor();syncMonthlyAdminVisibility();
     const head=byId('monthlyHistoryHead'),body=byId('monthlyHistoryBody'),pager=byId('monthlyHistoryPagination');if(!head||!body||!pager)return;
     head.replaceChildren();body.replaceChildren();pager.replaceChildren();selected=null;
-    const editButton=byId('monthlyNonTargetButton');if(editButton)editButton.disabled=true;const editor=byId('monthlyTopEditor');if(editor)editor.hidden=true;
+    const editButton=byId('monthlyNonTargetButton');if(editButton)editButton.disabled=true;
+    const incompleteButton=byId('monthlyIncompleteButton');if(incompleteButton)incompleteButton.disabled=true;
+    const editor=byId('monthlyTopEditor');if(editor)editor.hidden=true;
+    const incompleteEditor=byId('monthlyIncompleteEditor');if(incompleteEditor)incompleteEditor.hidden=true;
     if(!state.isAdmin){setStatus('monthlyHistoryStatus','관리자만 조회할 수 있습니다.',true);return}
     const year=byId('monthlyHistoryYear')?.value||state.monthlyHistoryMonths.at(-1)?.slice(0,4)||'';
     const months=Array.from({length:12},(_,index)=>`${year}-${String(index+1).padStart(2,'0')}`),query=String(byId('monthlyHistorySearch')?.value||'').trim().toLowerCase();
@@ -5107,20 +5255,31 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     const headerRow=document.createElement('tr');[['부서','department-col'],['사원명','employee-col']].forEach(([label,className])=>{const th=document.createElement('th');th.scope='col';th.className=className;th.textContent=label;headerRow.appendChild(th)});months.forEach(month=>{const th=document.createElement('th');th.scope='col';th.textContent=`${Number(month.slice(5))}월`;headerRow.appendChild(th)});head.appendChild(headerRow);
     const fragment=document.createDocumentFragment();
     rows.forEach(row=>{
-      const tr=document.createElement('tr');addTextCell(tr,row.department_name,'department-col',row.department_name);addTextCell(tr,row.employee_name,'employee-col',row.employee_name);const hireMonth=/^\d{4}-\d{2}/.test(String(row.hire_date||''))?String(row.hire_date).slice(0,7):'';
+      const tr=document.createElement('tr');addTextCell(tr,row.department_name,'department-col',row.department_name);addTextCell(tr,row.employee_name,'employee-col',row.employee_name);const hireMonth=employeeHireMonth(row),retirementMonth=employeeRetirementMonth(row);
+      const firstHalfIncomplete=months.slice(0,6).some(month=>entryFor(row,month).incomplete),secondHalfIncomplete=months.slice(6).some(month=>entryFor(row,month).incomplete);
       months.forEach(month=>{
-        const td=document.createElement('td'),entry=entryFor(row,month);
+        const td=document.createElement('td'),entry=entryFor(row,month),halfIncomplete=Number(month.slice(5))<=6?firstHalfIncomplete:secondHalfIncomplete;
         if(hireMonth&&month<hireMonth){td.className='month-locked';td.textContent='—';td.title=`입사일 ${String(row.hire_date).slice(0,10)} 이전 월`;tr.appendChild(td);return}
+        if(retirementMonth&&month>retirementMonth){td.className='month-retired-lock';td.textContent='-';td.title=`퇴사일 ${String(row.retirement_date).slice(0,10)} 익월부터 제외`;tr.appendChild(td);return}
+        if(isDashReason(entry,month,row)){
+          td.className='month-selectable month-special-dash';td.tabIndex=0;td.dataset.month=month;td.textContent='-';td.title=entryReason(entry);
+          bindCellNavigation(td);td.addEventListener('click',()=>selectCell(td,row,month,entry));tr.appendChild(td);return
+        }
+        if(halfIncomplete){
+          td.className='month-selectable month-incomplete';td.tabIndex=0;td.dataset.month=month;
+          const display=document.createElement('span');display.className='monthly-cell-display';display.textContent='미수료';td.appendChild(display);
+          bindCellNavigation(td);td.addEventListener('click',()=>selectCell(td,row,month,entry));tr.appendChild(td);return
+        }
         if(!linkMonths.has(month)){td.className='month-no-data';td.textContent='-';tr.appendChild(td);return}
         td.className='month-selectable';td.tabIndex=entry.excluded?0:-1;td.dataset.month=month;markCell(td,entry);
         if(entry.excluded){const display=document.createElement('span');display.className='monthly-cell-display';display.textContent=`비대상(${[...(entry.reasons||[])].join(', ')||'기타'})`;td.appendChild(display)}
-        else{const input=document.createElement('input');input.type='text';input.inputMode='numeric';input.maxLength=8;input.placeholder='MMDD';input.className='monthly-direct-date';const first=[...(entry.dates||[])].sort()[0]||'';input.value=first?first.slice(5,7)+first.slice(8,10):'';input.dataset.saved=first;input.setAttribute('aria-label',`${row.employee_name} ${Number(month.slice(5))}월 또는 다음 달 교육일자`);bindDirectInput(input,row,month,td);td.appendChild(input)}
+        else{const input=document.createElement('input');input.type='text';input.inputMode='numeric';input.maxLength=8;input.placeholder='MMDD';input.className='monthly-direct-date';const first=[...(entry.dates||[])].sort()[0]||'';input.value=first?first.slice(5,7)+first.slice(8,10):'';input.dataset.saved=first;input.setAttribute('aria-label',`${row.employee_name} ${Number(month.slice(5))}월 반기 내 교육일자`);bindDirectInput(input,row,month,td);td.appendChild(input)}
         bindCellNavigation(td);td.addEventListener('click',()=>selectCell(td,row,month,entry));tr.appendChild(td)
       });fragment.appendChild(tr)
     });body.appendChild(fragment);
     const addPage=(label,page,active=false,disabled=false)=>{const button=document.createElement('button');button.type='button';button.className='platform-page-button'+(active?' active':'');button.textContent=String(label);button.disabled=disabled;if(!disabled&&!active)button.onclick=()=>{state.monthlyHistoryPage=page;renderMonthlyEducationHistory();document.querySelector('.monthly-matrix-wrap')?.scrollTo({top:0})};pager.appendChild(button)};
     if(filteredRows.length){addPage('이전',Math.max(1,state.monthlyHistoryPage-1),false,state.monthlyHistoryPage===1);for(let page=1;page<=totalPages;page++)addPage(page,page,page===state.monthlyHistoryPage);addPage('다음',Math.min(totalPages,state.monthlyHistoryPage+1),false,state.monthlyHistoryPage===totalPages)}
-    const from=filteredRows.length?pageStart+1:0,to=Math.min(pageStart+rows.length,filteredRows.length);setStatus('monthlyHistoryStatus',filteredRows.length?`${year}년 ${from}-${to} / ${filteredRows.length}명 · 해당 월 또는 다음 달 날짜 입력 가능 · 화살표 키로 셀 이동`:'조회되는 직원이 없습니다.');
+    const from=filteredRows.length?pageStart+1:0,to=Math.min(pageStart+rows.length,filteredRows.length);setStatus('monthlyHistoryStatus',filteredRows.length?`${year}년 ${from}-${to} / ${filteredRows.length}명 · 상반기 셀은 1~6월, 하반기 셀은 7~12월 날짜 입력 가능 · 화살표 키로 셀 이동`:'조회되는 직원이 없습니다.');
   };
 
   const search=byId('monthlyHistorySearch');if(search){search.oninput=()=>{clearTimeout(searchTimer);state.monthlyHistoryPage=1;searchTimer=setTimeout(()=>renderMonthlyEducationHistory(),160)}}
