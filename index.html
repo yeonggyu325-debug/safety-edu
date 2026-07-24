@@ -2600,6 +2600,8 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 
     function openHardDeleteForm(employee){
       $("hardDeleteForm").reset();
+      $("hardDeleteForce").checked=true;
+      $("hardDeleteForce").disabled=true;
       $("hardDeleteEmployeeId").value=employee.employee_id;
       $("hardDeleteEmployeeNameValue").value=employee.employee_name;
       $("hardDeleteEmployeeDisplay").value=employee.employee_name;
@@ -3625,59 +3627,126 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 (function employeeDeleteAndAttendanceResetModule(){
   "use strict";
   const $id=id=>document.getElementById(id);
+
   function currentFilteredActiveEmployees(){
     const q=($id('activeEmployeeSearch')?.value||'').trim().toLowerCase();
     const filter=$id('activeStatusFilter')?.value||'';
     return (state.activeEmployees||[]).filter(employee=>(!filter||employee.employment_status===filter)&&(!q||`${employee.employee_name||''} ${employee.department_name||''} ${employee.job_title||''}`.toLowerCase().includes(q)));
   }
 
-  async function deleteEmployeeIds(employeeIds, label){
+  function purgeEmployeesFromClientState(employeeIds){
+    const ids=new Set((employeeIds||[]).map(id=>String(Number(id))));
+    const keep=row=>!ids.has(String(Number(row?.employee_id??row?.id)));
+    ['activeEmployees','retiredEmployees','currentEmployees','participants','healthExams','attendanceBoard','monthlyHistoryRows'].forEach(key=>{
+      if(Array.isArray(state[key]))state[key]=state[key].filter(keep);
+    });
+    if(state.attendancePair){
+      ['round1','round2','rows'].forEach(key=>{if(Array.isArray(state.attendancePair[key]))state.attendancePair[key]=state.attendancePair[key].filter(keep)});
+    }
+    ids.forEach(id=>{
+      state.activeEmployeeSelected?.delete?.(id);
+      state.attendanceSelected?.delete?.(id);
+      state.employeePickerSelected?.delete?.(id);
+    });
+    state.monthlyHistoryLoaded=false;
+    state.monthlyHistoryRows=[];
+    state.monthlyHistoryMonths=[];
+    state.employeeRostersLoaded=false;
+    state.selfHistoryRows=[];
+    const candidateList=$id('selfCandidateList');if(candidateList){candidateList.replaceChildren();candidateList.hidden=true}
+    const resultBox=$id('selfHistoryResult');if(resultBox)resultBox.hidden=true;
+  }
+
+  async function refreshAllEmployeeLists(employeeIds){
+    purgeEmployeesFromClientState(employeeIds);
+    const jobs=[];
+    if(typeof loadAllEmployeeRosters==='function')jobs.push(loadAllEmployeeRosters());
+    if(typeof loadPublicData==='function')jobs.push(loadPublicData());
+    if(typeof loadHealthExams==='function'&&state.isAdmin)jobs.push(loadHealthExams());
+    if(typeof attendanceLoadBoard==='function'&&state.attendanceSessionId)jobs.push(attendanceLoadBoard({silent:true}));
+    const participantModal=$id('participantModal');
+    if(typeof reloadParticipants==='function'&&state.currentEducation?.id&&participantModal&&!participantModal.hidden)jobs.push(reloadParticipants({silent:true}));
+    await Promise.allSettled(jobs);
+    if(state.educationPanel==='monthly'&&typeof loadMonthlyHistory==='function'){
+      try{await loadMonthlyHistory({force:true})}catch(error){console.warn('[삭제 후 월별 참석 조회 갱신]',error)}
+    }
+    if(typeof renderActiveEmployees==='function')renderActiveEmployees();
+    if(typeof renderRetiredEmployees==='function')renderRetiredEmployees();
+  }
+
+  async function callFullDelete(employeeIds,label){
+    const ids=[...new Set((employeeIds||[]).map(Number).filter(Number.isFinite))];
+    if(!ids.length)return {deleted:[],failed:[]};
+    let batch=await db.rpc('hard_delete_employees',{p_employee_ids:ids,p_force:true});
+    if(!batch.error){
+      const data=batch.data||{};
+      const failedIds=new Set((data.errors||[]).map(item=>Number(item.employee_id||item.id)).filter(Number.isFinite));
+      const blockedCount=Number(data.blocked_count||0);
+      if(blockedCount&&!failedIds.size){
+        console.warn(`[${label}] 일괄 삭제 응답에 실패 ID가 없어 개별 재시도합니다.`,data);
+      }else{
+        return {deleted:ids.filter(id=>!failedIds.has(id)),failed:[...failedIds]};
+      }
+    }else{
+      console.warn(`[${label}] 일괄 삭제 RPC 실패, 개별 완전 삭제로 재시도`,batch.error);
+    }
+    const deleted=[],failed=[];
+    for(const employeeId of ids){
+      const result=await db.rpc('hard_delete_employee',{p_employee_id:employeeId,p_force:true});
+      if(result.error){console.error(`[${label}] 사원 ${employeeId} 삭제 실패`,result.error);failed.push(employeeId)}else deleted.push(employeeId);
+    }
+    return {deleted,failed};
+  }
+
+  async function deleteEmployeeIds(employeeIds,label){
     const ids=[...new Set((employeeIds||[]).map(Number).filter(Number.isFinite))];
     if(!ids.length){showToast('삭제할 사원이 없습니다.');return false}
-    const result=await db.rpc('hard_delete_employees',{p_employee_ids:ids,p_force:true});
-    if(result.error){
-      console.error(`[${label}]`,result.error);
-      showToast('사원명부 삭제 중 오류가 발생했습니다.');
+    const result=await callFullDelete(ids,label);
+    if(result.deleted.length)await refreshAllEmployeeLists(result.deleted);
+    if(result.failed.length){
+      showToast(`삭제 ${result.deleted.length}명 · 실패 ${result.failed.length}명`);
       return false;
     }
-    const data=result.data||{};
-    const deleted=Number(data.deleted_count||0),blocked=Number(data.blocked_count||0);
-    if(blocked>0)console.error(`[${label} 차단 상세]`,data.errors||[]);
-    showToast(blocked>0?`삭제 ${deleted}명 · 실패 ${blocked}명`:`${deleted}명의 사원자료를 삭제했습니다.`);
-    state.activeEmployeeSelected?.clear?.();
-    state.employeeRostersLoaded=false;
-    await loadAllEmployeeRosters();
-    return blocked===0;
+    showToast(`${result.deleted.length}명의 사원과 연결된 모든 자료를 삭제했습니다.`);
+    return true;
   }
 
   window.hardDeleteEmployee=async function(event){
-    event.preventDefault();
+    event?.preventDefault?.();
+    event?.stopPropagation?.();
+    const form=$id('hardDeleteForm');
+    const submit=form?.querySelector('button[type="submit"]');
     const employeeId=Number($id('hardDeleteEmployeeId').value);
     const employeeName=$id('hardDeleteEmployeeNameValue').value;
     const confirmName=$id('hardDeleteConfirmName').value.trim();
-    const force=$id('hardDeleteForce').checked;
     $id('hardDeleteError').textContent='';
-    if(confirmName!==employeeName){$id('hardDeleteError').textContent='사원명이 일치하지 않습니다.';return}
-    const warning=force
-      ? `${employeeName} 사원과 연결된 교육·건강검진·출결·근무 이력을 모두 영구 삭제합니다. 계속하시겠습니까?`
-      : `${employeeName} 사원 기본정보를 삭제합니다. 연결된 이력이 있으면 삭제되지 않습니다. 계속하시겠습니까?`;
-    if(!confirm(warning))return;
-    const result=await db.rpc('hard_delete_employee',{p_employee_id:employeeId,p_force:force});
-    if(result.error){
-      console.error('[사원 개별 삭제]',result.error);
-      $id('hardDeleteError').textContent='사원명부 삭제 중 오류가 발생했습니다.';
-      return;
+    if(confirmName!==employeeName){$id('hardDeleteError').textContent='사원명이 일치하지 않습니다.';return false}
+    if(!confirm(`${employeeName} 사원과 연결된 교육·건강검진·출결·근무·부서 이력을 모든 명단에서 영구 삭제합니다. 계속하시겠습니까?`))return false;
+    const original=submit?.textContent||'완전 삭제';
+    if(submit){submit.disabled=true;submit.textContent='삭제 중'}
+    try{
+      const result=await callFullDelete([employeeId],'사원 개별 삭제');
+      if(result.failed.length||!result.deleted.length){
+        $id('hardDeleteError').textContent='연결 자료 삭제가 완료되지 않았습니다. 관리자 RPC 권한과 외래키 설정을 확인하세요.';
+        return false;
+      }
+      closeModal('hardDeleteModal');
+      await refreshAllEmployeeLists([employeeId]);
+      showToast(`${employeeName} 사원과 연결된 모든 자료를 삭제했습니다.`);
+      return false;
+    }catch(error){
+      console.error('[사원 개별 완전 삭제]',error);
+      $id('hardDeleteError').textContent=friendlyErrorMessage(error,'사원 완전 삭제');
+      return false;
+    }finally{
+      if(submit){submit.disabled=false;submit.textContent=original}
     }
-    closeModal('hardDeleteModal');
-    showToast(`${employeeName} 사원자료를 삭제했습니다.`);
-    state.employeeRostersLoaded=false;
-    await loadAllEmployeeRosters();
   };
 
   window.hardDeleteSelectedEmployees=async function(){
     const ids=[...(state.activeEmployeeSelected||new Set())].map(Number);
     if(!ids.length){showToast('삭제할 사원을 선택하세요.');return}
-    if(!confirm(`선택한 ${ids.length}명의 사원자료와 연결된 교육·건강검진·출결 이력을 모두 삭제하시겠습니까?`))return;
+    if(!confirm(`선택한 ${ids.length}명의 사원과 연결된 교육·건강검진·출결·근무·부서 이력을 모든 명단에서 영구 삭제하시겠습니까?`))return;
     await deleteEmployeeIds(ids,'선택 사원 삭제');
   };
 
@@ -3707,7 +3776,6 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
   };
 
 })();
-
 
 (function roleAndAttendanceSessionModule(){
   "use strict";
@@ -4896,7 +4964,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
   regularImportById('regularImportPreviewButton').onclick=()=>buildRegularHalfYearPreview();regularImportById('regularImportRunButton').onclick=runRegularHalfYearImport;
 
   bind('regularHalfYearImportButton','onclick',openRegularHalfYearImport);bind('addEducationButton','onclick',()=>openEducationForm());bind('selfLookupForm','onsubmit',lookupSelfHistory);bind('selfEmployeeQuery','oninput',debounce(searchSelfCandidates,140));
-  bind('employeeForm','onsubmit',saveEmployee);bind('retireForm','onsubmit',processRetirement);
+  bind('employeeForm','onsubmit',saveEmployee);bind('retireForm','onsubmit',processRetirement);bind('hardDeleteForm','onsubmit',event=>window.hardDeleteEmployee(event));
   bind('activeEmployeeTab','onclick',()=>loadEmployeeTab('active'));bind('retiredEmployeeTab','onclick',()=>loadEmployeeTab('retired'));
   bind('activeEmployeeSearch','oninput',debounce(()=>{platformPaging.active=1;state.activeEmployeeSelected.clear();renderActiveEmployees()},160));bind('activeStatusFilter','onchange',()=>{platformPaging.active=1;state.activeEmployeeSelected.clear();renderActiveEmployees()});
   bind('retiredEmployeeSearch','oninput',debounce(()=>{platformPaging.retired=1;renderRetiredEmployees()},160));bind('retiredDepartmentFilter','onchange',()=>{platformPaging.retired=1;renderRetiredEmployees()});bind('retiredSort','onchange',()=>{platformPaging.retired=1;renderRetiredEmployees()});
