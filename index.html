@@ -1278,7 +1278,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 #activeEmployeePanel th:nth-child(4),#activeEmployeePanel td:nth-child(4),#activeEmployeePanel th:nth-child(5),#activeEmployeePanel td:nth-child(5),#activeEmployeePanel th:nth-child(6),#activeEmployeePanel td:nth-child(6),#healthView th:nth-child(3),#healthView td:nth-child(3),#healthView th:nth-child(5),#healthView td:nth-child(5),#attendanceView th:nth-child(3),#attendanceView td:nth-child(3),#attendanceView th:nth-child(5),#attendanceView td:nth-child(5){text-align:left!important}
 @media(min-width:1200px){html,body{overflow-x:hidden!important}.table-wrap{overflow-x:auto!important}.table-wrap>table{table-layout:auto!important;max-width:none!important}table th,table td{overflow:hidden;text-overflow:ellipsis}}
 
-/* 월별 참석 조회 */
+/* 월별 교육 조회 */
 .education-view-tabs{display:flex;gap:6px;margin:0 0 10px;border-bottom:1px solid #d9e0ea;padding-bottom:7px}
 .education-view-tab{min-height:34px;padding:0 14px;border:1px solid #cfd8e6;border-radius:7px;background:#fff;color:#44546a;font-weight:700;font-size:12px;cursor:pointer}
 .education-view-tab.active{border-color:#5f83c9;background:#edf4ff;color:#2458bd;box-shadow:0 1px 3px rgba(36,88,189,.12)}
@@ -1304,7 +1304,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 
 .monthly-cell-editor{display:grid;gap:4px}.monthly-cell-editor select,.monthly-cell-editor input{width:100%;min-width:96px;height:29px;padding:2px 5px;border:1px solid #cfd8e6;border-radius:5px;background:#fff;font-size:10.5px}.monthly-cell-editor .monthly-save-state{min-height:14px;font-size:9.5px;color:#667085}.monthly-cell-editor.is-saving{opacity:.65;pointer-events:none}.monthly-matrix td.month-excluded .monthly-cell-editor select{border-color:#d8932c;background:#fff8ea}.monthly-matrix td.month-attended .monthly-cell-editor input{border-color:#7fa7df;background:#f7fbff}
 
-/* 2026-07 월별 참석 조회 통합·고밀도 보정 */
+/* 2026-07 월별 교육 조회 통합·고밀도 보정 */
 .monthly-matrix-wrap{width:100%;max-width:100%;overflow:auto!important;max-height:calc(100vh - 230px);border-radius:6px}
 .monthly-matrix{width:max-content!important;min-width:100%!important;table-layout:fixed!important}
 .monthly-matrix th,.monthly-matrix td{min-width:76px!important;max-width:76px!important;width:76px!important;height:34px!important;padding:2px 3px!important;font-size:10px!important;line-height:1.15!important;white-space:normal!important}
@@ -1321,7 +1321,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 @media(max-width:1100px){.monthly-matrix-wrap{max-width:calc(100vw - 34px)}}
 
 
-/* 2026-07 월별 참석 조회: 입사일 잠금 및 단일 셀 편집 UI */
+/* 2026-07 월별 교육 조회: 입사일 잠금 및 단일 셀 편집 UI */
 .monthly-matrix th,.monthly-matrix td{min-width:66px!important;max-width:66px!important;width:66px!important;height:30px!important;padding:1px 2px!important;font-size:9.5px!important;line-height:1.1!important}
 .monthly-matrix .department-col{left:0!important;min-width:70px!important;max-width:70px!important;width:70px!important;padding:1px 4px!important}
 .monthly-matrix .employee-col{left:70px!important;min-width:62px!important;max-width:62px!important;width:62px!important;padding:1px 4px!important}
@@ -1333,7 +1333,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 .monthly-matrix td.month-no-data{background:#fafbfc!important;color:#a4acb8!important}
 .monthly-matrix td.month-no-data,.monthly-matrix td.month-locked{text-align:center!important}
 
-/* 2026-07 월별 참석 조회 가독성·페이지네이션 */
+/* 2026-07 월별 교육 조회 가독성·페이지네이션 */
 .monthly-matrix td.month-selectable,.monthly-matrix td.month-attended,.monthly-matrix td.month-excluded,.monthly-matrix td.month-empty{
   text-align:center!important;vertical-align:middle!important;
 }
@@ -1384,7 +1384,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 <section class="view" id="educationView">
 <div class="education-view-tabs" role="tablist" aria-label="교육 화면 선택">
 <button class="education-view-tab active" id="educationListTab" type="button" role="tab" aria-selected="true" aria-controls="educationListPanel">교육자료</button>
-<button class="education-view-tab" hidden id="educationMonthlyTab" type="button" role="tab" aria-selected="false" aria-controls="educationMonthlyPanel">월별 참석 조회</button>
+<button class="education-view-tab" hidden id="educationMonthlyTab" type="button" role="tab" aria-selected="false" aria-controls="educationMonthlyPanel">월별 교육 조회</button>
 </div>
 <div id="educationListPanel" role="tabpanel" aria-labelledby="educationListTab">
 <div class="history-search-section">
@@ -1413,7 +1413,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 <div id="educationMonthlyPanel" role="tabpanel" aria-labelledby="educationMonthlyTab" hidden>
 <div class="monthly-history-toolbar">
 <div class="toolbar-left">
-<input aria-label="월별 참석 조회 사원명, 부서, 비대상 상태 또는 사유 검색" class="search-input" id="monthlyHistorySearch" placeholder="사원명·부서·비대상 사유 검색" type="search"/>
+<input aria-label="월별 교육 조회 사원명, 부서, 비대상 상태 또는 사유 검색" class="search-input" id="monthlyHistorySearch" placeholder="사원명·부서·비대상 사유 검색" type="search"/>
 <select aria-label="조회 연도" class="filter-select" id="monthlyHistoryYear"></select>
 </div>
 
@@ -1424,7 +1424,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 <thead id="monthlyHistoryHead"></thead><tbody id="monthlyHistoryBody"></tbody>
 </table>
 </div>
-<div class="monthly-history-pagination" id="monthlyHistoryPagination" aria-label="월별 참석 조회 페이지"></div>
+<div class="monthly-history-pagination" id="monthlyHistoryPagination" aria-label="월별 교육 조회 페이지"></div>
 <div aria-live="polite" id="monthlyHistoryStatus"></div>
 </div>
 </section>
@@ -1671,8 +1671,8 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 </div>
 <section class="attendance-chart-card" id="attendanceRatePanel">
 <div class="attendance-chart-card-head">
-<div><h3 id="attendanceRateTitle">교육 출석 현황</h3><p id="attendanceRateDescription">1·2차를 합산한 부서별 통합 참석률입니다.</p></div>
-<div class="attendance-chart-actions"><span class="attendance-rate-legend" id="attendanceRateLegend"></span><button aria-expanded="false" class="btn btn-secondary" id="attendanceChartToggle" type="button">그래프 열기</button><button class="btn btn-secondary" disabled="" id="attendanceChartDownload" type="button">이미지 다운로드</button></div>
+<div><h3 id="attendanceRateTitle">정기안전보건교육 집체 참석율</h3><p id="attendanceRateDescription" hidden></p></div>
+<div class="attendance-chart-actions"><span class="attendance-rate-legend" id="attendanceRateLegend" hidden></span><button aria-expanded="false" class="btn btn-secondary" id="attendanceChartToggle" type="button">그래프 열기</button><button class="btn btn-secondary" disabled="" id="attendanceChartDownload" type="button">이미지 다운로드</button></div>
 </div>
 <div aria-hidden="true" class="attendance-chart-collapse" id="attendanceChartCollapse">
 <div class="attendance-chart-scroll" id="attendanceDepartmentChart"><canvas aria-label="부서별 교육 출석 현황 세로 막대그래프" id="attendanceChartCanvas" role="img"></canvas></div>
@@ -2229,7 +2229,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
         state.monthlyHistoryRows=[...byEmployee.values()].sort((a,b)=>(a.department_name||'').localeCompare(b.department_name||'','ko')||(a.employee_name||'').localeCompare(b.employee_name||'','ko'));
         state.monthlyHistoryMonths=[...monthSet].sort();state.monthlyHistoryLoaded=true;
         syncMonthlyHistoryYearOptions();renderMonthlyEducationHistory();
-      }catch(error){console.error('[월별 참석 조회]',error);setStatus('monthlyHistoryStatus',friendlyErrorMessage(error,'월별 교육현황 조회'),true)}
+      }catch(error){console.error('[월별 교육 조회]',error);setStatus('monthlyHistoryStatus',friendlyErrorMessage(error,'월별 교육현황 조회'),true)}
       finally{state.monthlyHistoryLoading=false}
     }
     function syncMonthlyHistoryYearOptions(){
@@ -3796,7 +3796,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     if(typeof reloadParticipants==='function'&&state.currentEducation?.id&&participantModal&&!participantModal.hidden)jobs.push(reloadParticipants({silent:true}));
     await Promise.allSettled(jobs);
     if(state.educationPanel==='monthly'&&typeof loadMonthlyHistory==='function'){
-      try{await loadMonthlyHistory({force:true})}catch(error){console.warn('[삭제 후 월별 참석 조회 갱신]',error)}
+      try{await loadMonthlyHistory({force:true})}catch(error){console.warn('[삭제 후 월별 교육 조회 갱신]',error)}
     }
     if(typeof renderActiveEmployees==='function')renderActiveEmployees();
     if(typeof renderRetiredEmployees==='function')renderRetiredEmployees();
@@ -4374,18 +4374,110 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     if(!state.attendanceSessionId){attendanceSetChartEmpty("교육 회차를 선택하세요.");return}const token=++chartRequestToken;chartEmpty.hidden=false;chartEmpty.textContent="출석 현황을 계산하는 중입니다.";chartScroll.classList.remove("has-data");chartDownload.disabled=true;
     const rateSession=state.attendancePair.round2Session||state.attendancePair.round1Session||attendanceAnchorSession();const result=await db.rpc("attendance_department_rates",{p_session_id:rateSession?.id||state.attendanceSessionId});if(token!==chartRequestToken)return;if(result.error){console.error("[교육 출결관리] 출석 현황 조회 실패",result.error);attendanceSetChartEmpty("교육 출석 현황을 불러오지 못했습니다.");return}
     const payload=result.data||{},rows=Array.isArray(payload.departments)?payload.departments:[];rows.sort((a,b)=>Number(b.display_rate||0)-Number(a.display_rate||0)||String(a.department_name||"").localeCompare(String(b.department_name||""),"ko"));state.attendancePair.chart={...payload,departments:rows};
-    byId("attendanceRateDescription").textContent="1·2차를 합산한 부서별 통합 참석률입니다.";byId("attendanceRateLegend").textContent="통합 참석률";
+    const anchor=attendanceAnchorSession();
+    const month=Number(String(anchor?.session_date||"").slice(5,7));
+    const chartTitle=`${month||""}${month?"월 ":""}정기안전보건교육 집체 참석율`;
+    byId("attendanceRateTitle").textContent=chartTitle;
+    byId("attendanceRateDescription").textContent="";
+    byId("attendanceRateLegend").textContent="";
     if(!rows.length){attendanceSetChartEmpty("교육대상이 있는 부서가 없습니다.");return}chartEmpty.hidden=true;chartScroll.classList.add("has-data");chartDownload.disabled=false;if(chartIsOpen())drawAttendanceChart(false);
   }
-  function drawAttendanceChart(download=false){
-    const payload=state.attendancePair.chart;if(!payload?.departments?.length)return null;const rows=payload.departments,ratio=download?1:Math.max(1,window.devicePixelRatio||1),logicalWidth=download?Math.max(1100,rows.length*105+150):Math.max(chartScroll.clientWidth-24,rows.length*82+100),logicalHeight=download?570:330,canvas=download?document.createElement("canvas"):chartCanvas;canvas.width=Math.round(logicalWidth*ratio);canvas.height=Math.round(logicalHeight*ratio);canvas.style.width=`${logicalWidth}px`;canvas.style.height=`${logicalHeight}px`;const ctx=canvas.getContext("2d");ctx.setTransform(ratio,0,0,ratio,0,0);ctx.fillStyle="#ffffff";ctx.fillRect(0,0,logicalWidth,logicalHeight);
-    const anchor=attendanceAnchorSession(),title=`교육 출석 현황${anchor?` · ${anchor.session_name}`:""}`;ctx.fillStyle="#172033";ctx.font="700 18px sans-serif";ctx.textAlign="left";ctx.fillText(title,56,34);
-    const legendY=62;ctx.fillStyle="#2f6fed";ctx.fillRect(56,legendY-9,12,12);ctx.fillStyle="#475467";ctx.font="11px sans-serif";ctx.fillText("1·2차 통합 참석률",73,legendY+1);
-    const left=58,right=28,top=download?92:84,bottom=download?105:78,chartW=logicalWidth-left-right,chartH=logicalHeight-top-bottom;ctx.strokeStyle="#dce2ea";ctx.lineWidth=1;ctx.fillStyle="#667085";ctx.font="10px sans-serif";ctx.textAlign="right";
-    for(let tick=0;tick<=100;tick+=20){const y=top+chartH-(tick/100)*chartH;ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(logicalWidth-right,y);ctx.stroke();ctx.fillText(`${tick}%`,left-8,y+3)}ctx.save();ctx.translate(15,top+chartH/2);ctx.rotate(-Math.PI/2);ctx.textAlign="center";ctx.font="11px sans-serif";ctx.fillStyle="#475467";ctx.fillText("참석률",0,0);ctx.restore();ctx.textAlign="center";ctx.fillText("부서",left+chartW/2,logicalHeight-12);
-    const groupW=chartW/rows.length,barW=Math.min(34,groupW*.48);rows.forEach((row,index)=>{const center=left+groupW*(index+.5),value=Math.max(0,Math.min(100,Number(row.display_rate||0))),height=value/100*chartH,y=top+chartH-height,x=center-barW/2;ctx.fillStyle="#2f6fed";ctx.fillRect(x,y,barW,height);ctx.fillStyle="#344054";ctx.font="700 9px sans-serif";ctx.fillText(`${value.toFixed(1)}%`,center,Math.max(top+9,y-4));ctx.save();ctx.translate(center,top+chartH+9);ctx.rotate(-Math.PI/4);ctx.textAlign="right";ctx.fillStyle="#475467";ctx.font="10px sans-serif";const label=String(row.department_name||"미지정");ctx.fillText(label.length>12?label.slice(0,11)+"…":label,0,0);ctx.restore()});return canvas;
+  function attendanceChartTitle(){
+    const month=Number(String(attendanceAnchorSession()?.session_date||"").slice(5,7));
+    return `${month||""}${month?"월 ":""}정기안전보건교육 집체 참석율`;
   }
-  chartToggle.onclick=()=>setChartOpen(!chartIsOpen());chartDownload.onclick=()=>{const canvas=drawAttendanceChart(true);if(!canvas)return;const session=attendanceAnchorSession(),name=String(session?.session_name||"교육명").replace(/[\/:*?"<>|]/g,"_");const link=document.createElement("a");link.download=`교육출석현황_${name}.png`;link.href=canvas.toDataURL("image/png",1);link.click()};
+  function attendanceChartDepartmentLabel(label,maxChars=18){
+    const text=String(label||"미지정").trim()||"미지정";
+    return [...text].length>maxChars?[...text].slice(0,Math.max(1,maxChars-1)).join("")+"…":text;
+  }
+  function attendanceChartRoundRect(ctx,x,y,width,height,radius){
+    const r=Math.max(0,Math.min(radius,width/2,height/2));
+    ctx.beginPath();
+    ctx.moveTo(x+r,y);
+    ctx.lineTo(x+width-r,y);
+    ctx.quadraticCurveTo(x+width,y,x+width,y+r);
+    ctx.lineTo(x+width,y+height);
+    ctx.lineTo(x,y+height);
+    ctx.lineTo(x,y+r);
+    ctx.quadraticCurveTo(x,y,x+r,y);
+    ctx.closePath();
+  }
+  function drawAttendanceChart(download=false){
+    const payload=state.attendancePair.chart;
+    if(!payload?.departments?.length)return null;
+    const rows=payload.departments;
+    const logicalWidth=1920,logicalHeight=1080;
+    const canvas=download?document.createElement("canvas"):chartCanvas;
+    canvas.width=logicalWidth;
+    canvas.height=logicalHeight;
+    canvas.style.width="100%";
+    canvas.style.height="auto";
+    canvas.style.maxWidth="1920px";
+    const ctx=canvas.getContext("2d");
+    ctx.setTransform(1,0,0,1,0,0);
+    ctx.clearRect(0,0,logicalWidth,logicalHeight);
+    ctx.fillStyle="#ffffff";
+    ctx.fillRect(0,0,logicalWidth,logicalHeight);
+
+    const title=attendanceChartTitle();
+    ctx.fillStyle="#172033";
+    ctx.font="800 38px Pretendard, 'Noto Sans KR', sans-serif";
+    ctx.textAlign="center";
+    ctx.textBaseline="middle";
+    ctx.fillText(title,logicalWidth/2,68);
+
+    const left=58,right=58,top=250,bottom=300;
+    const chartW=logicalWidth-left-right;
+    const chartH=logicalHeight-top-bottom;
+    const groupW=chartW/Math.max(1,rows.length);
+    const barW=Math.max(18,Math.min(86,groupW*.48));
+    const valueFont=Math.max(10,Math.min(18,groupW*.21));
+    const departmentFont=Math.max(11,Math.min(16,groupW*.21));
+    const dense=groupW<74;
+
+    rows.forEach((row,index)=>{
+      const center=left+groupW*(index+.5);
+      const value=Math.max(0,Math.min(100,Number(row.display_rate||0)));
+      const height=value/100*chartH;
+      const y=top+chartH-height;
+      const x=center-barW/2;
+
+      ctx.fillStyle="#2f6fed";
+      attendanceChartRoundRect(ctx,x,y,barW,height,Math.min(13,barW/2,height/2));
+      ctx.fill();
+
+      const valueText=Number.isInteger(value)?`${value.toFixed(0)}%`:`${value.toFixed(1)}%`;
+      const stagger=dense?(index%3)*Math.max(16,valueFont*1.05):0;
+      const labelY=Math.max(130+valueFont,y-16-stagger);
+      ctx.save();
+      ctx.translate(center,labelY);
+      if(dense)ctx.rotate(-Math.PI/4);
+      ctx.font=`800 ${valueFont}px Pretendard, 'Noto Sans KR', sans-serif`;
+      ctx.textAlign="center";
+      ctx.textBaseline="bottom";
+      const textWidth=ctx.measureText(valueText).width;
+      ctx.fillStyle="rgba(255,255,255,.94)";
+      const padX=5,padY=3;
+      ctx.fillRect(-textWidth/2-padX,-valueFont-padY,textWidth+padX*2,valueFont+padY*2);
+      ctx.fillStyle="#172033";
+      ctx.fillText(valueText,0,0);
+      ctx.restore();
+
+      const maxDepartmentChars=Math.max(5,Math.min(18,Math.floor((groupW*1.28)/Math.max(6,departmentFont*.58))));
+      const department=attendanceChartDepartmentLabel(row.department_name,maxDepartmentChars);
+      ctx.save();
+      ctx.translate(center+Math.min(10,barW*.18),top+chartH+38);
+      ctx.rotate(-Math.PI/4);
+      ctx.fillStyle="#344054";
+      ctx.font=`800 ${departmentFont}px Pretendard, 'Noto Sans KR', sans-serif`;
+      ctx.textAlign="right";
+      ctx.textBaseline="middle";
+      ctx.fillText(department,0,0,Math.max(110,Math.min(230,bottom-55)));
+      ctx.restore();
+    });
+    return canvas;
+  }
+  chartToggle.onclick=()=>setChartOpen(!chartIsOpen());chartDownload.onclick=()=>{const canvas=drawAttendanceChart(true);if(!canvas)return;const title=attendanceChartTitle().replace(/[\/:*?"<>|]/g,"_");const link=document.createElement("a");link.download=`${title}_1920x1080.png`;link.href=canvas.toDataURL("image/png",1);link.click()};
   setChartOpen(localStorage.getItem("attendance_chart_open")==="1");window.addEventListener("resize",()=>{clearTimeout(chartResizeTimer);chartResizeTimer=setTimeout(()=>{if(chartIsOpen()&&state.attendancePair.chart)drawAttendanceChart(false)},180)});
   window.attendanceLoadDepartmentRates=attendanceLoadDepartmentRatesFinal;
 
@@ -5148,7 +5240,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 })();
 </script>
 <style>
-/* 월별 참석 조회: 단일 렌더러, 직접 날짜 입력, 고정 페이지네이션 */
+/* 월별 교육 조회: 단일 렌더러, 직접 날짜 입력, 고정 페이지네이션 */
 .monthly-top-editor{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 6px;padding:6px 8px;border:1px solid #d8e0eb;border-radius:6px;background:#f8fafc}
 .monthly-top-editor[hidden]{display:none!important}
 .monthly-top-editor .selected-cell-label{min-width:150px;font-size:11px;font-weight:800;color:#344054}
@@ -5188,7 +5280,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 (function monthlyAttendanceAuthoritativeModule(){
   'use strict';
   const byId=id=>document.getElementById(id);
-  const PAGE_SIZE=25;
+  const PAGE_SIZE=100;
   const reasonOptions=[['leave','휴직'],['overseas','해외출장'],['china_expat','중국주재원'],['non_regular','비상근'],['retired','퇴사'],['new_hire','신규입사자'],['other','기타']];
   let selected=null;
   let searchTimer=0;
@@ -5762,5 +5854,162 @@ td.ui-empty-mark,th.ui-empty-mark{padding-left:4px!important;padding-right:4px!i
 @media(max-width:1100px){.attendance-direct-cell{grid-template-columns:minmax(50px,1fr) 31px;gap:3px}.attendance-direct-time{font-size:12px}.attendance-live-action{font-size:9px}}
 </style>
 
+
+<style id="monthly-pending-filter-style">
+/* 월별 교육 조회: 미실시자는 셀과 월 헤더의 작은 링크로만 표시 */
+.monthly-matrix thead th .monthly-month-head{display:flex;min-height:38px;flex-direction:column;align-items:center;justify-content:center;gap:2px;line-height:1.05}
+.monthly-matrix thead th .monthly-month-title{display:block;font-weight:800;color:inherit}
+.monthly-matrix thead th .monthly-pending-link{appearance:none;border:0;background:transparent;padding:0;margin:0;color:#d92d20;font:800 8.5px/1.15 Pretendard,"Noto Sans KR",sans-serif;text-decoration:underline;text-underline-offset:2px;cursor:pointer;white-space:nowrap}
+.monthly-matrix thead th .monthly-pending-link:hover,.monthly-matrix thead th .monthly-pending-link:focus-visible{color:#912018;text-decoration-thickness:2px;outline:none}
+.monthly-matrix thead th .monthly-pending-link[aria-pressed="true"]{color:#912018;text-decoration-thickness:2px}
+.monthly-matrix td.month-empty{background:#fff1f0!important;box-shadow:inset 0 0 0 1px #f04438!important}
+.monthly-matrix td.month-empty .monthly-direct-date{color:#b42318!important;background:#fff7f6!important}
+.monthly-matrix td.month-empty .monthly-direct-date::placeholder{color:#d92d20!important;font-weight:800!important}
+.monthly-matrix td.month-empty:hover{box-shadow:inset 0 0 0 2px #d92d20!important}
+.monthly-matrix td.month-empty.month-selected{box-shadow:inset 0 0 0 2px #b42318!important}
+</style>
+<script id="monthly-pending-filter-module">
+(function monthlyPendingHeaderModule(){
+  'use strict';
+  const byId=id=>document.getElementById(id);
+  const tab=byId('educationMonthlyTab');
+  const panel=byId('educationMonthlyPanel');
+  const pager=byId('monthlyHistoryPagination');
+  if(tab){tab.textContent='월별 교육 조회';tab.setAttribute('aria-label','월별 교육 조회')}
+  if(panel)panel.setAttribute('aria-label','월별 교육 조회');
+  if(pager)pager.setAttribute('aria-label','월별 교육 조회 페이지');
+
+  state.monthlyPendingFilter=state.monthlyPendingFilter||{active:false,month:''};
+
+  function monthKey(value){
+    const match=String(value||'').match(/^(\d{4})-(\d{2})/);
+    return match?`${match[1]}-${match[2]}`:'';
+  }
+  function regularLinkMonth(link){
+    if(typeof window.educationLinkMonth==='function')return window.educationLinkMonth(link);
+    return monthKey(link?.first_session_date||link?.conducted_date||link?.second_session_date||'');
+  }
+  function hasRegularLink(month){
+    return (state.educationLinks||[]).some(link=>{
+      try{return categoryMeta(link.category_id).type==='regular'&&regularLinkMonth(link)===month}catch(_){return false}
+    });
+  }
+  function rowEntry(row,month){
+    const months=row?.months;
+    if(months instanceof Map)return months.get(month)||null;
+    return months?.[month]||null;
+  }
+  function entryDates(entry){
+    if(!entry)return [];
+    if(entry.dates instanceof Set)return [...entry.dates].filter(Boolean);
+    if(Array.isArray(entry.dates))return entry.dates.filter(Boolean);
+    return [entry.education_date,entry.education_date_2].filter(Boolean);
+  }
+  function entryReasons(entry){
+    if(!entry)return [];
+    if(entry.reasons instanceof Set)return [...entry.reasons].map(String);
+    if(Array.isArray(entry.reasons))return entry.reasons.map(String);
+    return [entry.exclusion_reason,entry.non_target_reason,entry.target_reason].filter(Boolean).map(String);
+  }
+  function employeeMonth(row,type){
+    const value=type==='hire'?(row?.hire_date||row?.employment_date||row?.join_date):(row?.retirement_date||row?.retired_at);
+    return monthKey(value);
+  }
+  function halfHasIncomplete(row,month){
+    const number=Number(month.slice(5));
+    const start=number<=6?1:7,end=number<=6?6:12,year=month.slice(0,4);
+    for(let current=start;current<=end;current++){
+      const entry=rowEntry(row,`${year}-${String(current).padStart(2,'0')}`);
+      if(entry?.incomplete)return true;
+      const reasons=entryReasons(entry).map(value=>value.trim().toLowerCase());
+      if(reasons.some(value=>['미수료','incomplete','not_completed','uncompleted'].includes(value)))return true;
+    }
+    return false;
+  }
+  function isSpecialDash(entry){
+    const reasons=entryReasons(entry).map(value=>value.trim().toLowerCase());
+    return reasons.some(value=>['퇴사','신규입사자','retired','new_hire'].includes(value));
+  }
+  function isPending(row,month){
+    if(!hasRegularLink(month))return false;
+    const hireMonth=employeeMonth(row,'hire'),retirementMonth=employeeMonth(row,'retirement');
+    if(hireMonth&&month<hireMonth)return false;
+    if(retirementMonth&&month>retirementMonth)return false;
+    const entry=rowEntry(row,month);
+    if(entry?.excluded||entry?.incomplete||halfHasIncomplete(row,month)||isSpecialDash(entry))return false;
+    return entryDates(entry).length===0;
+  }
+  function selectedYear(){
+    return String(byId('monthlyHistoryYear')?.value||state.monthlyHistoryMonths?.at?.(-1)?.slice(0,4)||new Date().getFullYear());
+  }
+  function countForMonth(rows,month){
+    return hasRegularLink(month)?(rows||[]).filter(row=>isPending(row,month)).length:0;
+  }
+  function decorateMonthHeaders(fullRows){
+    const headRow=byId('monthlyHistoryHead')?.querySelector('tr');
+    if(!headRow)return;
+    const year=selectedYear();
+    for(let monthNo=1;monthNo<=12;monthNo++){
+      const th=headRow.children[monthNo+1];
+      if(!th)continue;
+      const month=`${year}-${String(monthNo).padStart(2,'0')}`;
+      const count=countForMonth(fullRows,month);
+      th.replaceChildren();
+      const wrap=document.createElement('div');wrap.className='monthly-month-head';
+      const title=document.createElement('span');title.className='monthly-month-title';title.textContent=`${monthNo}월`;wrap.appendChild(title);
+      if(count>0){
+        const link=document.createElement('button');
+        link.type='button';link.className='monthly-pending-link';link.textContent=`(미실시 : ${count}명)`;
+        const active=Boolean(state.monthlyPendingFilter.active&&state.monthlyPendingFilter.month===month);
+        link.setAttribute('aria-pressed',String(active));
+        link.setAttribute('aria-label',`${year}년 ${monthNo}월 교육 미실시자 ${count}명 ${active?'전체 명단으로 돌아가기':'조회'}`);
+        link.title=active?'전체 명단으로 돌아가기':`${monthNo}월 교육 미실시자 ${count}명 조회`;
+        link.addEventListener('click',event=>{
+          event.preventDefault();event.stopPropagation();
+          if(active){state.monthlyPendingFilter.active=false;state.monthlyPendingFilter.month=''}
+          else{state.monthlyPendingFilter.active=true;state.monthlyPendingFilter.month=month}
+          state.monthlyHistoryPage=1;
+          renderMonthlyEducationHistory();
+        });
+        wrap.appendChild(link);
+      }else if(state.monthlyPendingFilter.active&&state.monthlyPendingFilter.month===month){
+        state.monthlyPendingFilter.active=false;state.monthlyPendingFilter.month='';
+      }
+      th.appendChild(wrap);
+    }
+  }
+
+  const baseRender=window.renderMonthlyEducationHistory||renderMonthlyEducationHistory;
+  window.renderMonthlyEducationHistory=renderMonthlyEducationHistory=function(){
+    const fullRows=state.monthlyHistoryRows||[];
+    const active=Boolean(state.monthlyPendingFilter.active&&state.monthlyPendingFilter.month);
+    const month=state.monthlyPendingFilter.month;
+    let pendingRows=null;
+    if(active){
+      pendingRows=fullRows.filter(row=>isPending(row,month));
+      state.monthlyHistoryRows=pendingRows;
+      state.monthlyHistoryPage=Math.max(1,Number(state.monthlyHistoryPage)||1);
+    }
+    try{
+      const result=baseRender();
+      decorateMonthHeaders(fullRows);
+      if(active){
+        const current=byId('monthlyHistoryStatus')?.textContent?.trim()||'';
+        setStatus('monthlyHistoryStatus',`${month.slice(0,4)}년 ${Number(month.slice(5))}월 교육 미실시 ${pendingRows.length}명${current?` · ${current}`:''}`);
+      }
+      return result;
+    }finally{
+      state.monthlyHistoryRows=fullRows;
+    }
+  };
+})();
+</script>
+
+<style id="attendanceChartDesign1920">
+#attendanceRateDescription,#attendanceRateLegend{display:none!important}
+.attendance-chart-collapse.open{max-height:1200px}
+.attendance-chart-scroll{padding:14px;overflow:hidden!important}
+.attendance-chart-scroll canvas{display:block;width:100%!important;height:auto!important;max-width:1920px!important;margin:0 auto;aspect-ratio:16/9}
+</style>
 </body>
 </html>
