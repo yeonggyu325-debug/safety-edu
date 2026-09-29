@@ -105,13 +105,6 @@
     .summary-label{color:var(--gray);font-size:11px;font-weight:750}
     .summary-value{color:var(--primary-hover);font-size:19px;font-weight:900}
 
-    .self-lookup{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:12px;padding:15px;
-      border:1px solid var(--line);border-radius:var(--radius);background:#fff;box-shadow:var(--shadow)}
-    .self-copy h2{margin:0;font-size:16px;letter-spacing:-.03em}
-    .self-copy p{margin:5px 0 0;color:var(--gray);font-size:12px}
-    .self-form{display:flex;align-items:center;gap:8px}
-    .self-form input{width:170px}
-
     .table-wrap{width:100%;overflow-x:auto}
     table{width:100%;border-collapse:collapse;table-layout:fixed}
     th,td{vertical-align:middle}
@@ -182,7 +175,6 @@
     @media(max-width:900px){
       .sidebar{transform:translateX(-105%);transition:.18s}.sidebar.open{transform:translateX(0)}
       .main{margin-left:0}.content{padding:14px}.topbar{padding:12px 14px}
-      .self-lookup{align-items:stretch;flex-direction:column}.self-form{flex-wrap:wrap}.self-form input{flex:1;min-width:150px}
       .toolbar{align-items:stretch;flex-direction:column}.toolbar-left,.toolbar-right{width:100%;justify-content:flex-start}
       .search-input{width:100%}.summary-strip{display:grid;grid-template-columns:1fr 1fr}
       .participant-layout{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}
@@ -190,24 +182,9 @@
   body:not(.admin-mode) col.admin-column{visibility:collapse;width:0}
 
     /* Unified direct UI */
-    .page-title p,.self-copy p,.modal-head p,.report-format{display:none!important}
+    .page-title p,.modal-head p,.report-format{display:none!important}
     .content{max-width:1520px;padding-left:30px;padding-right:30px}
     #employeeView,#departmentView,#educationView{width:100%;margin:0 auto}
-    .history-search-section{display:flex;justify-content:center;margin:0 0 18px;padding:8px 0 2px}
-    .history-search-form{position:relative;width:min(620px,100%)}
-    .history-search-box{display:flex;width:100%;height:52px;align-items:center;border:2px solid #2f6fed;border-radius:26px;background:#fff;box-shadow:0 6px 20px rgba(47,111,237,.10);overflow:hidden}
-    .history-search-box:focus-within{box-shadow:0 0 0 4px rgba(47,111,237,.10),0 8px 24px rgba(47,111,237,.12)}
-    .history-search-box input{flex:1;height:100%;min-width:0;padding:0 8px 0 21px;border:0!important;border-radius:0!important;background:transparent!important;font-size:15px;box-shadow:none!important}
-    .history-search-box input:focus{outline:none;box-shadow:none!important}
-    .history-search-button{flex:0 0 58px;height:100%;border:0;background:#fff;color:#2f6fed;font-size:30px;font-weight:700;line-height:1;cursor:pointer}
-    .history-search-button:hover{background:#f5f8ff}
-    .autocomplete-list{position:absolute;z-index:70;top:59px;left:0;right:0;max-height:340px;overflow-y:auto;border:1px solid #d8e0ec;border-radius:14px;background:#fff;box-shadow:0 18px 45px rgba(16,24,40,.16);padding:7px}
-    .autocomplete-item{display:flex;width:100%;min-height:52px;align-items:center;justify-content:space-between;gap:14px;padding:9px 12px;border:0;border-radius:9px;background:#fff;text-align:left;color:#202936}
-    .autocomplete-item:hover,.autocomplete-item.active{background:#f2f6ff}
-    .autocomplete-item>div{min-width:0}
-    .autocomplete-item strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
-    .autocomplete-item span{display:block;margin-top:3px;color:#7a8492;font-size:11px}
-    .autocomplete-status{flex:0 0 auto!important;margin:0!important;color:#2f6fed!important;font-size:11px!important;font-weight:800}
     .toolbar,.summary-strip,.card{width:100%;margin-left:auto;margin-right:auto}
     .toolbar{min-height:58px}
     .toolbar-left,.toolbar-right{min-height:36px}
@@ -218,15 +195,7 @@
     .mini{min-height:30px!important}
     #employeeView .table-wrap,#departmentView .table-wrap{width:100%}
     #employeeView table,#departmentView table{width:100%;margin:0 auto}
-    @media(max-width:900px){.content{padding-left:14px;padding-right:14px}.history-search-box{height:48px}.history-search-form{width:100%}}
-
-  
-    .autocomplete-item{justify-content:flex-start!important}
-    .autocomplete-item>div{display:flex!important;align-items:center!important;gap:9px!important;min-width:0!important;width:100%!important}
-    .autocomplete-item strong{display:inline!important;flex:0 0 auto!important}
-    .autocomplete-item>div>span{display:inline!important;margin:0!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;color:#667085!important}
-    .autocomplete-item>div>span::before{content:"/";margin-right:9px;color:#c0c7d1}
-    .autocomplete-status{display:none!important}
+    @media(max-width:900px){.content{padding-left:14px;padding-right:14px}}
 
   
     /* Compact employee roster tables */
@@ -306,7 +275,7 @@
     .topbar{min-height:66px;padding:11px 24px;background:rgba(255,255,255,.98);border-bottom:1px solid #d8dee8;backdrop-filter:none}
     .page-title h1{font-size:20px;font-weight:850}.page-title p{font-size:11px}
     .content{max-width:1580px;padding:20px 24px 40px}
-    .card,.toolbar,.self-lookup,.summary-card{border-color:#d8dee8;border-radius:8px;box-shadow:var(--shadow)}
+    .card,.toolbar,.summary-card{border-color:#d8dee8;border-radius:8px;box-shadow:var(--shadow)}
     .btn{min-height:36px;border-radius:7px;padding:0 14px;font-size:11.5px;font-weight:780}
     .btn-primary{background:#2457c5;border-color:#2457c5}.btn-primary:hover{background:#1d469f;border-color:#1d469f}
     .btn-secondary{border-color:#c9d1dd;color:#344054}.btn-secondary:hover{background:#f4f6f9}
@@ -722,7 +691,12 @@
   #attendanceView .attendance-memo-input{padding-left:6px;padding-right:6px}
 
   /* 본인 교육이력 */
-  #selfHistoryModal table th,#selfHistoryModal table td{text-align:center;vertical-align:middle}
+#selfHistoryModal table th,#selfHistoryModal table td{text-align:center;vertical-align:middle}
+.otp-status{min-height:20px;margin-top:10px;color:#2457c5;font-size:12px;font-weight:700;line-height:1.5}
+#myHistoryOtpVerifySection{margin-top:12px;padding-top:12px;border-top:1px solid #e4e7ec}
+#myHistoryOtpVerifySection .btn{width:100%;margin-top:8px}
+#myHistoryOtpSendButton{width:100%}
+#myHistoryOtpCode{letter-spacing:.16em;text-align:center;font-weight:800}
 
   @media(max-width:860px){
     #participantModal .participant-layout{grid-template-columns:1fr}
@@ -1396,8 +1370,6 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 <div class="menu-label">ADMIN</div>
 <button class="menu-button" id="employeeMenuButton" type="button">사원명부</button>
 <button class="menu-button" id="departmentMenuButton" type="button">부서관리</button>
-<button class="menu-button" id="healthMenuButton" type="button">건강검진 관리</button>
-<button class="menu-button" id="attendanceMenuButton" type="button">교육 출결체크</button>
 </nav>
 </aside>
 <main class="main">
@@ -1407,7 +1379,8 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 <p hidden="" id="pageSubtitle"></p>
 </div>
 <div class="top-actions">
-<button class="btn btn-secondary" id="loginButton" type="button">로그인</button>
+<button class="btn btn-primary" id="myHistoryButton" type="button">내 교육이력</button>
+<button class="btn btn-secondary" id="loginButton" type="button">관리자 로그인</button>
 <div class="top-actions" hidden="" id="adminTopActions">
 <button class="btn btn-secondary" hidden="" id="regularHalfYearImportButton" type="button">월별 교육 조회</button>
 <button class="btn btn-primary" id="addEducationButton" type="button">교육 추가</button>
@@ -1418,17 +1391,6 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 <section class="content">
 <section class="view" id="educationView">
 <div id="educationListPanel" role="tabpanel" aria-labelledby="educationListTab">
-<div class="history-search-section">
-<form class="history-search-form" id="selfLookupForm" role="search">
-<div class="history-search-box">
-<input aria-label="교육이력 검색" autocomplete="off" id="selfEmployeeQuery" placeholder="부서 또는 사원명 검색" type="search"/>
-<button aria-label="검색" class="history-search-button" type="submit">⌕</button>
-</div>
-<input id="selfDepartment" type="hidden"/>
-<input id="selfEmployeeName" type="hidden"/>
-<div class="autocomplete-list" hidden="" id="selfCandidateList"></div>
-</form>
-</div>
 <div class="card">
 <div class="table-wrap">
 <table id="educationDataTable">
@@ -1484,9 +1446,6 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 <div class="toolbar-right">
 <span id="activeSelectionText" style="color:#667085;font-size:11px">선택 0명</span>
 <button class="btn btn-danger" data-action="delete" disabled="" id="bulkDeleteButton" type="button">선택 삭제</button>
-<button class="btn btn-secondary" id="excelTemplateButton" type="button">엑셀 양식</button>
-<button class="btn btn-secondary" id="excelUploadButton" type="button">엑셀 업로드</button>
-<input accept=".xlsx,.xls" hidden="" id="excelFileInput" type="file"/>
 <button class="btn btn-primary" id="addEmployeeButton" type="button">사원 추가</button>
 </div>
 </div>
@@ -1565,9 +1524,6 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 <div class="health-header-actions">
 <select aria-label="검진연도" class="filter-select" id="healthYearFilter"></select>
 <button class="btn btn-secondary" id="healthBulkExamButton" type="button">일괄입력</button>
-<button class="btn btn-secondary" id="healthExcelTemplateButton" type="button">엑셀 양식</button>
-<button class="btn btn-secondary" id="healthExcelUploadButton" type="button">엑셀 업로드</button>
-<input accept=".xlsx,.xls" hidden="" id="healthExcelFileInput" type="file"/>
 </div>
 </div>
 <div aria-label="건강검진 관리 구분" class="health-subtabs" role="tablist">
@@ -1826,6 +1782,26 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 </div>
 </div>
 </div>
+<div aria-hidden="true" class="modal-backdrop" hidden="" id="myHistoryOtpModal">
+<div aria-labelledby="myHistoryOtpTitle" aria-modal="true" class="modal modal-small" role="dialog" tabindex="-1">
+<div class="modal-head"><div><h2 id="myHistoryOtpTitle">내 교육이력 인증</h2></div><button aria-label="닫기" class="close" data-close="myHistoryOtpModal" type="button">×</button></div>
+<div class="modal-body">
+<form id="myHistoryOtpForm">
+<div class="form-grid">
+<div class="field"><label for="myHistoryOtpEmail">회사 이메일</label><input autocomplete="email" id="myHistoryOtpEmail" placeholder="name@hniruja.com" required="" type="email"/></div>
+<button class="btn btn-secondary" id="myHistoryOtpSendButton" type="button">인증번호 받기</button>
+<div hidden="" id="myHistoryOtpVerifySection">
+<div class="field"><label for="myHistoryOtpCode">인증번호</label><input autocomplete="one-time-code" disabled="" id="myHistoryOtpCode" inputmode="numeric" maxlength="8" pattern="[0-9]{6,8}" placeholder="이메일로 받은 인증번호" required="" type="text"/></div>
+<button class="btn btn-primary" id="myHistoryOtpVerifyButton" type="submit">인증하기</button>
+</div>
+</div>
+<div aria-live="polite" class="otp-status" id="myHistoryOtpStatus"></div>
+<div aria-live="assertive" class="form-error" id="myHistoryOtpError" role="alert"></div>
+<div class="modal-actions"><button class="btn btn-secondary" data-close="myHistoryOtpModal" type="button">취소</button></div>
+</form>
+</div>
+</div>
+</div>
 <div aria-hidden="true" class="modal-backdrop" hidden="" id="loginModal">
 <div aria-labelledby="modalTitle4" aria-modal="true" class="modal modal-small" role="dialog" tabindex="-1">
 <div class="modal-head"><div><h2 id="modalTitle4">교육 담당자 로그인</h2></div><button aria-label="닫기" class="close" data-close="loginModal" type="button">×</button></div>
@@ -1893,6 +1869,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 <input id="employeeCode" type="hidden"/>
 <div class="field"><label for="employeeName">사원명</label><input id="employeeName" required=""/></div>
 </div>
+<div class="field"><label for="employeeEmail">회사 이메일</label><input autocomplete="email" id="employeeEmail" placeholder="name@company.com" required="" type="email"/></div>
 <div class="form-row">
 <div class="field"><label for="employeeDepartment">부서</label><select id="employeeDepartment" required=""></select></div>
 <div class="field"><label for="employeeJobTitle">직급</label><select id="employeeJobTitle" required=""><option value="">직급을 선택하세요</option><option value="사원">사원</option><option value="대리">대리</option><option value="과장">과장</option><option value="차장">차장</option><option value="부장">부장</option><option value="이사">이사</option><option value="전무">전무</option><option value="상무">상무</option><option value="부사장">부사장</option><option value="대표이사">대표이사</option></select></div>
@@ -2121,7 +2098,6 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 </div>
 <div aria-atomic="true" aria-live="polite" class="toast" hidden="" id="toast" role="status"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
 
 
@@ -2332,7 +2308,8 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     }
 
     function showView(name){
-      if((name==="employees"||name==="departments"||name==="health"||name==="attendance")&&!state.isAdmin)name="education";
+      if(name==="health"||name==="attendance")name="education";
+      if((name==="employees"||name==="departments")&&!state.isAdmin)name="education";
       if(state.currentView==="attendance"&&name!=="attendance")attendanceUnsubscribeRealtime();
       state.currentView=name;
       $("educationView").hidden=name!=="education";
@@ -2344,8 +2321,8 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
       const halfYearButton=$("regularHalfYearImportButton");if(halfYearButton)halfYearButton.hidden=!(state.isAdmin&&name==="education"&&categoryMeta(state.selectedCategoryId).type==="regular");
       $("employeeMenuButton").classList.toggle("active",name==="employees");
       $("departmentMenuButton").classList.toggle("active",name==="departments");
-      $("healthMenuButton").classList.toggle("active",name==="health");
-      $("attendanceMenuButton").classList.toggle("active",name==="attendance");
+      $("healthMenuButton")?.classList.toggle("active",false);
+      $("attendanceMenuButton")?.classList.toggle("active",false);
       if(name==="education"){
         setEducationPanel(state.educationPanel||"list");
         const selected=state.categories.find(x=>Number(x.id)===Number(state.selectedCategoryId));
@@ -2353,8 +2330,6 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
       }
       if(name==="employees"){$("pageTitle").textContent="사원명부";loadEmployeeTab(state.employeeTab)}
       if(name==="departments"){$("pageTitle").textContent="부서관리";loadDepartments()}
-      if(name==="health"){$("pageTitle").textContent="건강검진 관리";loadHealthExams()}
-      if(name==="attendance"){$("pageTitle").textContent="교육 출결체크";attendanceInitialize()}
     }
 
 
@@ -2459,9 +2434,12 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
       renderCategoryMenu();
       fillEducationCategories();
       if(!state.selectedCategoryId){
-        const first=state.categories.find(x=>x.category_code==="regular")
-          ||state.categories.find(x=>x.parent_id===null)
-          ||state.categories[0];
+        const visibleCategories=state.isAdmin
+          ?state.categories
+          :state.categories.filter(x=>categoryMeta(x.id).type!=="regular");
+        const first=(state.isAdmin?visibleCategories.find(x=>x.category_code==="regular"):null)
+          ||visibleCategories.find(x=>x.parent_id===null)
+          ||visibleCategories[0];
         if(first)selectCategory(first);
       }else{
         renderEducationTable();
@@ -2542,93 +2520,6 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
       });
     }
 
-
-    let selfSearchRequest=0;
-    let selfCandidateCache=[];
-
-    function clearSelfSearch(){
-      $("selfEmployeeQuery").value="";
-      $("selfDepartment").value="";
-      $("selfEmployeeName").value="";
-      $("selfCandidateList").replaceChildren();
-      $("selfCandidateList").hidden=true;
-      selfCandidateCache=[];
-    }
-
-    async function searchSelfCandidates(){
-      const q=$("selfEmployeeQuery").value.trim();
-      $("selfDepartment").value="";
-      $("selfEmployeeName").value="";
-      const list=$("selfCandidateList");
-      const requestId=++selfSearchRequest;
-
-      if(!q){
-        list.replaceChildren();
-        list.hidden=true;
-        selfCandidateCache=[];
-        return;
-      }
-
-      const {data,error}=await db.rpc("search_training_history_candidates",{p_query:q});
-      if(requestId!==selfSearchRequest)return;
-      list.replaceChildren();
-
-      if(error){
-        console.error("candidate search",error);
-        list.hidden=true;
-        selfCandidateCache=[];
-        return;
-      }
-
-      selfCandidateCache=(data||[]).filter(x=>x.employment_status!=="retired");
-      if(!selfCandidateCache.length){
-        list.hidden=true;
-        return;
-      }
-
-      const fragment=document.createDocumentFragment();
-      selfCandidateCache.forEach(x=>{
-        const button=document.createElement("button");
-        button.type="button";
-        button.className="autocomplete-item";
-        const info=document.createElement("div");
-        const name=document.createElement("strong");
-        name.textContent=x.employee_name;
-        const department=document.createElement("span");
-        department.textContent=x.department_name||"-";
-        info.append(name,department);
-        button.appendChild(info);
-        button.onclick=()=>selectSelfCandidate(x);
-        fragment.appendChild(button);
-      });
-      list.appendChild(fragment);
-      list.hidden=false;
-    }
-
-    async function selectSelfCandidate(candidate){
-      const department=candidate.department_name||"";
-      const name=candidate.employee_name||"";
-      clearSelfSearch();
-      await openSelfHistory(department,name,candidate.employee_id);
-    }
-
-
-    async function lookupSelfHistory(event){
-      event.preventDefault();
-      const q=$("selfEmployeeQuery").value.trim();
-      if(!q)return;
-
-      if(selfCandidateCache.length===1){
-        await selectSelfCandidate(selfCandidateCache[0]);
-        return;
-      }
-
-      await searchSelfCandidates();
-      if(selfCandidateCache.length===1){
-        await selectSelfCandidate(selfCandidateCache[0]);
-      }
-    }
-
     async function loadEmployeeTab(tab){
       if(!state.isAdmin)return;
       state.employeeTab=tab;
@@ -2651,8 +2542,8 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
         setStatus("retiredEmployeeStatus","사원명부를 불러오지 못했습니다.",true);
         return;
       }
-      state.activeEmployees=activeResult.data||[];
-      state.retiredEmployees=retiredResult.data||[];
+      state.activeEmployees=await attachEmployeeEmails(activeResult.data||[]);
+      state.retiredEmployees=await attachEmployeeEmails(retiredResult.data||[]);
       state.employeeRostersLoaded=true;
       updateEmployeeSummary();
       fillRetiredDepartmentFilter();
@@ -2662,13 +2553,21 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
       renderSkeleton("activeEmployeeTableBody",8,8);
       const {data,error}=await db.rpc("get_admin_employee_roster",{p_roster:"active"});
       if(error){setStatus("activeEmployeeStatus","재직자 명부를 불러오지 못했습니다.",true);return}
-      state.activeEmployees=data||[];updateEmployeeSummary();renderActiveEmployees();fillRetiredDepartmentFilter();
+      state.activeEmployees=await attachEmployeeEmails(data||[]);updateEmployeeSummary();renderActiveEmployees();fillRetiredDepartmentFilter();
     }
     async function loadRetiredEmployees(){
       renderSkeleton("retiredEmployeeTableBody",8,8);
       const {data,error}=await db.rpc("get_admin_employee_roster",{p_roster:"retired"});
       if(error){setStatus("retiredEmployeeStatus","퇴사자 명부를 불러오지 못했습니다.",true);return}
-      state.retiredEmployees=data||[];updateEmployeeSummary();fillRetiredDepartmentFilter();renderRetiredEmployees();
+      state.retiredEmployees=await attachEmployeeEmails(data||[]);updateEmployeeSummary();fillRetiredDepartmentFilter();renderRetiredEmployees();
+    }
+    async function attachEmployeeEmails(rows){
+      const list=[...(rows||[])],ids=[...new Set(list.map(row=>Number(row.employee_id)).filter(Number.isFinite))];
+      if(!state.isAdmin||!ids.length)return list;
+      const {data,error}=await db.from("employees").select("id,email").in("id",ids);
+      if(error){console.warn("[사원 이메일 조회]",error);return list}
+      const emailById=new Map((data||[]).map(row=>[Number(row.id),String(row.email||"").trim().toLowerCase()]));
+      return list.map(row=>({...row,email:emailById.get(Number(row.employee_id))||""}));
     }
     function updateEmployeeSummary(){
       $("employeeTotal").textContent=state.activeEmployees.length;
@@ -2694,7 +2593,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     function fillEmployeeDepartmentOptions(){const select=$("employeeDepartment");select.replaceChildren(new Option("부서를 선택하세요",""));state.departments.filter(x=>x.is_active).sort((a,b)=>a.department_name.localeCompare(b.department_name,"ko")).forEach(d=>select.appendChild(new Option(d.department_name,String(d.id))))}
     function openEmployeeForm(employee=null){
       $("employeeForm").reset();$("employeeFormError").textContent="";$("employeeId").value=employee?.employee_id||"";$("employeeModalTitle").textContent=employee?"사원 정보 수정":"사원 추가";
-      $("employeeCode").value=employee?.employee_code||`AUTO-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;$("employeeName").value=employee?.employee_name||"";$("employeeDepartment").value=employee?.department_id||"";$("employeeJobTitle").value=employee?.job_title||"";$("employeeHireDate").value=employee?.hire_date||"";$("employeeTransferDate").value=employee?.department_effective_date||employee?.hire_date||new Date().toISOString().slice(0,10);$("employeeStatusSelect").value=employee?.employment_status||"employed";$("employeeNote").value=employee?.note||"";openModal("employeeModal");
+      $("employeeCode").value=employee?.employee_code||`AUTO-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;$("employeeName").value=employee?.employee_name||"";$("employeeEmail").value=String(employee?.email||"").trim().toLowerCase();$("employeeDepartment").value=employee?.department_id||"";$("employeeJobTitle").value=employee?.job_title||"";$("employeeHireDate").value=employee?.hire_date||"";$("employeeTransferDate").value=employee?.department_effective_date||employee?.hire_date||new Date().toISOString().slice(0,10);$("employeeStatusSelect").value=employee?.employment_status||"employed";$("employeeNote").value=employee?.note||"";openModal("employeeModal");
     }
     function toggleEmployeeStatusFields(){}
     async function saveEmployee(event){
@@ -3850,7 +3749,6 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     state.monthlyHistoryMonths=[];
     state.employeeRostersLoaded=false;
     state.selfHistoryRows=[];
-    const candidateList=$id('selfCandidateList');if(candidateList){candidateList.replaceChildren();candidateList.hidden=true}
     const resultBox=$id('selfHistoryResult');if(resultBox)resultBox.hidden=true;
   }
 
@@ -3996,6 +3894,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
 
   window.syncAdminUI=function(){
     $("adminMenu").hidden=!state.isAdmin;
+    const myHistoryButton=$("myHistoryButton");if(myHistoryButton)myHistoryButton.hidden=state.isAdmin;
     $("loginButton").hidden=state.isAuthenticated;
     $("adminTopActions").hidden=!state.isAuthenticated;
     $("logoutButton").hidden=!state.isAuthenticated;
@@ -4003,7 +3902,16 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
     const halfYearButton=$("regularHalfYearImportButton");if(halfYearButton)halfYearButton.hidden=!(state.isAdmin&&state.currentView==="education"&&categoryMeta(state.selectedCategoryId).type==="regular");
     if(!state.isAdmin&&state.currentView!=="education")showView("education");
     if(state.isAdmin&&state.currentView==="employees")loadEmployeeTab(state.employeeTab);
-    if(state.categories.length)renderEducationTable();
+    if(state.categories.length){
+      const selected=state.categories.find(category=>Number(category.id)===Number(state.selectedCategoryId));
+      if(!state.isAdmin&&selected&&categoryMeta(selected.id).type==="regular"){
+        const fallback=state.categories.find(category=>!category.parent_id&&categoryMeta(category.id).type!=="regular")
+          ||state.categories.find(category=>categoryMeta(category.id).type!=="regular");
+        if(fallback){selectCategory(fallback);return}
+      }
+      renderCategoryMenu();
+      renderEducationTable();
+    }
   };
   window.attendanceDeleteSelected=async function(){
     const rows=attendanceBulkRows();
@@ -4112,7 +4020,7 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
   // Common search reset: menu entry, tab entry and modal opening.
   // ------------------------------------------------------------------
   const searchIdsByView={
-    education:["selfEmployeeQuery"],
+    education:[],
     employees:["activeEmployeeSearch","retiredEmployeeSearch"],
     departments:["departmentSearch"],
     health:["healthSearch","healthTargetSearch"],
@@ -4982,24 +4890,18 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
   }
   function renderSelfHistory(){
     const regular=state.selfHistoryRows.filter(item=>selfHistoryType(item)==='regular'),special=state.selfHistoryRows.filter(item=>selfHistoryType(item)==='special'),hiring=state.selfHistoryRows.filter(item=>selfHistoryType(item)==='hiring');
-    const groups=regularHalfGroups(regular);
-    if(state.selfHistoryHalfIndex<0||state.selfHistoryHalfIndex>=groups.length)state.selfHistoryHalfIndex=defaultCompletedHalfIndex(groups);
-    const active=groups[state.selfHistoryHalfIndex];
-    byId('selfHistoryRegularHeading').textContent=active?`정기안전보건교육 · ${active.label}`:'정기안전보건교육';renderRegularHalfPagination(groups);
-    renderHistorySection('selfHistoryRegularBody','selfHistoryRegularStatus',active?.rows||[],'regular');
+    const regularSection=byId('selfHistoryRegularHeading')?.closest('.self-history-section');
+    if(regularSection)regularSection.hidden=!state.isAdmin;
+    byId('selfHistoryRegularHeading').textContent='정기안전보건교육';
+    byId('selfHistoryHalfPagination').replaceChildren();byId('selfHistoryHalfPagination').hidden=true;
+    if(state.isAdmin)renderHistorySection('selfHistoryRegularBody','selfHistoryRegularStatus',regular,'regular');
+    else{byId('selfHistoryRegularBody').replaceChildren();byId('selfHistoryRegularStatus').replaceChildren()}
     renderHistorySection('selfHistorySpecialBody','selfHistorySpecialStatus',special,'special');
     renderHistorySection('selfHistoryHiringBody','selfHistoryHiringStatus',hiring,'hiring');
   }
   window.renderHistoryRows=function(tbodyId,rows,adminRetired){
     if(!adminRetired){state.selfHistoryRows=[...(rows||[])];state.selfHistoryHalfIndex=-1;renderSelfHistory();return}
     const body=byId(tbodyId),fragment=document.createDocumentFragment();rows.forEach(item=>{const tr=document.createElement('tr');addTextCell(tr,item.education_title,'center ellipsis',item.education_title);addTextCell(tr,scheduleText({...item,category_id:state.categories.find(c=>c.category_name===item.education_category)?.id}),'center');addTextCell(tr,item.education_category,'center');addTextCell(tr,item.completion_label||'이수','center');addTextCell(tr,item.note||'-','center ellipsis',item.note||'-');const report=document.createElement('td');report.className='center';if(validUrl(item.result_report_url)){const a=document.createElement('a');a.className='download-link';a.textContent='결과보고서';a.href=item.result_report_url;a.target='_blank';a.rel='noopener noreferrer';report.appendChild(a)}else{const p=document.createElement('span');p.className='progress';p.textContent='교육진행중';report.appendChild(p)}tr.appendChild(report);fragment.appendChild(tr)});body.appendChild(fragment);
-  };
-  window.openSelfHistory=async function(department,name,employeeId){
-    openModal('selfHistoryModal');byId('selfHistoryTitle').textContent=`${department} / ${name} 교육현황`;state.selfHistoryRows=[];state.selfHistoryHalfIndex=-1;
-    renderSkeleton('selfHistoryRegularBody',3,6);renderSkeleton('selfHistorySpecialBody',3,3);renderSkeleton('selfHistoryHiringBody',3,2);byId('selfHistoryHalfPagination').hidden=true;
-    const {data,error}=await db.rpc('lookup_my_training_history',{p_department_name:department,p_employee_name:name});
-    if(error){console.error('[일반직원 교육이력] 조회 실패',error);['selfHistoryRegularBody','selfHistorySpecialBody','selfHistoryHiringBody'].forEach(id=>byId(id).replaceChildren());const td=document.createElement('div');td.className='status-box error';td.textContent='교육이력을 불러오지 못했습니다. 네트워크 상태를 확인한 뒤 다시 시도하세요.';byId('selfHistoryRegularStatus').replaceChildren(td);return}
-    state.selfHistoryRows=await enrichSelfHistoryPersonalDates(data||[],employeeId);renderSelfHistory();
   };
 })();
 
@@ -5159,6 +5061,70 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
   enableTabKeys('#healthView .health-subtabs',id=>healthSetMode(id==='healthTargetTab'?'target':'status'));
   syncEmployeeTabs(state.employeeTab||'active');syncHealthTabs(state.healthMode||'status');
 
+  const COMPANY_EMAIL_DOMAIN='hniruja.com';
+  let pendingOtpEmail='';
+  function normalizeCompanyEmail(value){return String(value||'').trim().toLowerCase()}
+  function isCompanyEmail(email){return /^[^\s@]+@hniruja\.com$/i.test(email)}
+  function resetMyHistoryOtp(){
+    pendingOtpEmail='';
+    byId('myHistoryOtpForm').reset();
+    byId('myHistoryOtpEmail').readOnly=false;
+    byId('myHistoryOtpVerifySection').hidden=true;
+    byId('myHistoryOtpCode').disabled=true;
+    byId('myHistoryOtpStatus').textContent='';
+    byId('myHistoryOtpError').textContent='';
+    byId('myHistoryOtpSendButton').disabled=false;
+    byId('myHistoryOtpSendButton').textContent='인증번호 받기';
+    byId('myHistoryOtpVerifyButton').disabled=false;
+    byId('myHistoryOtpVerifyButton').textContent='인증하기';
+  }
+  function showOtpVerifiedHistory(email){
+    openModal('selfHistoryModal');
+    byId('selfHistoryTitle').textContent=`${email} / 내 교육이력`;
+    state.selfHistoryRows=[];state.selfHistoryHalfIndex=-1;
+    const regularSection=byId('selfHistoryRegularHeading')?.closest('.self-history-section');
+    if(regularSection)regularSection.hidden=!state.isAdmin;
+    ['selfHistoryRegularBody','selfHistorySpecialBody','selfHistoryHiringBody'].forEach(id=>byId(id).replaceChildren());
+    byId('selfHistoryHalfPagination').replaceChildren();byId('selfHistoryHalfPagination').hidden=true;
+    ['selfHistoryRegularStatus','selfHistorySpecialStatus','selfHistoryHiringStatus'].forEach(id=>byId(id).textContent='');
+    byId(state.isAdmin?'selfHistoryRegularStatus':'selfHistorySpecialStatus').textContent='이메일 인증이 완료되었습니다. 본인 교육이력 조회는 보안 SQL 연결 후 활성화됩니다.';
+  }
+  async function openMyHistoryOtp(){
+    const sessionResult=await db.auth.getSession();
+    const session=sessionResult.data?.session;
+    const email=normalizeCompanyEmail(session?.user?.email);
+    if(session?.user&&email&&!state.isAdmin){showOtpVerifiedHistory(email);return}
+    resetMyHistoryOtp();openModal('myHistoryOtpModal');byId('myHistoryOtpEmail').focus();
+  }
+  async function sendMyHistoryOtp(){
+    const email=normalizeCompanyEmail(byId('myHistoryOtpEmail').value),button=byId('myHistoryOtpSendButton');
+    const errorBox=byId('myHistoryOtpError'),statusBox=byId('myHistoryOtpStatus');errorBox.textContent='';statusBox.textContent='';
+    if(!isCompanyEmail(email)){errorBox.textContent=`회사 이메일(@${COMPANY_EMAIL_DOMAIN})을 입력하세요.`;return}
+    button.disabled=true;button.textContent='전송 중';
+    try{
+      const result=await db.auth.signInWithOtp({email,options:{shouldCreateUser:true}});
+      if(result.error)throw result.error;
+      pendingOtpEmail=email;byId('myHistoryOtpEmail').value=email;byId('myHistoryOtpEmail').readOnly=true;
+      byId('myHistoryOtpVerifySection').hidden=false;byId('myHistoryOtpCode').disabled=false;statusBox.textContent='회사 이메일로 보낸 인증번호를 입력하세요.';byId('myHistoryOtpCode').focus();
+      button.textContent='인증번호 재전송';
+    }catch(error){console.error('[내 교육이력 OTP 전송]',error);errorBox.textContent='인증번호를 보내지 못했습니다. 잠시 후 다시 시도하세요.';button.textContent='인증번호 받기'}
+    finally{button.disabled=false}
+  }
+  async function verifyMyHistoryOtp(event){
+    event.preventDefault();
+    if(byId('myHistoryOtpVerifySection').hidden){await sendMyHistoryOtp();return}
+    const token=String(byId('myHistoryOtpCode').value||'').replace(/\D/g,''),button=byId('myHistoryOtpVerifyButton');
+    const errorBox=byId('myHistoryOtpError');errorBox.textContent='';
+    if(!pendingOtpEmail||!/^[0-9]{6,8}$/.test(token)){errorBox.textContent='이메일로 받은 인증번호를 정확히 입력하세요.';return}
+    button.disabled=true;button.textContent='확인 중';
+    try{
+      const result=await db.auth.verifyOtp({email:pendingOtpEmail,token,type:'email'});
+      if(result.error||!result.data?.session)throw result.error||new Error('세션이 없습니다.');
+      await checkAdmin(result.data.session);closeModal('myHistoryOtpModal');showOtpVerifiedHistory(pendingOtpEmail);showToast('회사 이메일 인증이 완료되었습니다.');
+    }catch(error){console.error('[내 교육이력 OTP 확인]',error);errorBox.textContent='인증번호가 올바르지 않거나 만료되었습니다.'}
+    finally{button.disabled=false;button.textContent='인증하기'}
+  }
+
   async function handleLogin(event){
     event.preventDefault();const errorBox=byId('loginError');errorBox.textContent='';
     const result=await db.auth.signInWithPassword({email:byId('loginEmail').value.trim(),password:byId('loginPassword').value});
@@ -5169,12 +5135,13 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
   }
   async function handleLogout(){
     const result=await db.auth.signOut();if(result.error){showToast(friendlyErrorMessage(result.error,'로그아웃'));return}
-    state.isAuthenticated=false;state.isAdmin=false;state.userRole='worker';document.body.dataset.userRole='worker';document.body.classList.remove('admin-mode');syncAdminUI();await loadPublicData();showView('education');showToast('로그아웃했습니다.');
+    pendingOtpEmail='';state.isAuthenticated=false;state.isAdmin=false;state.userRole='worker';document.body.dataset.userRole='worker';document.body.classList.remove('admin-mode');syncAdminUI();await loadPublicData();showView('education');showToast('로그아웃했습니다.');
   }
   const normalizeTime=input=>{let value=String(input.value||'').trim().replace(/[^0-9:]/g,'');if(/^\d{3,4}$/.test(value))value=value.padStart(4,'0').replace(/^(\d{2})(\d{2})$/,'$1:$2');if(!/^(?:[01]\d|2[0-3]):[0-5]\d$/.test(value))return false;input.value=value;return true};
 
+  bind('myHistoryButton','onclick',openMyHistoryOtp);bind('myHistoryOtpSendButton','onclick',sendMyHistoryOtp);bind('myHistoryOtpForm','onsubmit',verifyMyHistoryOtp);
   bind('loginButton','onclick',()=>openModal('loginModal'));bind('loginForm','onsubmit',handleLogin);bind('logoutButton','onclick',handleLogout);
-  bind('employeeMenuButton','onclick',()=>showView('employees'));bind('departmentMenuButton','onclick',()=>showView('departments'));bind('healthMenuButton','onclick',()=>showView('health'));bind('attendanceMenuButton','onclick',()=>showView('attendance'));
+  bind('employeeMenuButton','onclick',()=>showView('employees'));bind('departmentMenuButton','onclick',()=>showView('departments'));
   bind('attendanceSessionSelect','onchange',async event=>{state.attendanceSessionId=event.target.value;state.attendanceSelected.clear();state.attendancePage=1;if(state.attendanceSessionId)localStorage.setItem(ATTENDANCE_CONFIG.lastSessionKey,state.attendanceSessionId);else localStorage.removeItem(ATTENDANCE_CONFIG.lastSessionKey);attendanceRenderSessionInfo();await attendanceLoadBoard();attendanceSubscribeRealtime()});
   bind('attendanceNewSessionButton','onclick',()=>attendanceOpenSessionForm());bind('attendanceEditSessionButton','onclick',()=>attendanceOpenSessionForm(state.attendanceSessions.find(x=>String(x.id)===String(state.attendanceSessionId))));bind('attendanceResyncButton','onclick',attendanceResyncExistingRecords);
   ['attendanceSessionStart','attendanceSessionEnd'].forEach(id=>bind(id,'onfocus',event=>event.target.select()));
@@ -5280,19 +5247,16 @@ input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing
   ['regularImportYear','regularImportMonth'].forEach(id=>regularImportById(id).addEventListener('change',()=>{regularHalfYearImportState.preview=null;regularImportById('regularImportRunButton').disabled=true}));
   regularImportById('regularImportPreviewButton').onclick=()=>buildRegularHalfYearPreview();regularImportById('regularImportRunButton').onclick=runRegularHalfYearImport;
 
-  bind('addEducationButton','onclick',()=>openEducationForm());bind('selfLookupForm','onsubmit',lookupSelfHistory);bind('selfEmployeeQuery','oninput',debounce(searchSelfCandidates,140));
+  bind('addEducationButton','onclick',()=>openEducationForm());
   bind('employeeForm','onsubmit',saveEmployee);bind('retireForm','onsubmit',processRetirement);bind('hardDeleteForm','onsubmit',event=>window.hardDeleteEmployee(event));
   bind('activeEmployeeTab','onclick',()=>loadEmployeeTab('active'));bind('retiredEmployeeTab','onclick',()=>loadEmployeeTab('retired'));
   bind('activeEmployeeSearch','oninput',debounce(()=>{platformPaging.active=1;state.activeEmployeeSelected.clear();renderActiveEmployees()},160));bind('activeStatusFilter','onchange',()=>{platformPaging.active=1;state.activeEmployeeSelected.clear();renderActiveEmployees()});
   bind('retiredEmployeeSearch','oninput',debounce(()=>{platformPaging.retired=1;renderRetiredEmployees()},160));bind('retiredDepartmentFilter','onchange',()=>{platformPaging.retired=1;renderRetiredEmployees()});bind('retiredSort','onchange',()=>{platformPaging.retired=1;renderRetiredEmployees()});
   bind('selectAllActiveEmployees','onchange',event=>{document.querySelectorAll('.active-row-check').forEach(x=>{x.checked=event.target.checked;x.checked?state.activeEmployeeSelected.add(String(x.value)):state.activeEmployeeSelected.delete(String(x.value))});updateActiveSelection()});
-  bind('excelTemplateButton','onclick',downloadExcelTemplate);bind('excelUploadButton','onclick',()=>byId('excelFileInput').click());bind('excelFileInput','onchange',event=>{if(event.target.files[0])importExcel(event.target.files[0]);event.target.value='' });
-
   bind('departmentSearch','oninput',debounce(renderDepartments,160));bind('addDepartmentButton','onclick',()=>openDepartmentForm());bind('departmentForm','onsubmit',saveDepartment);
-  bind('healthStatusTab','onclick',()=>healthSetMode('status'));bind('healthTargetTab','onclick',()=>healthSetMode('target'));bind('healthExcelTemplateButton','onclick',downloadHealthExcelTemplate);bind('healthExcelUploadButton','onclick',()=>byId('healthExcelFileInput').click());bind('healthExcelFileInput','onchange',event=>{if(event.target.files[0])importHealthExcel(event.target.files[0]);event.target.value='' });
+  bind('healthStatusTab','onclick',()=>healthSetMode('status'));bind('healthTargetTab','onclick',()=>healthSetMode('target'));
   bind('educationForm','onsubmit',saveEducation);bind('educationCategory','onchange',updateEducationFormLayout);bind('assignAllButton','onclick',assignAllParticipants);bind('addSelectedParticipantsButton','onclick',addSelectedParticipants);bind('employeePickerSelectAll','onchange',event=>{window.currentEmployeePickerPageItems().forEach(x=>event.target.checked?state.employeePickerSelected.add(String(x.employee_id)):state.employeePickerSelected.delete(String(x.employee_id)));renderEmployeePicker()});bind('deleteAllParticipantsButton','onclick',deleteAllParticipants);bind('employeePickerSearch','oninput',debounce(event=>{if(event.isComposing||event.target.dataset.imeComposing==='true')return;platformPaging.employeePicker=1;renderEmployeePicker()},160));
 
-  document.addEventListener('click',event=>{const form=byId('selfLookupForm');if(form&&!form.contains(event.target))byId('selfCandidateList').hidden=true});
   window.addEventListener('error',event=>console.error('[화면 실행 오류]',event.error||event.message));
   window.addEventListener('unhandledrejection',event=>console.error('[비동기 처리 오류]',event.reason));
 
@@ -5775,6 +5739,11 @@ td.ui-empty-mark,th.ui-empty-mark{padding-left:4px!important;padding-right:4px!i
 
   const baseSelectCategory=window.selectCategory||selectCategory;
   window.selectCategory=selectCategory=function(category){
+    if(!state.isAdmin&&categoryMeta(category?.id).type==='regular'){
+      category=state.categories.find(item=>!item.parent_id&&categoryMeta(item.id).type!=='regular')
+        ||state.categories.find(item=>categoryMeta(item.id).type!=='regular');
+      if(!category)return;
+    }
     state.educationUnifiedPage=1;
     const type=categoryMeta(category?.id).type;
     if(type!=='regular'&&state.educationPanel==='monthly')baseSetEducationPanel('list');
@@ -5797,7 +5766,7 @@ td.ui-empty-mark,th.ui-empty-mark{padding-left:4px!important;padding-right:4px!i
   window.renderCategoryMenu=renderCategoryMenu=function(){
     const nav=byId('categoryMenu');if(!nav)return;
     nav.replaceChildren();
-    const roots=state.categories.filter(category=>!category.parent_id);
+    const roots=state.categories.filter(category=>!category.parent_id&&(state.isAdmin||categoryMeta(category.id).type!=='regular'));
     roots.forEach(root=>{
       const wrapper=document.createElement('div');
       const rootButton=document.createElement('button');
@@ -5808,7 +5777,7 @@ td.ui-empty-mark,th.ui-empty-mark{padding-left:4px!important;padding-right:4px!i
       rootButton.classList.toggle('menu-parent-active',parentActive);
       if(parentActive)rootButton.setAttribute('aria-current','page');
       wrapper.appendChild(rootButton);
-      const children=categoryChildren(root.id);
+      const children=categoryChildren(root.id).filter(category=>state.isAdmin||categoryMeta(category.id).type!=='regular');
       if(children.length){
         const submenu=document.createElement('div');submenu.className='submenu';
         children.forEach(child=>{
@@ -6217,10 +6186,16 @@ td.ui-empty-mark,th.ui-empty-mark{padding-left:4px!important;padding-right:4px!i
   function invalidateMonthly(){state.monthlyHistoryLoaded=false;state.monthlyHistoryRows=[];state.monthlyHistoryMonths=[]}
   const baseSaveEmployee=window.saveEmployee||saveEmployee;
   window.saveEmployee=saveEmployee=async function(event){
-    const code=$('employeeCode')?.value,name=$('employeeName')?.value.trim(),status=$('employeeStatusSelect')?.value||'employed',effective=$('employeeTransferDate')?.value||$('employeeHireDate')?.value||new Date().toISOString().slice(0,10),note=$('employeeNote')?.value.trim()||null;
+    const code=$('employeeCode')?.value,name=$('employeeName')?.value.trim(),email=String($('employeeEmail')?.value||'').trim().toLowerCase(),status=$('employeeStatusSelect')?.value||'employed',effective=$('employeeTransferDate')?.value||$('employeeHireDate')?.value||new Date().toISOString().slice(0,10),note=$('employeeNote')?.value.trim()||null;
     await baseSaveEmployee(event);if($('employeeFormError')?.textContent)return;
     let employee=(state.activeEmployees||[]).find(x=>x.employee_code===code)||(state.activeEmployees||[]).find(x=>x.employee_name===name);if(!employee){await loadActiveEmployees();employee=(state.activeEmployees||[]).find(x=>x.employee_code===code)||(state.activeEmployees||[]).find(x=>x.employee_name===name)}
-    if(employee)await upsertStatusHistory(employee.employee_id,status,effective,note);invalidateMonthly();await loadPublicData();
+    if(employee){
+      const emailResult=await db.from('employees').update({email:email||null}).eq('id',Number(employee.employee_id));
+      if(emailResult.error){$('employeeFormError').textContent=friendlyErrorMessage(emailResult.error,'회사 이메일 저장');openModal('employeeModal');return}
+      employee.email=email;
+      await upsertStatusHistory(employee.employee_id,status,effective,note);
+    }
+    invalidateMonthly();await loadActiveEmployees();await loadPublicData();
   };
   const baseRetire=window.processRetirement||processRetirement;
   window.processRetirement=processRetirement=async function(event){const ids=String($('retireEmployeeIds')?.value||'').split(',').filter(Boolean).map(Number),date=$('retirementDateInput')?.value;await baseRetire(event);if($('retireError')?.textContent)return;await Promise.all(ids.map(id=>upsertStatusHistory(id,'retired',date,$('retirementNote')?.value.trim()||null)));invalidateMonthly();await loadPublicData()};
