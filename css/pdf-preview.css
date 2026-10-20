@@ -1,0 +1,12 @@
+.pdf-preview-dialog{width:min(1100px,94vw);height:min(850px,90vh);max-width:94vw;max-height:90vh;padding:0;border:0;border-radius:12px;box-shadow:0 20px 70px #0005;color:#1d2939}
+.pdf-preview-dialog::backdrop{background:rgba(15,23,42,.6)}
+.pdf-preview-dialog[open]{display:flex;flex-direction:column}
+.pdf-preview-header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid #e4e7ec}
+.pdf-preview-header h2{margin:0;font-size:18px}
+.pdf-preview-notice{margin:0;padding:10px 18px;background:#f8fafc;font-size:13px;line-height:1.6}
+.pdf-preview-frame{display:block;width:100%;flex:1;min-height:0;border:0;background:#e5e7eb}
+.pdf-preview-footer{display:flex;justify-content:flex-end;padding:10px 18px;border-top:1px solid #e4e7ec}
+.pdf-preview-button{margin:4px 0 4px 5px;padding:4px 7px;min-height:25px;border:1px solid #c7d7fe;border-radius:7px;background:#eff4ff;color:#175cd3;font:inherit;font-size:12px;cursor:pointer}
+.pdf-preview-button:hover{background:#dbeafe}
+.pdf-preview-button:focus-visible{outline:2px solid #2563eb;outline-offset:2px}
+@media(max-width:600px){.pdf-preview-dialog{width:96vw;max-width:96vw;height:90vh}.pdf-preview-header{padding:12px}.pdf-preview-header h2{font-size:16px}.pdf-preview-notice{padding:8px 12px}}

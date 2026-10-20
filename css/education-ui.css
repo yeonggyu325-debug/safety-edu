@@ -1,0 +1,24 @@
+
+/* Final UI consistency layer */
+:root{--ui-empty-color:#8b95a5;--ui-empty-size:12px;--ui-empty-weight:600}
+.ui-empty-mark{font-family:Arial,"Noto Sans KR",sans-serif!important;font-size:var(--ui-empty-size)!important;font-weight:var(--ui-empty-weight)!important;line-height:1!important;letter-spacing:0!important;color:var(--ui-empty-color)!important;text-align:center!important;vertical-align:middle!important;font-style:normal!important;text-decoration:none!important}
+td.ui-empty-mark,th.ui-empty-mark{padding-left:4px!important;padding-right:4px!important}
+.monthly-matrix td.month-locked,.monthly-matrix td.month-retired-lock,.monthly-matrix td.month-no-data,.monthly-matrix td.month-special-dash{font-family:Arial,"Noto Sans KR",sans-serif!important;font-size:12px!important;font-weight:600!important;line-height:1!important;color:var(--ui-empty-color)!important;text-align:center!important}
+.education-view-tabs{margin-bottom:8px!important}
+.education-view-tab[hidden]{display:none!important}
+.monthly-history-toolbar{padding:0 0 8px!important;min-height:0!important}
+.monthly-history-toolbar .toolbar-left{width:100%;display:flex;gap:6px;align-items:center}
+#monthlyHistorySearch{flex:1 1 280px;max-width:420px}
+#monthlyHistoryYear{flex:0 0 92px}
+.monthly-history-legend{display:none!important}
+.monthly-matrix-wrap{border:1px solid #dce3ed;border-radius:7px;background:#fff}
+.monthly-matrix th{font-size:11px!important;font-weight:800!important;padding:5px 3px!important}
+.monthly-matrix td{height:31px!important;padding:2px!important}
+.monthly-matrix .department-col{min-width:68px!important;max-width:86px!important;width:76px!important}
+.monthly-matrix .employee-col{left:76px!important;min-width:58px!important;max-width:68px!important;width:62px!important}
+#educationDataTable td:not(.center),#educationDataTable td.education-category-text{text-align:left!important}
+#educationDataTable td.center{text-align:center!important}
+.menu-button.menu-parent-active{background:rgba(31,111,209,.08);color:#174ea6;font-weight:800}
+.submenu{display:block!important}
+.menu-button .caret{display:none!important}
+#monthlyHistoryStatus .status-box{padding:6px 2px;background:transparent;border:0;color:#667085;font-size:11px;text-align:center}

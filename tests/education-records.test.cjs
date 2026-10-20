@@ -1,0 +1,42 @@
+'use strict';
+const {test}=require('node:test'),assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path');
+const {createApplication}=require('../server/server.cjs');
+test('Report registration requires report and targets, is admin-only and atomic, preserves old material links and dates, and rejects stale edits',async()=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'safety-report-test-'));
+ const app=createApplication({dataDirectory:root});await new Promise(resolve=>app.server.listen(0,'127.0.0.1',resolve));
+ const base='http://127.0.0.1:'+app.server.address().port;let cookie='';
+ const call=async(route,payload,authenticated=true)=>{const response=await fetch(base+route,{method:'POST',headers:{'Content-Type':'application/json',...(authenticated?{Cookie:cookie}:{})},body:JSON.stringify(payload)});return {status:response.status,...await response.json()}};
+ const rpc=(name,params)=>call('/api/rpc',{name,params});
+ try{
+  const setup=await fetch(base+'/api/auth/setup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:'report-admin@example.com',password:'Report-test-password-123'})});cookie=setup.headers.get('set-cookie').split(';')[0];
+  const categories=app.store.db.prepare('SELECT * FROM education_categories').all(),hiring=categories.find(c=>c.category_code==='hiring').id,regular=categories.find(c=>c.category_code==='regular').id;
+  const employee1=(await rpc('save_employee_identity',{p_employee_name:'Employee A',p_email:'a@example.com'})).data[0].employee_id;
+  const employee2=(await rpc('save_employee_identity',{p_employee_name:'Employee B',p_email:'b@example.com'})).data[0].employee_id;
+  const record={category_id:hiring,title:'New hire report',first_session_date:'2026-10-07',result_report_url:'https://files.example/report.pdf'};
+  const save=parameters=>rpc('save_education_report',parameters);
+  assert.equal((await call('/api/rpc',{name:'save_education_report',params:{p_record:record,p_employee_ids:[employee1]}},false)).status,401);
+  assert.equal((await save({p_record:{...record,result_report_url:null},p_employee_ids:[employee1]})).error.code,'REPORT_REQUIRED');
+  assert.equal((await save({p_record:record,p_employee_ids:[]})).error.code,'PARTICIPANTS_REQUIRED');
+  assert.equal((await save({p_record:record,p_employee_ids:[employee1,999999]})).status,400);
+  assert.equal(app.store.db.prepare('SELECT COUNT(*) AS n FROM education_links').get().n,0);
+  const created=await save({p_record:record,p_employee_ids:[employee1,employee2,employee1]});assert.equal(created.error,null);
+  let link=created.data[0];assert.equal(link.web_url,null);
+  const rows=()=>app.store.db.prepare('SELECT * FROM education_participants WHERE education_link_id=? ORDER BY id').all(link.id);
+  assert.equal(rows().length,2);
+  app.store.db.prepare('UPDATE education_links SET web_url=? WHERE id=?').run('https://files.example/legacy-material.pdf',link.id);
+  const previous=rows(),snapshot=previous.map(row=>({id:row.id,updated_at:row.updated_at}));
+  await rpc('update_education_participant_date',{p_education_link_id:link.id,p_participant_id:previous[0].id,p_education_date:'2026-10-06'});
+  assert.equal((await save({p_id:link.id,p_record:record,p_employee_ids:[employee1,employee2],p_expected_updated_at:link.updated_at,p_expected_participants:snapshot})).error.code,'EDIT_CONFLICT');
+  const updated=await save({p_id:link.id,p_record:{...record,title:'Updated report'},p_employee_ids:[employee1,employee2],p_expected_updated_at:link.updated_at,p_expected_participants:rows().map(row=>({id:row.id,updated_at:row.updated_at}))});
+  assert.equal(updated.error,null);link=updated.data[0];
+  assert.equal(link.web_url,'https://files.example/legacy-material.pdf');assert.equal(rows()[0].education_date,'2026-10-06');
+  assert.equal((await save({p_record:{...record,category_id:regular},p_employee_ids:[]})).error,null);
+  assert.equal((await save({p_record:{...record,category_id:regular,result_report_url:null},p_employee_ids:[]})).error.code,'REPORT_REQUIRED');
+  const bypass=await call('/api/query',{table:'education_links',action:'insert',payload:{...record,result_report_url:null}});assert.equal(bypass.error.code,'REPORT_REQUIRED');
+  const before=app.store.db.prepare('SELECT COUNT(*) AS n FROM education_links').get().n;
+  app.store.db.exec("CREATE TRIGGER reject_test_target BEFORE INSERT ON education_participants WHEN NEW.employee_id="+employee2+" BEGIN SELECT RAISE(ABORT,'test target failure'); END");
+  const failure=await save({p_record:record,p_employee_ids:[employee1,employee2]});assert.ok(failure.error);
+  assert.equal(app.store.db.prepare('SELECT COUNT(*) AS n FROM education_links').get().n,before);
+  assert.equal(app.store.db.prepare('SELECT COUNT(*) AS n FROM education_participants').get().n,2);
+ }finally{await app.close();fs.rmSync(root,{recursive:true,force:true})}
+});

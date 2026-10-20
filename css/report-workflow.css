@@ -1,0 +1,151 @@
+
+/* Focused improvements: preserve the existing top navigation and rounded chips. */
+#educationDataTable td.education-text-cell{font-size:14px!important;text-align:left!important;font-weight:600;overflow-wrap:anywhere}
+#educationDataTable .download-link,.pdf-preview-button{font-size:13px!important;min-height:34px!important;padding:6px 12px!important}
+#educationDataTable th{font-size:13px!important;color:#515b6b!important}
+#educationDataTable col.education-col-title{width:auto!important}
+#educationDataTable col.education-col-report{width:160px!important}
+.education-report-missing{font-size:13px;color:#667085}
+.education-targets{grid-column:1/-1;border-top:1px solid #e7e8ee;padding-top:20px;margin-top:4px}
+.education-targets-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.education-targets-head strong{font-size:14px}
+.education-targets-list{max-height:220px;overflow:auto;margin-top:12px;border:1px solid #e7e8ee;border-radius:8px}
+.education-target-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-bottom:1px solid #f0f1f5;font-size:13px}
+.education-target-row:last-child{border-bottom:0}
+.education-target-row input{width:16px;min-height:16px;margin:0;flex:none}
+.education-target-row span{flex:1;min-width:0;overflow-wrap:anywhere}
+.education-target-row small{display:block;color:#667085;font-size:12px}
+.education-target-row [disabled]{opacity:.65}
+#educationTargetStatus{font-size:13px;color:#434551;margin:12px 0 0}
+#reportUrl{font-size:14px}
+
+/* Soft grouped tables, inspired by iOS. Appearance only. */
+:is(#educationView,#employeeView) .card{
+  border:1px solid #e8e8ed!important;border-radius:18px!important;background:#fff!important;
+  box-shadow:0 2px 12px rgba(20,20,35,.035)!important;overflow:hidden
+}
+:is(#personalHistoryDialog,#employeeCsvDialog,#participantModal) .table-wrap{
+  border:1px solid #e8e8ed;border-radius:14px;background:#fff
+}
+:is(#educationView,#employeeView,#personalHistoryDialog,#employeeCsvDialog,#participantModal) .table-wrap table{
+  border-collapse:separate!important;border-spacing:0!important;background:#fff;
+  font-family:inherit;font-variant-numeric:tabular-nums
+}
+:is(#educationView,#employeeView,#personalHistoryDialog,#employeeCsvDialog,#participantModal) .table-wrap th{
+  background:#f5f5f7!important;color:#636369!important;font-size:13px!important;font-weight:600!important;
+  letter-spacing:0!important;line-height:1.5!important;padding:10px 14px!important;
+  border-left:0!important;border-right:0!important;border-top:0!important;border-bottom:1px solid #e8e8ed!important
+}
+:is(#educationView,#employeeView,#personalHistoryDialog,#employeeCsvDialog,#participantModal) .table-wrap td{
+  background:transparent;color:#28282d!important;font-size:14px!important;line-height:1.6!important;
+  padding:9px 14px!important;height:auto!important;min-height:40px;
+  border-left:0!important;border-right:0!important;border-top:0!important;border-bottom:1px solid #eeeeF2!important;
+  transition:background-color .18s ease
+}
+:is(#educationView,#employeeView,#personalHistoryDialog,#employeeCsvDialog,#participantModal) .table-wrap tbody tr{
+  background:#fff!important;transition:background-color .18s ease
+}
+:is(#educationView,#employeeView,#personalHistoryDialog,#employeeCsvDialog,#participantModal) .table-wrap tbody tr:last-child td{border-bottom:0!important}
+@media(hover:hover){
+  :is(#educationView,#employeeView,#personalHistoryDialog,#employeeCsvDialog,#participantModal) .table-wrap tbody tr:hover{background:#f7f9fc!important}
+}
+:is(#educationView,#employeeView,#personalHistoryDialog,#employeeCsvDialog,#participantModal) .table-wrap tbody tr:focus-within{background:#f1f6ff!important}
+#educationView #educationDataTable td.education-text-cell{text-align:left!important;font-size:14px!important;font-weight:600;color:#242429!important}
+#educationView #educationDataTable td:nth-child(2),#personalHistoryDialog .history-date{font-weight:700!important;color:#35353c!important}
+#employeeView .identity-email{color:#636369!important}
+#educationView #educationDataTable .download-link{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-height:30px!important;padding:4px 10px!important;border-radius:10px!important;
+  background:#edf5ff!important;color:#0060bd!important;border:1px solid #dceaff!important;
+  font-size:13px!important;font-weight:600;transition:background-color .18s ease,border-color .18s ease
+}
+#educationView .pdf-preview-button{
+  min-height:30px!important;padding:4px 10px!important;border-radius:10px!important;
+  background:#f5f5f7;color:#505057;border:1px solid #e5e5ea;
+  font-size:13px!important;transition:background-color .18s ease,border-color .18s ease
+}
+#educationView #educationDataTable .download-link:hover{background:#e2efff!important;border-color:#c9dfff!important}
+#educationView .pdf-preview-button:hover{background:#ebebf0;border-color:#d5d5dd}
+#educationView #educationDataTable .download-link:active,#educationView .pdf-preview-button:active{background:#d8e8fc!important}
+#educationView #educationDataTable .progress{
+  background:#f2f2f7!important;color:#636369!important;border:1px solid #e8e8ed!important;
+  border-radius:8px!important;padding:5px 10px!important;font-size:12px!important
+}
+:is(#educationView,#employeeView,#personalHistoryDialog,#employeeCsvDialog,#participantModal) .table-wrap :is(button,a,input):focus-visible{
+  outline:2px solid #0066cc!important;outline-offset:3px!important
+}
+#educationView .platform-pagination{
+  background:#fafafb;padding:10px!important;border-top:1px solid #eeeef2;gap:8px!important
+}
+#educationView .platform-page-button{
+  border-radius:9px!important;min-width:30px;min-height:30px;
+  background:#fff;border:1px solid #e5e5ea;box-shadow:none;
+  transition:background-color .18s ease
+}
+#educationView .platform-page-button.active{background:#edf5ff!important;color:#0060bd!important;border-color:#dceaff!important}
+@media(max-width:760px){
+  :is(#educationView,#employeeView) .card{border-radius:14px!important}
+  :is(#educationView,#employeeView,#personalHistoryDialog,#employeeCsvDialog,#participantModal) .table-wrap th{padding:9px 12px!important}
+  :is(#educationView,#employeeView,#personalHistoryDialog,#employeeCsvDialog,#participantModal) .table-wrap td{padding:8px 12px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  :is(#educationView,#employeeView,#personalHistoryDialog,#employeeCsvDialog,#participantModal) .table-wrap :is(tr,td,a,button),
+  #educationView .platform-page-button{transition:none!important}
+}
+
+
+.participant-history-search{display:grid;gap:8px;margin:24px 0 16px}
+.participant-history-search>label{font-size:13px;font-weight:600;color:#434551}
+.participant-history-input{display:flex;gap:8px}
+.participant-history-input .search-input{flex:1;min-width:0;width:100%}
+.participant-history-person{margin-top:20px}
+.participant-history-person h3{font-size:15px;margin:0 0 12px}
+.participant-history-person .table-wrap{border:1px solid #e8e8ed;border-radius:12px;overflow:auto}
+.participant-history-person table{min-width:600px;table-layout:auto;border-collapse:separate;border-spacing:0}
+.participant-history-person th{background:#f5f5f7!important;color:#636369!important;font-size:13px!important;padding:10px 14px!important;border-left:0!important}
+.participant-history-person td{padding:9px 14px!important;font-size:14px!important;border-left:0!important;overflow-wrap:anywhere}
+.participant-history-person .history-date{font-weight:700!important;white-space:nowrap}
+.participant-history-person .download-link{font-size:13px;white-space:nowrap}
+@media(max-width:760px){.participant-history-dialog{padding:20px}.participant-history-input{flex-wrap:wrap}.participant-history-input .search-input{flex-basis:100%}}
+
+/* The sole public search bar: participant names, always available while scrolling. */
+.participant-searchbar{
+ position:sticky;top:calc(var(--participant-search-top,96px) + 12px);z-index:30;
+ display:grid;grid-template-columns:168px minmax(160px,1fr) auto;align-items:center;gap:20px;
+ margin:0 0 24px;padding:16px 20px;border:1px solid #cfd9e6;border-radius:16px;
+ background:#fff;box-shadow:0 4px 18px rgba(31,58,95,.07)
+}
+.participant-searchbar-label{display:flex;flex-direction:column;gap:4px;cursor:text}
+.participant-searchbar-label strong{color:#182d49;font-size:16px;font-weight:700;line-height:1.4;letter-spacing:-.02em}
+.participant-searchbar-label span{color:#596579;font-size:12px;line-height:1.5}
+.participant-searchbar-field{display:flex;align-items:center;gap:12px;min-width:0;min-height:48px;padding:0 14px;border:1px solid #d4dde9;border-radius:10px;background:#f7f9fc;transition:background-color .16s,border-color .16s,box-shadow .16s}
+.participant-searchbar-field:focus-within{background:#fff;border-color:#295b9b;box-shadow:0 0 0 3px #e8eff8}
+.participant-searchbar-icon{flex:none;color:#506886}
+#participantSearchName{width:100%;min-width:0;min-height:48px;padding:10px 0;border:0!important;outline:0;background:transparent!important;box-shadow:none!important;font:inherit;font-size:16px;line-height:1.5;color:#1b2738}
+#participantSearchName::placeholder{color:#667085;opacity:1}
+.participant-searchbar-reset{flex:none;padding:6px 8px;border:0;border-radius:6px;background:transparent;color:#526176;font:inherit;font-size:12px;font-weight:600;cursor:pointer}
+.participant-searchbar-reset:hover{background:#e8edf5;color:#1f3a5f}
+.participant-searchbar-submit{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-width:104px;min-height:48px;padding:12px 20px;border:1px solid #1f3a5f;border-radius:10px;background:#1f3a5f;color:#fff;font:inherit;font-size:15px;font-weight:650;cursor:pointer;transition:background-color .16s,border-color .16s}
+.participant-searchbar-submit:hover{background:#294f80;border-color:#294f80}
+.participant-searchbar-submit:active{background:#162b47;border-color:#162b47}
+.participant-searchbar :is(button,input):focus-visible{outline:2px solid #295b9b!important;outline-offset:3px}
+@media(max-width:1000px){.participant-searchbar{grid-template-columns:140px minmax(120px,1fr) auto;gap:12px;padding:16px}.participant-searchbar-submit{min-width:84px;padding:12px 16px}}
+@media(max-width:760px){
+ .participant-searchbar{--participant-search-top:0px;grid-template-columns:minmax(0,1fr) auto;gap:12px;margin-bottom:20px;padding:14px;border-radius:12px}
+ .participant-searchbar-label{grid-column:1/-1;flex-direction:row;align-items:baseline;justify-content:space-between;gap:8px}
+ .participant-searchbar-field{gap:8px;padding:0 10px}
+ .participant-searchbar-reset{font-size:12px;padding:6px 4px}
+ .participant-searchbar-submit{min-width:68px;gap:8px;padding:12px}
+ #participantSearchName{font-size:16px}
+}
+@media(max-width:400px){.participant-searchbar-label span{font-size:11px}.participant-searchbar-reset{padding:6px 2px}.participant-searchbar-icon{display:none}.participant-searchbar-submit svg{display:none}}
+@media(prefers-reduced-motion:reduce){.participant-searchbar-field,.participant-searchbar-submit{transition:none}}
+
+@media(max-width:760px){.education-targets-head{flex-wrap:wrap}}
+
+/* Name and department search share the persistent search field. */
+.participant-search-mode{flex:none;min-height:36px;width:auto;max-width:96px;padding:6px 24px 6px 10px;border:1px solid #d4dde9;border-radius:8px;background:#fff;color:#1f3a5f;font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.participant-search-mode:focus-visible{outline:2px solid #295b9b;outline-offset:3px}
+.participant-history-controls{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.participant-history-controls label{font-size:13px;font-weight:600;color:#434551}
+@media(max-width:760px){.participant-searchbar-field{gap:6px}.participant-searchbar-field .participant-searchbar-icon{display:none}.participant-search-mode{max-width:82px;padding-left:8px;font-size:14px}.participant-searchbar-reset{font-size:11px}}

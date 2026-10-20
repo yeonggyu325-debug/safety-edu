@@ -1,0 +1,7 @@
+{
+  "displayHost": "intranet.company.example",
+  "listenAddress": "SET_SERVER_IPV4",
+  "allowedNetworks": [
+    "SET_PRIVATE_CIDR"
+  ]
+}

@@ -1,0 +1,13 @@
+storage/
+node_modules/
+.env
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+
+certificates/
+
+config/intranet.local.json
+.env.*
+!.env.example
+spy-reports/
