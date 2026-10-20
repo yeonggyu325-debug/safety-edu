@@ -1,0 +1,1220 @@
+:root{
+  --primary:#2457c5;
+  --primary-hover:#1d469f;
+  --primary-soft:#edf3ff;
+  --green:#16865c;
+  --green-soft:#eaf8f2;
+  --red:#c93737;
+  --red-soft:#fff0f0;
+  --amber:#a86e00;
+  --amber-soft:#fff7dc;
+  --gray:#657084;
+  --text:#172033;
+  --line:#d7dde7;
+  --line-soft:#e9edf3;
+  --bg:#f3f5f8;
+  --surface:#fff;
+  --radius:8px;
+  --control:36px;
+  --shadow:0 1px 2px rgba(16,24,40,.04),0 5px 16px rgba(16,24,40,.045);
+  --sidebar:236px;
+  --table-font:10.5px;
+  --table-head-font:10px;
+  --table-row-height:30px;
+  --danger-border:#dc2626;
+  --danger-text:#b42318;
+  --warning-text:#9a6700;
+}
+
+
+    *{box-sizing:border-box}
+    html{min-height:100%;overflow-y:scroll}
+    body{min-height:100vh;margin:0;background:var(--bg);color:var(--text);
+      font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;
+      -webkit-font-smoothing:antialiased}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    button:disabled{cursor:not-allowed;opacity:.52}
+    :focus-visible{outline:3px solid rgba(47,111,237,.18);outline-offset:2px}
+    [hidden]{display:none!important}
+
+    .sidebar{position:fixed;inset:0 auto 0 0;z-index:30;width:var(--sidebar);height:100vh;
+      padding:22px 16px;overflow-y:auto;border-right:1px solid var(--line);background:#fff}
+    .logo-box{padding:4px 8px 20px;border-bottom:1px solid var(--line)}
+    .logo{display:block;width:148px;max-width:100%;height:auto}
+    .site-name{margin:13px 0 0;font-size:16px;font-weight:850;letter-spacing:-.03em}
+    .menu{display:grid;gap:5px;margin-top:18px}
+    .menu-label{margin:17px 11px 4px;color:#98a2b3;font-size:10px;font-weight:850;letter-spacing:.09em}
+    .menu-button,.submenu-button{width:100%;border:0;border-radius:9px;text-align:left;background:transparent;color:#4e5968;font-weight:720}
+    .menu-button{display:flex;min-height:43px;align-items:center;justify-content:space-between;padding:0 12px}
+    .submenu{display:grid;gap:3px;padding-left:14px}
+    .submenu-button{min-height:38px;padding:0 12px}
+    .menu-button:hover,.submenu-button:hover{background:#f5f7fa}
+    .menu-button.active,.submenu-button.active{background:var(--primary-soft);color:var(--primary-hover);font-weight:820}
+    .caret{width:7px;height:7px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg)}
+    .menu-button[aria-expanded="true"] .caret{transform:rotate(225deg)}
+
+    .main{min-height:100vh;margin-left:var(--sidebar)}
+    .topbar{position:sticky;top:0;z-index:20;display:flex;min-height:74px;align-items:center;justify-content:space-between;
+      gap:18px;padding:13px 28px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.96);backdrop-filter:blur(12px)}
+    .page-title h1{margin:0;font-size:22px;letter-spacing:-.04em}
+    .page-title p{margin:5px 0 0;color:var(--gray);font-size:12px}
+    .top-actions{display:flex;align-items:center;gap:8px}
+    .content{width:100%;max-width:1650px;margin:0 auto;padding:20px 28px 42px}
+    .view{width:100%}
+
+    .btn{display:inline-flex;min-height:var(--control);align-items:center;justify-content:center;padding:0 13px;
+      border:1px solid transparent;border-radius:8px;font-size:12px;font-weight:780;white-space:nowrap}
+    .btn-primary{color:#fff;background:var(--primary);border-color:var(--primary)}
+    .btn-primary:hover{background:var(--primary-hover);border-color:var(--primary-hover)}
+    .btn-secondary{color:#344054;background:#fff;border-color:#cfd6e0}
+    .btn-secondary:hover{background:#f8fafc}
+    .btn-danger{color:#b42318;background:#fff5f5;border-color:#efc9c7}
+    .btn-danger:hover{background:#ffeaea}
+    .mini{display:inline-flex;min-height:29px;align-items:center;justify-content:center;padding:0 9px;border:1px solid var(--line);
+      border-radius:7px;background:#fff;color:#475467;font-size:11px;font-weight:750;margin:1px}
+    .mini:hover{background:#f8fafc}
+    .mini-danger{color:#b42318;border-color:#efc9c7;background:#fff7f7}
+
+    .card{overflow:hidden;border:1px solid var(--line);border-radius:var(--radius);background:#fff;box-shadow:var(--shadow)}
+    .toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:11px;padding:10px;
+      border:1px solid var(--line);border-radius:var(--radius);background:#fff;box-shadow:0 3px 12px rgba(16,24,40,.035)}
+    .toolbar-left,.toolbar-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    input,select,textarea{border:1px solid #cfd6e0;border-radius:8px;background:#fff;color:var(--text);font-size:12px}
+    input,select{height:var(--control);padding:0 10px}
+    textarea{min-height:86px;padding:10px;resize:vertical}
+    input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(47,111,237,.10)}
+    .search-input{width:250px}
+    .filter-select{min-width:130px}
+
+    .summary-strip{display:flex;align-items:stretch;justify-content:flex-start;gap:9px;margin-bottom:11px}
+    .summary-card{display:flex;min-width:165px;align-items:center;justify-content:space-between;gap:14px;padding:11px 13px;
+      border:1px solid var(--line);border-radius:var(--radius);background:#fff;box-shadow:0 3px 12px rgba(16,24,40,.035)}
+    .summary-label{color:var(--gray);font-size:11px;font-weight:750}
+    .summary-value{color:var(--primary-hover);font-size:19px;font-weight:900}
+
+    .table-wrap{width:100%;overflow-x:auto}
+    table{width:100%;border-collapse:collapse;table-layout:fixed}
+    th,td{vertical-align:middle}
+    th{height:38px;padding:0 9px;border-bottom:1px solid var(--line);background:#f7f9fb;color:#526071;
+      font-size:11px;font-weight:820;text-align:left;white-space:nowrap}
+    td{height:40px;padding:6px 9px;border-bottom:1px solid var(--line-soft);font-size:12px}
+    tbody tr:last-child td{border-bottom:0}
+    tbody tr:hover{background:#fafcff}
+    .center{text-align:center}
+    .ellipsis{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .status-badge{display:inline-flex;min-width:66px;min-height:24px;align-items:center;justify-content:center;gap:6px;
+      padding:0 8px;border-radius:999px;font-size:10px;font-weight:850}
+    .status-dot{width:7px;height:7px;border-radius:50%}
+    .status-active{color:#087443;background:var(--green-soft)}.status-active .status-dot{background:#1a9b63}
+    .status-warning{color:#865f00;background:var(--amber-soft)}.status-warning .status-dot{background:#e2a400}
+    .status-retired{color:#a62e2e;background:var(--red-soft)}.status-retired .status-dot{background:#d64545}
+    .status-other{color:#59636f;background:#f1f3f5}.status-other .status-dot{background:#8b95a1}
+    .download-link{display:inline-flex;min-height:29px;align-items:center;justify-content:center;padding:0 10px;border-radius:7px;
+      background:var(--primary-soft);color:var(--primary-hover);font-size:11px;font-weight:800;text-decoration:none}
+    .progress{display:inline-flex;min-height:29px;align-items:center;padding:0 10px;border:1px solid #e4e7ec;border-radius:7px;
+      color:#98a2b3;background:#f3f4f6;font-size:11px;font-weight:780}
+    .row-actions{white-space:nowrap}
+
+    .tabs{display:flex;width:max-content;gap:4px;margin-bottom:11px;padding:4px;border:1px solid var(--line);
+      border-radius:9px;background:#eef1f5}
+    .tab{min-height:32px;padding:0 15px;border:0;border-radius:6px;background:transparent;color:#667085;font-size:12px;font-weight:820}
+    .tab.active{background:#fff;color:var(--primary-hover);box-shadow:0 2px 7px rgba(16,24,40,.09)}
+
+    .modal-backdrop{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;overflow-y:auto;
+      background:rgba(15,23,42,.48);backdrop-filter:blur(6px)}
+    .modal{width:min(620px,100%);max-height:calc(100vh - 40px);overflow-y:auto;border:1px solid rgba(255,255,255,.6);
+      border-radius:14px;background:#fff;box-shadow:0 28px 80px rgba(15,23,42,.23)}
+    .modal-wide{width:min(1060px,100%)}
+    .modal-small{width:min(420px,100%)}
+    .modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:20px 21px 14px;border-bottom:1px solid var(--line)}
+    .modal-head h2{margin:0;font-size:18px;letter-spacing:-.03em}
+    .modal-head p{margin:5px 0 0;color:var(--gray);font-size:11px;line-height:1.55}
+    .close{width:34px;height:34px;border:0;border-radius:7px;background:#f2f4f7;color:#667085;font-size:18px}
+    .modal-body{padding:18px 21px 21px}
+    .form-grid{display:grid;gap:12px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .field{display:grid;gap:5px}
+    .field label{color:#475467;font-size:11px;font-weight:820}
+    .modal-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:17px}
+    .form-error{min-height:18px;margin-top:8px;color:var(--red);font-size:11px}
+    .checkbox-line{display:flex;align-items:center;gap:7px;color:#475467;font-size:11px}
+
+    .participant-layout{display:grid;grid-template-columns:minmax(280px,.8fr) minmax(520px,1.4fr);gap:12px}
+    .panel{min-width:0;overflow:hidden;border:1px solid var(--line);border-radius:10px;background:#fff}
+    .panel-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 10px;border-bottom:1px solid var(--line);background:#f8fafc}
+    .panel-head input{width:180px}
+    .picker-list{max-height:430px;overflow-y:auto}
+    .picker-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid var(--line-soft)}
+    .picker-row:last-child{border-bottom:0}
+    .picker-info{flex:1;min-width:0}
+    .picker-info strong{display:block;font-size:12px}
+    .picker-info small{display:block;margin-top:2px;color:var(--gray);font-size:10px}
+
+    .status-box{padding:28px;text-align:center;color:var(--gray);font-size:12px}
+    .status-box.error{color:var(--red)}
+    .toast{position:fixed;right:22px;bottom:22px;z-index:200;padding:12px 15px;border-radius:9px;color:#fff;
+      background:#202936;box-shadow:0 14px 36px rgba(15,23,42,.22);font-size:12px}
+    .skeleton{height:11px;border-radius:999px;background:linear-gradient(90deg,#edf0f4 25%,#f8fafc 42%,#edf0f4 67%);
+      background-size:400% 100%;animation:shimmer 1.15s ease infinite}
+    @keyframes shimmer{0%{background-position:100% 0}100%{background-position:0 0}}
+    body.modal-open{overflow:hidden}
+
+    @media(max-width:900px){
+      .sidebar{transform:translateX(-105%);transition:.18s}.sidebar.open{transform:translateX(0)}
+      .main{margin-left:0}.content{padding:14px}.topbar{padding:12px 14px}
+      .toolbar{align-items:stretch;flex-direction:column}.toolbar-left,.toolbar-right{width:100%;justify-content:flex-start}
+      .search-input{width:100%}.summary-strip{display:grid;grid-template-columns:1fr 1fr}
+      .participant-layout{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}
+    }
+  body:not(.admin-mode) col.admin-column{visibility:collapse;width:0}
+
+    /* Unified direct UI */
+    .page-title p,.modal-head p,.report-format{display:none!important}
+    .content{max-width:1520px;padding-left:30px;padding-right:30px}
+    #employeeView,#departmentView,#educationView{width:100%;margin:0 auto}
+    .toolbar,.summary-strip,.card{width:100%;margin-left:auto;margin-right:auto}
+    .toolbar{min-height:58px}
+    .toolbar-left,.toolbar-right{min-height:36px}
+    th,td{vertical-align:middle!important}
+    th{height:42px!important}
+    td{height:44px!important;padding-top:7px!important;padding-bottom:7px!important}
+    .btn{min-height:36px!important}
+    .mini{min-height:30px!important}
+    #employeeView .table-wrap,#departmentView .table-wrap{width:100%}
+    #employeeView table,#departmentView table{width:100%;margin:0 auto}
+    @media(max-width:900px){.content{padding-left:14px;padding-right:14px}}
+
+
+    /* Compact employee roster tables */
+    #employeeView .card{box-shadow:0 2px 8px rgba(16,24,40,.045)}
+    #employeeView .table-wrap{overflow-x:auto}
+    #employeeView table{table-layout:fixed;border-collapse:collapse}
+    #employeeView th{height:34px!important;padding:0 7px!important;font-size:10.5px!important}
+    #employeeView td{height:34px!important;padding:4px 7px!important;font-size:11.5px!important}
+    #employeeView .status-badge{min-width:58px;min-height:21px;padding:0 6px;font-size:9.5px}
+    #employeeView .mini{min-height:25px!important;padding:0 7px!important;border-radius:6px;font-size:10.5px!important;margin:0 1px}
+    #employeeView .toolbar{min-height:50px!important;padding:7px 9px!important}
+    #employeeView input,#employeeView select{height:34px!important}
+    #employeeView .tabs{margin-bottom:8px}
+    #employeeView .summary-strip{margin-bottom:8px}
+    #employeeView .summary-card{min-height:56px;padding:9px 12px}
+    #employeeView .summary-value{font-size:17px}
+
+
+
+    /* ===== 교육 출결체크 ===== */
+    #attendanceView{width:100%;margin:0 auto}
+    .attendance-top{display:grid;grid-template-columns:minmax(230px,330px) 1fr auto;gap:10px;align-items:center;margin-bottom:10px}
+    .attendance-session-select{width:100%}
+    .attendance-session-info{display:flex;align-items:center;gap:12px;min-width:0;padding:0 4px;color:#475467;font-size:11px;white-space:nowrap;overflow:hidden}
+    .attendance-session-info strong{color:#202936;font-size:13px;overflow:hidden;text-overflow:ellipsis}
+    .attendance-operator{display:flex;align-items:center;gap:7px;white-space:nowrap;color:#475467;font-size:11px}
+    .attendance-connection{display:inline-flex;min-height:26px;align-items:center;gap:6px;padding:0 9px;border-radius:999px;font-size:10px;font-weight:850}
+    .attendance-connection::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+    .attendance-connection.connected{color:#087443;background:#eaf8f2}
+    .attendance-connection.reconnecting{color:#8a6200;background:#fff7dc}
+    .attendance-connection.disconnected{color:#a62e2e;background:#fff0f0}
+    .attendance-summary{display:grid;grid-template-columns:repeat(5,minmax(130px,1fr));gap:8px;margin-bottom:10px}
+    .attendance-summary .summary-card{min-width:0}
+    .attendance-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;padding:9px;border:1px solid var(--line);border-radius:var(--radius);background:#fff;box-shadow:0 3px 12px rgba(16,24,40,.035)}
+    .attendance-toolbar-left,.attendance-toolbar-right{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+    .attendance-count{color:#667085;font-size:11px;font-weight:750}
+    .attendance-table{min-width:1420px}
+    .attendance-table th,.attendance-table td{height:36px;padding:4px 7px;vertical-align:middle}
+    .attendance-table td{font-size:11px}
+    .attendance-row-suspected{background:#fff8ed!important}
+    .attendance-row-loading{opacity:.48;pointer-events:none}
+    .attendance-duration{font-variant-numeric:tabular-nums;white-space:nowrap}
+    .attendance-suspected-badge{display:inline-flex;min-height:22px;align-items:center;justify-content:center;padding:0 7px;border-radius:999px;background:#fff0e1;color:#b54708;font-size:10px;font-weight:850}
+    .attendance-normal-badge{color:#98a2b3;font-size:10px}
+    .attendance-memo{max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .attendance-confirm-list{max-height:230px;overflow:auto;margin:9px 0;padding:8px;border:1px solid var(--line);border-radius:8px;background:#f8fafc}
+    .attendance-confirm-item{padding:5px 3px;border-bottom:1px solid var(--line-soft);font-size:11px}
+    .attendance-confirm-item:last-child{border-bottom:0}
+    .attendance-empty-session{padding:50px 18px;text-align:center;color:#667085;font-size:12px}
+    @media(max-width:1150px){
+      .attendance-top{grid-template-columns:1fr}.attendance-session-info{flex-wrap:wrap;white-space:normal}.attendance-summary{grid-template-columns:repeat(2,1fr)}
+      .attendance-toolbar{align-items:stretch;flex-direction:column}.attendance-toolbar-left,.attendance-toolbar-right{width:100%;justify-content:flex-start}
+    }
+
+
+    /* ===== 2026 비즈니스 UI 통합 스타일 ===== */
+
+    body{background:#f3f5f8;color:#172033}
+    .sidebar{padding:18px 14px;border-right:1px solid #d8dee8;box-shadow:2px 0 12px rgba(16,24,40,.025)}
+    .logo-box{padding:4px 8px 18px}
+    .site-name{font-size:15px;font-weight:800;color:#1d2939}
+    .menu{gap:3px}.menu-label{margin-top:20px;color:#8a94a6}
+    .menu-button,.submenu-button{border-radius:7px;font-weight:700}
+    .menu-button{min-height:40px}.submenu-button{min-height:35px}
+    .menu-button.active,.submenu-button.active{background:#eaf1ff;color:#19499f;box-shadow:inset 0 0 0 1px #d7e4ff}
+    .topbar{min-height:66px;padding:11px 24px;background:rgba(255,255,255,.98);border-bottom:1px solid #d8dee8;backdrop-filter:none}
+    .page-title h1{font-size:20px;font-weight:850}.page-title p{font-size:11px}
+    .content{max-width:1580px;padding:20px 24px 40px}
+    .card,.toolbar,.summary-card{border-color:#d8dee8;border-radius:8px;box-shadow:var(--shadow)}
+    .btn{min-height:36px;border-radius:7px;padding:0 14px;font-size:11.5px;font-weight:780}
+    .btn-primary{background:#2457c5;border-color:#2457c5}.btn-primary:hover{background:#1d469f;border-color:#1d469f}
+    .btn-secondary{border-color:#c9d1dd;color:#344054}.btn-secondary:hover{background:#f4f6f9}
+    input,select,textarea{border-color:#cbd3df;border-radius:7px}
+    input:focus,select:focus,textarea:focus{border-color:#2457c5;box-shadow:0 0 0 3px rgba(36,87,197,.11)}
+    th{height:36px;background:#f5f7fa;color:#4c596c;border-bottom:1px solid #cfd7e3;font-weight:800}
+    td{border-bottom:1px solid #e5e9f0}
+    table th+th,table td+td{border-left:1px solid #edf0f4}
+    tbody tr:hover{background:#f7faff}
+    .modal{border:1px solid #d9e0ea;border-radius:12px;box-shadow:0 24px 70px rgba(15,23,42,.22)}
+    .modal-head{padding:18px 20px 14px;background:#fff}.modal-body{padding:18px 20px 20px}
+    .modal-head h2{font-size:17px}.modal-actions{padding-top:4px}
+
+    #attendanceView{max-width:100%}
+    .attendance-page-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px}
+    .attendance-page-header h2{margin:0;font-size:18px;font-weight:850;letter-spacing:-.035em;color:#172033}
+    .attendance-header-actions{display:flex;gap:7px}
+    .attendance-control-card{margin-bottom:12px;padding:14px 15px;border:1px solid #d8dee8;border-radius:8px;background:#fff;box-shadow:var(--shadow)}
+    .attendance-top{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin:0}
+    .attendance-session-control{display:grid;gap:6px;min-width:360px;max-width:620px;flex:1}
+    .attendance-session-control label{font-size:11px;font-weight:800;color:#475467}
+    .attendance-session-buttons{display:flex;gap:7px;align-items:center}
+    .attendance-session-select{width:100%;font-weight:700;color:#243047;cursor:pointer;background-color:#fff}
+    .attendance-session-info{display:flex;align-items:center;gap:0;margin-top:12px;padding:10px 12px;border:1px solid #e1e6ee;border-radius:7px;background:#f7f9fc;color:#526071;font-size:11px;overflow:hidden}
+    .attendance-session-info strong{font-size:12px;color:#1d2939;padding-right:14px}
+    .attendance-session-info span+span,.attendance-session-info strong+span{padding:0 14px;border-left:1px solid #d9e0ea}
+    .attendance-summary{grid-template-columns:repeat(4,minmax(150px,1fr));gap:9px;margin-bottom:12px}
+    .attendance-summary .summary-card{min-height:64px;padding:12px 14px;background:#fff}
+    .attendance-summary .summary-value{font-size:20px;color:#2457c5}
+    .attendance-toolbar{min-height:54px;padding:9px 10px;margin-bottom:10px;border-color:#d8dee8;box-shadow:var(--shadow)}
+    .attendance-toolbar-left,.attendance-toolbar-right{gap:7px}
+    .attendance-toolbar .search-input{width:210px}.attendance-toolbar .filter-select{min-width:126px}
+    .attendance-count{display:inline-flex;min-height:30px;align-items:center;padding:0 9px;border-radius:6px;background:#f2f4f7;color:#526071;font-weight:750}
+    .attendance-table-card{box-shadow:var(--shadow)}
+    .attendance-table{min-width:1110px;table-layout:fixed;border-collapse:collapse}
+    .attendance-table th{height:36px;padding:0 7px;text-align:left;font-size:10.5px}
+    .attendance-table td{height:38px;padding:4px 7px;font-size:11px;line-height:1.35}
+    .attendance-table th,.attendance-table td{border-right:1px solid #edf0f4}
+    .attendance-table th:last-child,.attendance-table td:last-child{border-right:0}
+    .attendance-times{display:grid;gap:2px;font-variant-numeric:tabular-nums;white-space:nowrap}
+    .attendance-times span{display:block}
+    .attendance-memo-input{width:100%;height:29px;padding:0 7px;border-color:transparent;background:transparent;font-size:10.8px}
+    .attendance-memo-input:hover{border-color:#d4dbe6;background:#fff}
+    .attendance-memo-input:focus{border-color:#2457c5;background:#fff}
+    .attendance-row-missed{background:#fff8ec!important}
+    .attendance-missed-badge{display:inline-flex;min-height:21px;align-items:center;justify-content:center;padding:0 7px;border-radius:999px;background:#fff0dc;color:#a65b00;font-size:9.5px;font-weight:850;white-space:nowrap}
+    .attendance-normal-badge{color:#a0a8b5}
+    .attendance-session-modal{width:min(560px,100%)}
+    .attendance-session-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px}
+    .attendance-session-form-grid .attendance-name-field{grid-column:1/-1}
+    .attendance-session-form-grid input,.attendance-session-form-grid select{width:100%;height:40px;font-size:13px}
+    #attendanceSessionName[readonly]{background:#f3f5f8;color:#344054;font-weight:780}
+    #attendanceSessionStart,#attendanceSessionEnd{font-variant-numeric:tabular-nums;font-weight:750}
+    #attendanceSessionError:empty{display:none}
+    #attendanceSessionError:not(:empty){display:block;margin-top:12px;padding:9px 10px;border:1px solid #f4c7c3;border-radius:7px;background:#fff3f2;color:#b42318}
+
+    #employeeView table,#departmentView table{border-collapse:collapse}
+    #employeeView .card,#departmentView .card{box-shadow:var(--shadow)}
+
+    @media(max-width:900px){
+      .attendance-top{align-items:stretch;flex-direction:column}.attendance-session-control{min-width:0;max-width:none}
+      .attendance-session-buttons{justify-content:flex-start}.attendance-summary{grid-template-columns:repeat(2,1fr)}
+      .attendance-page-header{align-items:flex-start;flex-direction:column}.attendance-session-info{align-items:flex-start;flex-direction:column;gap:5px}
+      .attendance-session-info span+span,.attendance-session-info strong+span{padding:0;border-left:0}
+    }
+    @media(max-width:640px){
+      .attendance-session-form-grid{grid-template-columns:1fr}.attendance-session-form-grid .attendance-name-field{grid-column:auto}
+      .attendance-summary{grid-template-columns:1fr 1fr}.content{padding:14px 12px 30px}
+    }
+
+
+    /* 업무용 컴팩트 표·폼 규격 */
+    .table-wrap table{border-collapse:collapse;width:100%;font-size:12.5px}
+    .table-wrap th{height:34px;padding:6px 8px;border:1px solid #dfe3e8;background:#f7f8fa;font-weight:750;white-space:nowrap}
+    .table-wrap td{height:36px;padding:5px 8px;border:1px solid #e5e8eb;vertical-align:middle}
+    .table-wrap tbody tr:hover{background:#f8fbff}
+    .mini{min-height:26px;padding:0 8px;border-radius:6px;font-size:12px}
+    .toolbar,.filter-row{gap:7px}
+    .toolbar input,.toolbar select,.filter-row input,.filter-row select{min-height:34px;height:34px;padding:0 9px}
+    .summary-card{padding:12px 14px;min-height:70px}
+    .summary-card strong{font-size:20px}
+    .content-card{padding:16px}
+    .modal-card{padding:18px}
+
+    /* ===== 교육 출결관리 최종 컴팩트 UI ===== */
+    #attendanceView{max-width:100%;color:#1f2937}
+    #attendanceView .attendance-page-header{margin-bottom:10px;padding:0 1px}
+    #attendanceView .attendance-page-header h2{font-size:17px;font-weight:850;color:#182230}
+    #attendanceView .attendance-header-actions{gap:6px}
+    #attendanceView .attendance-control-card{padding:11px 12px;margin-bottom:9px;border:1px solid #d9dee7;border-radius:7px;box-shadow:0 1px 3px rgba(16,24,40,.04)}
+    #attendanceView .attendance-top{gap:10px;align-items:flex-end}
+    #attendanceView .attendance-session-control{grid-template-columns:78px minmax(280px,520px);align-items:center;gap:8px;max-width:none;min-width:0}
+    #attendanceView .attendance-session-control label{font-size:11px;color:#344054}
+    #attendanceView .attendance-session-select{height:34px;font-size:11.5px;border-radius:5px}
+    #attendanceView .attendance-session-buttons{gap:5px}
+    #attendanceView .attendance-session-info{min-height:32px;margin-top:8px;padding:7px 9px;border-radius:5px;background:#f8fafc;font-size:10.5px}
+    #attendanceView .attendance-session-info strong{font-size:11.5px}
+    #attendanceView .attendance-summary{grid-template-columns:repeat(4,minmax(120px,1fr));gap:7px;margin-bottom:9px}
+    #attendanceView .attendance-summary .summary-card{min-height:54px;padding:9px 11px;border:1px solid #dfe4ec;border-radius:6px;box-shadow:none}
+    #attendanceView .attendance-summary .summary-label{font-size:10px;color:#667085}
+    #attendanceView .attendance-summary .summary-value{font-size:18px;color:#1f4eaa}
+    #attendanceView .attendance-toolbar{min-height:44px;padding:6px 7px;margin-bottom:7px;border-radius:6px;box-shadow:none}
+    #attendanceView .attendance-toolbar-left,#attendanceView .attendance-toolbar-right{gap:5px}
+    #attendanceView .attendance-toolbar .search-input{width:180px;height:32px;font-size:11px}
+    #attendanceView .attendance-toolbar .filter-select{min-width:110px;height:32px;font-size:11px}
+    #attendanceView .attendance-count{min-height:27px;padding:0 7px;border-radius:4px;font-size:10.5px}
+    #attendanceView .attendance-table-card{border-radius:6px;box-shadow:none}
+    #attendanceView .table-wrap{max-height:calc(100vh - 360px);min-height:250px;overflow:auto}
+    #attendanceView .attendance-table{min-width:1000px;width:100%;table-layout:fixed;border-collapse:collapse}
+    #attendanceView .attendance-table thead{position:sticky;top:0;z-index:3}
+    #attendanceView .attendance-table th{height:32px;padding:0 6px;background:#eef2f7;color:#344054;border-bottom:1px solid #cfd6e0;border-right:1px solid #dbe1e9;font-size:10px;font-weight:800;white-space:nowrap}
+    #attendanceView .attendance-table td{height:36px;padding:3px 6px;border-bottom:1px solid #e5e9ef;border-right:1px solid #edf0f4;font-size:10.7px;line-height:1.2;background:#fff;vertical-align:middle}
+    #attendanceView .attendance-table tbody tr:hover td{background:#f8fafc}
+    #attendanceView .attendance-table th:last-child,#attendanceView .attendance-table td:last-child{border-right:0}
+    #attendanceView .attendance-row-missed td{background:#fff8ed}
+    #attendanceView .attendance-row-missed:hover td{background:#fff4df}
+    #attendanceView .attendance-person-button{display:inline-flex;align-items:center;max-width:100%;padding:0;border:0;background:transparent;color:#1f4eaa;font:inherit;font-weight:800;cursor:pointer;text-decoration:none}
+    #attendanceView .attendance-person-button:hover{text-decoration:underline}
+    #attendanceView .attendance-time-cell{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:center}
+    #attendanceView .attendance-time-main{display:block;color:#263244;font-weight:750}
+    #attendanceView .attendance-cell-action{display:inline-flex;align-items:center;justify-content:center;height:21px;margin-top:2px;padding:0 6px;border:1px solid #b8c5d8;border-radius:4px;background:#fff;color:#2759a8;font-size:9.5px;font-weight:800;cursor:pointer;white-space:nowrap}
+    #attendanceView .attendance-cell-action:hover{background:#eef4ff;border-color:#7e9fd2}
+    #attendanceView .attendance-visit-button{display:inline-flex;align-items:center;justify-content:center;min-width:39px;height:23px;padding:0 6px;border:1px solid #cbd5e1;border-radius:999px;background:#fff;color:#344054;font-size:9.5px;font-weight:800;cursor:pointer}
+    #attendanceView .attendance-visit-button:hover{border-color:#7897c7;background:#f2f6fc;color:#1f4eaa}
+    #attendanceView .attendance-missed-toggle{display:inline-flex;align-items:center;justify-content:center;min-width:66px;height:24px;padding:0 7px;border:1px solid #cbd5e1;border-radius:4px;background:#fff;color:#667085;font-size:9.5px;font-weight:800;cursor:pointer;white-space:nowrap}
+    #attendanceView .attendance-missed-toggle.active{border-color:#f0a33a;background:#fff0dc;color:#9a5700}
+    #attendanceView .attendance-missed-toggle:hover{filter:brightness(.98)}
+    #attendanceView .attendance-memo-input{height:27px;padding:0 6px;border:1px solid transparent;border-radius:4px;background:transparent;font-size:10.3px}
+    #attendanceView .attendance-memo-input:hover{border-color:#ccd5e1;background:#fff}
+    #attendanceView .attendance-memo-input:focus{border-color:#5682c4;box-shadow:0 0 0 2px rgba(47,111,237,.1)}
+    .attendance-log-modal{width:min(700px,calc(100vw - 28px))}
+    .attendance-log-meta{display:flex;flex-wrap:wrap;gap:6px 14px;margin-bottom:10px;padding:9px 10px;border:1px solid #dfe5ed;border-radius:6px;background:#f8fafc;font-size:11px;color:#475467}
+    .attendance-log-meta strong{color:#1f2937}
+    .attendance-log-table{width:100%;border-collapse:collapse;table-layout:fixed}
+    .attendance-log-table th{height:31px;padding:0 7px;background:#eef2f7;border:1px solid #d9e0e8;color:#344054;font-size:10.5px}
+    .attendance-log-table td{height:34px;padding:5px 7px;border:1px solid #e2e7ee;text-align:center;font-size:11px;font-variant-numeric:tabular-nums}
+    .attendance-log-total{display:flex;justify-content:flex-end;gap:8px;margin-top:10px;padding-top:9px;border-top:1px solid #e0e5ec;font-size:12px;color:#475467}
+    .attendance-log-total strong{color:#1f4eaa;font-size:14px}
+    .attendance-log-add{display:grid;grid-template-columns:minmax(120px,1fr) minmax(120px,1fr) auto;gap:8px;align-items:end;margin:0 0 10px;padding:10px;border:1px solid #d9e2ef;border-radius:7px;background:#f8fbff}
+    .attendance-log-add .field{margin:0}
+    .attendance-log-add label{display:block;margin-bottom:4px;font-size:10.5px;font-weight:800;color:#475467}
+    .attendance-log-add input{width:100%;height:32px;padding:0 8px;border:1px solid #cdd5df;border-radius:5px;background:#fff;font-size:12px;font-variant-numeric:tabular-nums}
+    .attendance-log-add button{height:32px;white-space:nowrap}
+    .attendance-log-add-error{grid-column:1/-1;min-height:16px;margin:0;color:#b42318;font-size:10.5px;font-weight:700}
+    @media(max-width:640px){.attendance-log-add{grid-template-columns:1fr 1fr}.attendance-log-add button{grid-column:1/-1}}
+    @media(max-width:900px){
+      #attendanceView .attendance-session-control{grid-template-columns:1fr}
+      #attendanceView .attendance-summary{grid-template-columns:repeat(2,1fr)}
+      #attendanceView .table-wrap{max-height:none}
+    }
+
+    .attendance-toolbar-right{flex-wrap:wrap}
+    #attendanceClearSelectionButton{height:30px;padding:0 10px}
+    .attendance-log-table{min-width:720px;table-layout:fixed}
+    .attendance-log-table th,.attendance-log-table td{height:36px;padding:4px 6px;font-size:11px;vertical-align:middle}
+    .attendance-log-table input[type="datetime-local"]{width:100%;height:29px;padding:0 5px;border:1px solid #cdd5df;border-radius:5px;font-size:10px}
+    .attendance-log-actions{display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap}
+    .attendance-log-actions button{height:25px;padding:0 7px;border:1px solid #cfd7e2;border-radius:5px;background:#fff;color:#344054;font-size:10px;font-weight:800;cursor:pointer}
+    .attendance-log-actions .danger{border-color:#efc0c0;color:#b42318}.attendance-log-actions .primary{border-color:#a8bde9;color:#2458bd}
+    .attendance-log-edit-row{background:#f8fbff}
+    .attendance-log-empty{padding:24px!important;text-align:center;color:#98a2b3}
+
+
+    /* ===== Attendance pagination ===== */
+    .attendance-pagination{display:flex;align-items:center;justify-content:center;gap:4px;min-height:42px;padding:8px 10px;border-top:1px solid #e2e7ee;background:#fff}
+    .attendance-pagination[hidden]{display:none!important}
+    .attendance-page-button{min-width:30px;height:28px;padding:0 8px;border:1px solid #d3dae4;border-radius:5px;background:#fff;color:#475467;font-size:10.5px;font-weight:800;cursor:pointer}
+    .attendance-page-button:hover:not(:disabled){border-color:#93acd9;color:#2458bd;background:#f7faff}
+    .attendance-page-button.active{border-color:#2f6fed;background:#2f6fed;color:#fff}
+    .attendance-page-button:disabled{cursor:default;opacity:.42}
+    .attendance-page-ellipsis{display:inline-flex;min-width:24px;height:28px;align-items:center;justify-content:center;color:#98a2b3;font-size:11px}
+
+
+/* ===== 통합 50건 페이지네이션 및 출결 로그 초기화 ===== */
+.platform-pagination,
+.attendance-pagination{
+  display:flex;align-items:center;justify-content:center;gap:4px;
+  min-height:40px;padding:7px 10px;border-top:1px solid #e3e8ef;background:#fff;
+}
+.platform-pagination[hidden],.attendance-pagination[hidden]{display:none!important}
+.platform-page-button,.attendance-page-button{
+  min-width:30px;height:30px;padding:0 9px;border:1px solid #d6dce5;border-radius:5px;
+  background:#fff;color:#344054;font-size:11px;font-weight:700;cursor:pointer;
+}
+.platform-page-button:hover:not(:disabled),.attendance-page-button:hover:not(:disabled){border-color:#2f6fed;color:#2f6fed;background:#f7f9ff}
+.platform-page-button.active,.attendance-page-button.active{border-color:#2f6fed;background:#2f6fed;color:#fff}
+.platform-page-button:disabled,.attendance-page-button:disabled{opacity:.42;cursor:not-allowed}
+.platform-page-ellipsis,.attendance-page-ellipsis{min-width:18px;text-align:center;color:#98a2b3;font-size:11px}
+.platform-page-summary{margin-right:6px;color:#667085;font-size:10px;white-space:nowrap}
+#attendanceClearSelectionButton{height:30px;padding:0 10px}
+@media(max-width:900px){
+  .platform-pagination,.attendance-pagination{justify-content:flex-start;overflow-x:auto}
+}
+
+    /* 2026-07 compact/search/snapshot refinements */
+    #attendanceView .attendance-table{min-width:1220px;table-layout:fixed}
+    #attendanceView .attendance-table th{height:30px;padding:0 6px;font-size:10px}
+    #attendanceView .attendance-table td{height:31px;padding:2px 6px;font-size:10.5px;line-height:1.1}
+    #attendanceView .attendance-cell-action{display:inline-flex;min-width:72px;height:24px;align-items:center;justify-content:center;margin-left:7px;padding:0 9px;border-radius:5px;white-space:nowrap}
+    #attendanceView .attendance-time-cell{white-space:nowrap}
+    #attendanceView .attendance-time-main{display:inline-block;min-width:38px;font-variant-numeric:tabular-nums}
+    #attendanceView .attendance-person-button,#attendanceView .attendance-visit-button,#attendanceView .attendance-missed-toggle{min-height:23px;padding:0 7px;font-size:10px}
+    #attendanceView .attendance-memo-input{height:25px;font-size:10px}
+    .attendance-target-load-row{display:flex;align-items:center;gap:10px;grid-column:1/-1;padding:9px 10px;border:1px solid #dce3ed;border-radius:7px;background:#f8fafc}
+    .attendance-target-load-row span{font-size:11px;color:#667085}
+    .row-delete-button{min-width:42px;height:24px;padding:0 6px;border:1px solid #efc7c7;border-radius:5px;background:#fff;color:#b42318;font-size:10px;font-weight:750;cursor:pointer}
+    .row-delete-button:hover{background:#fff1f1}
+
+    /* Final UI, interaction and performance consolidation */
+    html{scroll-behavior:auto}
+    button,input,select,textarea{touch-action:manipulation}
+    .sidebar,.topbar,.content{transform:translateZ(0)}
+    .card,.attendance-control-card,.attendance-table-card{contain:layout paint}
+    .modal-backdrop[hidden]{display:none!important;pointer-events:none!important}
+    .modal-backdrop:not([hidden]){pointer-events:auto}
+    .close{position:relative;z-index:3;display:inline-grid!important;place-items:center;min-width:32px!important;width:32px;height:32px;cursor:pointer;pointer-events:auto}
+    #attendanceView .attendance-table{min-width:990px;table-layout:fixed}
+    #attendanceView .attendance-table th{height:29px;padding:0 5px;line-height:1}
+    #attendanceView .attendance-table td{height:29px;padding:1px 5px;line-height:1}
+    #attendanceView .attendance-time-inline{display:flex;align-items:center;justify-content:center;gap:5px;min-width:0;white-space:nowrap}
+    #attendanceView .attendance-time-main{min-width:37px;text-align:center}
+    #attendanceView .attendance-cell-action{min-width:38px!important;width:auto!important;height:21px!important;margin:0!important;padding:0 6px!important;border-radius:4px!important;font-size:9.5px!important;line-height:1!important}
+    #attendanceView .attendance-person-button,#attendanceView .attendance-missed-toggle{height:21px;min-height:21px;padding:0 6px;font-size:9.5px}
+    #attendanceView .attendance-memo-input{height:23px;padding:0 5px;font-size:10px}
+    .attendance-rate-panel{margin:0 0 9px;padding:10px 12px;border:1px solid #d9e0e8;border-radius:8px;background:#fff;box-shadow:0 2px 8px rgba(16,24,40,.035)}
+    .attendance-rate-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+    .attendance-rate-head>div{display:grid;gap:2px}.attendance-rate-head strong{font-size:12px;color:#172033}.attendance-rate-head span{font-size:10px;color:#667085}
+    .attendance-rate-legend{white-space:nowrap}.attendance-rate-chart{display:grid;gap:6px;max-height:280px;overflow:auto;padding-right:4px}
+    .attendance-rate-row{display:grid;grid-template-columns:120px minmax(180px,1fr) 56px;align-items:center;gap:8px;min-height:27px}
+    .attendance-rate-dept{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10.5px;font-weight:750;color:#344054}
+    .attendance-rate-bars{display:grid;gap:3px}.attendance-rate-track{position:relative;height:8px;border-radius:999px;background:#edf1f5;overflow:hidden}
+    .attendance-rate-fill{height:100%;border-radius:999px;background:#2f6fed}.attendance-rate-fill.first{background:#a9b8d5}
+    .attendance-rate-value{text-align:right;font-size:10.5px;font-weight:850;color:#2458bd;font-variant-numeric:tabular-nums}
+    .attendance-rate-empty{padding:16px;text-align:center;color:#98a2b3;font-size:11px}
+    @media(max-width:900px){.attendance-rate-row{grid-template-columns:90px minmax(150px,1fr) 48px}}
+
+
+    /* ===== 2026-07 final integrated requirements ===== */
+    #employeeView table{table-layout:fixed}
+    #employeeView th{height:30px;padding:0 5px;font-size:10.5px;vertical-align:middle}
+    #employeeView td{height:31px;padding:3px 5px;font-size:11px;vertical-align:middle;line-height:1.2}
+    #employeeView th:nth-child(2),#employeeView td:nth-child(2){width:40px!important;min-width:40px!important;max-width:40px!important;padding-left:2px!important;padding-right:2px!important;text-align:center}
+    #employeeView .mini{min-height:24px;height:24px;padding:0 7px;font-size:10px;border-radius:5px}
+    #employeeView .status-badge{min-height:21px;padding:0 6px;font-size:9.5px}
+
+    #attendanceView .attendance-table-card{overflow:hidden}
+    #attendanceView .attendance-table{min-width:1230px;table-layout:fixed;border-collapse:collapse}
+    #attendanceView .attendance-table th{height:26px;padding:0 4px;font-size:10px;line-height:1.1;vertical-align:middle}
+    #attendanceView .attendance-table td{height:30px;padding:3px 4px;font-size:10.5px;line-height:1.15;vertical-align:middle}
+    #attendanceView .attendance-table tbody tr{min-height:0}
+    #attendanceView .attendance-table .ellipsis{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    #attendanceView .attendance-table td:nth-child(2),#attendanceView .attendance-table th:nth-child(2){padding-left:2px;padding-right:2px;text-align:center}
+    .attendance-round1-head{background:#fff8dc!important;color:#725b00!important;border-color:#eadb99!important}
+    .attendance-round2-head{background:#edf5ff!important;color:#2458bd!important;border-color:#c9daf5!important}
+    .attendance-round1-cell{background:#fffdf4}
+    .attendance-round2-cell{background:#f7fbff}
+    .attendance-paired-table tbody tr:hover .attendance-round1-cell{background:#fff9df}
+    .attendance-paired-table tbody tr:hover .attendance-round2-cell{background:#edf6ff}
+    .attendance-paired-table .sticky-identity{position:sticky;z-index:2;background:#fff}
+    .attendance-paired-table th.sticky-identity{z-index:4;background:#f7f9fc}
+    .attendance-person-button{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .attendance-round-action{display:grid;grid-template-columns:minmax(48px,1fr) minmax(42px,1fr);width:100%;min-width:94px;height:24px;padding:0;border:1px solid #9cb7eb;border-radius:6px;background:#fff;color:#2458bd;overflow:hidden;font-weight:800;font-size:10px;line-height:1;vertical-align:middle}
+    .attendance-round-action>span{display:flex;align-items:center;justify-content:center;height:100%;white-space:nowrap}
+    .attendance-round-action .attendance-action-time{font-size:12px;font-weight:900;font-variant-numeric:tabular-nums;border-right:1px solid currentColor}
+    .attendance-round-action:hover{background:#eef4ff;border-color:#6f95df}
+    .attendance-round-action.checkout{color:#dc2626;border-color:#ef4444;background:#fff}
+    .attendance-round-action.checkout:hover,.attendance-round-action.checkout:focus-visible{background:#fff1f1;border-color:#dc2626;color:#b91c1c}
+    .attendance-round-action:disabled{opacity:.48;background:#f7f8fa;color:#667085;border-color:#d6dbe3}
+    .attendance-round-action.is-loading{position:relative;color:transparent!important;pointer-events:none}
+    .attendance-round-action.is-loading::after{content:"";position:absolute;inset:0;margin:auto;width:11px;height:11px;border:2px solid rgba(47,111,237,.24);border-top-color:#2f6fed;border-radius:50%;animation:attendanceSpin .65s linear infinite}
+    .attendance-round-action.checkout.is-loading::after{border-color:rgba(220,38,38,.22);border-top-color:#dc2626}
+    @keyframes attendanceSpin{to{transform:rotate(360deg)}}
+    .attendance-round-static{display:grid;grid-template-columns:1fr 1fr;width:100%;min-width:94px;height:24px;border:1px solid #dde3eb;border-radius:6px;background:#f9fafb;color:#667085;overflow:hidden;font-size:10px;font-weight:750}
+    .attendance-round-static span{display:flex;align-items:center;justify-content:center;white-space:nowrap}
+    .attendance-round-static span:first-child{font-size:12px;font-weight:900;font-variant-numeric:tabular-nums;border-right:1px solid #dde3eb;color:#344054}
+    .attendance-round-static.not-target{grid-template-columns:1fr;color:#98a2b3}
+    .attendance-duration-pair{display:grid;gap:1px;text-align:center;font-size:9.5px;line-height:1.1;white-space:nowrap}
+    .attendance-duration-pair strong{font-size:10px;color:#344054}
+    #attendanceView .attendance-missed-toggle{height:23px;min-height:23px;padding:0 7px;font-size:9.5px}
+    #attendanceView .attendance-memo-input{height:24px;padding:0 6px;font-size:10px}
+
+    .attendance-chart-card{margin-top:10px;border:1px solid var(--line);border-radius:10px;background:#fff;box-shadow:var(--shadow);overflow:hidden}
+    .attendance-chart-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 13px}
+    .attendance-chart-card-head h3{margin:0;font-size:14px;color:#172033;letter-spacing:-.02em}
+    .attendance-chart-card-head p{margin:3px 0 0;font-size:10.5px;color:#667085}
+    .attendance-chart-actions{display:flex;align-items:center;justify-content:flex-end;gap:6px;flex-wrap:wrap}
+    .attendance-chart-actions .btn{min-height:29px;height:29px;padding:0 9px;font-size:10.5px}
+    .attendance-chart-collapse{max-height:0;opacity:0;overflow:hidden;border-top:0 solid var(--line);transition:max-height .32s ease,opacity .22s ease,border-top-width .18s ease}
+    .attendance-chart-collapse.open{max-height:520px;opacity:1;border-top-width:1px}
+    .attendance-chart-scroll{display:none;overflow-x:auto;overflow-y:hidden;padding:12px 12px 8px;background:#fff}
+    .attendance-chart-collapse.open .attendance-chart-scroll.has-data{display:block}
+    .attendance-chart-scroll canvas{display:block;max-width:none;height:330px}
+    .attendance-chart-empty{padding:24px 14px;text-align:center;color:#98a2b3;font-size:11px}
+    .attendance-chart-collapse:not(.open) .attendance-chart-empty{display:none}
+    .attendance-rate-legend{font-size:10px;color:#667085;white-space:nowrap}
+
+    @media(max-width:900px){
+      #employeeView th{height:32px}#employeeView td{height:34px;padding-top:4px;padding-bottom:4px}
+      #attendanceView .attendance-table{min-width:1180px}
+      #attendanceView .attendance-table td{height:33px;padding-top:4px;padding-bottom:4px}
+      .attendance-chart-card-head{align-items:flex-start;flex-direction:column}
+      .attendance-chart-actions{width:100%;justify-content:flex-start}
+      .attendance-chart-collapse.open{max-height:560px}
+      .attendance-chart-scroll canvas{height:310px}
+    }
+
+
+
+  #attendanceView .attendance-row-check,
+  #attendanceView #attendanceSelectAll,
+  #employeeView .active-row-check,
+  #employeeView #activeSelectAll,
+  #employeeView #retiredSelectAll{width:14px!important;height:14px!important;min-width:14px!important;min-height:14px!important;padding:0!important;margin:0!important;vertical-align:middle}
+  #attendanceView .attendance-duration-pair{display:flex!important;align-items:center;justify-content:center;gap:5px;white-space:nowrap;line-height:1!important}
+  #attendanceView .attendance-duration-pair strong,#attendanceView .attendance-duration-pair span{font-size:9.4px!important;line-height:1!important}
+  #attendanceView .attendance-table tbody tr{height:30px!important}
+  #employeeView .roster-table th,#employeeView .roster-table td{padding-top:3px!important;padding-bottom:3px!important;vertical-align:middle}
+
+
+
+  /* 교육 대상자 관리: 밀도와 정렬 */
+  #participantModal .modal-body{padding:12px 15px 15px}
+  #participantModal .summary-strip{gap:7px;margin-bottom:7px}
+  #participantModal .summary-card{min-height:48px;padding:7px 10px}
+  #participantModal .summary-label{text-align:center}
+  #participantModal .summary-value{text-align:center;font-size:18px}
+  #participantModal .participant-toolbar{min-height:32px;margin:0 0 7px;padding:0;gap:6px}
+  #participantModal .participant-layout{gap:8px;grid-template-columns:minmax(245px,.72fr) minmax(550px,1.55fr)}
+  #participantModal .participant-panel{border-radius:8px}
+  #participantModal .participant-panel-head{justify-content:center;position:relative;min-height:34px;padding:5px 7px;text-align:center}
+  #participantModal .participant-panel-head strong{width:100%;text-align:center;font-size:12px}
+  #participantModal .participant-panel-head input{position:absolute;right:6px;width:164px;height:26px;padding:3px 7px;font-size:11px}
+  #participantModal .picker-actions{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:6px;min-height:30px;padding:3px 6px;border-bottom:1px solid var(--line-soft);background:#fafbfc}
+  #participantModal .picker-select-all{display:flex;align-items:center;gap:4px;white-space:nowrap;font-size:10px;color:#475467;cursor:pointer}
+  #participantModal .picker-select-all input,#participantModal .employee-picker-check{width:14px;height:14px;min-width:14px;margin:0;padding:0}
+  #participantModal #employeePickerSelectionText{text-align:center;font-size:10px}
+  #participantModal #addSelectedParticipantsButton{height:23px;min-height:23px;padding:2px 7px;font-size:10px}
+  #participantModal .picker-columns,#participantModal .picker-row{display:grid;grid-template-columns:24px minmax(64px,.72fr) minmax(90px,1.28fr);align-items:center;column-gap:4px}
+  #participantModal .picker-columns{min-height:24px;padding:2px 6px;border-bottom:1px solid var(--line);background:#f4f6f8;color:#667085;font-size:9.5px;font-weight:750;text-align:center}
+  #participantModal .picker-list{max-height:365px}
+  #participantModal .picker-row{min-height:26px;padding:2px 6px;border-bottom:1px solid var(--line-soft);font-size:10.5px}
+  #participantModal .picker-row:hover{background:#f8fbff}
+  #participantModal .picker-name,#participantModal .picker-department{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+  #participantModal .picker-name{font-weight:750;color:#1d2939}
+  #participantModal .picker-department{font-size:10px;color:#667085}
+  #participantModal .picker-empty{padding:20px 8px;text-align:center;color:#667085;font-size:11px}
+  #participantModal .participant-table th{height:29px;padding:4px 5px;text-align:center;vertical-align:middle}
+  #participantModal .participant-table td{height:30px;padding:3px 5px;vertical-align:middle}
+  #participantModal .participant-select-col{width:34px;min-width:34px;max-width:34px;padding-left:2px!important;padding-right:2px!important}
+  #participantModal .participant-department-col{width:132px}
+  #participantModal .participant-name-col{width:92px}
+  #participantModal .participant-date-col{width:132px}
+  #participantModal .participant-manage-col{width:58px}
+  #participantModal .participant-date-input{display:block;width:118px;height:24px;margin:0 auto;padding:2px 5px;border:1px solid var(--line);border-radius:5px;background:#fff;font-size:11px;text-align:center}
+  #participantModal .participant-date-input.is-saving{background:#eff6ff;border-color:#93b4f5}
+  #participantModal .participant-date-input.is-conflict{border-color:#ef4444;background:#fff5f5}
+  #participantModal .participant-table .mini{height:23px;min-height:23px;padding:2px 7px;font-size:10px}
+  #participantModal .platform-pagination{margin-top:5px;padding-top:5px}
+  #participantModal .selection-text{font-size:11px;font-weight:750;color:#475467}
+  #participantDateModal .modal-body{padding-top:14px}
+
+  /* 교육 출결관리 헤더 중앙 정렬 및 비고 입력 힌트 제거 */
+  #attendanceView table thead th{text-align:center!important;vertical-align:middle}
+  #attendanceView .attendance-memo-input::placeholder{color:transparent}
+  #attendanceView .attendance-memo-input{padding-left:6px;padding-right:6px}
+
+  /* 본인 교육이력 */
+#selfHistoryModal table th,#selfHistoryModal table td{text-align:center;vertical-align:middle}
+.otp-status{min-height:20px;margin-top:10px;color:#2457c5;font-size:12px;font-weight:700;line-height:1.5}
+#myHistoryOtpVerifySection{margin-top:12px;padding-top:12px;border-top:1px solid #e4e7ec}
+#myHistoryOtpVerifySection .btn{width:100%;margin-top:8px}
+#myHistoryOtpSendButton{width:100%}
+#myHistoryOtpCode{letter-spacing:.16em;text-align:center;font-weight:800}
+
+  @media(max-width:860px){
+    #participantModal .participant-layout{grid-template-columns:1fr}
+    #participantModal .participant-panel-head{justify-content:space-between}
+    #participantModal .participant-panel-head strong{width:auto}
+    #participantModal .participant-panel-head input{position:static;width:min(170px,52vw)}
+    #participantModal .participant-table{min-width:560px}
+    #participantModal .picker-actions{grid-template-columns:auto 1fr auto}
+  }
+
+
+
+/* Direct time editing */
+.attendance-time-text{cursor:text!important;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.attendance-time-text:focus{outline:none;border-color:#2f6fed!important;box-shadow:0 0 0 3px rgba(47,111,237,.12)!important}
+/* Remove orange change/missed highlight; keep a clean red status marker only. */
+#attendanceView .attendance-row-missed,#attendanceView .attendance-row-missed td,#attendanceView .attendance-row-missed:hover td{background:#fff!important}
+#attendanceView .attendance-missed-toggle.active{border-color:#dc2626!important;background:#fff!important;color:#b42318!important}
+#attendanceView .attendance-missed-toggle.active:hover{background:#fef2f2!important}
+/* All page numbers are displayed; allow wrapping without ellipsis. */
+.platform-pagination,.attendance-pagination{flex-wrap:wrap!important}
+.platform-page-ellipsis,.attendance-page-ellipsis{display:none!important}
+
+
+
+
+
+
+  #attendanceView .attendance-table{min-width:920px;table-layout:fixed}
+  #attendanceView .attendance-table th{height:29px!important;padding:0 5px!important;font-size:9.8px!important}
+  #attendanceView .attendance-table td{height:30px!important;padding:2px 5px!important;font-size:10.2px!important;line-height:1!important}
+  #attendanceView .attendance-time-cell{padding:2px 4px!important}
+  #attendanceView .attendance-time-inline{display:grid;grid-template-columns:40px minmax(78px,1fr);align-items:center;gap:5px;min-width:0}
+  #attendanceView .attendance-time-main{display:block;min-width:0;text-align:center;font-size:10px;font-variant-numeric:tabular-nums}
+  #attendanceView .attendance-cell-action{display:flex!important;width:100%;min-width:0!important;height:23px!important;margin:0!important;padding:0 7px!important;font-size:9.6px!important;white-space:nowrap}
+  #attendanceView .attendance-person-button{height:22px!important;padding:0 4px!important;font-size:10px!important}
+  #attendanceView .attendance-missed-toggle{height:22px!important;padding:0 6px!important;font-size:9.5px!important}
+  #attendanceView .attendance-memo-input{height:23px!important;padding:0 6px!important;font-size:10px!important}
+  #attendanceView .attendance-duration{white-space:nowrap}
+  #attendanceDeleteSelectedButton{height:30px;padding:0 10px}
+  @media(max-width:1100px){#attendanceView .attendance-table{min-width:880px}}
+
+    /* 2026-07 integrated attendance and compact roster refinements */
+    .attendance-paired-table{min-width:920px!important;table-layout:fixed}
+    .attendance-paired-table thead th{height:29px!important;padding:0 4px!important;font-size:10.5px!important;vertical-align:middle}
+    .attendance-paired-table tbody td{height:30px!important;padding:2px 4px!important;font-size:11px!important;vertical-align:middle}
+    .attendance-unified-head{background:#eef4ff!important;color:#2458bd!important}
+    .attendance-unified-cell{background:#fbfcfe}
+    .attendance-unified-cell .attendance-round-action,.attendance-unified-cell .attendance-round-static{width:100%;max-width:124px;margin:0 auto}
+    .attendance-round-static.first-complete{border-color:#b8c8e5;background:#f4f7fc;color:#526173}
+    .attendance-round-static.first-complete span:last-child{font-size:9px;color:#667085}
+    .attendance-duration-total{display:flex;align-items:center;justify-content:center;min-height:22px;font-size:11.5px;font-weight:900;color:#172033;font-variant-numeric:tabular-nums;white-space:nowrap}
+    #departmentView th{height:28px!important;padding:0 5px!important;font-size:10.5px!important}
+    #departmentView td{height:30px!important;padding:2px 5px!important;font-size:11px!important;vertical-align:middle}
+    #departmentView .mini{min-height:23px!important;height:23px!important;padding:0 7px!important;font-size:10px!important}
+    #employeeJobTitle{height:36px}
+    @media(max-width:760px){.attendance-paired-table{min-width:900px!important}.attendance-paired-table tbody td{height:32px!important}.attendance-unified-cell .attendance-round-action,.attendance-unified-cell .attendance-round-static{max-width:122px}}
+
+/* ================================================================
+   구조 정리: 공통 밀도, 유연한 표 너비, 접근성, 삭제 버튼 체계
+   ================================================================ */
+:where(table){table-layout:auto!important;width:100%}
+:where(col){width:auto!important}
+:where(th){font-size:var(--table-head-font)!important}
+:where(td){font-size:var(--table-font)!important}
+:where(th,td){height:var(--table-row-height);line-height:1.15}
+:where(table button,table input,table select){font-size:10px}
+
+/* 고정 픽셀 열 대신 화면과 데이터에 따라 확장하고, 좁을 때만 가로 스크롤한다. */
+#educationView table{min-width:760px}
+#activeEmployeePanel table{min-width:760px}
+#retiredEmployeePanel table{min-width:720px}
+#departmentView table{min-width:620px}
+#attendanceView .attendance-table{min-width:900px!important;table-layout:auto!important}
+.attendance-log-table{min-width:640px}
+#activeEmployeePanel th:nth-child(1),#activeEmployeePanel td:nth-child(1),
+#activeEmployeePanel th:nth-child(2),#activeEmployeePanel td:nth-child(2){width:44px;min-width:44px}
+#activeEmployeePanel th:nth-child(8),#activeEmployeePanel td:nth-child(8){min-width:190px}
+#attendanceView .attendance-table th:nth-child(1),#attendanceView .attendance-table td:nth-child(1){width:34px;min-width:34px}
+#attendanceView .attendance-table th:nth-child(2),#attendanceView .attendance-table td:nth-child(2){width:42px;min-width:42px}
+#attendanceView .attendance-table th:nth-child(6),#attendanceView .attendance-table td:nth-child(6),
+#attendanceView .attendance-table th:nth-child(7),#attendanceView .attendance-table td:nth-child(7){min-width:126px}
+
+/* 삭제 기능은 모두 흰 배경 + 빨간 테두리/문자로 통일한다. */
+:where(.btn-danger,.mini-danger,.row-delete-button,.attendance-log-delete,[data-action="delete"]){
+  color:var(--danger-text)!important;background:#fff!important;border:1px solid var(--danger-border)!important;
+  box-shadow:none!important
+}
+:where(.btn-danger,.mini-danger,.row-delete-button,.attendance-log-delete,[data-action="delete"]):hover:not(:disabled){background:#fef2f2!important}
+.mini-warning{color:var(--warning-text)!important;background:#fff!important;border:1px solid #d6a300!important}
+
+/* 모달과 탭의 키보드 포커스를 명확하게 표시한다. */
+.modal[role="dialog"]:focus{outline:none}
+:where(button,input,select,textarea,a,[role="tab"]):focus-visible{outline:2px solid var(--primary)!important;outline-offset:2px}
+[role="tab"][aria-selected="true"]{font-weight:800}
+[role="tabpanel"][hidden]{display:none!important}
+
+.single-field-row{display:grid;grid-template-columns:minmax(0,1fr)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+
+
+/* 교육 유형별 표와 대상자 입력 규칙 */
+:where(table th,table td){text-align:center!important}
+:where(table input,table select,table textarea){text-align:center}
+
+#educationDataTable{table-layout:fixed!important;width:100%;min-width:0!important}
+#educationDataTable th,#educationDataTable td{
+  height:34px!important;padding:4px 6px!important;vertical-align:middle!important;text-align:center!important;
+  font-size:13px!important;line-height:1.25!important
+}
+#educationDataTable th{font-size:13px!important;font-weight:800!important}
+#educationDataTable .education-col-no{width:44px!important}
+#educationDataTable .education-col-date{width:146px!important}
+#educationDataTable .education-col-title{width:190px!important}
+#educationDataTable .education-col-topic{width:190px!important}
+#educationDataTable .education-col-material{width:94px!important}
+#educationDataTable .education-col-report{width:104px!important}
+#educationDataTable .education-col-category{width:auto!important}
+#educationDataTable .education-col-manage{width:146px!important}
+#educationDataTable[data-education-type="regular"]{min-width:968px!important}
+#educationDataTable[data-education-type="special"],
+#educationDataTable[data-education-type="hiring"]{min-width:0!important}
+#educationDataTable .download-link,#educationDataTable .progress{min-width:74px;min-height:25px;padding:0 7px;font-size:12px!important}
+#educationDataTable .row-actions{display:flex!important;align-items:center;justify-content:center;gap:4px;overflow:hidden;white-space:nowrap}
+#educationDataTable .row-actions .mini{min-height:25px!important;height:25px!important;padding:0 6px!important;margin:0!important;border-radius:5px;font-size:11.5px!important;white-space:nowrap}
+
+#retiredEmployeePanel table{min-width:900px!important;table-layout:fixed!important}
+#retiredEmployeePanel th,#retiredEmployeePanel td{text-align:center!important}
+#retiredEmployeePanel th:nth-child(1),#retiredEmployeePanel td:nth-child(1){width:44px!important;min-width:44px!important}
+#retiredEmployeePanel th:nth-child(2),#retiredEmployeePanel td:nth-child(2){width:180px!important;min-width:180px!important}
+#retiredEmployeePanel th:nth-child(3),#retiredEmployeePanel td:nth-child(3){width:100px!important}
+#retiredEmployeePanel th:nth-child(4),#retiredEmployeePanel td:nth-child(4){width:105px!important}
+#retiredEmployeePanel th:nth-child(5),#retiredEmployeePanel td:nth-child(5),
+#retiredEmployeePanel th:nth-child(6),#retiredEmployeePanel td:nth-child(6){width:105px!important}
+#retiredEmployeePanel th:nth-child(7),#retiredEmployeePanel td:nth-child(7){width:82px!important}
+#retiredEmployeePanel th:nth-child(8),#retiredEmployeePanel td:nth-child(8){width:175px!important}
+
+#participantModal .participant-table{table-layout:fixed!important}
+#participantModal .participant-table[data-mode="regular"]{min-width:560px}
+#participantModal .participant-table[data-mode="special"]{min-width:790px}
+#participantModal .participant-table[data-mode="hiring"]{min-width:510px}
+#participantModal .participant-table th,#participantModal .participant-table td{text-align:center!important}
+#participantModal .participant-common-date{font-weight:760;color:#344054;white-space:nowrap}
+#participantModal .participant-required-mark{margin-left:2px;color:#d92d20;font-weight:900}
+#participantModal .participant-date-pair{display:flex;align-items:center;justify-content:center;gap:4px}
+#participantModal .participant-date-input{width:118px}
+#participantModal .participant-date-input[aria-invalid="true"]{border-color:#ef4444;background:#fff5f5}
+#participantModal .participant-department-col{width:145px}
+#participantModal .participant-name-col{width:92px}
+#participantModal .participant-common-col{width:126px}
+#participantModal .participant-date-col{width:132px}
+#participantModal .participant-manage-col{width:58px}
+#participantModal .participant-mode-note{font-size:10.5px;color:#667085;font-weight:700}
+#participantDateModal .optional-label{margin-left:3px;color:#98a2b3;font-size:9px;font-weight:700}
+
+/* 교육 목록과 공개 교육이력 정리 */
+#educationDataTable[data-education-type="special"],
+#educationDataTable[data-education-type="hiring"]{min-width:0!important;width:100%!important;table-layout:fixed!important}
+#educationDataTable[data-education-type="special"] .education-col-no,
+#educationDataTable[data-education-type="hiring"] .education-col-no{width:44px!important}
+#educationDataTable[data-education-type="special"] .education-col-date,
+#educationDataTable[data-education-type="hiring"] .education-col-date{width:146px!important}
+#educationDataTable[data-education-type="special"] .education-col-category,
+#educationDataTable[data-education-type="hiring"] .education-col-category{width:auto!important}
+#educationDataTable[data-education-type="special"] .education-col-report,
+#educationDataTable[data-education-type="hiring"] .education-col-report{width:104px!important}
+#educationDataTable[data-education-type="special"] .education-col-manage,
+#educationDataTable[data-education-type="hiring"] .education-col-manage{width:146px!important}
+#selfHistoryModal .modal{width:min(1460px,calc(100vw - 40px));max-width:1460px;max-height:94vh}
+#selfHistoryModal .modal-body{padding:12px 14px 14px;overflow-y:auto;overflow-x:hidden}
+.self-history-sheet{display:grid;grid-template-columns:minmax(0,1fr);gap:12px}
+.self-history-section{min-width:0;border:1px solid #dfe4ec;border-radius:10px;background:#fff;overflow:hidden}
+.self-history-section-head{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:42px;padding:7px 10px;border-bottom:1px solid #e8ebf0;background:#f8fafc}
+.self-history-section-head h3{margin:0;color:#172033;font-size:14px;font-weight:850;white-space:nowrap}
+.self-history-bottom-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;min-width:0}
+.self-history-table-wrap{width:100%;max-width:100%;overflow-x:hidden}
+.self-history-section:not(.self-history-regular) .self-history-table-wrap{max-height:310px;overflow-y:auto}
+.self-history-table{table-layout:fixed;width:100%;min-width:0!important;margin:0}
+.self-history-table th,.self-history-table td{padding:7px 8px;font-size:12px;vertical-align:middle}
+.self-history-table th:nth-child(1){width:auto}
+.self-history-table th:nth-child(2){width:220px}
+.self-history-table th:nth-child(3){width:104px}
+.self-history-date{white-space:normal!important;line-height:1.45;overflow:visible!important;text-overflow:clip!important}
+.self-history-date-line{display:block;white-space:nowrap!important;word-break:keep-all;overflow:visible;text-overflow:clip}
+.self-history-title-cell{white-space:normal!important;word-break:keep-all;line-height:1.35}
+.self-history-half-pagination{display:flex;align-items:center;justify-content:flex-end;gap:4px;flex-wrap:wrap;min-width:0}
+.self-history-half-pagination .platform-page-button{min-width:auto;height:27px;padding:0 8px;font-size:10.5px}
+.self-history-empty{padding:18px 10px;text-align:center;color:#98a2b3;font-size:12px}
+@media (max-width:980px){
+  #selfHistoryModal .modal{width:calc(100vw - 20px)}
+  .self-history-bottom-grid{grid-template-columns:1fr}
+  .self-history-table th:nth-child(2){width:190px}
+}
+#participantSummaryStrip[hidden]{display:none!important}
+
+
+
+/* ================================================================
+   1920px PC 화면 안정화: 가로 스크롤 제거, 표/버튼 넘침 방지,
+   대상자 관리 모달을 한 화면에서 편집할 수 있도록 재배치
+   ================================================================ */
+@media (min-width:1200px){
+  html,body{max-width:100%;overflow-x:hidden!important}
+  .main,.content,.view,.card,.panel,.toolbar,.table-wrap{min-width:0!important;max-width:100%!important;box-sizing:border-box}
+  .content{width:100%;max-width:none!important;padding-left:24px!important;padding-right:24px!important}
+
+  /* PC에서는 어떤 업무 표도 가로 스크롤을 만들지 않는다. */
+  .table-wrap{overflow-x:hidden!important}
+  .table-wrap>table,
+  #educationDataTable,
+  #activeEmployeePanel table,
+  #retiredEmployeePanel table,
+  #departmentView table,
+  #attendanceView .attendance-table,
+  .attendance-log-table,
+  .self-history-table,
+  #participantModal .participant-table{
+    width:100%!important;max-width:100%!important;min-width:0!important;table-layout:fixed!important
+  }
+  table th,table td{min-width:0!important;max-width:none;overflow:hidden;text-overflow:ellipsis;box-sizing:border-box}
+  table th{white-space:nowrap}
+  table td{white-space:nowrap}
+  table td>*{max-width:100%;box-sizing:border-box}
+  table input,table select,table textarea{width:100%;min-width:0;max-width:100%;box-sizing:border-box}
+  table button,table a{max-width:100%;box-sizing:border-box}
+  .ellipsis{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  /* 교육 목록: 특별안전교육 관리자 관리 열을 충분히 확보한다. */
+  #educationDataTable .education-col-no{width:4%!important}
+  #educationDataTable .education-col-date{width:13%!important}
+  #educationDataTable .education-col-title{width:18%!important}
+  #educationDataTable .education-col-topic{width:20%!important}
+  #educationDataTable .education-col-material{width:10%!important}
+  #educationDataTable .education-col-report{width:11%!important}
+  #educationDataTable .education-col-manage{width:24%!important}
+  #educationDataTable[data-education-type="special"] .education-col-no,
+  #educationDataTable[data-education-type="hiring"] .education-col-no{width:5%!important}
+  #educationDataTable[data-education-type="special"] .education-col-date,
+  #educationDataTable[data-education-type="hiring"] .education-col-date{width:17%!important}
+  #educationDataTable[data-education-type="special"] .education-col-category,
+  #educationDataTable[data-education-type="hiring"] .education-col-category{width:38%!important}
+  #educationDataTable[data-education-type="special"] .education-col-report,
+  #educationDataTable[data-education-type="hiring"] .education-col-report{width:14%!important}
+  #educationDataTable[data-education-type="special"] .education-col-manage,
+  #educationDataTable[data-education-type="hiring"] .education-col-manage{width:26%!important}
+  #educationDataTable .row-actions{display:flex!important;align-items:center;justify-content:center;gap:6px!important;overflow:visible!important;white-space:nowrap}
+  #educationDataTable .row-actions .mini{flex:0 1 auto;min-width:52px;max-width:none!important;padding-left:9px!important;padding-right:9px!important}
+  #educationDataTable[data-education-type="special"] .row-actions .mini:first-child{min-width:88px}
+
+  /* 재직자/퇴사자/부서 관리 표 */
+  #activeEmployeePanel th:nth-child(1),#activeEmployeePanel td:nth-child(1){width:3.5%!important}
+  #activeEmployeePanel th:nth-child(2),#activeEmployeePanel td:nth-child(2){width:4%!important}
+  #activeEmployeePanel th:nth-child(3),#activeEmployeePanel td:nth-child(3){width:8%!important}
+  #activeEmployeePanel th:nth-child(4),#activeEmployeePanel td:nth-child(4){width:18%!important}
+  #activeEmployeePanel th:nth-child(5),#activeEmployeePanel td:nth-child(5){width:10%!important}
+  #activeEmployeePanel th:nth-child(6),#activeEmployeePanel td:nth-child(6){width:11%!important}
+  #activeEmployeePanel th:nth-child(7),#activeEmployeePanel td:nth-child(7){width:11%!important}
+  #activeEmployeePanel th:nth-child(8),#activeEmployeePanel td:nth-child(8){width:34.5%!important;min-width:0!important}
+  #activeEmployeePanel td:nth-child(8),#retiredEmployeePanel td:nth-child(8){white-space:normal!important}
+  #activeEmployeePanel td:nth-child(8)>button,#retiredEmployeePanel td:nth-child(8)>button{margin:2px 3px}
+
+  #retiredEmployeePanel table{min-width:0!important}
+  #retiredEmployeePanel th:nth-child(1),#retiredEmployeePanel td:nth-child(1){width:4%!important}
+  #retiredEmployeePanel th:nth-child(2),#retiredEmployeePanel td:nth-child(2){width:19%!important}
+  #retiredEmployeePanel th:nth-child(3),#retiredEmployeePanel td:nth-child(3){width:10%!important}
+  #retiredEmployeePanel th:nth-child(4),#retiredEmployeePanel td:nth-child(4){width:11%!important}
+  #retiredEmployeePanel th:nth-child(5),#retiredEmployeePanel td:nth-child(5){width:11%!important}
+  #retiredEmployeePanel th:nth-child(6),#retiredEmployeePanel td:nth-child(6){width:11%!important}
+  #retiredEmployeePanel th:nth-child(7),#retiredEmployeePanel td:nth-child(7){width:8%!important}
+  #retiredEmployeePanel th:nth-child(8),#retiredEmployeePanel td:nth-child(8){width:26%!important}
+
+  #departmentView th:nth-child(1),#departmentView td:nth-child(1){width:6%!important}
+  #departmentView th:nth-child(2),#departmentView td:nth-child(2){width:38%!important}
+  #departmentView th:nth-child(3),#departmentView td:nth-child(3){width:16%!important}
+  #departmentView th:nth-child(4),#departmentView td:nth-child(4){width:16%!important}
+  #departmentView th:nth-child(5),#departmentView td:nth-child(5){width:24%!important}
+
+  /* 출결표도 1920 PC 폭 안에서 모두 보이도록 열 비율을 고정한다. */
+  #attendanceView .attendance-table{min-width:0!important}
+  #attendanceView .attendance-table th:nth-child(1),#attendanceView .attendance-table td:nth-child(1){width:3%!important}
+  #attendanceView .attendance-table th:nth-child(2),#attendanceView .attendance-table td:nth-child(2){width:3.5%!important}
+  #attendanceView .attendance-table th:nth-child(3),#attendanceView .attendance-table td:nth-child(3){width:11%!important}
+  #attendanceView .attendance-table th:nth-child(4),#attendanceView .attendance-table td:nth-child(4){width:7%!important}
+  #attendanceView .attendance-table th:nth-child(5),#attendanceView .attendance-table td:nth-child(5){width:8%!important}
+  #attendanceView .attendance-table th:nth-child(6),#attendanceView .attendance-table td:nth-child(6){width:16%!important;min-width:0!important}
+  #attendanceView .attendance-table th:nth-child(7),#attendanceView .attendance-table td:nth-child(7){width:16%!important;min-width:0!important}
+  #attendanceView .attendance-table th:nth-child(8),#attendanceView .attendance-table td:nth-child(8){width:9%!important}
+  #attendanceView .attendance-table th:nth-child(9),#attendanceView .attendance-table td:nth-child(9){width:9%!important}
+  #attendanceView .attendance-table th:nth-child(10),#attendanceView .attendance-table td:nth-child(10){width:17.5%!important}
+  #attendanceView .attendance-time-inline{grid-template-columns:minmax(34px,38px) minmax(0,1fr)!important;min-width:0!important;gap:4px!important}
+  #attendanceView .attendance-cell-action{min-width:0!important;width:100%!important;padding-left:4px!important;padding-right:4px!important;overflow:hidden;text-overflow:ellipsis}
+
+  /* 대상자 관리 모달: 바깥 스크롤 없이 화면 안에서 편집한다. */
+  #participantModal{padding:12px!important;overflow:hidden!important;place-items:center}
+  #participantModal>.modal{
+    width:min(1580px,calc(100vw - 28px))!important;
+    height:min(930px,calc(100vh - 24px))!important;
+    max-height:none!important;overflow:hidden!important;
+    display:flex;flex-direction:column
+  }
+  #participantModal .modal-head{flex:0 0 auto;align-items:center;padding:11px 15px 9px!important}
+  #participantModal .modal-head h2{font-size:16px}
+  #participantModal .close{width:30px;height:30px}
+  #participantModal .modal-body{flex:1;min-height:0;overflow:hidden!important;display:flex;flex-direction:column;padding:8px 12px 10px!important}
+  #participantModal .summary-strip{flex:0 0 auto;margin-bottom:5px!important}
+  #participantModal .summary-card{min-height:40px!important;padding:5px 9px!important}
+  #participantModal .summary-value{font-size:16px!important}
+  #participantModal .participant-toolbar{flex:0 0 auto;min-height:34px!important;margin-bottom:6px!important;padding:0 2px!important}
+  #participantModal .participant-toolbar .btn{min-height:29px!important;height:29px!important;padding:0 10px!important;font-size:10.5px!important}
+  #participantModal .participant-layout{
+    flex:1;min-height:0;height:auto;overflow:hidden;
+    grid-template-columns:minmax(290px,22%) minmax(0,78%)!important;gap:8px!important
+  }
+  #participantModal .participant-panel{min-width:0;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+  #participantModal .participant-panel-head{flex:0 0 auto;min-height:32px!important;height:32px!important;padding:3px 6px!important}
+  #participantModal .participant-panel-head input{height:24px!important;width:158px!important;font-size:10.5px!important}
+  #participantModal .picker-actions{flex:0 0 auto;min-height:27px!important;height:27px!important;padding:2px 5px!important}
+  #participantModal .picker-columns{flex:0 0 auto;min-height:22px!important;height:22px!important;padding:1px 5px!important}
+  #participantModal .picker-list{flex:1;min-height:0;max-height:none!important;overflow-y:auto!important;overflow-x:hidden!important}
+  #participantModal .picker-row{min-height:24px!important;height:24px!important;padding:1px 5px!important;line-height:1.05}
+  #participantModal #employeePickerPagination{flex:0 0 auto;max-height:72px;overflow-y:auto;overflow-x:hidden!important;margin:3px 4px!important;padding:3px 0!important}
+  #participantModal .participant-table-wrap{flex:1;min-height:0;overflow-y:auto!important;overflow-x:hidden!important}
+  #participantModal #participantStatus{flex:0 0 auto}
+  #participantModal #participantPagination{flex:0 0 auto;max-height:72px;overflow-y:auto;overflow-x:hidden!important;margin:3px 4px!important;padding:3px 0!important}
+  #participantModal .participant-table{min-width:0!important;width:100%!important}
+  #participantModal .participant-table th{height:27px!important;padding:2px 4px!important;font-size:10.5px!important}
+  #participantModal .participant-table td{height:28px!important;padding:2px 4px!important;font-size:10.8px!important}
+  #participantModal .participant-select-col{width:4%!important;min-width:0!important;max-width:none!important}
+  #participantModal .participant-row-check,#participantModal #participantSelectAll{width:14px!important;height:14px!important;min-width:14px!important;min-height:14px!important;margin:0!important;padding:0!important}
+  #participantModal .participant-department-col{width:18%!important}
+  #participantModal .participant-name-col{width:12%!important}
+  #participantModal .participant-common-col{width:16%!important}
+  #participantModal .participant-date-col{width:19%!important}
+  #participantModal .participant-manage-col{width:9%!important}
+  #participantModal .participant-date-input{width:100%!important;min-width:0!important;height:23px!important;padding:1px 3px!important;font-size:10.5px!important}
+  #participantModal .participant-table .mini{width:auto;min-width:43px;max-width:100%!important;height:22px!important;min-height:22px!important;padding:0 6px!important;font-size:9.8px!important}
+  #participantModal .platform-pagination{justify-content:center!important;gap:3px!important;flex-wrap:wrap!important}
+  #participantModal .platform-page-button{min-width:25px;height:24px;padding:0 6px;font-size:10px}
+  #participantModal .platform-page-summary{font-size:10px}
+  .platform-pagination,.attendance-pagination,.attendance-chart-scroll{overflow-x:hidden!important}
+}
+
+/* ================================================================
+   교육 목록 및 특별안전교육 대상자 카드 최종 정렬
+   - 1920px에서 가로 스크롤 없이 표시
+   - 교육 주제와 특별안전교육 법정 작업명을 충분히 표시
+   - 관리 버튼은 대상자 / 수정 / 삭제로 동일하게 유지
+   ================================================================ */
+#educationDataTable th,#educationDataTable td{vertical-align:middle!important}
+#educationDataTable th{padding-top:7px!important;padding-bottom:7px!important}
+#educationDataTable td{padding-top:6px!important;padding-bottom:6px!important;line-height:1.35}
+#educationDataTable .education-category-text{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;overflow-wrap:anywhere;word-break:keep-all;line-height:1.4;padding-left:9px!important;padding-right:9px!important}
+#educationDataTable .row-actions{white-space:nowrap!important;flex-wrap:nowrap!important}
+#educationDataTable .row-actions .mini{min-width:0!important;width:auto!important;padding-left:7px!important;padding-right:7px!important}
+
+@media (min-width:1200px){
+  /* 정기교육은 실시일·교육명·관리 폭을 줄이고 교육 주제를 넓힌다. */
+  #educationDataTable[data-education-type="regular"] .education-col-no{width:4%!important}
+  #educationDataTable[data-education-type="regular"] .education-col-date{width:10%!important}
+  #educationDataTable[data-education-type="regular"] .education-col-title{width:14%!important}
+  #educationDataTable[data-education-type="regular"] .education-col-topic{width:40%!important}
+  #educationDataTable[data-education-type="regular"] .education-col-material{width:8%!important}
+  #educationDataTable[data-education-type="regular"] .education-col-report{width:10%!important}
+  #educationDataTable[data-education-type="regular"] .education-col-manage{width:14%!important}
+  #educationDataTable[data-education-type="regular"] td:nth-child(4){white-space:normal!important;overflow:visible!important;text-overflow:clip!important;overflow-wrap:anywhere;word-break:keep-all;text-align:left!important;padding-left:10px!important;padding-right:10px!important}
+
+  /* 특별·채용교육은 긴 교육구분을 우선 배치하고 관리 버튼 폭은 필요한 만큼만 둔다. */
+  #educationDataTable[data-education-type="special"] .education-col-no,
+  #educationDataTable[data-education-type="hiring"] .education-col-no{width:4%!important}
+  #educationDataTable[data-education-type="special"] .education-col-date,
+  #educationDataTable[data-education-type="hiring"] .education-col-date{width:11%!important}
+  #educationDataTable[data-education-type="special"] .education-col-category{width:57%!important}
+  #educationDataTable[data-education-type="hiring"] .education-col-category{width:55%!important}
+  #educationDataTable[data-education-type="special"] .education-col-report,
+  #educationDataTable[data-education-type="hiring"] .education-col-report{width:10%!important}
+  #educationDataTable[data-education-type="special"] .education-col-manage{width:18%!important}
+  #educationDataTable[data-education-type="hiring"] .education-col-manage{width:20%!important}
+  #educationDataTable[data-education-type="special"] .row-actions .mini,
+  #educationDataTable[data-education-type="hiring"] .row-actions .mini{min-width:48px!important;padding-left:7px!important;padding-right:7px!important}
+
+  /* 대상자 모달은 카드와 표 내부 여백을 줄이고, 현재 대상자 표는 가로 스크롤을 만들지 않는다. */
+  #participantModal .modal-body{padding:6px 9px 8px!important}
+  #participantModal .participant-toolbar{min-height:30px!important;height:30px!important;margin-bottom:4px!important;padding:0!important}
+  #participantModal .participant-toolbar .btn{height:26px!important;min-height:26px!important;padding:0 8px!important}
+  #participantModal .participant-layout{grid-template-columns:minmax(220px,.62fr) minmax(0,2fr)!important;gap:5px!important}
+  #participantModal .participant-panel{border-radius:6px!important;min-width:0!important;overflow:hidden!important}
+  #participantModal .participant-panel-head{height:29px!important;min-height:29px!important;padding:2px 5px!important}
+  #participantModal .participant-panel-head strong{font-size:11px!important}
+  #participantModal .participant-panel-head input{height:22px!important;width:148px!important;padding:1px 6px!important;font-size:10px!important}
+  #participantModal .picker-actions{height:24px!important;min-height:24px!important;padding:1px 4px!important;gap:4px!important}
+  #participantModal .picker-columns{height:20px!important;min-height:20px!important;padding:0 4px!important}
+  #participantModal .picker-row{height:22px!important;min-height:22px!important;padding:0 4px!important}
+  #participantModal .participant-table-wrap{width:100%!important;min-width:0!important;max-width:100%!important;overflow-x:clip!important;overflow-y:auto!important;scrollbar-gutter:stable}
+  #participantModal .participant-table{width:100%!important;min-width:0!important;max-width:100%!important;table-layout:fixed!important;margin:0!important}
+  #participantModal .participant-table th{height:24px!important;padding:1px 3px!important;font-size:10.3px!important;line-height:1.1}
+  #participantModal .participant-table td{height:25px!important;padding:1px 3px!important;font-size:10.5px!important;line-height:1.1}
+  #participantModal .participant-table[data-mode="special"] .participant-select-col{width:4%!important}
+  #participantModal .participant-table[data-mode="special"] .participant-department-col{width:17%!important}
+  #participantModal .participant-table[data-mode="special"] .participant-name-col{width:11%!important}
+  #participantModal .participant-table[data-mode="special"] .participant-common-col{width:15%!important}
+  #participantModal .participant-table[data-mode="special"] .participant-date-col{width:21%!important}
+  #participantModal .participant-table[data-mode="special"] .participant-manage-col{width:11%!important}
+  #participantModal .participant-date-input{height:21px!important;padding:0 2px!important;font-size:10px!important}
+  #participantModal .participant-table .mini{height:20px!important;min-height:20px!important;min-width:40px!important;padding:0 5px!important;font-size:9.5px!important}
+  #participantModal #participantStatus{min-height:0!important;margin:0!important;padding:0!important}
+  #participantModal #participantPagination,#participantModal #employeePickerPagination{margin:2px 3px!important;padding:2px 0!important;max-height:54px!important}
+}
+
+
+
+/* 날짜 8자리 직접 입력 및 교육 관리 버튼 한 줄 고정 */
+input[data-compact-date="true"]{font-variant-numeric:tabular-nums;letter-spacing:.01em}
+#educationDataTable td.education-manage-cell{display:table-cell!important;vertical-align:middle!important;white-space:nowrap!important;overflow:visible!important}
+#educationDataTable .row-action-group{display:flex!important;align-items:center!important;justify-content:center!important;flex-wrap:nowrap!important;gap:5px!important;width:100%;min-width:0}
+#educationDataTable .row-action-group .mini{flex:0 0 auto!important;white-space:nowrap!important;margin:0!important}
+
+
+
+/* ================================================================
+   날짜 단축입력·사원명부 체크박스·대상자 추가 카드 최종 안정화
+   ================================================================ */
+#employeeView #selectAllActiveEmployees,
+#employeeView .active-row-check{
+  appearance:auto!important;
+  width:14px!important;height:14px!important;
+  min-width:14px!important;min-height:14px!important;
+  max-width:14px!important;max-height:14px!important;
+  padding:0!important;margin:0!important;
+  display:inline-block!important;vertical-align:middle!important
+}
+#employeeView thead th:first-child,
+#employeeView tbody td:first-child{padding-left:3px!important;padding-right:3px!important;text-align:center!important}
+
+#participantModal .participant-panel:first-child{min-width:0!important;max-width:100%!important;overflow:hidden!important}
+#participantModal .participant-panel:first-child .participant-panel-head{
+  display:grid!important;
+  grid-template-columns:auto minmax(0,1fr)!important;
+  align-items:center!important;
+  column-gap:6px!important;
+  overflow:hidden!important
+}
+#participantModal .participant-panel:first-child .participant-panel-head strong{
+  width:auto!important;min-width:max-content!important;white-space:nowrap!important
+}
+#participantModal #employeePickerSearch{
+  position:static!important;inset:auto!important;
+  width:100%!important;min-width:0!important;max-width:100%!important;
+  justify-self:stretch!important;box-sizing:border-box!important
+}
+#participantModal .picker-actions{
+  width:100%!important;min-width:0!important;max-width:100%!important;
+  box-sizing:border-box!important;
+  grid-template-columns:auto minmax(0,1fr) auto!important;
+  overflow:hidden!important
+}
+#participantModal .picker-select-all{min-width:0!important;overflow:hidden!important}
+#participantModal #employeePickerSelectionText{
+  min-width:0!important;overflow:hidden!important;text-overflow:ellipsis!important;
+  white-space:nowrap!important
+}
+#participantModal #addSelectedParticipantsButton{
+  min-width:max-content!important;max-width:100%!important;white-space:nowrap!important
+}
+#participantModal .picker-columns,
+#participantModal .picker-row{
+  width:100%!important;min-width:0!important;max-width:100%!important;
+  grid-template-columns:22px minmax(64px,.82fr) minmax(0,1.18fr)!important;
+  box-sizing:border-box!important;overflow:hidden!important
+}
+#participantModal .picker-list{width:100%!important;min-width:0!important;max-width:100%!important;overflow-x:hidden!important}
+#participantModal .picker-row>*{min-width:0!important;max-width:100%!important}
+#participantModal .picker-name,
+#participantModal .picker-department{overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+#participantModal .employee-picker-check,
+#participantModal #employeePickerSelectAll{
+  appearance:auto!important;width:14px!important;height:14px!important;
+  min-width:14px!important;min-height:14px!important;max-width:14px!important;max-height:14px!important;
+  padding:0!important;margin:0!important
+}
+
+
+/* 정기교육 월별 개인 교육일 붙여넣기 */
+.regular-halfyear-import-modal{width:min(1120px,94vw);max-height:92vh}
+.regular-halfyear-import-modal .modal-body{display:flex;flex-direction:column;gap:10px;overflow-y:auto}
+.regular-import-guide{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid #cfe0ff;border-radius:8px;background:#f5f8ff;color:#344054;font-size:12px;line-height:1.5}
+.regular-import-guide strong{flex:0 0 auto;color:#2457c5}.regular-import-guide span{min-width:0}
+.regular-import-controls{display:grid;grid-template-columns:160px minmax(280px,1fr);gap:10px}
+#regularImportText{min-height:210px;max-height:320px;resize:vertical;white-space:pre;font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;font-size:11px;line-height:1.45}
+.regular-import-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.regular-import-summary>div{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.regular-import-summary span{font-size:11px;color:#667085}.regular-import-summary strong{font-size:17px;color:#1d2939}
+.regular-import-month-map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.regular-import-month-item{min-width:0;padding:7px 9px;border:1px solid var(--line);border-radius:7px;background:#fafbfc;font-size:10.5px;line-height:1.4}
+.regular-import-month-item strong{display:block;margin-bottom:2px;color:#344054}.regular-import-month-item span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#667085}
+.regular-import-month-item.ok{border-color:#a6d7b3;background:#f4fbf6}.regular-import-month-item.error{border-color:#f1b4b4;background:#fff6f6}
+.regular-import-preview{min-height:34px;padding:8px 10px;border-radius:7px;background:#f7f8fa;color:#475467;font-size:11px;line-height:1.5}
+.regular-import-preview.success{background:#f0f9f3;color:#176b34}.regular-import-preview.error{background:#fff3f2;color:#b42318}
+.regular-import-details{border:1px solid var(--line);border-radius:7px;background:#fff;font-size:11px}.regular-import-details summary{cursor:pointer;padding:7px 10px;font-weight:750;color:#475467}.regular-import-details>div{max-height:150px;overflow-y:auto;padding:0 10px 8px}
+.regular-import-excluded-row{display:grid;grid-template-columns:100px 130px 1fr;gap:8px;padding:4px 0;border-top:1px solid var(--line-soft);align-items:start}.regular-import-excluded-row span:last-child{color:#b42318}
+@media(max-width:900px){.regular-import-controls{grid-template-columns:1fr}.regular-import-summary{grid-template-columns:repeat(2,1fr)}.regular-import-month-map{grid-template-columns:1fr}}
+
+
+/* ===== 2026-07 업무 안정성·접근성 최종 보완 ===== */
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+#activeSelectionText{color:#667085;font-size:11px}
+.table-wrap{overflow:auto!important;scrollbar-gutter:stable}
+:where(table th,table td){text-align:left!important}
+:where(table th.center,table td.center,table .center){text-align:center!important}
+:where(table td:nth-child(1),table th:nth-child(1)){font-variant-numeric:tabular-nums}
+:where(input[type="date"],input[type="datetime-local"],.attendance-time-main,.attendance-duration-total){font-variant-numeric:tabular-nums}
+#activeEmployeePanel table,#retiredEmployeePanel table,#attendanceView .attendance-table{min-width:max-content!important;width:100%!important}
+#activeEmployeePanel table{min-width:860px!important}#retiredEmployeePanel table{min-width:900px!important}
+#attendanceView .attendance-table{min-width:1080px!important}
+#activeEmployeePanel th:nth-child(2),#activeEmployeePanel td:nth-child(2),#attendanceView th:nth-child(2),#attendanceView td:nth-child(2){text-align:center!important}
+#activeEmployeePanel th:nth-child(3),#activeEmployeePanel td:nth-child(3){text-align:center!important}
+#attendanceView th:nth-child(6),#attendanceView td:nth-child(6),#attendanceView th:nth-child(7),#attendanceView td:nth-child(7),#attendanceView th:nth-child(8),#attendanceView td:nth-child(8),#attendanceView th:nth-child(9),#attendanceView td:nth-child(9){text-align:center!important}
+#activeEmployeePanel th:nth-child(4),#activeEmployeePanel td:nth-child(4),#activeEmployeePanel th:nth-child(5),#activeEmployeePanel td:nth-child(5),#activeEmployeePanel th:nth-child(6),#activeEmployeePanel td:nth-child(6),#attendanceView th:nth-child(3),#attendanceView td:nth-child(3),#attendanceView th:nth-child(5),#attendanceView td:nth-child(5){text-align:left!important}
+@media(min-width:1200px){html,body{overflow-x:hidden!important}.table-wrap{overflow-x:auto!important}.table-wrap>table{table-layout:auto!important;max-width:none!important}table th,table td{overflow:hidden;text-overflow:ellipsis}}
+
+/* 월별 교육 조회 */
+.education-view-tabs{display:flex;gap:6px;margin:0 0 10px;border-bottom:1px solid #d9e0ea;padding-bottom:7px}
+.education-view-tab{min-height:34px;padding:0 14px;border:1px solid #cfd8e6;border-radius:7px;background:#fff;color:#44546a;font-weight:700;font-size:12px;cursor:pointer}
+.education-view-tab.active{border-color:#5f83c9;background:#edf4ff;color:#2458bd;box-shadow:0 1px 3px rgba(36,88,189,.12)}
+.monthly-history-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px;flex-wrap:wrap}
+.monthly-history-toolbar .toolbar-left{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.monthly-history-legend{display:flex;gap:12px;align-items:center;color:#667085;font-size:10.5px;flex-wrap:wrap}
+.monthly-history-legend span{display:inline-flex;gap:5px;align-items:center}.monthly-history-swatch{width:13px;height:13px;border-radius:3px;border:1px solid #ccd5e2;background:#fff}
+.monthly-history-swatch.attended{background:#eaf3ff;border-color:#9cb9e8}.monthly-history-swatch.excluded{background:#fff0d7;border-color:#e5ae55}
+.monthly-history-swatch.incomplete{background:#ffe4e4;border-color:#df5b5b}
+.monthly-matrix-wrap{overflow:auto;max-height:calc(100vh - 250px);border:1px solid #d8e0eb;border-radius:8px;background:#fff}
+.monthly-matrix{border-collapse:separate;border-spacing:0;min-width:100%;width:max-content;table-layout:fixed}
+.monthly-matrix th,.monthly-matrix td{border-right:1px solid #e4e9f0;border-bottom:1px solid #e4e9f0;padding:7px 8px;min-width:112px;max-width:150px;text-align:center;vertical-align:middle;font-size:11px;line-height:1.35;white-space:normal}
+.monthly-matrix thead th{position:sticky;top:0;z-index:4;background:#f5f7fb;font-weight:800;color:#344054}
+.monthly-matrix .employee-col{position:sticky;left:0;z-index:3;min-width:128px;max-width:128px;background:#fff;text-align:left;font-weight:700}
+.monthly-matrix thead .employee-col{z-index:6;background:#eef2f8}
+.monthly-matrix .department-col{position:sticky;left:128px;z-index:3;min-width:116px;max-width:116px;background:#fff;text-align:left;color:#667085}
+.monthly-matrix thead .department-col{z-index:6;background:#eef2f8;color:#344054}
+.monthly-matrix td.month-attended{background:#eaf3ff;color:#174ea6;font-weight:700}
+.monthly-matrix td.month-excluded{background:#fff0d7;color:#9a4d00;font-weight:800;box-shadow:inset 0 0 0 1px #e4a943}
+.monthly-matrix td.month-empty{color:#98a2b3}
+.monthly-cell-date{display:block}.monthly-cell-reason{display:block;margin-top:2px;font-size:10px;line-height:1.25}
+@media(max-width:800px){.monthly-matrix-wrap{max-height:calc(100vh - 280px)}.monthly-matrix th,.monthly-matrix td{min-width:104px}.monthly-matrix .employee-col{min-width:112px;max-width:112px}.monthly-matrix .department-col{left:112px;min-width:104px;max-width:104px}}
+
+.monthly-cell-editor{display:grid;gap:4px}.monthly-cell-editor select,.monthly-cell-editor input{width:100%;min-width:96px;height:29px;padding:2px 5px;border:1px solid #cfd8e6;border-radius:5px;background:#fff;font-size:10.5px}.monthly-cell-editor .monthly-save-state{min-height:14px;font-size:9.5px;color:#667085}.monthly-cell-editor.is-saving{opacity:.65;pointer-events:none}.monthly-matrix td.month-excluded .monthly-cell-editor select{border-color:#d8932c;background:#fff8ea}.monthly-matrix td.month-attended .monthly-cell-editor input{border-color:#7fa7df;background:#f7fbff}
+
+/* 2026-07 월별 교육 조회 통합·고밀도 보정 */
+.monthly-matrix-wrap{width:100%;max-width:100%;overflow:auto!important;max-height:calc(100vh - 230px);border-radius:6px}
+.monthly-matrix{width:max-content!important;min-width:100%!important;table-layout:fixed!important}
+.monthly-matrix th,.monthly-matrix td{min-width:76px!important;max-width:76px!important;width:76px!important;height:34px!important;padding:2px 3px!important;font-size:10px!important;line-height:1.15!important;white-space:normal!important}
+.monthly-matrix .employee-col{left:0!important;min-width:86px!important;max-width:86px!important;width:86px!important;padding:2px 5px!important}
+.monthly-matrix .department-col{left:86px!important;min-width:82px!important;max-width:82px!important;width:82px!important;padding:2px 5px!important}
+.monthly-cell-editor{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:2px!important;align-items:center!important}
+.monthly-cell-editor input,.monthly-cell-editor select{display:block!important;width:100%!important;min-width:0!important;height:22px!important;padding:0 3px!important;border-radius:4px!important;font-size:9.5px!important;line-height:20px!important}
+.monthly-cell-editor .monthly-save-state{display:none!important}
+.monthly-empty-note{display:block;color:#7b8494;font-size:9px;line-height:1.15;word-break:keep-all}
+.monthly-matrix td.month-empty{background:#fafbfc!important;color:#7b8494!important}
+.monthly-history-toolbar{margin-bottom:5px!important;gap:6px!important}.monthly-history-toolbar .toolbar-left{gap:5px!important}
+.monthly-history-legend{font-size:9.5px!important;gap:8px!important}
+.self-history-excluded{display:block;color:#a14f00;font-weight:800;white-space:normal!important}
+@media(max-width:1100px){.monthly-matrix-wrap{max-width:calc(100vw - 34px)}}
+
+
+/* 2026-07 월별 교육 조회: 입사일 잠금 및 단일 셀 편집 UI */
+.monthly-matrix th,.monthly-matrix td{min-width:66px!important;max-width:66px!important;width:66px!important;height:30px!important;padding:1px 2px!important;font-size:9.5px!important;line-height:1.1!important}
+.monthly-matrix .department-col{left:0!important;min-width:70px!important;max-width:70px!important;width:70px!important;padding:1px 4px!important}
+.monthly-matrix .employee-col{left:70px!important;min-width:62px!important;max-width:62px!important;width:62px!important;padding:1px 4px!important}
+.monthly-cell-editor{display:flex!important;align-items:center!important;gap:1px!important;width:100%!important}
+.monthly-cell-editor .monthly-date-input{flex:1 1 auto!important;width:40px!important;min-width:0!important;height:21px!important;padding:0 2px!important;text-align:center!important;font-size:9px!important}
+.monthly-cell-editor .monthly-mode-select{flex:0 0 18px!important;width:18px!important;min-width:18px!important;height:21px!important;padding:0!important;border-left:0!important;font-size:0!important;background-position:center!important;cursor:pointer!important}
+.monthly-cell-editor .monthly-reason-value{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px;font-weight:800;color:#9a4d00;cursor:pointer}
+.monthly-matrix td.month-locked{background:#f1f3f6!important;color:#b0b7c3!important;cursor:not-allowed}
+.monthly-matrix td.month-no-data{background:#fafbfc!important;color:#a4acb8!important}
+.monthly-matrix td.month-no-data,.monthly-matrix td.month-locked{text-align:center!important}
+
+/* 2026-07 월별 교육 조회 가독성·페이지네이션 */
+.monthly-matrix td.month-selectable,.monthly-matrix td.month-attended,.monthly-matrix td.month-excluded,.monthly-matrix td.month-empty{
+  text-align:center!important;vertical-align:middle!important;
+}
+.monthly-cell-display{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  width:100%!important;min-height:24px!important;text-align:center!important;
+  font-size:11.5px!important;font-weight:800!important;line-height:1.2!important;
+  white-space:normal!important;word-break:keep-all!important;
+}
+.monthly-matrix td.month-attended .monthly-cell-display{font-size:12px!important}
+.monthly-matrix td.month-excluded .monthly-cell-display{font-size:11px!important}
+.monthly-history-pagination{display:flex;align-items:center;justify-content:center;gap:4px;flex-wrap:wrap;padding:8px 4px 2px}
+.monthly-history-pagination[hidden]{display:none!important}
+.monthly-history-pagination .platform-page-button{min-width:28px;height:27px;padding:0 7px;font-size:11px}

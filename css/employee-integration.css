@@ -1,0 +1,15 @@
+
+/* 교육 화면: 교육자료는 기본 본문, 월별 조회는 상단 단일 전환 버튼 */
+#educationView .education-view-tabs,#regularHalfYearImportModal{display:none!important}
+#educationDataTable th,#educationDataTable td{text-align:center!important;vertical-align:middle!important}
+#educationDataTable .education-text-cell,#educationDataTable .education-category-text{text-align:center!important}
+
+/* 사원명부 중앙 정렬 및 재직자 삭제 UI 제거 */
+#employeeView table th,#employeeView table td{text-align:center!important;vertical-align:middle!important}
+#activeEmployeePanel th:first-child,#activeEmployeePanel td:first-child,#bulkDeleteButton,#activeSelectionText,#selectAllActiveEmployees{display:none!important}
+#activeEmployeePanel .row-actions{justify-content:center!important}
+#retiredEmployeePanel .row-actions{justify-content:center!important}
+#retiredEmployeePanel .retired-row-check{width:15px;height:15px}
+
+#selfHistoryHalfPagination.as-select{display:block!important}#selfHistoryHalfPagination.as-select .platform-page-button{display:none!important}#selfHistoryHalfSelect{height:30px;min-width:150px;border:1px solid #cfd8e6;border-radius:6px;background:#fff;padding:0 8px;font-size:11px;font-weight:700}
+.monthly-status-date-wrap{display:flex;align-items:center;gap:4px}.monthly-status-date-wrap[hidden]{display:none!important}.monthly-status-date-wrap label{font-size:10px;color:#667085}.monthly-status-date-wrap input{height:29px;border:1px solid #cfd8e6;border-radius:5px;padding:2px 5px;font-size:10.5px}

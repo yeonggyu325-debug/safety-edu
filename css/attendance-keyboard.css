@@ -1,0 +1,15 @@
+
+#attendanceView .attendance-summary-filter{appearance:none;text-align:left;cursor:pointer;border:1px solid var(--border,#dfe5ee);font:inherit;color:inherit;background:var(--surface,#fff);transition:border-color .15s ease,box-shadow .15s ease}
+#attendanceView .attendance-summary-filter:hover{border-color:#8fb0ff;box-shadow:0 4px 14px rgba(47,111,237,.12)}
+#attendanceView .attendance-summary-filter.active{border-color:#2f6fed;box-shadow:0 0 0 2px rgba(47,111,237,.14)}
+#attendanceView .attendance-summary-filter:focus-visible{outline:3px solid rgba(47,111,237,.28);outline-offset:2px}
+.attendance-direct-cell{display:grid;grid-template-columns:minmax(54px,1fr) 34px;align-items:center;gap:4px;min-width:94px}
+.attendance-direct-time{width:100%;min-width:0;height:30px;padding:3px 4px;border:1px solid #cfd7e6;border-radius:6px;text-align:center;font-size:13px;font-weight:750;font-variant-numeric:tabular-nums;background:#fff;color:#172033}
+.attendance-direct-time:focus{border-color:#2f6fed;box-shadow:0 0 0 2px rgba(47,111,237,.14);outline:0}
+.attendance-direct-cell.is-saving .attendance-direct-time{background:#eef4ff}
+.attendance-live-action{height:30px;padding:0 4px;border:1px solid #7aa2ff;border-radius:6px;background:#fff;color:#245bd4;font-size:10px;font-weight:800;cursor:pointer}
+.attendance-live-action.checkout{border-color:#ef9a9a;color:#c62828}
+.attendance-live-action:disabled{border-color:#d9dee8;color:#98a2b3;background:#f5f7fa;cursor:not-allowed;opacity:.8}
+#attendanceBulkTime{font-variant-numeric:tabular-nums;text-align:center;font-weight:750}
+#attendanceSessionStart[readonly],#attendanceSessionEnd[readonly]{background:#f5f7fa;color:#344054;cursor:default}
+@media(max-width:1100px){.attendance-direct-cell{grid-template-columns:minmax(50px,1fr) 31px;gap:3px}.attendance-direct-time{font-size:12px}.attendance-live-action{font-size:9px}}

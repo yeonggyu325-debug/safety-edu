@@ -1,0 +1,5 @@
+
+#attendanceRateDescription,#attendanceRateLegend{display:none!important}
+.attendance-chart-collapse.open{max-height:1200px}
+.attendance-chart-scroll{padding:14px;overflow:hidden!important}
+.attendance-chart-scroll canvas{display:block;width:100%!important;height:auto!important;max-width:1920px!important;margin:0 auto;aspect-ratio:16/9}
