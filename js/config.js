@@ -54,5 +54,6 @@ const db=(()=>{
  };
 })();
 fetch('/api/status').then(r=>r.json()).then(result=>{
+ if(result.data?.readOnly&&typeof window!=='undefined'){window.libraryReadOnly=true;const login=document.getElementById('loginButton');if(login)login.hidden=true;}
  if(result.data?.setupRequired&&typeof location!=='undefined'&&['127.0.0.1','localhost','[::1]'].includes(location.hostname)){const link=document.createElement('a');link.href='/setup.html';link.className='btn btn-secondary';link.textContent='최초 관리자 설정';document.querySelector('.top-actions')?.prepend(link)}
 }).catch(()=>{});

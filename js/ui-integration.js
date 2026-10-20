@@ -333,7 +333,7 @@
   window.syncAdminUI=function(){
     $("adminMenu").hidden=!state.isAdmin;
     const myHistoryButton=$("myHistoryButton");if(myHistoryButton)myHistoryButton.hidden=true;
-    $("loginButton").hidden=state.isAdmin;
+    $("loginButton").hidden=state.isAdmin||window.libraryReadOnly===true;
     $("personalHistoryButton").hidden=!state.isAdmin;
     $("adminTopActions").hidden=!state.isAdmin;
     $("logoutButton").hidden=!state.isAdmin;

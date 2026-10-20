@@ -12,6 +12,11 @@
     "backup": "node server/backup.cjs",
     "start:local": "node server/server.cjs",
     "backup:verify": "node server/backup.cjs --verify",
-    "restore": "node server/backup.cjs --restore"
+    "restore": "node server/backup.cjs --restore",
+    "cloud:export": "node server/publish-library.cjs",
+    "cloud:publish": "node --env-file=.env.local server/publish-library.cjs --apply"
+  },
+  "dependencies": {
+    "@vercel/blob": "2.8.2"
   }
 }

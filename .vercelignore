@@ -1,0 +1,10 @@
+storage
+node_modules
+.git
+.env
+.env.*
+spy-reports
+certificates
+config/intranet.local.json
+tmp
+tests

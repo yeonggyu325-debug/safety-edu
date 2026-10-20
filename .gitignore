@@ -11,3 +11,9 @@ config/intranet.local.json
 .env.*
 !.env.example
 spy-reports/
+
+.vercel/
+public/
+
+.vercel
+.env*
