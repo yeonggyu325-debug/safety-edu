@@ -62,3 +62,12 @@ test('Switching search modes cancels pending responses and never renders results
  resolve({ok:true,json:async()=>({data:{matches:[{name:'Name',history:[]}]}})});await pending;
  assert.equal(f.ids.participantHistoryResults.children.length,0);assert.equal(f.ids.participantHistoryMessage.textContent,'');
 });
+
+test('Non-JSON server errors and malformed success responses show an actionable message rather than a syntax error or empty results',async()=>{
+ for(const json of [async()=>{throw new SyntaxError('Unexpected token T, The page could not be found')},async()=>null,async()=>({}),async()=>({data:{matches:'invalid'}})]){
+  const f=fixture(async()=>({ok:true,json}));f.ids.participantSearchName.value='Person';await f.mainSearch();
+  assert.ok(f.ids.participantHistoryMessage.textContent.includes('서버'));
+  assert.ok(!f.ids.participantHistoryMessage.textContent.includes('Unexpected token'));
+  assert.equal(f.ids.participantHistoryResults.hidden,true);assert.equal(f.ids.participantHistorySubmit.disabled,false);
+ }
+});

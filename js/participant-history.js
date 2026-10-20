@@ -76,7 +76,11 @@
   cancel();const token=generation;controller=new AbortController();clear();submit.disabled=true;submit.textContent='조회 중…';
   try{
    const response=await fetch('/api/participants/search',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(activeMode==='department'?{mode:'department',department:input.value.trim()}:{name:input.value.trim()}),signal:controller.signal});
-   const result=await response.json();if(token!==generation)return;
+   let result;
+   try{result=await response.json()}catch{throw Error('교육자료실 서버의 응답을 읽지 못했습니다. 실행 중인 서버 주소로 접속한 뒤 다시 검색하세요.')}
+   if(token!==generation)return;
+   if(!result||typeof result!=='object'||Array.isArray(result))throw Error('교육자료실 서버의 응답 형식이 올바르지 않습니다.');
+   if(response.ok&&!result.error&&!Array.isArray(result.data?.matches))throw Error('교육자료실 서버의 응답 형식이 올바르지 않습니다.');
    if(!response.ok||result.error)throw Error(result.error?.message||'조회하지 못했습니다.');
    render(result.data?.matches||[]);
   }catch(error){if(token===generation&&error.name!=='AbortError')message.textContent=error.message==='Failed to fetch'?'서버에 연결하지 못했습니다. 다시 검색하세요.':error.message||'조회하지 못했습니다. 다시 검색하세요.'}

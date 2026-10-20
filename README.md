@@ -20,6 +20,12 @@ npm.cmd run start:lan
 
 직원들은 http://서버PC의사내IP:3000 으로 접속합니다. 최초 관리자 등록은 서버 PC의 127.0.0.1 주소에서만 가능합니다. 다른 PC에서 접속하려면 서버 PC의 Windows 방화벽에서 TCP 3000 포트를 사내 네트워크 범위에 허용해야 합니다. 서버 PC는 실행 상태를 유지해야 합니다.
 
+## GitHub 업로드와 Vercel 접속
+
+GitHub 업로드는 소스 보관입니다. 현재 앱의 API는 `server/server.cjs`에서 실행하며 운영 DB·파일은 서버 PC의 `storage/`에 있습니다. Vercel에 HTML·JS·CSS만 배포하면 `/api/status`, `/api/participants/search` 등이 404를 반환하고 실제 자료를 조회할 수 없습니다. 현재 지원하는 실행 방법은 Node 서버를 시작한 후 로컬 또는 허용된 사내망 주소로 접속하는 방식입니다.
+
+Vercel에서 운영하려면 API 실행과 영구 DB·파일 저장소를 별도로 구성해야 합니다. 운영 DB를 공개 저장소에 추가하거나 임시 파일 저장소로 바꾸어 해결하지 않습니다.
+
 ## 저장 위치
 
 기본 위치는 프로젝트의 `storage/`이며 현재 작업 폴더 기준으로 `D:\safety-edu\storage`입니다.
